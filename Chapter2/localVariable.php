@@ -16,10 +16,10 @@
         //Stop myFunction
 
         echo "Trying to access local variable outside the function: <br>";
-        //echo $localVariable; // This will cause an error
+        echo $localVariable; // This will cause an error
 
-        myFunction();
-        myFunction();
+        myFunction();//$localVariable is accessible only within the function, so we call the function to see its value
+        myFunction();//$localVariable is accessible only within the function, so we call the function to see its value
     ?>
 </body>
 </html>
