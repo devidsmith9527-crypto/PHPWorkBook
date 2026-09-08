@@ -1,3 +1,8 @@
+<?php
+    //define(VARIABLE_NAME, value);
+    define("PI", 3.14159);
+    define("MAX_SIZE", 25);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,10 +11,7 @@
     <title>define</title>
 </head>
 <body>
-    <?php
-        //define(VARIABLE_NAME, value);
-        define("PI", 3.14159);
-        define("MAX_SIZE", 25);
+    <?php        
         echo "The value of PI is: " . PI . "<br>";
         echo "The maximum number of students allowed is: " . MAX_SIZE . "<br>";
     ?>
