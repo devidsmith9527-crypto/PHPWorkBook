@@ -1,3 +1,9 @@
+<?php
+    //const VARIABLE_NAME = value;
+    const PI = 3.14159;
+    //define() function
+    define("MAX_SIZE",25)
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,10 +12,7 @@
     <title>const</title>
 </head>
 <body>
-    <?php
-        //const VARIABLE_NAME = value;
-        const PI = 3.14159;
-        const MAX_SIZE = 25;
+    <?php        
         echo "The value of PI is: " . PI . "<br>";
         echo "The maximum number of students allowed is: " . MAX_SIZE . "<br>";
     ?>

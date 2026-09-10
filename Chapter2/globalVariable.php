@@ -7,20 +7,15 @@
 </head>
 <body>
     <?php
-        //Variable declared outside the function is called a global variable
-        $GLOBALS['fullName'] = "Dara Veasna";
-        // Start myFunction
-        function myFunction() {
-            // To access a global variable inside a function, we need to use the 'global' keyword
-            global $fullName;            
-            echo "<br>Print from inside the function: $fullName"; 
+        $score = 30;
+        function myScore(){
+            global $score;
+            $score = 90;//Over
+            echo "<br>My Score:", $score;
         }
-        // Stop myFunction
-
-        myFunction();  
-        myFunction();       
-        // We can access the global variable directly outside the function
-        echo "<br>Print from outside the function:", $GLOBALS['fullName']; 
+        //Call function
+        myScore();//My Score: 90
+        echo "<br>My Score after Call Function: ", $score;//My Score..: 90
     ?>
     </body>
 </html>

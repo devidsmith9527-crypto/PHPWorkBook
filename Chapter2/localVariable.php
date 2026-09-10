@@ -7,19 +7,19 @@
 </head>
 <body>
     <?php
-        //Start myFunction
-        function myFunction() {
-            //Inside the function, we can declare a local variable
-            $localVariable = "I am a local variable.";
-            echo $localVariable;//ជីវិតរបស់ $localVariable គឺមានតែក្នុង function នេះប៉ុណ្ណោះ
+        //Start studentInfo
+        function studentInfo() {
+           //Local Variable
+           $fullName = "Jonh Doe";
+           $age = 20;
+           echo "Full Name: ", $fullName;
+           echo "<br>Age: ", $age;
         }
-        //Stop myFunction
-
-        echo "Trying to access local variable outside the function: <br>";
-        echo $localVariable; // This will cause an error
-
-        myFunction();//$localVariable is accessible only within the function, so we call the function to see its value
-        myFunction();//$localVariable is accessible only within the function, so we call the function to see its value
+        //Stop studentInfo
+        //Call Function
+        studentInfo();
+        //echo "Full Name: ", $fullName;//Error
+        //echo "Age: ", $age; // Error
     ?>
 </body>
 </html>

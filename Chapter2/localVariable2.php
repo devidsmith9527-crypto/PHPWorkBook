@@ -7,12 +7,14 @@
 </head>
 <body>
     <?php
-        function fun_fullName() {
-            $localName = "Dara Veasna";
-            echo $localName;//Print inside the function, $localName is accessible only within this function
+        $score = 30;
+        function myScore(){
+            $score = 90;
+            echo "<br>My Score:", $score;
         }
-        //echo $localName; // This will cause an error because $localName is not accessible outside the function
-        fun_fullName();
+        //Call function
+        myScore();//My Score: 90
+        echo "<br>My Score after Call Function: ", $score;//My Score..: 30
     ?>
 </body>
 </html>

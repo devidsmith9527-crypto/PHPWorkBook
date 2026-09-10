@@ -10,7 +10,7 @@
         function myLocal() {
             // Declare a local variable
             $count = 0;
-            $count++;
+            $count++;//Pre-Increament
             echo "Count: $count <br>";
         }
 
