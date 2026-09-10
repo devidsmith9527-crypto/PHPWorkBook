@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program Learning Outcomes (PLOs) - Computer Science</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Suwannaphum:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS (via CDN for standalone beauty) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Configuration & Styling -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'suwannaphum': ['Suwannaphum', 'serif'],
+                        'battambang': ['Battambang', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#0078D4',
+                            purple: '#4F46E5',
+                            dark: '#0F172A',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Battambang', sans-serif; background-color: #F8FAFC; color: #1E293B; }
+        h1, h2, h3, .title-font { font-family: 'Suwannaphum', serif; }
+        
+        /* Smooth hover effect for cards */
+        .category-card {
+            transition: all 0.3s ease-in-out;
+        }
+        @media (hover: hover) {
+            .category-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+        
+        .plo-list-item { page-break-inside: avoid; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Header Section -->
+    <!-- Added sm: and md: classes to smoothly scale padding and font sizes -->
+    <header class="bg-gradient-to-r from-indigo-700 to-blue-600 text-white pt-12 pb-16 sm:pt-16 sm:pb-20 px-4 sm:px-6 relative overflow-hidden shadow-lg shadow-blue-900/20">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="max-w-6xl mx-auto relative z-10 text-center">
+            <div class="inline-block bg-white/20 backdrop-blur-sm px-4 py-1.5 sm:px-6 sm:py-2 rounded-full mb-4 sm:mb-6 border border-white/30 text-[11px] sm:text-sm">
+                <i class="fa-solid fa-graduation-cap mr-1 sm:mr-2"></i> កម្មវិធីបរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-2 sm:mb-4 leading-tight sm:leading-tight">លទ្ធផលសិក្សារំពឹងទុកនៃកម្មវិធីសិក្សា</h1>
+            <p class="text-base sm:text-xl md:text-2xl font-bold text-blue-100 tracking-wide uppercase font-suwannaphum">Program Learning Outcomes (PLOs)</p>
+            <p class="mt-4 sm:mt-6 text-xs sm:text-sm md:text-base max-w-2xl mx-auto text-blue-50 font-light leading-relaxed">
+                លទ្ធផលសិក្សារំពឹងទុកទាំង ១៦ នេះត្រូវបានតាក់តែងឡើងស្របតាមស្តង់ដារគុណវុឌ្ឍិជាតិ (CNQF) ដើម្បីធានាថានិស្សិតដែលបញ្ចប់ការសិក្សានឹងទទួលបានចំណេះដឹង និងជំនាញឆ្លើយតបនឹងតម្រូវការទីផ្សារការងារបច្ចេកវិទ្យា។
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <!-- Adjusted negative margin and gaps for mobile screens -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 relative z-20 pb-12 sm:pb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8">
+
+            <!-- Category I: Knowledge -->
+            <div class="category-card bg-white rounded-xl sm:rounded-2xl shadow-md border-t-4 border-blue-500 overflow-hidden flex flex-col h-full">
+                <div class="bg-blue-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-blue-100 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-blue-100 text-blue-600 rounded-lg sm:rounded-xl flex items-center justify-center text-lg sm:text-2xl shadow-inner">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h2 class="text-[17px] sm:text-xl font-bold text-brand-dark leading-tight">I. ផ្នែកចំណេះដឹង <br><span class="text-xs sm:text-sm font-normal text-blue-600 uppercase tracking-wider font-battambang">Knowledge</span></h2>
+                </div>
+                <div class="p-4 sm:p-6 flex-grow">
+                    <ul class="space-y-4 sm:space-y-5">
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-blue-600 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 1</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">យល់ដឹងស៊ីជម្រៅពីទ្រឹស្តី គោលការណ៍គ្រឹះ និងតក្កវិទ្យានៃវិទ្យាសាស្ត្រកុំព្យូទ័រ ដើម្បីយកទៅអនុវត្តក្នុង<comment-tag id="1">បរិបទការងារជាក់ស្តែង។</p></comment-tag id="1" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+បរិបទការងារជាក់ស្តែង។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-blue-100 text-blue-700 border border-blue-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Understand</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-blue-600 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 2</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">កំណត់ និងពន្យល់ពីស្ថាបត្យកម្មប្រព័ន្ធកុំព្យូទ័រ បណ្តាញទូរគមនាគមន៍ និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ <comment-tag id="2">(Database Management Systems)។</p></comment-tag id="2" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+(Database Management Systems)។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-blue-100 text-blue-700 border border-blue-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Remember / Understand</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-blue-600 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 3</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">ក្តាប់បានយ៉ាងរឹងមាំនូវគោលការណ៍សរសេរកម្មវិធី (Programming Methodologies) ទាំងបែប Procedural, Object-Oriented (OOP) និង MVC Architecture សម្រាប់ Web, <comment-tag id="3">Mobile និង Desktop។</p></comment-tag id="3" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+Mobile និង Desktop។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-blue-100 text-blue-700 border border-blue-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Apply</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-blue-600 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 4</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">យល់ដឹងច្បាស់លាស់ពីច្បាប់ ក្រមសីលធម៌វិជ្ជាជីវៈព័ត៌មានវិទ្យា និងស្តង់ដារសន្តិសុខសាយប័រ <comment-tag id="4">(Cybersecurity Standards)។</p></comment-tag id="4" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+(Cybersecurity Standards)។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-blue-100 text-blue-700 border border-blue-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Understand</span></p>" type="suggestion">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Category II: Cognitive Skills -->
+            <div class="category-card bg-white rounded-xl sm:rounded-2xl shadow-md border-t-4 border-amber-500 overflow-hidden flex flex-col h-full">
+                <div class="bg-amber-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-amber-100 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-amber-100 text-amber-600 rounded-lg sm:rounded-xl flex items-center justify-center text-lg sm:text-2xl shadow-inner">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+                    <h2 class="text-[17px] sm:text-xl font-bold text-brand-dark leading-tight">II. ផ្នែកជំនាញខាងបញ្ញាស្មារតី <br><span class="text-xs sm:text-sm font-normal text-amber-600 uppercase tracking-wider font-battambang">Cognitive Skills</span></h2>
+                </div>
+                <div class="p-4 sm:p-6 flex-grow">
+                    <ul class="space-y-4 sm:space-y-5">
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-amber-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 5</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">វិភាគ និងដោះស្រាយបញ្ហាស្មុគស្មាញ (Problem Solving) ដោយប្រើប្រាស់ក្បួនតក្កវិទ្យា និងរចនាសម្ព័ន្ធទិន្នន័យ <comment-tag id="5">(Algorithms & Data Structures) ដ៏ត្រឹមត្រូវ។</p></comment-tag id="5" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+(Algorithms & Data Structures) ដ៏ត្រឹមត្រូវ។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-amber-100 text-amber-700 border border-amber-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Analyze</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-amber-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 6</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">រចនា និងអភិវឌ្ឍប្រព័ន្ធសូហ្វវែរ (Software Development) ដែលមានសុវត្ថិភាពខ្ពស់ និងឆ្លើយតបទៅនឹង<comment-tag id="6">តម្រូវការជាក់ស្តែងរបស់អ្នកប្រើប្រាស់។</p></comment-tag id="6" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+តម្រូវការជាក់ស្តែងរបស់អ្នកប្រើប្រាស់។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-amber-100 text-amber-700 border border-amber-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Create</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-amber-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 7</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">វាយតម្លៃ ធ្វើតេស្ត និងធ្វើរោគវិនិច្ឆ័យ (Debug/Troubleshoot) ដើម្បីកែលម្អប្រសិទ្ធភាព និងទប់ស្កាត់ចន្លោះប្រហោង<comment-tag id="7">សុវត្ថិភាពប្រព័ន្ធ (ឧ. SQL Injection, XSS)។</p></comment-tag id="7" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+សុវត្ថិភាពប្រព័ន្ធ (ឧ. SQL Injection, XSS)។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-amber-100 text-amber-700 border border-amber-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Evaluate</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-amber-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 8</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">អនុវត្តគំនិតច្នៃប្រឌិត និងនវានុវត្តន៍ ក្នុងការស្រាវជ្រាវ និងបង្កើតដំណោះស្រាយបច្ចេកវិទ្យាថ្មីៗ ដើម្បី<comment-tag id="8">រួមចំណែកដល់ការអភិវឌ្ឍសង្គមឌីជីថល។</p></comment-tag id="8" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+រួមចំណែកដល់ការអភិវឌ្ឍសង្គមឌីជីថល។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-amber-100 text-amber-700 border border-amber-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Create</span></p>" type="suggestion">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Category III: Interpersonal Skills -->
+            <div class="category-card bg-white rounded-xl sm:rounded-2xl shadow-md border-t-4 border-emerald-500 overflow-hidden flex flex-col h-full">
+                <div class="bg-emerald-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-emerald-100 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-emerald-100 text-emerald-600 rounded-lg sm:rounded-xl flex items-center justify-center text-lg sm:text-2xl shadow-inner">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                    <h2 class="text-[17px] sm:text-xl font-bold text-brand-dark leading-tight">III. ផ្នែកជំនាញទំនាក់ទំនងអន្តរបុគ្គល និងការទទួលខុសត្រូវ <br><span class="text-xs sm:text-sm font-normal text-emerald-600 uppercase tracking-wider font-battambang">Interpersonal Skills & Responsibilities</span></h2>
+                </div>
+                <div class="p-4 sm:p-6 flex-grow">
+                    <ul class="space-y-4 sm:space-y-5">
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-emerald-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 9</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">ធ្វើការងារជាក្រុមប្រកបដោយប្រសិទ្ធភាព និងសាមគ្គីភាព ទាំងក្នុងតួនាទីជាអ្នកដឹកនាំគម្រោង <comment-tag id="9">(Project Leader) និងជាសមាជិកក្រុម។</p></comment-tag id="9" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+(Project Leader) និងជាសមាជិកក្រុម។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-emerald-100 text-emerald-700 border border-emerald-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Apply</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-emerald-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 10</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">បង្ហាញពីការទទួលខុសត្រូវខ្ពស់ក្នុងការគ្រប់គ្រងគម្រោងព័ត៌មានវិទ្យា ការបែងចែកការងារ និងការ<comment-tag id="10">សម្រេចលទ្ធផលតាមកាលកំណត់ (Deadline)។</p></comment-tag id="10" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+សម្រេចលទ្ធផលតាមកាលកំណត់ (Deadline)។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-emerald-100 text-emerald-700 border border-emerald-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Apply</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-emerald-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 11</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">មានសមត្ថភាពក្នុងការសិក្សាស្រាវជ្រាវ និងរៀនសូត្រដោយខ្លួនឯងជាប្រចាំ (Lifelong Learning) ដើម្បី<comment-tag id="11">អភិវឌ្ឍសមត្ថភាពឱ្យទាន់ការវិវឌ្ឍនៃបច្ចេកវិទ្យាថ្មីៗ។</p></comment-tag id="11" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+អភិវឌ្ឍសមត្ថភាពឱ្យទាន់ការវិវឌ្ឍនៃបច្ចេកវិទ្យាថ្មីៗ។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-emerald-100 text-emerald-700 border border-emerald-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Evaluate</span></p>" type="suggestion">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Category IV: Communication & IT Skills -->
+            <div class="category-card bg-white rounded-xl sm:rounded-2xl shadow-md border-t-4 border-purple-600 overflow-hidden flex flex-col h-full">
+                <div class="bg-purple-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-purple-100 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-purple-100 text-purple-600 rounded-lg sm:rounded-xl flex items-center justify-center text-lg sm:text-2xl shadow-inner">
+                        <i class="fa-solid fa-laptop-file"></i>
+                    </div>
+                    <h2 class="text-[17px] sm:text-xl font-bold text-brand-dark leading-tight">IV. ផ្នែកជំនាញទំនាក់ទំនង ព័ត៌មានវិទ្យា និងលេខនព្វន្ត <br><span class="text-xs sm:text-sm font-normal text-purple-600 uppercase tracking-wider font-battambang">Communication, IT & Numerical Skills</span></h2>
+                </div>
+                <div class="p-4 sm:p-6 flex-grow">
+                    <ul class="space-y-4 sm:space-y-5">
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-purple-600 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 12</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">ធ្វើទំនាក់ទំនង សរសេរឯកសារបច្ចេកទេស (Documentation) និងធ្វើបទបង្ហាញពីគម្រោងសូហ្វវែរបានយ៉ាងច្បាស់លាស់ <comment-tag id="12">ទាំងជាភាសាជាតិ និងអន្តរជាតិ។</p></comment-tag id="12" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+ទាំងជាភាសាជាតិ និងអន្តរជាតិ។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-purple-100 text-purple-700 border border-purple-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Create / Communicate</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-purple-600 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 13</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">ប្រើប្រាស់ឧបករណ៍បច្ចេកវិទ្យាទំនើបៗ និងប្រព័ន្ធគ្រប់គ្រងកំណែកូដ (Version Control Systems ដូចជា Git/GitHub) ដើម្បី<comment-tag id="13">គាំទ្រដល់ការងារអភិវឌ្ឍន៍ជាក្រុម។</p></comment-tag id="13" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+គាំទ្រដល់ការងារអភិវឌ្ឍន៍ជាក្រុម។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-purple-100 text-purple-700 border border-purple-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Apply</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-purple-600 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 14</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">ប្រមូល គណនា វិភាគ និងបកស្រាយទិន្នន័យ (Data Analysis) ដោយប្រើប្រាស់ចំណេះដឹងគណិតវិទ្យា និងស្ថិតិ ដើម្បី<comment-tag id="14">ធ្វើសេចក្តីសម្រេចចិត្តប្រកបដោយភាពត្រឹមត្រូវ។</p></comment-tag id="14" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+ធ្វើសេចក្តីសម្រេចចិត្តប្រកបដោយភាពត្រឹមត្រូវ។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-purple-100 text-purple-700 border border-purple-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Analyze</span></p>" type="suggestion">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Category V: Psychomotor Skills -->
+            <div class="category-card bg-white rounded-xl sm:rounded-2xl shadow-md border-t-4 border-rose-500 overflow-hidden flex flex-col h-full">
+                <div class="bg-rose-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-rose-100 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 bg-rose-100 text-rose-600 rounded-lg sm:rounded-xl flex items-center justify-center text-lg sm:text-2xl shadow-inner">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h2 class="text-[17px] sm:text-xl font-bold text-brand-dark leading-tight">V. ផ្នែកជំនាញប្រតិបត្តិ និងចលនាសាច់ដុំ <br><span class="text-xs sm:text-sm font-normal text-rose-600 uppercase tracking-wider font-battambang">Psychomotor Skills</span></h2>
+                </div>
+                <div class="p-4 sm:p-6 flex-grow">
+                    <ul class="space-y-4 sm:space-y-5">
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-rose-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 15</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">ដំឡើង តភ្ជាប់ និងថែទាំឧបករណ៍កុំព្យូទ័រ (Hardware) ប្រព័ន្ធបណ្តាញ (Networking) និងម៉ាស៊ីនមេ (Servers) បានយ៉ាង<comment-tag id="15">ស្ទាត់ជំនាញ និងប្រកបដោយសុវត្ថិភាព។</p></comment-tag id="15" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+ស្ទាត់ជំនាញ និងប្រកបដោយសុវត្ថិភាព។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-rose-100 text-rose-700 border border-rose-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Apply - Psychomotor</span></p>" type="suggestion">
+                        </li>
+                        <li class="plo-list-item flex items-start gap-3 sm:gap-4">
+                            <span class="flex-shrink-0 bg-rose-500 text-white font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-md sm:rounded-lg text-xs sm:text-sm shadow-sm">PLO 16</span>
+                            <p class="text-gray-700 leading-relaxed text-sm sm:text-[15px]">អនុវត្តការវាយកូដ (Coding/Typing) ការប្រើប្រាស់ឧបករណ៍បច្ចេកទេស និងការដោះស្រាយបញ្ហាគ្រឿងម៉ាស៊ីន<comment-tag id="16">ប្រកបដោយភាពរហ័សរហួន និងត្រឹមត្រូវ។</p></comment-tag id="16" text="បន្ថែមស្លាក Bloom's Taxonomy ទៅចុងប្រយោគ។
+ប្រកបដោយភាពរហ័សរហួន និងត្រឹមត្រូវ។ <span class='inline-block ml-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wide bg-rose-100 text-rose-700 border border-rose-200'><i class='fa-solid fa-tag mr-1 opacity-60'></i>Apply - Psychomotor</span></p>" type="suggestion">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-6 sm:py-8 text-center mt-auto border-t border-slate-700">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col items-center gap-2 sm:gap-3">
+            <div class="flex items-center justify-center gap-3 sm:gap-4 mb-1 sm:mb-2">
+                <i class="fa-solid fa-code text-blue-400 text-lg sm:text-xl"></i>
+                <i class="fa-solid fa-database text-amber-400 text-lg sm:text-xl"></i>
+                <i class="fa-solid fa-shield-halved text-emerald-400 text-lg sm:text-xl"></i>
+            </div>
+            <p class="text-xs sm:text-sm px-2">រៀបចំ និងចងក្រងសម្រាប់កម្មវិធីបរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ និងបច្ចេកវិទ្យាព័ត៌មាន។</p>
+            <p class="text-[10px] sm:text-xs mt-1 sm:mt-2 opacity-60">Generated Output &copy; 2026 Program Learning Outcomes</p>
+        </div>
+    </footer>
+
+</body>
+</html>

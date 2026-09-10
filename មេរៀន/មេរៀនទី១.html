@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: មេរៀនទី ១ - សេចក្តីផ្តើម និងឧបករណ៍អភិវឌ្ឍន៍ (PHP 8 & MySQL 8 Development Environment)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #0078D4;
+            --accent: #4F46E5;
+            --php-color: #7C3AED;
+            --mysql-color: #0284C7;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #475569;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #E2E8F0;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --bg-code: #F8FAFC;
+            --bg-output: #F1F5F9;
+            
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            --font-kh-heading: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 15px;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        .no-print-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border-dark);
+            padding: 14px 28px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            width: 210mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+        }
+        .no-print-bar p { margin: 0; font-size: 11pt; color: var(--text-muted); }
+        .print-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: var(--font-kh-body);
+            font-size: 11pt;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
+
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: var(--bg-page);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            position: relative;
+            border-radius: 4px;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 12mm 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .global-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 3px solid var(--accent);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 140px; }
+        .header-item img { height: 32px; object-fit: contain; }
+        .header-item span { font-size: 8.5pt; font-weight: bold; color: var(--accent); text-align: center; font-family: var(--font-kh-heading); line-height: 1.2; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 11pt; color: var(--accent); margin-bottom: 1px; line-height: 1.3;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent);
+            background-color: var(--bg-light);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+        .footer-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 9.5pt; 
+            color: var(--text-heading); 
+            font-weight: bold;
+            font-family: var(--font-kh-heading);
+        }
+        .footer-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .footer-right { font-size: 8.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 10px; border-radius: 15px; font-family: var(--font-kh-body);}
+
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 4px;
+            margin: 8px 0 10px 0;
+            font-family: var(--font-kh-heading);
+            font-size: 12pt;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-inside: avoid;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { 
+            font-family: var(--font-kh-heading); 
+            font-size: 11pt; 
+            color: var(--accent); 
+            margin: 8px 0 6px 0; 
+            page-break-inside: avoid;
+            border-left: 4px solid var(--accent);
+            padding-left: 8px;
+            line-height: 1.4;
+        }
+
+        .topic-toc-box {
+            background: #F1F5F9;
+            border: 1px solid var(--border-dark);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 6px 12px;
+            margin: 4px 0 8px 0;
+            font-size: 10pt;
+            page-break-inside: avoid;
+        }
+        .topic-toc-title {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--accent);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .topic-toc-box ul {
+            list-style: none;
+            padding-left: 6px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .topic-toc-box li {
+            color: var(--text-main);
+            font-size: 9.5pt;
+        }
+        .topic-toc-box li b {
+            color: var(--secondary);
+            font-family: var(--font-en-main);
+        }
+
+        .text-block { font-size: 10.5pt; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        
+        .bloom-tag { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 7.5pt; font-weight: bold; font-family: var(--font-en-main); margin-right: 4px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; } 
+
+        .toc-table { width: 100%; border-collapse: collapse; margin: 6px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; padding: 6px 8px; text-align: left; }
+        .toc-table td { padding: 5px 8px; border-bottom: 1px solid var(--border-light); font-size: 10pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; color: var(--accent); }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 4px; }
+        .obj-list li { position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 10.5pt; line-height: 1.5; page-break-inside: avoid; }
+        .obj-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11pt; top: -1px; }
+
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1px solid var(--border-dark); page-break-inside: avoid; }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 5px 7px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.4; }
+
+        .sub-topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sub-topic-card h4 {
+            font-family: var(--font-kh-heading);
+            font-size: 10.5pt;
+            color: var(--primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 3px;
+        }
+        .content-label {
+            font-weight: bold;
+            color: var(--accent);
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .syntax-box {
+            background: #F1F5F9;
+            border-left: 4px solid var(--secondary);
+            font-family: var(--font-code);
+            font-size: 9pt;
+            padding: 5px 8px;
+            margin: 4px 0;
+            border-radius: 0 4px 4px 0;
+            color: #0F172A;
+            white-space: pre-wrap;
+        }
+
+        .code-window { 
+            background: var(--bg-code); 
+            border-radius: 5px; 
+            overflow: hidden; 
+            margin: 4px 0; 
+            border: 1px solid var(--border-dark); 
+            page-break-inside: avoid;
+        }
+        .code-header { 
+            background: #E2E8F0; 
+            padding: 3px 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .mac-dots { display: flex; gap: 4px; }
+        .dot { width: 7px; height: 7px; border-radius: 50%; }
+        .dot-r { background: var(--danger); }
+        .dot-y { background: var(--warning); }
+        .dot-g { background: var(--success); }
+        .code-title { color: #334155; font-family: var(--font-code); font-size: 8.5pt; font-weight: 600;}
+        pre { 
+            padding: 6px 10px; 
+            color: #0F172A; 
+            font-family: var(--font-code); 
+            font-size: 9pt; 
+            line-height: 1.4; 
+            overflow: visible;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0; 
+            tab-size: 4;
+            font-weight: 500;
+        }
+
+        .output-window {
+            background: var(--bg-output);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 4px 0;
+            border: 1px solid var(--border-dark);
+            page-break-inside: avoid;
+        }
+        .output-header {
+            background: #CBD5E1;
+            padding: 2px 8px;
+            color: #1E293B;
+            font-family: var(--font-code);
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid #94A3B8;
+        }
+        .output-body {
+            padding: 6px 10px;
+            color: #0078D4;
+            font-family: var(--font-code);
+            font-size: 9pt;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .q-list { 
+            list-style-type: khmer; 
+            padding-left: 24px; 
+            font-size: 10.5pt; 
+            line-height: 1.5; 
+        }
+        .q-list li { 
+            margin-bottom: 6px; 
+            font-weight: normal; 
+            color: var(--text-main); 
+            page-break-inside: avoid;
+        }
+        .mcq-opts { 
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-top: 3px; 
+            font-weight: normal; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 4px;
+        }
+        .mcq-opts li { 
+            font-size: 9.5pt; 
+            background: #F8FAFC; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light); 
+            margin-bottom: 0; 
+        }
+        
+        .ans-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; page-break-inside: avoid;}
+        .ans-table th { background: #F1F5F9; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt; font-weight: bold; color: var(--text-heading); text-align:center;}
+        .ans-table td { font-weight: 700; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt;}
+
+        .matching-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-dark); page-break-inside: avoid;}
+        .matching-table th { background: #E0E7FF; color: var(--accent); border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt; text-align: center; font-family: var(--font-kh-heading); }
+        .matching-table td { border: 1px solid var(--border-dark); padding: 5px 8px; font-size: 9.5pt; line-height: 1.4; vertical-align: top; }
+
+        .explain-ans-card {
+            background: #F8FAFC;
+            border-left: 4px solid var(--accent);
+            border: 1px solid var(--border-dark);
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+        .explain-ans-card h5 {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print-bar { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <p><b><i class="fa-solid fa-file-pdf text-blue"></i> ណែនាំបោះពុម្ព៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print ជា PDF។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF</button>
+</div>
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>សាកលវិទ្យាល័យអង្គរ | ANGKOR UNIVERSITY</h1><p>FACULTY OF SCIENCE & TECHNOLOGY</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #EEF2FF 0%, #FFFFFF 100%); border-radius: 8px;">
+        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 120px; margin-bottom: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" alt="Logo">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 20pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 10pt; color: var(--text-muted); margin-bottom: 16px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 16px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (CS / IT)
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ១ (Bloom's Taxonomy Complete Edition)</div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 16pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">សេចក្តីផ្តើម និងឧបករណ៍អភិវឌ្ឍន៍<br>(Introduction & Development Tools)</h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 20px; font-weight: 600;">Client-Server Architecture, Core Web Stack, XAMPP, VS Code & GitHub Desktop</h3>
+
+        <!-- TECH ICONS DISPLAY -->
+        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 18px; font-size: 22pt;">
+            <i class="fa-solid fa-box-archive" style="color: #FB923C;" title="XAMPP"></i>
+            <i class="fa-brands fa-php" style="color: #7C3AED;" title="PHP 8"></i>
+            <i class="fa-solid fa-database" style="color: #0284C7;" title="MySQL"></i>
+            <i class="fa-solid fa-server" style="color: #DC2626;" title="Apache Web Server"></i>
+            <i class="fa-solid fa-code" style="color: #0078D4;" title="VS Code"></i>
+            <i class="fa-brands fa-github" style="color: #0F172A;" title="GitHub Desktop"></i>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
+            <p style="font-family: var(--font-kh-body); font-size: 10pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 11.5pt;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 2: LLO & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> ១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLO)</div>
+        <ul class="obj-list">
+            <li><b>LLO 1.1:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">កំណត់ និងបកស្រាយ</span> ពីស្ថាបត្យកម្ម Client-Server (3-Tier Web Architecture), ដំណើរការ Client-Side Scripting (JS) ធៀបនឹង Server-Side Scripting (PHP), HTTP Protocol Methods (GET, POST), និង HTTP Status Codes។</li>
+            <li><b>LLO 1.2:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">ពន្យល់ស៊ីជម្រៅ</span> ពីតួនាទីសមាសភាគ Core Web Stack រួមមាន Apache HTTP Web Server (<i class="fa-solid fa-server text-blue"></i>), និយមន័យ និងមូលហេតុចម្បងៗក្នុងការសិក្សា PHP 8 (<i class="fa-brands fa-php text-blue"></i>), និងប្រព័ន្ធ MySQL 8 RDBMS (<i class="fa-solid fa-database text-blue"></i>)។</li>
+            <li><b>LLO 1.3:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">ដំឡើង និងរៀបចំ</span> បរិស្ថានអភិវឌ្ឍន៍ Localhost ដោយប្រើប្រាស់ XAMPP Stack (<i class="fa-solid fa-box-archive text-blue"></i> htdocs Directory, Network Ports 80/443/3306), VS Code IDE (<i class="fa-solid fa-code text-blue"></i>) និង Extensions ចាំបាច់។</li>
+            <li><b>LLO 1.4:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">អនុវត្ត</span> ការប្រើប្រាស់ប្រព័ន្ធ Version Control ជាមួយ <b>GitHub Desktop GUI</b> (<i class="fa-brands fa-github text-blue"></i>) ទាំងលំហូរការងារសាស្ត្រាចារ្យ (Teacher Add/Publish Repo) និងលំហូរការងារនិស្សិត (Student Clone Repo)។</li>
+            <li><b>LLO 1.5:</b> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">សរសេរ និងប្រតិបត្តិ</span> កូដ PHP Script ដំបូងបង្អស់ (First Script) រួមមាន PHP Open/Close Tags, echo/print, Comments, ការបង្កប់ PHP ក្នុង HTML5 Markup, និង System Diagnostics តាម <code>phpinfo()</code>។</li>
+            <li><b>LLO 1.6:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">ធ្វើរោគវិនិច្ឆ័យ (Troubleshoot)</span> និងដោះស្រាយបញ្ហាបច្ចេកទេសញឹកញាប់ក្នុងការ Setup បរិស្ថាន ( Port 80 Conflict ក្នុង httpd.conf, 404 Not Found, និង PHP Source Displaying as Text)។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀន (Lesson Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Sub-Topics)</th>
+                    <th style="width:20%; text-align:center;">Bloom's Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៣.១</td><td>ស្ថាបត្យកម្ម Client-Server (3-Tier), Client-Side vs Server-Side Execution & HTTP Protocol</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td class="toc-num">៣.២</td><td>តួនាទីសមាសភាគ Core Web Stack (Apache Server, PHP 8 & MySQL 8 RDBMS)</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td class="toc-num">៣.៣</td><td>ការដំឡើង និងរៀបចំបរិស្ថាន Local Web Server ជាមួយ XAMPP Stack (htdocs & Ports)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៣.៤</td><td>ការកំណត់រចនាសម្ព័ន្ធ Visual Studio Code (VS Code) IDE & Extensions ចាំបាច់</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៣.៥</td><td>គ្រឹះ Version Control System ជាមួយ GitHub Desktop GUI (Teacher Publish & Student Clone)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៣.៦</td><td>ការសរសេរ និងប្រតិបត្តិ PHP Script ដំបូងបង្អស់ (Syntax, Echo, HTML Embedding & phpinfo)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c6">C6</span></td></tr>
+                <tr><td class="toc-num">៣.៧</td><td>ការដោះស្រាយបញ្ហាប្រឈមក្នុងការ Setup បរិស្ថាន (Troubleshooting Guide)</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 3: SECTION 3.1 CLIENT-SERVER & SCRIPT EXECUTION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <i class="fa-solid fa-book-open text-blue"></i> ៣. ខ្លឹមសារលម្អិតនៃមេរៀន (Detailed Lesson Contents)
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-network-wired"></i> ៣.១ ស្ថាបត្យកម្ម Client-Server, Script Execution & HTTP Protocol <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></div>
+
+        <div class="topic-toc-box">
+            <div class="topic-toc-title"><i class="fa-solid fa-list-ul"></i> មាតិកានៃ ៣.១ ៖</div>
+            <ul>
+                <li><b>៣.១.១</b> ស្ថាបត្យកម្ម 3-Tier Web Architecture</li>
+                <li><b>៣.១.២</b> ដំណើរការ Client-Side Script (JS) ធៀបនឹង Server-Side Script (PHP)</li>
+                <li><b>៣.១.៣</b> HTTP Protocol Methods (GET/POST) & Status Codes</li>
+            </ul>
+        </div>
+
+        <!-- 3.1.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-sitemap text-blue"></i> ៣.១.១ ស្ថាបត្យកម្ម 3-Tier Web Architecture <span class="bloom-tag bloom-c1">C1</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">Web Application ដំណើរការលើស្ថាបត្យកម្ម 3-Tier ៖
+                <ul style="padding-left: 20px; margin-top: 4px;">
+                    <li><b>Presentation Tier (Client Side):</b> ដំណើរការលើ Web Browser (<i class="fa-brands fa-html5 text-blue"></i> HTML5, <i class="fa-brands fa-css3-alt text-blue"></i> CSS3, <i class="fa-brands fa-js text-blue"></i> JavaScript) បង្ហាញ UI/UX។</li>
+                    <li><b>Application Tier (Server Side):</b> ដំណើរការដោយ Apache Web Server (<i class="fa-solid fa-server text-blue"></i>) និង <b>PHP 8 Engine</b> (<i class="fa-brands fa-php text-blue"></i>) គណនា Business Logic។</li>
+                    <li><b>Data Tier (Database Layer):</b> គ្រប់គ្រងដោយ <b>MySQL 8 RDBMS</b> (<i class="fa-solid fa-database text-blue"></i>) រក្សាទុកទិន្នន័យប្រព័ន្ធ។</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3.1.2 CLIENT-SIDE VS SERVER-SIDE SCRIPTING -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-laptop-code text-blue"></i> ៣.១.២ ដំណើរការ Client-Side Script ធៀបនឹង Server-Side Script <span class="bloom-tag bloom-c2">C2</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-gears"></i> ក. ការប្រៀបធៀបទីតាំង និងដំណើរការប្រតិបត្តិ (Execution Comparison)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">លក្ខណៈប្រៀបធៀប</th>
+                        <th style="width:39%;">Client-Side Scripting (<i class="fa-brands fa-js text-blue"></i> JavaScript)</th>
+                        <th style="width:39%;">Server-Side Scripting (<i class="fa-brands fa-php text-blue"></i> PHP)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>ទីតាំង Execute</b></td>
+                        <td>ដំណើរការលើ <b>Web Browser</b> របស់ User ផ្ទាល់ (Client's CPU/RAM)។</td>
+                        <td>ដំណើរការលើ <b>Web Server Machine</b> ជាមុនសិន រួចទើបបាញ់ HTML មក Client។</td>
+                    </tr>
+                    <tr>
+                        <td><b>ការមើលឃើញកូដ</b></td>
+                        <td>User អាចមើលឃើញ Source Code ទាំងអស់តាម Inspect Element/View Source។</td>
+                        <td>User <b>មិនអាច</b> មើលឃើញកូដ PHP ឡើយ (ឃើញតែ HTML Output ដែល PHP បញ្ចេញ)។</td>
+                    </tr>
+                    <tr>
+                        <td><b>តួនាទីចម្បង</b></td>
+                        <td>បង្កើត UI Interactivity, DOM Animations, ផ្ទៀងផ្ទាត់ Form ភ្លាមៗ (Instant Validation)។</td>
+                        <td>គណនា Business Logic, ទាក់ទង Database, គ្រប់គ្រង Sessions/Security, ផ្ទុក File Uploads។</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 3.1.3 HTTP PROTOCOL -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-globe text-blue"></i> ៣.១.៣ HTTP Protocol, Methods & Status Codes <span class="bloom-tag bloom-c2">C2</span></h4>
+            <div class="text-block">
+                • <b>HTTP Methods:</b> <code>GET</code> (ទាញយកទិន្នន័យ, បង្ហាញ params លើ URL) និង <code>POST</code> (បញ្ជូនទិន្នន័យសម្ងាត់ក្នុង Request Body)។
+                <br>• <b>HTTP Status Codes:</b> <code>200 OK</code> (ជោគជ័យ), <code>301/302 Redirect</code> (ប្តូរទិស), <code>404 Not Found</code> (រកមិនឃើញ File), និង <code>500 Internal Error</code> (កូដ PHP មាន Syntax Error)។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 4: SECTION 3.2 CORE WEB STACK -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-cubes text-blue"></i> ៣.២ តួនាទីសមាសភាគ Core Web Stack (Apache, PHP 8 & MySQL 8 RDBMS) <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></div>
+
+        <div class="topic-toc-box">
+            <div class="topic-toc-title"><i class="fa-solid fa-list-ul"></i> មាតិកានៃ ៣.២ ៖</div>
+            <ul>
+                <li><b>៣.២.១</b> Apache HTTP Web Server & Dispatching Logic</li>
+                <li><b>៣.២.២</b> តើ PHP 8 ជាអ្វី? ហេតុអ្វីត្រូវសិក្សាវា?</li>
+                <li><b>៣.២.៣</b> MySQL 8 RDBMS & PDO Security Layer</li>
+            </ul>
+        </div>
+
+        <!-- 3.2.1 APACHE -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-server text-blue"></i> ៣.២.១ Apache HTTP Web Server <span class="bloom-tag bloom-c1">C1</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ និងតួនាទី (Definition & Role)៖</div>
+            <div class="text-block"><b>Apache HTTP Server</b> (<i class="fa-solid fa-server text-blue"></i>) គឺជា Open-source Web Server ដើរតួជាអ្នករង់ចាំស្តាប់ Request (Port 80/443) ពី Browser។ ប្រសិនបើ Request សុំ File <code>.html/.css/.png</code> នោះ Apache បញ្ជូនទៅ Browser ភ្លាមៗ។ ប៉ុន្តែបើ Request សុំ File <code>.php</code> នោះ Apache បាញ់ឯកសារទៅឱ្យ <b>PHP Engine</b> ដំណើរការជាមុនសិន។</div>
+        </div>
+
+        <!-- 3.2.2 WHAT IS PHP 8 & WHY STUDY IT? -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-brands fa-php text-blue"></i> ៣.២.២ តើ PHP 8 ជាអ្វី? ហេតុអ្វីត្រូវសិក្សាវា? <span class="bloom-tag bloom-c2">C2</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>PHP</b> (អក្សរកាត់ Recursive មកពី <b>Hypertext Preprocessor</b>) គឺជាភាសាសរសេរកូដប្រភេទ <b>Server-Side Scripting Language</b> ប្រភពបើកចំហរ (Open-Source) ដែលត្រូវបង្កើតឡើងដោយលោក Rasmus Lerdorf ក្នុងឆ្នាំ ១៩៩៤។ ជំនាន់ <b>PHP 8</b> ត្រូវបានបំពាក់នូវ <b>JIT (Just-In-Time) Compiler</b> បង្កើនល្បឿន និងសមត្ថភាពគណនាខ្ពស់បំផុត។</div>
+
+            <div class="content-label"><i class="fa-solid fa-lightbulb"></i> ខ. មូលហេតុចម្បងៗទាំង ៥ ក្នុងការសិក្សា PHP 8 (Why Study PHP 8?)៖</div>
+            <div class="text-block">
+                <ol style="padding-left:20px; margin-top:3px;">
+                    <li><b>Dominance on the Web:</b> PHP គ្រប់គ្រង និងដំណើរការលើសពី **៧៥%** នៃគេហទំព័រទូទាំងពិភពលោក (រួមទាំង WordPress, Wikipedia, Drupal)។</li>
+                    <li><b>Easy Learning Curve & High Productivity:</b> មាន Syntax ងាយស្រួលរៀន សមស្របបំផុតសម្រាប់និស្សិតចាប់ផ្តើមគ្រឹះ Web Development។</li>
+                    <li><b>Modern PHP 8 Features:</b> មាន JIT Compiler, Match Expressions, Named Arguments, Union Types និង Strict Type Hinting ដែលមានសុវត្ថិភាពខ្ពស់។</li>
+                    <li><b>Foundation for Modern Frameworks:</b> ជាគ្រឹះមិនអាចខ្វះបានសម្រាប់ឈានទៅសិក្សា **Laravel Framework** ខ្នាត Enterprise ក្នុងវគ្គបន្ទាប់។</li>
+                    <li><b>Job Demand & Ecosystem:</b> មានទីផ្សារការងារខ្ពស់ និង Ecosystem ធំទូលាយ (Composer, Packagist)។</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 3.2.3 MYSQL 8 -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-database text-blue"></i> ៣.២.៣ MySQL 8 RDBMS & PDO Security Layer <span class="bloom-tag bloom-c2">C2</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>MySQL</b> (<i class="fa-solid fa-database text-blue"></i>) គឺជាប្រព័ន្ធ <b>RDBMS (Relational Database Management System)</b> រក្សាទុកទិន្នន័យជាតារាង (Tables)។ PHP ភ្ជាប់ទៅ MySQL តាម <b>PDO (PHP Data Objects)</b> ដោយប្រើ Prepared Statements ដើម្បីការពារ <b>SQL Injection</b>។</div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 5: SECTION 3.3 XAMPP & 3.4 VS CODE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-box-archive"></i> ៣.៣ ការដំឡើង និងរៀបចំបរិស្ថាន Local Web Server ជាមួយ XAMPP Stack <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 3.3.1 XAMPP CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-box-archive text-blue"></i> ៣.៣.១ XAMPP Stack, htdocs Directory & Network Ports <span class="bloom-tag bloom-c3">C3</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>XAMPP</b> (<i class="fa-solid fa-box-archive text-blue"></i>) គឺជាកញ្ចប់ Software បង្កើត Local Web Server ឥតគិតថ្លៃ៖ <b>X</b> (Cross-Platform), <b>A</b> (Apache), <b>M</b> (MariaDB/MySQL), <b>P</b> (PHP), <b>P</b> (Perl)។
+                <ul style="padding-left:20px; margin-top:3px;">
+                    <li><b>htdocs Directory:</b> រាល់ Folder គម្រោង PHP ទាំងអស់ត្រូវតែដាក់ក្នុង <code>C:\xampp\htdocs\</code> ដើម្បីឱ្យ Apache ស្គាល់ (ឧទាហរណ៍ <code>C:\xampp\htdocs\my_app\</code> Map ទៅ URL <code>http://localhost/my_app/</code>)។</li>
+                    <li><b>Network Ports:</b> Port 80 (HTTP Default), Port 443 (HTTPS Secure), Port 3306 (MySQL Service)។</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-code"></i> ៣.៤ ការកំណត់រចនាសម្ព័ន្ធ Visual Studio Code (VS Code) IDE <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 3.4.1 VS CODE CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-code text-blue"></i> ៣.៤.១ VS Code Setup & Key Extensions <span class="bloom-tag bloom-c3">C3</span></h4>
+            <div class="content-label"><i class="fa-solid fa-plug"></i> តារាង Extensions ចាំបាច់សម្រាប់ PHP Development ក្នុង VS Code (<i class="fa-solid fa-code text-blue"></i>)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th>ឈ្មោះ Extension</th>
+                        <th>អ្នកអភិវឌ្ឍន៍</th>
+                        <th>មុខងារ និងផលប្រយោជន៍</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><b>PHP Intelephense</b></td><td>Ben Mewburn</td><td>ផ្តល់ Auto-complete, Code Navigation & Syntax Checking</td></tr>
+                    <tr><td><b>PHP Server</b></td><td>brapaz</td><td>ជំនួយបើកមើលទំព័រ PHP លើ Browser តាម Right-click</td></tr>
+                    <tr><td><b>Git Graph</b></td><td>mhutchie</td><td>បង្ហាញ Commits & Branches ជា Diagram យ៉ាងច្បាស់</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 6: SECTION 3.5 GITHUB DESKTOP GUI -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-brands fa-github"></i> ៣.៥ គ្រឹះ Version Control System ជាមួយ GitHub Desktop (GUI) <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 3.5.1 GITHUB DESKTOP WORKFLOW -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-brands fa-github text-blue"></i> ៣.៥.១ GitHub Desktop GUI Workflow (Teacher Add/Publish & Student Clone) <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-chalkboard-user"></i> ក. លំហូរការងារសម្រាប់សាស្ត្រាចារ្យ (Teacher Workflow: Add & Publish Repository)៖</div>
+            <div class="text-block">
+                <ol style="padding-left:20px; margin-top:3px;">
+                    <li><b>បង្កើត Project Folder:</b> បង្កើត Folder ក្នុង <code>C:\xampp\htdocs\au_php_course\</code>។</li>
+                    <li><b>Add Local Repository:</b> បើក GitHub Desktop (<i class="fa-brands fa-github text-blue"></i>) ➔ ចូល Menu <code>File</code> ➔ ជ្រើសរើស <code>Add Local Repository...</code> (ឬ <code>Create New Repository</code>) ➔ ជ្រើស Folder <code>au_php_course</code>។</li>
+                    <li><b>Commit to Main:</b> វាយអត្ថបទរៀបរាប់ក្នុងប្រអប់ Summary (ឧ. "First Lecture Code") ➔ ចុចប៊ូតុង **Commit to main**។</li>
+                    <li><b>Publish Repository:</b> ចុចប៊ូតុង **Publish repository** លើកដំបូង ដើម្បីបាញ់បង្ហោះកូដឡើង GitHub Cloud Server រួចចម្លង Link URL ចែករំលែកជូននិស្សិត។</li>
+                </ol>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-user-graduate"></i> ខ. លំហូរការងារសម្រាប់និស្សិត (Student Workflow: Clone Repository)៖</div>
+            <div class="text-block">
+                <ol style="padding-left:20px; margin-top:3px;">
+                    <li><b>Clone Repository:</b> បើក GitHub Desktop ➔ ចូល Menu <code>File</code> ➔ ជ្រើសរើស <code>Clone Repository...</code> ➔ ជ្រើសរើស Tab <code>URL</code> ➔ បិទភ្ជាប់ (Paste) Link URL មេរៀនរបស់សាស្ត្រាចារ្យ។</li>
+                    <li><b>កំណត់ Local Path:</b> កំណត់ទីតាំងផ្ទុកក្នុងម៉ាស៊ីននិស្សិតឱ្យចំ <code>C:\xampp\htdocs\au_php_course\</code> ➔ ចុចប៊ូតុង **Clone**។</li>
+                    <li><b>Open in VS Code:</b> បើក Folder នោះក្នុង VS Code (<i class="fa-solid fa-code text-blue"></i>) ដើម្បីរៀន និងអនុវត្តតាមជាក់ស្តែង!</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 7: SECTION 3.6 FIRST PHP SCRIPTS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-file-code"></i> ៣.៦ ការសរសេរ និងប្រតិបត្តិ PHP Script ដំបូងបង្អស់ <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c6">C6</span></div>
+
+        <!-- 3.6.1 FIRST SCRIPT CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-terminal text-blue"></i> ៣.៦.១ PHP Syntax, echo Statement & HTML Embedding <span class="bloom-tag bloom-c6">C6</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">កូដ PHP ត្រូវសរសេរក្នុង <code>&lt;?php ... ?&gt;</code> Tags និងបញ្ចប់ដោយសញ្ញាសេមីកូឡុង (<code>;</code>) ជានិច្ច។ បញ្ជា <code>echo</code> ប្រើសម្រាប់បញ្ចេញទិន្នន័យ String ឬ HTML Markup ទៅកាន់ Web Browser។</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> ខ. កូដ PHP ពេញលេញបង្កប់ក្នុង HTML5 (Complete Embedded Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">htdocs/au_php_course/hello.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;!DOCTYPE html&gt;</span>
+&lt;html lang="km"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;<span style="color:#7C3AED; font-weight:bold;">&lt;?php</span> <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"ទំព័រដំបូងរបស់ខ្ញុំ"</span>; <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;<span style="color:#7C3AED; font-weight:bold;">&lt;?php</span> <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"សាកលវិទ្យាល័យអង្គរ (Angkor University)"</span>; <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>&lt;/h1&gt;
+    &lt;p&gt;កាលបរិច្ឆេទ Server: <span style="color:#7C3AED; font-weight:bold;">&lt;?php</span> <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#D97706; font-weight:bold;">date</span>(<span style="color:#0D9488;">'Y-m-d H:i:s'</span>); <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> គ. លទ្ធផល (Execution Output)៖</div>
+            <div class="output-window"><div class="output-header">Browser Rendered HTML Output</div><div class="output-body"><h1>សាកលវិទ្យាល័យអង្គរ (Angkor University)</h1>
+<p>កាលបរិច្ឆេទ Server: 2026-03-30 08:30:00</p></div></div>
+        </div>
+
+        <!-- 3.6.2 PHPINFO -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-circle-info text-blue"></i> ៣.៦.២ System Diagnostics តាម phpinfo() <span class="bloom-tag bloom-c3">C3</span></h4>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">htdocs/au_php_course/info.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
+<span style="color:#D97706; font-weight:bold;">phpinfo</span>(); <span style="color:#64748B;">// បង្ហាញ PHP Version, Extension Configs, Loaded Modules ទាំងអស់</span>
+<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 8: SECTION 3.7 TROUBLESHOOTING GUIDE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-bug-slash"></i> ៣.៧ ការដោះស្រាយបញ្ហាប្រឈមក្នុងការ Setup បរិស្ថាន (Troubleshooting Guide) <span class="bloom-tag bloom-c4">C4</span></div>
+
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-wrench text-blue"></i> ៣.៧.១ Common Setup Issues & Technical Solutions <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-triangle-exclamation" style="color:var(--danger);"></i> ១. បញ្ហា Port 80 Conflict (Apache Start មិនចេញ)៖</div>
+            <div class="text-block"><b>មូលហេតុ៖</b> Port 80 ត្រូវបានប្រើប្រាស់ដោយ Skype, VMware, ឬ IIS Service របស់ Windows។
+                <br><b>ដំណោះស្រាយ៖</b> បើក XAMPP Control Panel ➔ Config របស់ Apache ➔ ជ្រើសរើស <code>httpd.conf</code> ➔ ស្វែងរក <code>Listen 80</code> រួចប្តូរទៅ <code>Listen 8080</code> ➔ បើក Web តាម URL: <code>http://localhost:8080/my_app/</code>។
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-triangle-exclamation" style="color:var(--warning);"></i> ២. បញ្ហា 404 Not Found Error៖</div>
+            <div class="text-block"><b>មូលហេតុ៖</b> រក្សាទុក Folder គម្រោងខុសទីតាំង (មិនបានដាក់ក្នុង <code>htdocs</code>) ឬវាយឈ្មោះ URL ខុសអក្សរតូចធំ (Case-sensitive)។
+                <br><b>ដំណោះស្រាយ៖</b> ប្រាកដថា Project Folder ស្ថិតនៅចំ <code>C:\xampp\htdocs\my_app\</code> និងផ្ទៀងផ្ទាត់ឈ្មោះ Folder លើ URL ឱ្យត្រូវគ្នា 100%។
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-triangle-exclamation" style="color:var(--accent);"></i> ៣. បញ្ហាកូដ PHP លេចចេញជាអក្សរសុទ្ធលើ Browser (Not Executing)៖</div>
+            <div class="text-block"><b>មូលហេតុ៖</b> បើកឯកសារតាម Double-click ចេញពី File Explorer ដោយប្រើ <code>file:///C:/xampp/htdocs/...</code> ដោយមិនបានឆ្លងកាត់ Web Server (HTTP)។
+                <br><b>ដំណោះស្រាយ៖</b> ត្រូវតែបើក Web Browser រួចវាយ URL <code>http://localhost/my_app/index.php</code> ជានិច្ច!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 9: GLOSSARY & SUMMARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                    <th style="width: 28%;">ឈ្មោះពេញ / ប្រភពពាក្យ</th>
+                    <th style="width: 35%;">ការពន្យល់ន័យជាភាសាខ្មែរ</th>
+                    <th style="width: 15%; text-align:center;">Bloom Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>PHP</b> (<i class="fa-brands fa-php text-blue"></i>)</td><td>Hypertext Preprocessor</td><td>ភាសា Server-Side Scripting សម្រាប់បង្កើត Dynamic Web Applications។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>MySQL</b> (<i class="fa-solid fa-database text-blue"></i>)</td><td>My Structured Query Language</td><td>ប្រព័ន្ធ RDBMS សម្រាប់គ្រប់គ្រង និងរក្សាទុកទិន្នន័យជាតារាង។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>XAMPP</b> (<i class="fa-solid fa-box-archive text-blue"></i>)</td><td>Cross, Apache, MySQL, PHP, Perl</td><td>កញ្ចប់ Software សម្រាប់បង្កើត Local Web Server ឥតគិតថ្លៃ។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>htdocs</b></td><td>HTML Documents Directory</td><td>Folder គោលរបស់ XAMPP សម្រាប់ដាក់រាល់ Project Web PHP។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>GUI</b></td><td>Graphical User Interface</td><td>ចំណុចប្រទាក់ Visual ប្រើប៊ូតុង/រូបភាព (ដូចជា GitHub Desktop)។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>PDO</b></td><td>PHP Data Objects</td><td>Database Abstraction Layer ក្នុង PHP សម្រាប់ភ្ជាប់ DB សុវត្ថិភាព។</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Lesson Summary)</div>
+        <div class="text-block">
+            មេរៀនទី ១ នេះបានផ្តល់នូវគ្រឹះដ៏រឹងមាំសម្រាប់និស្សិតវិទ្យាសាស្ត្រកុំព្យូទ័រក្នុងការយល់ដឹងពីស្ថាបត្យកម្ម Client-Server (3-Tier Web Architecture), ដំណើរការប្រៀបធៀប Client-Side Scripting (JS) ធៀបនឹង Server-Side Scripting (PHP) ព្រមទាំងតួនាទីសមាសភាគ Core Web Stack (Apache Web Server, PHP 8, និង MySQL 8 RDBMS)។
+        </div>
+
+        <ul class="obj-list">
+            <li><b class="highlight">១. Client-Server & Script Execution:</b> Web App ដំណើរការលើ 3-Tier Architecture។ Client-side JS ដំណើរការលើ Browser របស់ User ឯ Server-side PHP ដំណើរការលើ Web Server និងលាក់បាំងកូដដើមពី User។</li>
+            <li><b class="highlight">២. Core Web Stack & PHP 8:</b> Apache រង់ចាំស្តាប់ Request, PHP 8 ផ្តល់នូវល្បឿនខ្ពស់ជាមួយ JIT Compiler និងកូដប្រកបដោយសុវត្ថិភាព ហើយ MySQL រក្សាទុក relational data ដោយមាន PDO ទប់ស្កាត់ SQL Injection។</li>
+            <li><b class="highlight">៣. Local Environment & Tools:</b> XAMPP ផ្តល់ Localhost Server ដោយដាក់កូដក្នុង <code>htdocs</code>។ VS Code និង GitHub Desktop ជំនួយការសរសេរ និងគ្រប់គ្រង Version Control GUI ទាំងសម្រាប់សាស្ត្រាចារ្យ (Publish) និងនិស្សិត (Clone)។</li>
+            <li><b class="highlight">៤. Troubleshooting:</b> ដោះស្រាយបញ្ហា Port 80 Conflict តាម <code>httpd.conf</code>, បញ្ហា 404 Not Found, និងការបើកកូដតាម Protocol <code>http://localhost/</code>។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 10: REVIEW QUESTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:6px; border-left:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-pen-to-square"></i> ៧. សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">៧.ក. សំណួរ ខុស/ត្រូវ (True/False - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>PHP គឺជាភាសាប្រភេទ Client-Side Scripting ដែលដំណើរការដោយផ្ទាល់នៅក្នុង Web Browser។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>អ្នកប្រើប្រាស់ (User) អាចមើលឃើញកូដ PHP ដើមទាំងអស់តាមរយៈ View Page Source លើ Web Browser។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>រាល់ឯកសារ PHP ទាំងអស់ត្រូវតែរក្សាទុកនៅក្នុង Folder <code>htdocs</code> របស់ XAMPP ទើប Apache អាចដំណើរការវាបាន។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>អាសយដ្ឋាន URL <code>http://localhost/</code> សំដៅលើ Loopback IP Address <code>127.0.0.1</code> នៃម៉ាស៊ីនផ្ទាល់ខ្លួន។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>ការ Double-click បើកឯកសារ <code>index.php</code> ដោយផ្ទាល់ចេញពី File Explorer នឹងធ្វើឱ្យកូដ PHP ដំណើរការបានត្រឹមត្រូវ។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>GitHub Desktop គឺជាកម្មវិធី Graphical User Interface (GUI) សម្រាប់គ្រប់គ្រង Git Version Control។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>អនុគមន៍ <code>phpinfo()</code> ប្រើប្រាស់សម្រាប់បង្ហាញព័ត៌មាន Configuration ទាំងអស់របស់ PHP Engine លើ Server។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>HTTP Status Code <code>404 Not Found</code> បញ្ជាក់ថា Server មាន Error Syntax ក្នុងកូដ PHP។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>HTTP Method <code>POST</code> បង្ហាញ Parameter ទាំងអស់នៅលើ URL Query String។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>Port ស្តង់ដាររបស់ Web Server Apache (HTTP) គឺ Port 80។ <span class="bloom-tag bloom-c1">C1</span></li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:6px;">៧.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>តើ PHP មានពាក្យពេញថាតាមរយៈអ្វី? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. Personal Home Page</li><li>B. Hypertext Preprocessor</li><li>C. Private Process Hosting</li><li>D. Program Hosting System</li></ul>
+            </li>
+            <li>តើសមាសភាគមួយណាជា Web Server នៅក្នុងកញ្ចប់ XAMPP Stack? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. MySQL</li><li>B. phpMyAdmin</li><li>C. Apache HTTP Server</li><li>D. Tomcat</li></ul>
+            </li>
+            <li>តើ Folder មួយណាជា Root Directory សម្រាប់ដាក់កូដ Web Application ក្នុង XAMPP? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. C:\xampp\php\</li><li>B. C:\xampp\mysql\</li><li>C. C:\xampp\htdocs\</li><li>D. C:\xampp\tmp\</li></ul>
+            </li>
+            <li>តើ Open និង Close Tag ត្រឹមត្រូវស្តង់ដាររបស់ PHP គឺមួយណា? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. &lt;script php&gt; ... &lt;/script&gt;</li><li>B. &lt;?php ... ?&gt;</li><li>C. &lt;php ... /php&gt;</li><li>D. &lt;% ... %&gt;</li></ul>
+            </li>
+            <li>តើបញ្ជា (Statement) មួយណាប្រើសម្រាប់បញ្ចេញទិន្នន័យអត្ថបទទៅកាន់ Browser? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. write()</li><li>B. console.log()</li><li>C. echo</li><li>D. print_screen()</li></ul>
+            </li>
+            <li>តើកម្មវិធី GUI មួយណាដែលផ្លូវការសម្រាប់គ្រប់គ្រង GitHub ដោយមិនបាច់វាយ Command Line? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. Git CMD</li><li>B. GitHub Desktop</li><li>C. Git Bash</li><li>D. PuTTY</li></ul>
+            </li>
+            <li>ប្រសិនបើ Apache ជួបប្រទះបញ្ហា Port 80 Conflict តើអ្នកគួរកែប្រែឯកសារ Configuration មួយណា? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. php.ini</li><li>B. httpd.conf</li><li>C. my.ini</li><li>D. config.inc.php</li></ul>
+            </li>
+            <li>តើ RDBMS មានពាក្យពេញថាតាមរយៈអ្វី? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. Relational Database Management System</li><li>B. Rapid Database Main System</li><li>C. Resource Data Manager Server</li><li>D. Realtime Data Module Set</li></ul>
+            </li>
+            <li>តើ PDO ក្នុង PHP មានពាក្យពេញថាតាមរយៈអ្វី? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. Private Data Operator</li><li>B. PHP Data Objects</li><li>C. Process Driver Output</li><li>D. Program Database Option</li></ul>
+            </li>
+            <li>តើ HTTP Status Code មួយណាបញ្ជាក់ថាសំណើ Request ទទួលបានជោគជ័យ? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. 404 Not Found</li><li>B. 200 OK</li><li>C. 500 Server Error</li><li>D. 301 Moved</li></ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 11: MATCHING, EXPLANATORY QUESTIONS & LABS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">៧.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ សំណួរ)</div>
+        <table class="matching-table">
+            <thead>
+                <tr>
+                    <th style="width:50%;">ជួរ A (PHP / Web Concept)</th>
+                    <th style="width:50%;">ជួរ B (ការពិពណ៌នា / និយមន័យ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>១. <code>Apache HTTP Server</code></td><td>A. ឈ្មោះ Domain សិប្បនិម្មិត (IP: 127.0.0.1) សំដៅលើម៉ាស៊ីនផ្ទាល់ខ្លួន</td></tr>
+                <tr><td>២. <code>PHP 8 Engine</code></td><td>B. កម្មវិធី GUI ផ្លូវការសម្រាប់ Add, Commit និង Push កូដទៅ GitHub Cloud</td></tr>
+                <tr><td>៣. <code>MySQL RDBMS</code></td><td>C. Web Server HTTP Engine រង់ចាំទទួល និងឆ្លើយតបសំណើតាម HTTP (Port 80)</td></tr>
+                <tr><td>៤. <code>htdocs Folder</code></td><td>D. អនុគមន៍សម្រាប់បង្ហាញព័ត៌មាន Configuration ទាំងអស់របស់ PHP លើ Server</td></tr>
+                <tr><td>៥. <code>Localhost</code></td><td>E. ភាសា/Engine សម្រាប់បំប្លែង និងប្រតិបត្តិបញ្ជាកូដ Server-Side Scripting</td></tr>
+                <tr><td>៦. <code>GitHub Desktop</code></td><td>F. Folder គោលរបស់ XAMPP ដែលត្រូវដាក់រាល់ Project Web PHP (Root Directory)</td></tr>
+                <tr><td>៧. <code>echo</code></td><td>G. បញ្ជាសំខាន់សម្រាប់បញ្ចេញ ឬបង្ហាញទិន្នន័យ/HTML ទៅកាន់ Browser</td></tr>
+                <tr><td>៨. <code>phpinfo()</code></td><td>H. ប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ (RDBMS) សម្រាប់រក្សាទុកទិន្នន័យជាតារាង</td></tr>
+                <tr><td>៩. <code>PDO Driver</code></td><td>I. ពិធីការ Web ដែលបន្ថែម SSL/TLS Encryption ដើម្បីការពារសុវត្ថិភាព Port 443</td></tr>
+                <tr><td>១០. <code>HTTPS Protocol</code></td><td>J. PHP Data Objects Driver សម្រាប់ភ្ជាប់ PHP ទៅ Database ដោយសុវត្ថិភាព</td></tr>
+            </tbody>
+        </table>
+
+        <!-- SECTION 7.ឃ EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៧.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:3px 0 2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
+        <ol class="q-list">
+            <li><b>Q7.1:</b> ចែករំលែក និងពន្យល់ពីភាពខុសគ្នារវាង Client-Side Scripting (JS) និង Server-Side Scripting (PHP)។ <span class="bloom-tag bloom-c1">C1 - Remember</span></li>
+            <li><b>Q7.2:</b> រៀបរាប់ពីសារៈសំខាន់ និងផ្លូវ File Path របស់ Folder <code>htdocs</code> នៅក្នុង XAMPP Stack។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+            <li><b>Q7.3:</b> ពន្យល់ពីតួនាទីរបស់ PHP Open Tag <code>&lt;?php</code> និង Close Tag <code>?&gt;</code> នៅក្នុងឯកសារ PHP។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="4">
+            <li><b>Q7.4:</b> ធ្វើការពិពណ៌នាពីលំហូរ Request-Response Cycle នៃស្ថាបត្យកម្ម Client-Server នៅពេល User បើកគេហទំព័រ PHP 8។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q7.5:</b> បកស្រាយពីមូលហេតុដែលយើងមិនអាច Double-click បើកឯកសារ <code>.php</code> ដោយផ្ទាល់លើ Browser បានដូច <code>.html</code>។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+            <li><b>Q7.6:</b> ពន្យល់ពីរបៀបប្រើប្រាស់ GitHub Desktop GUI ទាំងសម្រាប់សាស្ត្រាចារ្យ (Publish Repository) និងសម្រាប់និស្សិត (Clone Repository)។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="7">
+            <li><b>Q7.7:</b> បកស្រាយ និងវិភាគលើដំណោះស្រាយជំហានៗ ប្រសិនបើ Apache ជួបប្រទះបញ្ហា Port 80 Conflict ក្នុងឯកសារ <code>httpd.conf</code>។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q7.8:</b> វិភាគ និងប្រៀបធៀបពីអត្ថប្រយោជន៍ផ្នែកសន្តិសុខ (Security) និង Performance រវាង Server-Side Execution (PHP) ធៀបនឹង Client-Side Execution (JS)។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q7.9:</b> ពន្យល់ពីមូលហេតុចម្បងៗទាំង ៥ ក្នុងការជ្រើសរើសសិក្សា PHP 8 សម្រាប់អភិវឌ្ឍន៍ Web Application ទំនើប។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+        </ol>
+
+        <!-- SECTION 7.ង PRACTICAL LABS -->
+        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៧.ង. លំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:2px 0 1px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ លំហាត់]</div>
+        <ol class="q-list">
+            <li><b>Lab 1.1:</b> បង្កើត Folder <code>htdocs/lab1_1/</code> និងឯកសារ <code>index.php</code> បង្ហាញសារ "Hello World - Angkor University" រួចហៅអនុគមន៍ <code>phpinfo()</code>។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 1.2:</b> បង្កើតឯកសារ <code>date.php</code> បង្ហាញកាលបរិច្ឆេទ និងម៉ោងបច្ចុប្បន្នរបស់ Server ដោយប្រើប្រាស់ <code>date('Y-m-d H:i:s')</code> របស់ PHP។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 1.3:</b> បង្កើតឯកសារ <code>profile.php</code> បង្កប់កូដ PHP ក្នុង HTML5 Table ដើម្បីបង្ហាញព័ត៌មានផ្ទាល់ខ្លួន (ឈ្មោះ, ជំនាញ, ឆ្នាំសិក្សា) ដោយប្រើ <code>echo</code>។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:3px 0 1px 0;">[កម្រិតមធ្យម - Medium Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="4">
+            <li><b>Lab 1.4:</b> សរសេរកូដ PHP គណនាតម្លៃទំនិញ ៣ មុខ, បូកសរុប (Subtotal), គណនាបញ្ចុះតម្លៃ ១០% (Discount), និងបង្ហាញជា HTML Invoice Table។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 1.5:</b> អនុវត្តការប្រើប្រាស់ GitHub Desktop GUI៖ បន្ថែម Project Folder <code>lab1_1</code>, ធ្វើការ Commit "Initial Commit Lab 1.5", និង Publish ទៅកាន់ GitHub Cloud Repository។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 1.6:</b> បង្កើតទំព័រ <code>system_status.php</code> បង្ហាញប្រព័ន្ធ Server Software, Operating System, និង PHP Version ដោយប្រើ <code>$_SERVER['SERVER_SOFTWARE']</code>។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:3px 0 1px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="7">
+            <li><b>Lab 1.7:</b> បង្កើត Dynamic Navigation Active Class Checker ដោយប្រើ <code>basename($_SERVER['PHP_SELF'])</code> ដើម្បីកំណត់ Active State លើ HTML Navbar ដោយស្វ័យប្រវត្តិ។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 1.8:</b> បង្កើត Diagnostic Page <code>status.php</code> ត្រួតពិនិត្យមើលថា តើ PHP Extensions (<code>pdo_mysql</code>, <code>mysqli</code>, <code>curl</code>, <code>mbstring</code>) ត្រូវបាន Loaded ឬអត់ ដោយប្រើ <code>extension_loaded()</code>។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 1.9:</b> អនុវត្ត Full Workflow៖ បង្កើត Project <code>au_app</code> ក្នុង <code>htdocs</code>, សរសេរកូដ PHP បង្កប់ HTML5 ភ្ជាប់ Bootstrap 5 CSS CDN, រួចប្រើ GitHub Desktop Publish ទៅកាន់ GitHub Cloud ជោគជ័យ។ <span class="bloom-tag bloom-c6">C6</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 12: ANSWERS KEY PART 1 (OBJECTIVE & EXPLANATORY SOLUTIONS ONE BY ONE) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:6px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> ៨. ចម្លើយ និងដំណោះស្រាយ (Answer Keys & Solutions)</div>
+            
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៨.ក. ចម្លើយ សំណួរ ខុស/ត្រូវ (True/False Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>ខុស</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ខុស</td><td>ត្រូវ</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៨.ខ. ចម្លើយ សំណួរ ពហុជ្រើសរើស (MCQ Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>C</td><td>C</td><td>B</td><td>C</td><td>B</td><td>B</td><td>A</td><td>B</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៨.គ. ចម្លើយ សំណួរ ផ្គូផ្គង (Matching Answers 1-10)</div>
+        <table class="ans-table" style="margin-bottom: 6px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>C</td><td>E</td><td>H</td><td>F</td><td>A</td><td>B</td><td>G</td><td>D</td><td>J</td><td>I</td></tr>
+        </table>
+
+        <!-- EXPLANATORY ANSWERS - ONE BY ONE -->
+        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៨.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q7.1 - Q7.9 ឆ្លើយម្ដងមួយតាមលំដាប់)</div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.1 (Client-Side vs Server-Side Scripting)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Client-Side Scripting (JS) ដំណើរការកូដដោយផ្ទាល់លើ Web Browser របស់អ្នកប្រើប្រាស់ ប្រើសម្រាប់បង្កើត UI Interactivity និងមើលឃើញកូដដើមបាន។ ឯ Server-Side Scripting (PHP) ដំណើរការកូដលើ Web Server ប្រើសម្រាប់គណនា Business Logic, ទាក់ទង Database និងបង្កើតទំព័រ HTML បញ្ជូនមក Client ដោយលាក់បាំងកូដដើម។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.2 (htdocs Directory Role & Path)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Folder <code>htdocs</code> គឺជា Root Web Directory របស់ Apache Web Server ក្នុង XAMPP (File Path: <code>C:\xampp\htdocs\</code>)។ រាល់ Project PHP ទាំងអស់ត្រូវតែដាក់ក្នុង Folder នេះ ទើប Web Server អាចស្គាល់ និង Map ទៅជា URL Address <code>http://localhost/project_name/</code> លើ Browser បាន។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.3 (PHP Tags Purpose)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                <code>&lt;?php</code> គឺជា Opening Tag និង <code>?&gt;</code> គឺជា Closing Tag។ ពួកវាមានតួនាទីជា Delimiters ប្រាប់ទៅ Web Server Apache ថា អត្ថបទ ឬកូដដែលស្ថិតនៅចន្លោះ Tag ទាំងពីរនេះ គឺជាកូដ PHP ដែលត្រូវបញ្ជូនទៅឱ្យ PHP Engine ធ្វើការ Compile/Execute ជាមុនសិន។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.4 (HTTP Request-Response Lifecycle)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                (1) User វាយ URL លើ Browser ➔ (2) Browser បាញ់ HTTP Request ទៅ Apache Web Server ➔ (3) Apache ឃើញ Extension <code>.php</code> បញ្ជូនទៅ PHP Engine ➔ (4) PHP Execute កូដ (និងសួររក MySQL បើមាន) ➔ (5) PHP បំប្លែងលទ្ធផលជា HTML សុទ្ធ ➔ (6) Apache បាញ់ HTTP Response (HTML) ត្រឡប់មក Browser ដើម្បី Render បង្ហាញ UI។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.5 (Why Cannot Double-click .php Files)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                ដោយសារ Browser គ្មាន PHP Engine សម្រាប់ Compile កូដ PHP ឡើយ។ បើ Double-click បើក វានឹងប្រើ Protocol <code>file:///</code> នាំឱ្យ Browser បង្ហាញកូដ PHP ដើមមកក្រៅ។ ឯកសារ PHP ត្រូវតែរត់តាម Protocol <code>http://localhost/</code> ដើម្បីឱ្យ Apache Web Server ចាត់ចែង។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 13: EXPLANATORY ANSWERS PART 2 & PRACTICAL LAB SOLUTIONS 1.1 - 1.5 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.6 (GitHub Desktop Teacher vs Student Workflow)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • **សាស្ត្រាចារ្យ (Teacher):** បង្កើត Project ក្នុង <code>htdocs</code> ➔ បើក GitHub Desktop ➔ File ➔ Add Local Repository ➔ Commit to main ➔ Publish repository ឡើង GitHub Cloud ➔ ផ្ញើ Link URL ជូននិស្សិត។<br>
+                • **និស្សិត (Student):** បើក GitHub Desktop ➔ File ➔ Clone Repository... ➔ បិទភ្ជាប់ Link URL របស់គ្រូ ➔ កំណត់ Local Path ទៅ <code>C:\xampp\htdocs\au_php_course\</code> ➔ ចុច Clone រួចបើកក្នុង VS Code។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.7 (Port 80 Conflict Solution)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                (1) បើក XAMPP Control Panel ➔ Config របស់ Apache ➔ ជ្រើសរើស <code>httpd.conf</code>។ (2) ស្វែងរក <code>Listen 80</code> ប្តូរទៅ <code>Listen 8080</code>។ (3) ស្វែងរក <code>ServerName localhost:80</code> ប្តូរទៅ <code>ServerName localhost:8080</code>។ (4) Save File, Restart Apache, និងបើក Web តាម <code>http://localhost:8080/my_app/</code>។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.8 (Security & Performance Analysis)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • **Security:** PHP លើ Server មានសុវត្ថិភាពខ្ពស់ជាង ព្រោះ User មើលមិនឃើញ DB Credentials ឬ Business Logic ឡើយ។ JS លើ Client ងាយរងការកែប្រែដោយ Hacker (Inspect Element)។<br>
+                • **Performance:** JS លើ Client កាត់បន្ថយ Load របស់ Server ព្រោះវា Rendering លើ Browser ផ្ទាល់។ ប៉ុន្តែ PHP លើ Server ជួយឱ្យការ Load ទិន្នន័យដំបូងមានល្បឿនលឿន និងបង្កើន SEO Ranking។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.9 (Why Study PHP 8 Reasons)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                ១. គ្រប់គ្រងលើសពី ៧៥% នៃគេហទំព័រទូទាំងពិភពលោក (WordPress, Wikipedia)។ ២. ងាយស្រួលរៀន (Easy Learning Curve)។ ៣. លឿនជាមួយ JIT Compiler & Strict Types។ ៤. ជាគ្រឹះសម្រាប់សិក្សា Laravel Framework។ ៥. ទីផ្សារការងារខ្ពស់ និង Ecosystem ធំទូលាយ។
+            </div>
+        </div>
+
+        <!-- SECTION 8.ង LAB SOLUTIONS 1.1 - 1.5 -->
+        <div class="sub-heading" style="margin-top: 8px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-code"></i> ៨.ង. ដំណោះស្រាយលំហាត់អនុវត្តន៍ (Practical Lab Solutions 1.1 - 1.9 ឆ្លើយម្ដងមួយតាមលំដាប់)</div>
+        
+        <!-- LAB 1.1 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:2px;">• ដំណោះស្រាយ Lab 1.1 (First Script & phpinfo) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">htdocs/lab1_1/index.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
+<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"&lt;h1 style='color:blue;'&gt;Hello World - Angkor University&lt;/h1&gt;"</span>;
+<span style="color:#D97706; font-weight:bold;">phpinfo</span>();
+<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 1.2 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 1.2 (Server Date & Time Display) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">htdocs/lab1_2/date.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
+<span style="color:#D97706; font-weight:bold;">date_default_timezone_set</span>(<span style="color:#0D9488;">'Asia/Phnom_Penh'</span>);
+<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"&lt;h2&gt;កាលបរិច្ឆេទ និងម៉ោងបច្ចុប្បន្ន៖ "</span> . <span style="color:#D97706; font-weight:bold;">date</span>(<span style="color:#0D9488;">'Y-m-d H:i:s A'</span>) . <span style="color:#0D9488;">"&lt;/h2&gt;"</span>;
+<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 1.3 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 1.3 (Personal Profile HTML Table Embedded) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">htdocs/lab1_3/profile.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
+<span style="color:#2563EB;">$name</span> = <span style="color:#0D9488;">"សុខ ជា"</span>; <span style="color:#2563EB;">$major</span> = <span style="color:#0D9488;">"Computer Science"</span>; <span style="color:#2563EB;">$year</span> = <span style="color:#C2410C;">3</span>;
+<span style="color:#7C3AED; font-weight:bold;">?&gt;</span>
+&lt;table border="1" cellpadding="5" style="border-collapse:collapse;"&gt;
+    &lt;tr&gt;&lt;th&gt;ឈ្មោះ&lt;/th&gt;&lt;td&gt;<span style="color:#7C3AED; font-weight:bold;">&lt;?=</span> <span style="color:#2563EB;">$name</span> <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;ជំនាញ&lt;/th&gt;&lt;td&gt;<span style="color:#7C3AED; font-weight:bold;">&lt;?=</span> <span style="color:#2563EB;">$major</span> <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th&gt;ឆ្នាំសិក្សា&lt;/th&gt;&lt;td&gt;ឆ្នាំទី <span style="color:#7C3AED; font-weight:bold;">&lt;?=</span> <span style="color:#2563EB;">$year</span> <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 14: PRACTICAL LAB SOLUTIONS 1.4 - 1.9 & FINAL BANNER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 1.4 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 1.4 (Invoice Calculation Table) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">htdocs/lab1_4/invoice.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
+<span style="color:#2563EB;">$p1</span> = <span style="color:#C2410C;">15.00</span>; <span style="color:#2563EB;">$p2</span> = <span style="color:#C2410C;">25.00</span>; <span style="color:#2563EB;">$p3</span> = <span style="color:#C2410C;">10.00</span>;
+<span style="color:#2563EB;">$subtotal</span> = <span style="color:#2563EB;">$p1</span> + <span style="color:#2563EB;">$p2</span> + <span style="color:#2563EB;">$p3</span>;
+<span style="color:#2563EB;">$discount</span> = <span style="color:#2563EB;">$subtotal</span> * <span style="color:#C2410C;">0.10</span>;
+<span style="color:#2563EB;">$total</span> = <span style="color:#2563EB;">$subtotal</span> - <span style="color:#2563EB;">$discount</span>;
+<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Subtotal: {$subtotal} $ | Discount: {$discount} $ | Total: {$total} $"</span>;
+<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 1.5 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 1.5 (GitHub Desktop Commit & Push Workflow) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">GitHub Desktop GUI Steps</div></div>
+<pre>1. បើក GitHub Desktop ➔ File ➔ Add Local Repository ➔ ជ្រើសរើស Folder `C:\xampp\htdocs\lab1_1`
+2. ក្នុងប្រអប់ Summary វាយ៖ "Initial Commit Lab 1.5"
+3. ចុចប៊ូតុង [Commit to main]
+4. ចុចប៊ូតុង [Publish repository] (ឬ Push origin) ដើម្បីបាញ់បង្ហោះឡើង GitHub Cloud ជោគជ័យ!</pre>
+        </div>
+
+        <!-- LAB 1.6 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 1.6 (System Status Display) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">htdocs/lab1_6/system_status.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
+<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"&lt;h3&gt;ព័ត៌មានប្រព័ន្ធ Web Server៖&lt;/h3&gt;"</span>;
+<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Server Software: "</span> . <span style="color:#2563EB;">$_SERVER</span>[<span style="color:#0D9488;">'SERVER_SOFTWARE'</span>] . <span style="color:#0D9488;">"&lt;br&gt;"</span>;
+<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"PHP Version: "</span> . <span style="color:#D97706; font-weight:bold;">phpversion</span>();
+<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 1.7 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 1.7 (Dynamic Active Navigation) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">htdocs/lab1_7/nav.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
+<span style="color:#2563EB;">$current</span> = <span style="color:#D97706; font-weight:bold;">basename</span>(<span style="color:#2563EB;">$_SERVER</span>[<span style="color:#0D9488;">'PHP_SELF'</span>]);
+<span style="color:#7C3AED; font-weight:bold;">?&gt;</span>
+&lt;a href="index.php" class="<span style="color:#7C3AED; font-weight:bold;">&lt;?=</span> (<span style="color:#2563EB;">$current</span>==<span style="color:#0D9488;">'index.php'</span>)?<span style="color:#0D9488;">'active'</span>:<span style="color:#0D9488;">''</span> <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>"&gt;Home&lt;/a&gt;
+&lt;a href="about.php" class="<span style="color:#7C3AED; font-weight:bold;">&lt;?=</span> (<span style="color:#2563EB;">$current</span>==<span style="color:#0D9488;">'about.php'</span>)?<span style="color:#0D9488;">'active'</span>:<span style="color:#0D9488;">''</span> <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>"&gt;About&lt;/a&gt;</pre>
+        </div>
+
+        <!-- LAB 1.8 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 1.8 (Server Extensions Diagnostic) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">htdocs/lab1_8/status.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
+<span style="color:#2563EB;">$exts</span> = [<span style="color:#0D9488;">'pdo_mysql'</span>, <span style="color:#0D9488;">'mysqli'</span>, <span style="color:#0D9488;">'curl'</span>, <span style="color:#0D9488;">'mbstring'</span>];
+<span style="color:#2563EB; font-weight:bold;">foreach</span> (<span style="color:#2563EB;">$exts</span> <span style="color:#2563EB; font-weight:bold;">as</span> <span style="color:#2563EB;">$ext</span>) {
+    <span style="color:#2563EB;">$status</span> = <span style="color:#D97706; font-weight:bold;">extension_loaded</span>(<span style="color:#2563EB;">$ext</span>) ? <span style="color:#0D9488;">"Enabled"</span> : <span style="color:#0D9488;">"Disabled"</span>;
+    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Extension {$ext}: {$status}&lt;br&gt;"</span>;
+}
+<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 1.9 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 1.9 (Complete Web App Landing Page with Bootstrap 5 CDN) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">htdocs/au_app/index.php</div></div>
+<pre><span style="color:#7C3AED; font-weight:bold;">&lt;!DOCTYPE html&gt;</span>
+&lt;html lang="km"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;AU Web App&lt;/title&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body class="bg-light p-4"&gt;
+    &lt;div class="container bg-white p-4 rounded shadow-sm"&gt;
+        &lt;h1 class="text-primary"&gt;សាកលវិទ្យាល័យអង្គរ (Angkor University)&lt;/h1&gt;
+        &lt;p class="text-muted"&gt;Server Time: <span style="color:#7C3AED; font-weight:bold;">&lt;?=</span> <span style="color:#D97706; font-weight:bold;">date</span>(<span style="color:#0D9488;">'Y-m-d H:i:s'</span>) <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <div style="text-align: center; margin-top: 10px; padding: 10px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 6px;">
+            <div style="display:flex; justify-content:center; gap:12px; margin-bottom: 4px;">
+                <i class="fa-brands fa-php" style="font-size: 24px; color: var(--accent);"></i>
+                <i class="fa-solid fa-server" style="font-size: 22px; color: var(--secondary);"></i>
+                <i class="fa-brands fa-github" style="font-size: 24px; color: var(--primary);"></i>
+            </div>
+            <h3 style="font-family: var(--font-kh-heading); font-size: 11pt; color: var(--text-heading); margin-bottom: 2px;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ១ យ៉ាងបរិបូរណ៍។</h3>
+            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 1 HANDOUT (BLOOM's TAXONOMY REVISED & EXPANDED EDITION) ***</p>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ១៤</div>
+    </div>
+</div>
+
+</body>
+</html>

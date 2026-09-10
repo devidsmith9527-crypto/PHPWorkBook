@@ -1,0 +1,1660 @@
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Syllabus - Web App with PHP & MySQL</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS+Siemreab&family=Battambang:wght@400;700&family=Suwannaphum:wght@400;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --paper-white: #FFFFFF;
+            --table-header-bg: #E2E8F0; 
+            --ms-blue: #0078D4;
+            --text-main: #0F172A;
+            --text-muted: #475569;
+            --accent-purple: #4F46E5; 
+            --header-footer-bg: #F8FAFC;
+            --border-color: #CBD5E1;
+            --clo-table-head: #E0E7FF;
+            --exercise-color: #059669; 
+        }
+
+        .text-orange { color: #F97316; }
+        .text-blue { color: #3B82F6; }
+        .text-yellow { color: #EAB308; }
+        .text-green { color: #10B981; }
+        .text-red { color: #EF4444; }
+        .icon-spacing { margin-right: 6px; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #E2E8F0;
+            font-family: 'Battambang', 'Khmer OS Siemreab', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .no-print {
+            background: #FFFBEB; border: 2px dashed #F59E0B; padding: 15px 20px; border-radius: 8px;
+            margin-bottom: 20px; width: 210mm; color: #92400E; font-size: 14px; text-align: center;
+        }
+
+        .print-btn {
+            background: var(--accent-purple); color: white; border: none; padding: 12px 25px; border-radius: 6px; 
+            font-family: 'Battambang'; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .print-btn:hover { background: #3730A3; }
+
+        .a4-page {
+            width: 210mm; height: 297mm;
+            background: var(--paper-white); box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+            margin-bottom: 30px; position: relative; border-radius: 4px; page-break-after: always;
+            overflow: hidden;
+        }
+
+        .a4-page-landscape {
+            width: 297mm; height: 210mm;
+            background: var(--paper-white); box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+            margin-bottom: 30px; position: relative; border-radius: 4px; page-break-after: always;
+            overflow: hidden;
+        }
+
+        .header-wrapper { position: absolute; top: 0; left: 15mm; right: 15mm; height: 25mm; padding-top: 5mm; }
+        .global-header {
+            height: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; border-bottom: 3px solid var(--accent-purple); background-color: var(--header-footer-bg);
+            border-radius: 4px 4px 0 0;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 3px; width: 140px; }
+        .header-item img { height: 35px; object-fit: contain; }
+        .header-item span { font-size: 9pt; font-weight: bold; color: var(--accent-purple); text-align: center; font-family: 'Suwannaphum'; line-height:1;}
+        .header-center { text-align: center; }
+        .header-center h1 { font-family: 'Suwannaphum'; font-size: 13.5pt; color: var(--accent-purple); margin: 0 0 2px 0; }
+        .header-center p { font-family: 'Battambang'; font-size: 8pt; color: var(--text-muted); margin: 0; font-weight: bold; text-transform: uppercase;}
+
+        .footer-wrapper { position: absolute; bottom: 0; left: 15mm; right: 15mm; height: 16mm; padding-bottom: 5mm; }
+        .global-footer {
+            height: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; border-top: 2px solid var(--accent-purple); background-color: var(--header-footer-bg);
+            border-radius: 0 0 4px 4px;
+        }
+        .footer-left { display: flex; align-items: center; gap: 10px; }
+        .footer-left img { border-radius: 50%; border: 2px solid var(--accent-purple); width: 28px; height: 28px; object-fit: cover; }
+        .footer-left span { font-size: 9.5pt; font-weight: bold; color: var(--text-main); font-family: 'Suwannaphum'; }
+        .footer-right { font-size: 9.5pt; color: var(--accent-purple); font-weight: bold; font-family: 'Battambang'; }
+
+        .page-content { position: absolute; top: 28mm; bottom: 18mm; left: 15mm; right: 15mm; overflow: hidden; }
+
+        .cover-page { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20mm; text-align: center; background-image: linear-gradient(to bottom, #EEF2FF, #FFFFFF);}
+        .cover-header img { width: 130px; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .cover-header h1 { font-family: 'Suwannaphum'; font-size: 26pt; color: var(--accent-purple); margin: 0 0 5px 0; font-weight: 900; }
+        .cover-header p { font-family: 'Lato'; font-size: 13pt; color: var(--text-muted); margin: 0 0 25px 0; font-weight: bold; letter-spacing: 1px; }
+        .cover-program { font-family: 'Suwannaphum'; font-size: 14pt; color: var(--text-main); margin-bottom: 20px; font-weight: bold; }
+        .badge { background: var(--accent-purple); color: white; padding: 8px 25px; border-radius: 50px; font-size: 13.5pt; font-family: 'Suwannaphum'; font-weight: bold; display: inline-block; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); }
+        .cover-title-box h2 { font-family: 'Suwannaphum'; font-size: 20pt; color: var(--text-main); margin: 0 0 10px 0; font-weight: 900; line-height: 1.4; padding: 0 10px;}
+        .cover-title-box h3 { font-family: 'Lato'; font-size: 12.5pt; color: var(--accent-purple); margin-bottom: 35px; font-weight: bold; }
+        .cover-author { display: flex; flex-direction: column; align-items: center; gap: 10px;}
+        .cover-author img { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--accent-purple); object-fit: cover; box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+        .cover-author p { font-family: 'Suwannaphum'; font-size: 13pt; color: var(--text-muted); margin: 0;}
+        .cover-author strong { color: var(--text-main); font-size: 15pt; }
+        .cover-icons { display: flex; gap: 40px; justify-content: center; border-top: 1px solid var(--border-color); padding-top: 20px; width: 90%; margin-top: 25px;}
+        .cover-icon-box { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px;}
+        .cover-icon-box i { font-size: 55px; display: block; color: var(--text-main);}
+        .cover-icon-box p { color: var(--accent-purple); font-weight: bold; font-size: 9.5pt; font-family: 'Lato'; margin: 0;}
+
+        .section-title {
+            background: var(--header-footer-bg); border-left: 5px solid var(--accent-purple);
+            padding: 6px 12px; margin: 10px 0 10px 0; font-family: 'Suwannaphum';
+            font-size: 12pt; display: flex; align-items: center; gap: 10px; font-weight: bold;
+            color: var(--accent-purple); border-radius: 0 4px 4px 0;
+        }
+        
+        .sub-heading { font-family: 'Suwannaphum', 'Battambang', sans-serif; font-weight: 900; font-size: 11pt; color: var(--text-main); margin-top: 12px; margin-bottom: 5px; }
+        .text-block { font-size: 10pt; line-height: 1.75; margin-bottom: 10px; color: var(--text-main); text-align: justify; }
+        
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .info-card { border: 1px solid var(--border-color); border-top: 3px solid var(--accent-purple); padding: 10px; border-radius: 4px; background: var(--paper-white); }
+        .info-card h4 { font-family: 'Suwannaphum'; font-size: 11pt; color: var(--accent-purple); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;}
+        .info-card p, .info-card ul { font-size: 9.5pt; line-height: 1.6; margin: 0; }
+        .info-card ul { padding-left: 18px; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 8px; background: white; border-radius: 4px; border: 1px solid var(--border-color); table-layout: fixed;}
+        th, td { border: 1px solid var(--border-color); padding: 5px 8px; text-align: left; vertical-align: top; word-wrap: break-word;}
+        th { background: var(--table-header-bg); color: var(--text-main); font-family: 'Battambang'; font-size: 9.5pt; text-align: center; font-weight: bold;}
+        td { font-size: 9.5pt; line-height: 1.5; color: var(--text-main); }
+        
+        .clo-table th { background-color: var(--clo-table-head); padding: 8px; }
+        .clo-table td { vertical-align: middle; padding: 8px; font-size: 9.5pt;}
+
+        .col-week { width: 5%; text-align: center; font-weight: bold; font-size: 11pt !important;}
+        .col-session { width: 5%; text-align: center; font-size: 9pt !important; }
+        .col-clo { width: 9%; text-align: center; font-weight: bold; font-size: 9pt !important;}
+        .col-llo { width: 23%; font-size: 9pt !important; line-height: 1.5 !important;}
+        .col-topics { width: 34%; font-size: 9pt !important; line-height: 1.5 !important;}
+        .col-teach { width: 9%; font-size: 9pt !important;}
+        .col-assess { width: 8%; font-size: 9pt !important;}
+        .col-mat { width: 7%; font-size: 9pt !important;}
+
+        .exercise-box { margin-top: 5px; padding: 6px 8px; background-color: #F0FDF4; border-left: 4px solid var(--exercise-color); border-radius: 0 4px 4px 0; }
+        .exercise-title { color: var(--exercise-color); font-weight: bold; font-size: 9pt; margin-bottom: 3px; display: flex; align-items: center; gap: 5px;}
+        .exercise-list { margin: 0; padding-left: 18px; font-size: 8.5pt; color: #166534; list-style-type: square; line-height: 1.45;}
+        .exercise-list li { margin-bottom: 2px; }
+
+        .exam-row td { background-color: #FEF2F2; color: #BE123C; font-weight: bold; }
+        .tech-icon { color: var(--accent-purple); margin-right: 5px; font-size: 1em; vertical-align: baseline; }
+        .center-text { text-align: center; }
+        .bloom-verb { font-weight: bold; color: var(--accent-purple); text-decoration: underline; text-decoration-color: #A5B4FC; text-underline-offset: 2px;}
+
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print { display: none !important; }
+            
+            @page { size: A4 portrait; margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0; }
+            @page landscape_page { size: A4 landscape; margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0; }
+            
+            .a4-page { page: auto; width: 210mm !important; height: 297mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; }
+            .a4-page-landscape { page: landscape_page; width: 297mm !important; height: 210mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <b><i class="fa-solid fa-circle-info"></i> ណែនាំមុនពេលបោះពុម្ព៖</b><br>
+    សូមចុច <code>Ctrl + P</code>, ជ្រើសរើស <b>Paper Size: A4</b>, កំណត់ <b>Margins: None</b> និងបើក <b>Background graphics</b>។
+    <br>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (Portable Document Format)</button>
+</div>
+
+<!-- Page 1: Cover Page -->
+<div class="a4-page cover-page">
+    <div class="cover-header">
+        <img src="Logo.png" alt="AU Logo">
+        <h1>សាកលវិទ្យាល័យអង្គរ</h1>
+        <p>ANGKOR UNIVERSITY (AU)</p>
+    </div>
+
+    <div class="cover-program">
+        <i class="fa-solid fa-graduation-cap text-blue"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (Bachelor of Computer Science / Information Technology)
+    </div>
+
+    <div class="cover-title-box">
+        <div class="badge"><i class="fa-solid fa-file-contract"></i> គម្រោងមុខវិជ្ជា | Course Syllabus (2026-2027)</div>
+        <h2>ការអភិវឌ្ឍកម្មវិធីវ៉ិបជាមួយ PHP និង MySQL</h2>
+        <h3>(Web Application Development with PHP & MySQL)</h3>
+    </div>
+
+    <div class="cover-author">
+        <img src="Lim.jpg" alt="Prof. Image">
+        <p>រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+        <strong>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+    </div>
+
+    <div class="cover-icons">
+        <div class="cover-icon-box">
+            <i class="fa-brands fa-php" style="font-size: 65px; color: #4F46E5;"></i>
+            <p>PHP (Hypertext Preprocessor) 8 & OOP (Object-Oriented Programming)</p>
+        </div>
+        <div class="cover-icon-box">
+            <i class="fa-solid fa-database" style="font-size: 55px; color: #0078D4;"></i>
+            <p>MySQL RDBMS (Relational Database Management System) & PDO (PHP Data Objects)</p>
+        </div>
+        <div class="cover-icon-box">
+            <i class="fa-brands fa-github" style="font-size: 60px; color: #0F172A;"></i>
+            <p>Git / GitHub Version Control System</p>
+        </div>
+    </div>
+</div>
+
+<!-- Page 2: General Information & Detailed Course Description -->
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="info-grid">
+            <div class="info-card">
+                <h4><i class="fa-solid fa-book-open-reader tech-icon"></i> ព័ត៌មានមុខវិជ្ជា (Course Information)</h4>
+                <p><b>កម្មវិធីសិក្សា៖</b> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ</p>
+                <p><b>ឆ្នាំទី៖</b> ៣ ឆមាសទី ១</p>
+                <p><b>ក្រេឌីត៖</b> ៣ ក្រេឌីត (ទ្រឹស្តី និងប្រតិបត្តិ ៤៥ ម៉ោង ស្មើនឹង ១៥សប្ដាហ៍)</p>
+                <p><b>មុខវិជ្ជាត្រូវសិក្សាមុន៖</b> <i class="fa-brands fa-html5 text-orange"></i> HTML (HyperText Markup Language), <i class="fa-brands fa-css3-alt text-blue"></i> CSS (Cascading Style Sheets), <i class="fa-brands fa-js text-yellow"></i> JS (JavaScript)</p>
+            </div>
+            <div class="info-card">
+                <h4><i class="fa-solid fa-user-tie tech-icon"></i> ព័ត៌មានសាស្ត្រាចារ្យ (Lecturer Information)</h4>
+                <p><b>សាស្ត្រាចារ្យ៖</b> សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+                <p><b>កម្រិតគុណវុឌ្ឍិ៖</b> អនុបណ្ឌិតវិទ្យាសាស្ត្រព័ត៌មានវិទ្យា MScIT (Master of Science in Information Technology)</p>
+                <p><b>អ៊ីម៉ែល៖</b> soeurnglim@gmail.com</p>
+                <p><b>ទូរស័ព្ទ៖</b> ០៦១ ២២ ៧៩ ៣៣</p>
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-info-circle"></i> ១. ការពិពណ៌នាមុខវិជ្ជា (Course Description)</div>
+        <div class="text-block">
+            មុខវិជ្ជានេះត្រូវបានរចនាឡើងយ៉ាងពិសេសដើម្បីបំពាក់ជំនាញដល់និស្សិតក្នុងការអភិវឌ្ឍកម្មវិធីវិប (Web Application) ទំនើប និងមានសុវត្ថិភាពខ្ពស់ ក្នុងរយៈពេល ៤៥ម៉ោង។ នៅក្នុងយុគសម័យឌីជីថលដែលទាមទារនូវប្រព័ន្ធមានលំនឹង និងងាយស្រួលថែទាំ មុខវិជ្ជានេះនឹងដើរតួនាទីជាស្ពានចម្លងដ៏សំខាន់ដោយតម្រង់ទិសការគិតរបស់និស្សិតពីការសរសេរកូដបែប Procedural ធម្មតា ទៅកាន់ស្ថាបត្យកម្ម <b><i class="fa-solid fa-cubes text-blue"></i> OOP (Object-Oriented Programming)</b> ដែលជាគ្រឹះមិនអាចខ្វះបានសម្រាប់ឈានទៅសិក្សា Frameworks ខ្នាតធំ (ដូចជា Laravel Framework នៅក្នុងវគ្គបន្ទាប់)។
+        </div>
+        <div class="text-block">
+            ក្នុងអំឡុងពេលសិក្សា និស្សិតនឹងទទួលបានចំណេះដឹងស៊ីជម្រៅលើការប្រើប្រាស់ <b><i class="fa-brands fa-php text-blue"></i> PHP (Hypertext Preprocessor) 8</b> និងប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យ <b><i class="fa-solid fa-database text-blue"></i> MySQL (My Structured Query Language) RDBMS (Relational Database Management System)</b>។ លើសពីនេះទៅទៀត មុខវិជ្ជានេះសង្កត់ធ្ងន់យ៉ាងខ្លាំងទៅលើផ្នែកសន្តិសុខវិប <b><i class="fa-solid fa-shield-halved text-green"></i> Web Security</b>។ និស្សិតនឹងត្រូវបានតម្រូវឱ្យ <span class="bloom-verb">អនុវត្ត</span> ការភ្ជាប់ទិន្នន័យតាមរយៈ <b>PDO (PHP Data Objects)</b> ជំនួសឲ្យការប្រើប្រាស់ MySQLi ចាស់ៗ ដើម្បី <span class="bloom-verb">ទប់ស្កាត់</span> ការវាយប្រហារតាមរយៈ SQL (Structured Query Language) Injection។ 
+        </div>
+        <div class="text-block">
+            និស្សិតក៏នឹងបាន <span class="bloom-verb">អភិវឌ្ឍ</span> មុខងារប្រតិបត្តិការគោលទាំង៤ <b>CRUD (Create, Read, Update, Delete)</b>, <span class="bloom-verb">បង្កើត</span> ប្រព័ន្ធគ្រប់គ្រងគណនីអ្នកប្រើប្រាស់ (Authentication / Login) ប្រកបដោយសុវត្ថិភាពតាមរយៈ Password Hashing, និង <span class="bloom-verb">ប្រើប្រាស់</span> ឧបករណ៍ <b><i class="fa-brands fa-github"></i> Git / GitHub</b> ដើម្បីគ្រប់គ្រងកំណែកូដ (Version Control System) និងធ្វើការជាក្រុមយ៉ាងមានប្រសិទ្ធភាព។
+        </div>
+
+        <div class="text-block" style="margin-top: 10px; font-weight: bold; color: var(--accent-purple); text-decoration: underline;">
+            សទ្ទានុក្រម និងពាក្យគន្លឹះ (Key Terms)
+        </div>
+        <div class="info-grid">
+            <div class="info-card" style="padding: 8px;">
+                <h4 style="font-size: 10.5pt;"><i class="fa-solid fa-layer-group tech-icon"></i> OOP (Object-Oriented Programming)</h4>
+                <p style="font-size: 9.5pt;">ទម្រង់សរសេរកូដប្រើប្រាស់ Class និង Object ធ្វើឲ្យកូដមានរបៀប ងាយថែទាំ និងអាចប្រើប្រាស់ឡើងវិញបាន។</p>
+            </div>
+            <div class="info-card" style="padding: 8px;">
+                <h4 style="font-size: 10.5pt;"><i class="fa-solid fa-database tech-icon"></i> PDO (PHP Data Objects)</h4>
+                <p style="font-size: 9.5pt;">បច្ចេកវិទ្យាតភ្ជាប់ Database របស់ PHP ដែលគាំទ្រ RDBMS ច្រើនប្រភេទ និងមានសុវត្ថិភាពខ្ពស់។</p>
+            </div>
+            <div class="info-card" style="padding: 8px;">
+                <h4 style="font-size: 10.5pt;"><i class="fa-solid fa-shield-halved tech-icon"></i> SQL Injection & XSS (Cross-Site Scripting)</h4>
+                <p style="font-size: 9.5pt;">ប្រភេទនៃការវាយប្រហារដ៏គ្រោះថ្នាក់លើ Web ដែល PDO Prepared Statements អាចជួយទប់ស្កាត់បាន។</p>
+            </div>
+            <div class="info-card" style="padding: 8px;">
+                <h4 style="font-size: 10.5pt;"><i class="fa-brands fa-git-alt tech-icon"></i> Version Control System (Git / GitHub)</h4>
+                <p style="font-size: 9.5pt;">ប្រព័ន្ធសម្រាប់រក្សាទុកប្រវត្តិនៃការកែប្រែកូដ និងអនុញ្ញាតឲ្យអ្នកអភិវឌ្ឍន៍ច្រើននាក់ធ្វើការលើគម្រោងតែមួយ។</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ២ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 3: Objectives & CLOs mapped to Bloom's Taxonomy -->
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-bullseye"></i> ២. គោលបំណង (Objectives) ផ្អែកលើ Bloom's Taxonomy</div>
+        <div class="text-block" style="margin-bottom: 5px;">មុខវិជ្ជានេះត្រូវបានរចនាឡើងយ៉ាងតឹងរ៉ឹងតាមទ្រឹស្តី <b>Bloom's Taxonomy</b> ដែលធានាថានិស្សិតនឹងអភិវឌ្ឍសមត្ថភាពពីកម្រិតទាបទៅខ្ពស់។ ក្នុងអំឡុងពេលសិក្សា និស្សិតនឹងត្រូវបានណែនាំឲ្យ៖</div>
+        <ul style="list-style-type: none; padding-left: 0; font-size: 10pt; line-height: 1.7; margin-bottom: 20px;">
+            <li style="margin-bottom: 8px;"><b><i class="fa-solid fa-brain" style="color: #3B82F6;"></i> [យល់ដឹង - Understanding]:</b> <span class="bloom-verb">ពន្យល់</span> និង <span class="bloom-verb">បកស្រាយ</span> ពីស្ថាបត្យកម្ម Client-Server ព្រមទាំងដំណើរការរបស់កូដ PHP (Hypertext Preprocessor) នៅលើ Server ទាក់ទងជាមួយប្រព័ន្ធ RDBMS MySQL (My Structured Query Language)។</li>
+            <li style="margin-bottom: 8px;"><b><i class="fa-solid fa-screwdriver-wrench" style="color: #F59E0B;"></i> [អនុវត្ត - Applying]:</b> <span class="bloom-verb">ប្រើប្រាស់</span> និង <span class="bloom-verb">អនុវត្ត</span> គោលការណ៍ OOP (Object-Oriented Programming) រួមមាន Class, Object, និង Inheritance ដើម្បីសរសេរកូដឲ្យមានរបៀបរៀបរយ។</li>
+            <li style="margin-bottom: 8px;"><b><i class="fa-solid fa-magnifying-glass-chart" style="color: #8B5CF6;"></i> [វិភាគ - Analyzing]:</b> <span class="bloom-verb">កំណត់អត្តសញ្ញាណ</span> ចំណុចខ្សោយផ្នែកសុវត្ថិភាពរបស់ Web Application និង <span class="bloom-verb">ប្រៀបធៀប</span> វិធីសាស្ត្រការពារតាមរយៈការប្រើប្រាស់ PDO (PHP Data Objects) Prepared Statements ធៀបនឹងរបៀបចាស់។</li>
+            <li><b><i class="fa-solid fa-lightbulb" style="color: #10B981;"></i> [បង្កើត - Creating]:</b> <span class="bloom-verb">រចនា</span> និង <span class="bloom-verb">អភិវឌ្ឍ</span> គម្រោង Web Application ពេញលេញមួយពីចំណុចសូន្យ ដែលមានសមត្ថភាពគ្រប់គ្រងទិន្នន័យ CRUD (Create, Read, Update, Delete) និងមានប្រព័ន្ធ Login ប្រកបដោយសុវត្ថិភាព។</li>
+        </ul>
+
+        <div class="section-title"><i class="fa-solid fa-list-check"></i> ៣. លទ្ធផលសិក្សារំពឹងទុក (CLO - Course Learning Outcomes)</div>
+        <p style="font-size: 10pt; margin-bottom: 12px;">នៅពេលបញ្ចប់វគ្គសិក្សានេះជាស្ថាពរ និស្សិតនឹងមានសមត្ថភាពអាចបញ្ជាក់បានថា៖</p>
+        
+        <table class="clo-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">CLO Code</th>
+                    <th style="width: 25%;">កម្រិតការយល់ដឹង (Bloom's Level)</th>
+                    <th style="width: 50%;">សកម្មភាព និងសមត្ថភាពវាស់វែងបាន (Measurable Outcomes)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="bold center-text"><b><i class="fa-solid fa-server" style="color: #4F46E5;"></i> CLO 1</b><br><span style="font-size: 8.5pt; color: var(--text-muted); font-weight: normal;">(ស្ថាបត្យកម្ម & ឧបករណ៍)</span></td>
+                    <td class="center-text">ចងចាំ និងយល់ដឹង<br>(Remembering / Understanding)</td>
+                    <td><span class="bloom-verb">រៀបរាប់</span> ពីមុខងាររបស់ PHP/MySQL និង <span class="bloom-verb">បកស្រាយ</span> ពីរបៀបរៀបចំបរិស្ថានអភិវឌ្ឍន៍ដោយប្រើ VS Code (Visual Studio Code), XAMPP (Cross-Platform, Apache, MariaDB, PHP, Perl), ព្រមទាំងការប្រើប្រាស់ Git / GitHub មូលដ្ឋាន។</td>
+                </tr>
+                <tr>
+                    <td class="bold center-text"><b><i class="fa-solid fa-code" style="color: #4F46E5;"></i> CLO 2</b><br><span style="font-size: 8.5pt; color: var(--text-muted); font-weight: normal;">(PHP គ្រឹះ & Modular Code)</span></td>
+                    <td class="center-text">អនុវត្ត<br>(Applying)</td>
+                    <td><span class="bloom-verb">សរសេរ</span> កូដ PHP ដោយប្រើប្រាស់ Arrays, Functions, រួមទាំងការ <span class="bloom-verb">ប្រមូល</span> ទិន្នន័យពី Form តាមរយៈ HTTP (Hypertext Transfer Protocol) GET / POST Methods និងការបំបែកឯកសារកូដ។</td>
+                </tr>
+                <tr>
+                    <td class="bold center-text"><b><i class="fa-solid fa-cubes" style="color: #4F46E5;"></i> CLO 3</b><br><span style="font-size: 8.5pt; color: var(--text-muted); font-weight: normal;">(ការសរសេរកូដបែប OOP)</span></td>
+                    <td class="center-text">វិភាគ<br>(Analyzing)</td>
+                    <td><span class="bloom-verb">ប្រៀបធៀប</span> កូដ Procedural ជាមួយ OOP (Object-Oriented Programming) និង <span class="bloom-verb">ធ្វើរោគវិនិច្ឆ័យ (Debug)</span> កំហុសនៅក្នុងការបង្កើត Classes, Objects និង Inheritance។</td>
+                </tr>
+                <tr>
+                    <td class="bold center-text"><b><i class="fa-solid fa-database" style="color: #4F46E5;"></i> CLO 4</b><br><span style="font-size: 8.5pt; color: var(--text-muted); font-weight: normal;">(Database & PDO CRUD)</span></td>
+                    <td class="center-text">វាយតម្លៃ<br>(Evaluating)</td>
+                    <td><span class="bloom-verb">វាយតម្លៃ</span> កម្រិតសុវត្ថិភាពទិន្នន័យ និង <span class="bloom-verb">ការពារ</span> ប្រព័ន្ធពី SQL Injection ដោយប្រើប្រាស់ការតភ្ជាប់ PDO (PHP Data Objects) និង Prepared Statements។</td>
+                </tr>
+                <tr>
+                    <td class="bold center-text"><b><i class="fa-solid fa-shield-halved" style="color: #4F46E5;"></i> CLO 5</b><br><span style="font-size: 8.5pt; color: var(--text-muted); font-weight: normal;">(Security & Authentication)</span></td>
+                    <td class="center-text">បង្កើត<br>(Creating)</td>
+                    <td><span class="bloom-verb">អភិវឌ្ឍ</span> គម្រោង Web Application ពេញលេញ ដែលអាច <span class="bloom-verb">ប្រតិបត្តិការ</span> CRUD (Create, Read, Update, Delete) និងប្រព័ន្ធចុះឈ្មោះ (Login / Logout) ដែលមាន Password Hashing។</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៣ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 4: Week 1 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ១</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១</td>
+                    <td class="col-session">1 - 2</td>
+                    <td class="col-clo"><b>CLO 1</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">កំណត់</span> តួនាទីរបស់ PHP (Hypertext Preprocessor) និង MySQL RDBMS ក្នុងស្ថាបត្យកម្ម Web ទំនើប។</li>
+                            <li><span class="bloom-verb">ដំឡើង</span> XAMPP (Cross-Platform, Apache, MariaDB, PHP, Perl), VS Code (Visual Studio Code) និងរៀបចំបរិស្ថានកូដបានត្រឹមត្រូវ។</li>
+                            <li><span class="bloom-verb">អនុវត្ត</span> ការប្រើប្រាស់ Git / GitHub ដើម្បីតាមដានកំណែកូដ (Version Control System) របស់គម្រោង។</li>
+                            <li><span class="bloom-verb">សរសេរ</span> កូដ PHP ដំបូងបង្អស់ឲ្យដំណើរការលើ Localhost Server។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-brands fa-php text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ១៖ សេចក្តីផ្តើម និងឧបករណ៍អភិវឌ្ឍន៍</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ស្ថាបត្យកម្ម Client-Server និងរបៀប Web ដំណើរការ<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការដំឡើង XAMPP, VS Code, Git និង Extensions ចាំបាច់<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> មូលដ្ឋានគ្រឹះ Version Control System ជាមួយ GitHub</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 1.1:</b> បង្កើត Folder Project នៅក្នុង <code>htdocs</code> របស់ XAMPP រួចបើកវាក្នុង VS Code។</li>
+                                    <li><b>Lab 1.2:</b> សរសេរកូដ PHP បង្ហាញពាក្យ "Hello World" និងព័ត៌មានកុំព្យូទ័រដោយប្រើ `phpinfo()`។</li>
+                                    <li><b>Lab 1.3:</b> បង្កើត Repository ថ្មីនៅលើគណនី GitHub ផ្ទាល់ខ្លួន និងធ្វើការ Push កូដ First Commit។</li>
+                                    <li><b>Lab 1.4:</b> សាកល្បងសរសេរកូដ HTML (HyperText Markup Language) លាយឡំចូលក្នុងកូដ PHP `echo`។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-chalkboard-user text-orange"></i> ពន្យល់ទ្រឹស្តី និងដំឡើងកម្មវិធីរួមគ្នាមួយជំហានម្តងៗ (Live Setup)</td>
+                    <td><i class="fa-regular fa-circle-question text-red"></i> សំណួរខ្លីៗ Q&A (Question and Answer)</td>
+                    <td><i class="fa-solid fa-display text-muted"></i> Computer, XAMPP, Projector</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៤ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 5: Week 2 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ២</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">២</td>
+                    <td class="col-session">3 - 4</td>
+                    <td class="col-clo"><b>CLO 2</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">ចងចាំ</span> Syntax និង Data Types ខុសៗគ្នារបស់ភាសា PHP (Hypertext Preprocessor)។</li>
+                            <li><span class="bloom-verb">ប្រើប្រាស់</span> Operators ដើម្បីគណនា និងប្រៀបធៀបទិន្នន័យ។</li>
+                            <li><span class="bloom-verb">រៀបចំ</span> លំហូរកូដ (Control Flow) ដោយប្រើប្រាស់លក្ខខណ្ឌ (if-else, match)។</li>
+                            <li><span class="bloom-verb">អនុវត្ត</span> រង្វិលជុំ (Loops) ដើម្បីបញ្ចេញទិន្នន័យដដែលៗ។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-code text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ២៖ មូលដ្ឋានគ្រឹះ PHP (Syntax & Control Structures)</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> Variables, Constants & Data Types (String, Integer, Boolean)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> Operators (Arithmetic, Assignment, Comparison)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> Conditional Statements (if-else, switch, និង match ក្នុង PHP 8)</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 2.1:</b> ប្រកាស Variables រក្សាទុកឈ្មោះ, អាយុ, និងពិន្ទុ រួចតភ្ជាប់គ្នា (Concatenation) បង្ហាញជាប្រយោគ។</li>
+                                    <li><b>Lab 2.2:</b> សរសេរកូដគណនាបញ្ចូនពិន្ទុវិញ្ញាសាចំនួន ៣ មុខ រកមធ្យមភាគសរុប។</li>
+                                    <li><b>Lab 2.3:</b> ប្រើប្រាស់ `if-elseif-else` ចាត់និទ្ទេសសិស្ស (A, B, C, F) ផ្អែកលើមធ្យមភាគដែលរកឃើញ។</li>
+                                    <li><b>Lab 2.4:</b> ប្រើប្រាស់ `match` (PHP 8) ដើម្បីប្តូរលេខថ្ងៃ (1-7) ទៅជាឈ្មោះថ្ងៃជាអក្សរខ្មែរវិញ។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-code text-orange"></i> Live Coding និងឲ្យនិស្សិតសរសេរតាមភ្លាមៗ</td>
+                    <td><i class="fa-solid fa-house-laptop text-red"></i> កិច្ចការផ្ទះ HW (Homework)</td>
+                    <td><i class="fa-solid fa-laptop-code text-muted"></i> VS Code, Browser</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៥ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 6: Week 3 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ៣</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៣</td>
+                    <td class="col-session">5 - 6</td>
+                    <td class="col-clo"><b>CLO 2</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">ចាត់ចែង</span> ទិន្នន័យច្រើនក្នុងពេលតែមួយជាក្រុមដោយប្រើ Arrays។</li>
+                            <li><span class="bloom-verb">វិភាគ</span> ការប្រើប្រាស់ Foreach Loop ដើម្បីទាញទិន្នន័យពី Array។</li>
+                            <li><span class="bloom-verb">សរសេរ</span> Functions ផ្ទាល់ខ្លួនដែលអាចបញ្ជូន Parameters បាន។</li>
+                            <li><span class="bloom-verb">បំបែក</span> កូដស្មុគស្មាញដោយប្រើ include / require ដើម្បីងាយស្រួលថែទាំ (Modular Structure)។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-list-ol text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ៣៖ Arrays, Functions & Modular Code</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> Indexed, Associative & Multidimensional Arrays<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> រង្វិលជុំ `foreach` សម្រាប់ Arrays<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការបង្កើត Functions និង Type Hinting<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការរៀបចំកូដជាចំណែក (Modular) តាមរយៈ `include` / `require`</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 3.1:</b> បង្កើត Associative Array រក្សាទុកព័ត៌មាននិស្សិត ៥ នាក់ រួចប្រើ `foreach` បញ្ចេញទិន្នន័យជាទម្រង់ HTML Table។</li>
+                                    <li><b>Lab 3.2:</b> សរសេរ Function មួយឈ្មោះ `calculateDiscount()` ទទួលប៉ារ៉ាម៉ែត្រតម្លៃទំនិញ ដើម្បីគណនាបញ្ចុះតម្លៃ ១០%។</li>
+                                    <li><b>Lab 3.3:</b> បំបែកឯកសារ HTML វែងមួយ ទៅជា `header.php` និង `footer.php` រួច Include ពួកវាមកក្នុង `index.php`។</li>
+                                    <li><b>Lab 3.4:</b> ធ្វើការតេស្តភាពខុសគ្នារវាង `include` និង `require` ពេលបញ្ចូលឈ្មោះឯកសារខុស។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-users-gear text-orange"></i> ពិភាក្សាក្រុម (Pair Programming) និងកែតម្រូវកំហុស</td>
+                    <td><i class="fa-solid fa-comment-dots text-red"></i> សំណួរផ្ទាល់ Q&A</td>
+                    <td><i class="fa-solid fa-laptop-code text-muted"></i> VS Code, Web Browser</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៦ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 7: Week 4 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ៤</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៤</td>
+                    <td class="col-session">7 - 8</td>
+                    <td class="col-clo"><b>CLO 2</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">ប្រមូល</span> ទិន្នន័យពីអ្នកប្រើប្រាស់តាមរយៈ HTML Form ដោយប្រើ Superglobals។</li>
+                            <li><span class="bloom-verb">ប្រៀបធៀប</span> ភាពខុសគ្នារវាង HTTP (Hypertext Transfer Protocol) Methods GET និង POST។</li>
+                            <li><span class="bloom-verb">វាយតម្លៃ</span> សុវត្ថិភាពទិន្នន័យបញ្ជូលតាមរយៈការធ្វើ Form Validation។</li>
+                            <li><span class="bloom-verb">ការពារ</span> ប្រព័ន្ធពីការវាយប្រហារ XSS (Cross-Site Scripting) មូលដ្ឋាន។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-brands fa-wpforms text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ៤៖ ការគ្រប់គ្រង Form & Web Security មូលដ្ឋាន</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> HTTP Methods GET & POST ប្រើប្រាស់ `$_GET`, `$_POST`<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការធ្វើ Form Validation ទប់ស្កាត់ការបញ្ជូលទិន្នន័យទទេរ<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការការពារសុវត្ថិភាព XSS តាមរយៈ `htmlspecialchars()`</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 4.1:</b> បង្កើត HTML Form ចុះឈ្មោះដែលមាន (ឈ្មោះ, អ៊ីមែល, លេខទូរស័ព្ទ) ដោយប្រើ Method POST។</li>
+                                    <li><b>Lab 4.2:</b> សរសេរកូដ PHP ចាប់យកទិន្នន័យ POST ហើយត្រួតពិនិត្យ (Validate) ប្រសិនបើវាទទេរ ត្រូវបង្ហាញសារ Error។</li>
+                                    <li><b>Lab 4.3:</b> ប្រើ `htmlspecialchars()` ដើម្បីបន្សាប Script (ឧបមាថា User វាយ `&lt;script&gt;` បញ្ចូល) កុំឲ្យវាដំណើរការ។</li>
+                                    <li><b>Lab 4.4:</b> រក្សាទិន្នន័យចាស់នៅក្នុង Form (Sticky Form) ទោះបីជាមាន Error កើតឡើងក៏ដោយ។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-lightbulb text-orange"></i> ផ្តល់ជាសេណារីយ៉ូបញ្ហាដើម្បីឲ្យនិស្សិតដោះស្រាយ</td>
+                    <td><i class="fa-solid fa-house-laptop text-red"></i> កិច្ចការផ្ទះ HW</td>
+                    <td><i class="fa-brands fa-html5 text-muted"></i> HTML Forms, VS Code</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៧ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 8: Week 5 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ៥</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៥</td>
+                    <td class="col-session">9 - 10</td>
+                    <td class="col-clo"><b>CLO 3</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">ពន្យល់</span> ពីភាពខុសគ្នារវាងការសរសេរកូដបែបទម្លាប់ចាស់ (Procedural) និង OOP (Object-Oriented Programming)។</li>
+                            <li><span class="bloom-verb">បង្កើត</span> Classes ដើម្បីធ្វើជាគំរូ (Blueprint) សម្រាប់ប្រព័ន្ធ។</li>
+                            <li><span class="bloom-verb">ផ្តើម</span> Objects (Instantiation) ចេញពី Class ផ្ទាល់ខ្លួន។</li>
+                            <li><span class="bloom-verb">ប្រើប្រាស់</span> Properties និង Methods តាមរយៈពាក្យគន្លឹះ `$this`។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-cubes text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ៥៖ មូលដ្ឋានគ្រឹះ OOP (ភាគ១) - Class & Object</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> គំនិតនៃការសរសេរកូដបែប OOP ធៀបនឹង Procedural<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការបង្កើត Class និង Object Instantiation<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការកំណត់ Properties & Methods និងការប្រើប្រាស់ `$this`</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 5.1:</b> បង្កើត Class `User` ដែលមាន Properties `username`, `email` និង `role`។</li>
+                                    <li><b>Lab 5.2:</b> បង្កើត Method `getProfile()` នៅក្នុង Class នោះ ដើម្បីបង្ហាញព័ត៌មានរបស់អ្នកប្រើប្រាស់ជា String។</li>
+                                    <li><b>Lab 5.3:</b> បង្កើត Objects (Instance) ថ្មីចំនួន ២ ពី Class នោះ (`$user1`, `$user2`) រួចហៅ Method បង្ហាញលទ្ធផល។</li>
+                                    <li><b>Lab 5.4:</b> សាកល្បងផ្លាស់ប្តូរតម្លៃ Property របស់ Object នីមួយៗ ក្រោយពេលបង្កើតរួច (ប្រើសញ្ញា `->`)។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-cubes text-orange"></i> ប្រៀបធៀបទ្រឹស្តី OOP និងឧទាហរណ៍រស់រវើកក្នុងថ្នាក់</td>
+                    <td><i class="fa-solid fa-keyboard text-red"></i> ការងារអនុវត្តផ្ទាល់</td>
+                    <td><i class="fa-solid fa-chalkboard text-muted"></i> VS Code, Whiteboard</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៨ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 9: Week 6 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ៦</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៦</td>
+                    <td class="col-session">11 - 12</td>
+                    <td class="col-clo"><b>CLO 3</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">កំណត់</span> Access Modifiers (public, private, protected) ដើម្បីការពារទិន្នន័យ (Encapsulation)។</li>
+                            <li><span class="bloom-verb">អនុវត្ត</span> Constructor (`__construct`) ដើម្បីសម្រួលដល់ការបង្កើត Object Initialization។</li>
+                            <li><span class="bloom-verb">អភិវឌ្ឍ</span> កូដដោយប្រើប្រាស់ Inheritance (ការបន្តពូជ) ដើម្បីប្រើប្រាស់កូដចាស់ៗឡើងវិញបានច្រើន។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-unlock-keyhole text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ៦៖ មូលដ្ឋានគ្រឹះ OOP (ភាគ២) - Encapsulation & Inheritance</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> Magic Method: Constructor (`__construct`)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> Access Modifiers (Public / Private / Protected)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> គោលការណ៍ Inheritance (`extends`) ការពង្រីកសមត្ថភាព Class</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 6.1:</b> បន្ថែម `__construct` ទៅក្នុង Class `User` ដើម្បីបញ្ចូលតម្លៃ (Initialize) ភ្លាមៗពេលបង្កើត Object ថ្មី។</li>
+                                    <li><b>Lab 6.2:</b> ប្តូរ Property Password ទៅជា `private` រួចបង្កើត Setter method ដើម្បីកំណត់តម្លៃវាដោយមានលក្ខខណ្ឌ (ឧ. ៨ខ្ទង់)។</li>
+                                    <li><b>Lab 6.3:</b> បង្កើត Class ថ្មីមួយឈ្មោះ `Admin` ដែល `extends` ពី Class `User`។</li>
+                                    <li><b>Lab 6.4:</b> នៅក្នុង Class `Admin` បន្ថែម Method ថ្មីមួយឈ្មោះ `banUser()` ដែល Class មេ (`User`) គ្មាន។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-bug text-orange"></i> អនុវត្តកូដផ្ទាល់, Debugging Error ដែលទាក់ទងនឹង Visibility</td>
+                    <td><i class="fa-regular fa-circle-question text-red"></i> សំណួរខ្លីៗ Q&A</td>
+                    <td><i class="fa-solid fa-sitemap text-muted"></i> VS Code, OOP Flowchart</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ៩ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 10: Week 7 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ៧</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៧</td>
+                    <td class="col-session">13 - 14</td>
+                    <td class="col-clo"><b>CLO 4</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">រចនា</span> Database និង Tables តាមរយៈឧបករណ៍ phpMyAdmin ក្នុង MySQL RDBMS (Relational Database Management System)។</li>
+                            <li><span class="bloom-verb">កំណត់</span> PK (Primary Key), AI (Auto Increment), និងប្រភេទ Data Types (VARCHAR, INT, DATETIME) ឲ្យបានត្រឹមត្រូវ។</li>
+                            <li><span class="bloom-verb">សរសេរ</span> SQL (Structured Query Language) Queries ដោយដៃ ដើម្បីបញ្ជាទៅលើ Database។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-database text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ៧៖ មូលដ្ឋានគ្រឹះ MySQL & Database Design</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការប្រើប្រាស់ Interface phpMyAdmin<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការកំណត់ Data Types និងតារាងទិន្នន័យ (Table Structure)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> មូលដ្ឋានគ្រឹះ SQL Queries (SELECT, INSERT, UPDATE, DELETE)</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 7.1:</b> បង្កើត Database ថ្មីមួយឈ្មោះ `db_university_app`។</li>
+                                    <li><b>Lab 7.2:</b> បង្កើត Table `tbl_students` ដែលមាន Column: `id` (PK, AI), `fullname` (VARCHAR), `email`, `created_at` (DATETIME)។</li>
+                                    <li><b>Lab 7.3:</b> សរសេរកូដ SQL (Tab SQL) បញ្ចូលទិន្នន័យសិស្សសិប្បនិម្មិត ៥ នាក់។</li>
+                                    <li><b>Lab 7.4:</b> សរសេរកូដ SQL UPDATE ដើម្បីកែប្រែអក្ខរាវិរុទ្ធឈ្មោះសិស្សម្នាក់ និងសរសេរកូដ DELETE សិស្សម្នាក់ចោល។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-database text-orange"></i> អនុវត្តផ្ទាល់លើ Database Tool មួយជំហានម្តងៗ</td>
+                    <td><i class="fa-solid fa-house-laptop text-red"></i> កិច្ចការផ្ទះ HW</td>
+                    <td><i class="fa-solid fa-database text-muted"></i> phpMyAdmin, XAMPP</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១០ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 11: Week 8 Outline (Midterm Exam) -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ៨ (ប្រឡងពាក់កណ្តាលឆមាស)</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="exam-row">
+                    <td class="col-week">៨</td>
+                    <td class="col-session">15 - 16</td>
+                    <td class="col-clo"><b>CLO 1, 2, 3</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">ធ្វើតេស្ត</span> ចំណេះដឹងមូលដ្ឋានគ្រឹះ PHP, មុខងារ Arrays/Functions និងទម្រង់ OOP (Object-Oriented Programming) ដែលបានសិក្សា។</li>
+                            <li><span class="bloom-verb">អនុវត្ត</span> ការសរសេរកូដដោះស្រាយបញ្ហាជាក់ស្តែងក្នុងសម្ពាធម៉ោងកំណត់។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 10px;">
+                            <b style="font-size: 12pt; display: block; margin-bottom: 10px;"><i class="fa-solid fa-file-pen text-red" style="font-size: 13pt; margin-right: 5px;"></i>ប្រឡងពាក់កណ្តាលឆមាស (Midterm Exam)</b>
+                            <p style="font-size: 9.5pt; font-weight: normal; color: #0F172A; line-height: 1.7;">
+                                - ការប្រឡងនឹងគ្របដណ្តប់ចាប់ពី <b>មេរៀនទី ១ ដល់ទី ៦</b> (មិនទាន់ប៉ះពាល់ការភ្ជាប់ Database ឡើយ)។<br>
+                                - និស្សិតនឹងត្រូវដោះស្រាយវិញ្ញាសាសរសេរកូដ (Coding Test) ដោយប្រើប្រាស់គោលការណ៍ OOP បូកបញ្ចូលជាមួយការធ្វើ Form Validation និងការរៀបចំ Layout HTML តាមរយៈការ Include ឯកសារ។<br>
+                                - រយៈពេលប្រឡង៖ <b>៩០ នាទី</b> (អនុវត្តផ្ទាល់លើកុំព្យូទ័រ)។
+                            </p>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-user-shield text-orange"></i> រៀបចំការប្រឡង, ត្រួតពិនិត្យការអនុវត្ត</td>
+                    <td><i class="fa-solid fa-file-signature text-red"></i> ប្រឡង Midterm<br>(២០%)</td>
+                    <td><i class="fa-solid fa-file-lines text-muted"></i> វិញ្ញាសា, កុំព្យូទ័រ</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១១ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 12: Week 9 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ៩</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">៩</td>
+                    <td class="col-session">17 - 18</td>
+                    <td class="col-clo"><b>CLO 4</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">ភ្ជាប់</span> PHP ទៅ Database ដោយប្រើប្រាស់ PDO (PHP Data Objects) Class (OOP Method)។</li>
+                            <li><span class="bloom-verb">វិភាគ</span> និងចាប់កំហុស (Error / Exception Handling) តាមរយៈ Try-Catch Block។</li>
+                            <li><span class="bloom-verb">ប្រើប្រាស់</span> Connection Object `$conn` សម្រាប់ការងារសរសេរ Query បន្ត។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-plug-circle-bolt text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ៨៖ ការភ្ជាប់ទិន្នន័យ (PDO Approach)</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> អ្វីទៅជា PDO (PHP Data Objects)? ហេតុអ្វី PDO មានសុវត្ថិភាពជាង MySQLi ធម្មតា?<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការកំណត់ DSN (Data Source Name) និងការបង្កើត Object Connection<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> Exception Handling (`try..catch`) សម្រាប់ការភ្ជាប់ Database</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 8.1:</b> សរសេរកូដ PHP បង្កើត Object `new PDO()` ដើម្បីភ្ជាប់ទៅកាន់ Database `db_university_app`។</li>
+                                    <li><b>Lab 8.2:</b> ដាក់ Try-Catch ព័ទ្ធជុំវិញកូដភ្ជាប់នោះ ដើម្បីចាប់យកកំហុស (PDOException)។</li>
+                                    <li><b>Lab 8.3:</b> តេស្តប្តូរឈ្មោះ Database ខុស (ឧ. `db_fake`) ដើម្បីឲ្យវាលោតសារ Error ដែលយើងបានកំណត់ ជំនួសឲ្យ Error ក្រហមរបស់ PHP។</li>
+                                    <li><b>Lab 8.4:</b> បំបែកកូដតភ្ជាប់នេះទៅជាឯកសារ `db.php` តែឯង ដើម្បីងាយស្រួល Include ទៅទំព័រផ្សេងៗ។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-triangle-exclamation text-orange"></i> ពន្យល់ និងសរសេរកូដ Live ជាពិសេសការចាប់ Error</td>
+                    <td><i class="fa-solid fa-comment-dots text-red"></i> សំណួរផ្ទាល់ Q&A</td>
+                    <td><i class="fa-solid fa-book text-muted"></i> VS Code, PDO Docs</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១២ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 13: Week 10 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ១០</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១០</td>
+                    <td class="col-session">19 - 20</td>
+                    <td class="col-clo"><b>CLO 4</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">រៀបចំ</span> កូដអានទិន្នន័យ (SELECT) ចេញពី Database បង្ហាញលើ Web HTML Table។</li>
+                            <li><span class="bloom-verb">អនុវត្ត</span> ការបញ្ចូលទិន្នន័យថ្មី (INSERT) ពី Form UI (User Interface)។</li>
+                            <li><span class="bloom-verb">ការពារ</span> ប្រព័ន្ធពី SQL Injection ដាច់ខាត ដោយប្រើប្រាស់ Prepared Statements។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-table-list text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ៩៖ គម្រោង CRUD (ភាគ១: Create & Read)</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> សុវត្ថិភាពទិន្នន័យ៖ PDO Prepared Statements (`prepare`, `execute`)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការបង្កើតទំព័របញ្ចូល (Create Data Form)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការទាញ និងបង្ហាញទិន្នន័យ (Read Data to Table) ប្រើ `fetchAll()`</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 9.1:</b> ក្នុង `index.php` សរសេរកូដទាញបញ្ជីឈ្មោះសិស្សពី DB (`SELECT *`) បង្ហាញជា HTML Table (ប្រើ foreach)។</li>
+                                    <li><b>Lab 9.2:</b> បង្កើតទំព័រ `add.php` មាន Form (POST) សម្រាប់បញ្ចូលឈ្មោះ និង Email សិស្សថ្មី។</li>
+                                    <li><b>Lab 9.3:</b> សរសេរកូដ PHP ប្រើប្រាស់ `prepare()` និង `execute()` ដើម្បីបញ្ចូលទិន្នន័យនោះចូល Database ប្រកបដោយសុវត្ថិភាព។</li>
+                                    <li><b>Lab 9.4:</b> ប្រើ `header('Location: index.php')` ដើម្បី Redirect អ្នកប្រើប្រាស់មកទំព័រដើមវិញ ក្រោយ Insert ជោគជ័យ។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-puzzle-piece text-orange"></i> បង្រៀនផ្អែកលើការដោះស្រាយបញ្ហា (Step by Step Project)</td>
+                    <td><i class="fa-solid fa-house-laptop text-red"></i> កិច្ចការផ្ទះ HW</td>
+                    <td><i class="fa-solid fa-server text-muted"></i> VS Code, DB</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១៣ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 14: Week 11 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ១១</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១១</td>
+                    <td class="col-session">21 - 22</td>
+                    <td class="col-clo"><b>CLO 4</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">ប្រើប្រាស់</span> URL (Uniform Resource Locator) Parameter (`$_GET['id']`) ដើម្បីកំណត់ ID (Identifier) ឆ្លងទំព័រ។</li>
+                            <li><span class="bloom-verb">អភិវឌ្ឍ</span> មុខងារទាញទិន្នន័យចាស់មកកែប្រែ (Update Operations)។</li>
+                            <li><span class="bloom-verb">រៀបចំ</span> ប៊ូតុងលុបទិន្នន័យ (Delete) ដោយមានការបញ្ជាក់ប្រុងប្រយ័ត្ន។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-pen-to-square text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ៩ (បន្ត)៖ គម្រោង CRUD (ភាគ២: Update & Delete)</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការចាប់យក ID តាមរយៈ URL Query String (`edit.php?id=1`)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការធ្វើបច្ចុប្បន្នភាពទិន្នន័យ (UPDATE) ដោយ PDO Prepared Statement<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការលុបទិន្នន័យ (DELETE) និងប្រើ JS `confirm()` ការពារកំហុស</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 11.1:</b> បន្ថែមប៊ូតុង Edit និង Delete លើតារាងសិស្ស `index.php` ដោយភ្ជាប់ `id` ទៅជាមួយ URL Query String។</li>
+                                    <li><b>Lab 11.2:</b> បង្កើតទំព័រ `edit.php` ទាញទិន្នន័យសិស្សចាស់ (តាម `id`) មកបង្ហាញក្នុង Form រង់ចាំការកែប្រែ។</li>
+                                    <li><b>Lab 11.3:</b> សរសេរកូដ SQL UPDATE រក្សាទុកការកែប្រែថ្មី រួច Redirect ទៅទំព័រដើម។</li>
+                                    <li><b>Lab 11.4:</b> បង្កើត `delete.php` ដើម្បីដំណើរការការលុប ដោយតម្រូវឲ្យមានការ Alert Confirm ជាមុន។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-laptop-medical text-orange"></i> អនុវត្តកូដផ្ទាល់ និងតាមដោះស្រាយ Error សិស្ស</td>
+                    <td><i class="fa-solid fa-desktop text-red"></i> បទបង្ហាញកូដ</td>
+                    <td><i class="fa-solid fa-table-list text-muted"></i> VS Code, CRUD App</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១៤ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 15: Week 12 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ១២</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១២</td>
+                    <td class="col-session">23 - 24</td>
+                    <td class="col-clo"><b>CLO 5</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">ពន្យល់</span> ពីយន្តការ Stateless របស់ HTTP (Hypertext Transfer Protocol) និងភាពចាំបាច់ក្នុងការចងចាំ State។</li>
+                            <li><span class="bloom-verb">អនុវត្ត</span> ការបើកប្រើប្រាស់ Session និង Cookie ដើម្បីរក្សាទិន្នន័យ។</li>
+                            <li><span class="bloom-verb">បង្កើត</span> យន្តការការពារទំព័រ (Route Protection) មិនឲ្យចូលបើមិនបានបញ្ជាក់អត្តសញ្ញាណ។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-user-lock text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ១០៖ Authentication (ភាគ១: Sessions & State)</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ភាពខុសគ្នារវាង Session (Server-side) & Cookie (Client-side)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការប្រកាសប្រើ `session_start()` និងការរក្សាទុកតម្លៃក្នុង `$_SESSION`<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការការពារទំព័រ និងការបំផ្លាញ Session (Logout)</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 12.1:</b> បង្កើតឯកសារតេស្ត សាកល្បងរក្សាទុកឈ្មោះ User (`$_SESSION['user'] = 'admin'`)។</li>
+                                    <li><b>Lab 12.2:</b> បង្ហាញឈ្មោះនោះនៅទំព័រផ្សេងទៀត ដើម្បីបញ្ជាក់ថា Session ដំណើរការ។</li>
+                                    <li><b>Lab 12.3:</b> សរសេរកូដ `session_destroy()` សម្រាប់ប្រើក្នុងមុខងារ Logout។</li>
+                                    <li><b>Lab 12.4:</b> នៅទំព័រ `index.php` នៃគម្រោង CRUD សរសេរលក្ខខណ្ឌប្រសិនបើគ្មាន Session `user` ទេ ត្រូវ Redirect ទាត់ទៅទំព័រ Login។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-user-secret text-orange"></i> ពិភាក្សាអំពី Security & User State Tracking</td>
+                    <td><i class="fa-regular fa-circle-question text-red"></i> សំណួរខ្លីៗ Q&A</td>
+                    <td><i class="fa-solid fa-cookie text-muted"></i> Browser Storage</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១៥ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 16: Week 13 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ១៣</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១៣</td>
+                    <td class="col-session">25 - 26</td>
+                    <td class="col-clo"><b>CLO 5</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">រៀបចំ</span> ប្រព័ន្ធចុះឈ្មោះគណនី (User Registration) ពេញលេញ។</li>
+                            <li><span class="bloom-verb">វាយតម្លៃ</span> សុវត្ថិភាពលេខសម្ងាត់ ដោយបំប្លែងវាទៅជាកូដសម្ងាត់ (Password Hashing) មុនពេលរក្សាទុក។</li>
+                            <li><span class="bloom-verb">បង្កើត</span> ប្រព័ន្ធផ្ទៀងផ្ទាត់ (Login System) ដើម្បីផ្តល់សិទ្ធិចូលប្រើប្រាស់ប្រព័ន្ធ។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-shield-halved text-blue" style="font-size: 12pt; margin-right: 5px;"></i>មេរៀនទី ១០ (បញ្ចប់)៖ Authentication (Hashing & Login App)</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ហេតុអ្វីមិនត្រូវ Save Password ជា Plain Text? (Hashing vs Encryption)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការប្រើប្រាស់ `password_hash()` ដើម្បីបំប្លែងលេខសម្ងាត់<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការប្រើប្រាស់ `password_verify()` ដើម្បីផ្ទៀងផ្ទាត់ពេល Login</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-keyboard"></i> លំហាត់អនុវត្តន៍ (Lab Exercises) ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Lab 13.1:</b> បង្កើត Table `tbl_users` និង Form `register.php`។</li>
+                                    <li><b>Lab 13.2:</b> ប្រើ `password_hash(..., PASSWORD_DEFAULT)` រក្សាទុក Password របស់ User ថ្មីចូល DB។</li>
+                                    <li><b>Lab 13.3:</b> បង្កើត Form `login.php` ទទួល Email និង Password។ សរសេរកូដទាញទិន្នន័យពី DB មកផ្ទៀងផ្ទាត់ជាមួយ `password_verify`។</li>
+                                    <li><b>Lab 13.4:</b> កំណត់ Session ពេលផ្ទៀងផ្ទាត់ត្រូវ រួច Redirect ទៅទំព័រ Admin Panel នៃគម្រោង CRUD ដែលបានការពារនៅសប្តាហ៍មុន។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-key text-orange"></i> អនុវត្តកូដ Security ផ្ទាល់, សង្កត់ធ្ងន់លើ Hashing</td>
+                    <td><i class="fa-solid fa-house-laptop text-red"></i> កិច្ចការផ្ទះ HW</td>
+                    <td><i class="fa-solid fa-users-gear text-muted"></i> VS Code, DB Users</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១៦ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 17: Week 14 Outline -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ១៤</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-week">១៤</td>
+                    <td class="col-session">27 - 28</td>
+                    <td class="col-clo"><b>CLO 1-5</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">វាយតម្លៃ</span> និងបង្រួបបង្រួមចំណេះដឹងគម្រោងសរុប (Full-Stack CRUD + Auth)។</li>
+                            <li><span class="bloom-verb">ធ្វើបទបង្ហាញ</span> ការពារលទ្ធផលគម្រោងរបស់ក្រុមនៅចំពោះមុខថ្នាក់រៀន។</li>
+                            <li><span class="bloom-verb">រៀបចំខ្លួន</span> ស្វែងយល់ពី MVC (Model-View-Controller) Architecture សម្រាប់ត្រៀមវគ្គ Laravel Framework។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 2px 0;">
+                            <b style="font-size: 10pt;"><i class="fa-solid fa-users-viewfinder text-blue" style="font-size: 12pt; margin-right: 5px;"></i>បទបង្ហាញគម្រោង (Mini Project Showcase) & Pre-Laravel Framework</b><br>
+                            <span style="font-size: 9pt;"><i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ការវាយតម្លៃគម្រោងក្រុម (ឧ. ប្រព័ន្ធគ្រប់គ្រងសិស្ស, ប្រព័ន្ធស្តុក, Blog ផ្ទាល់ខ្លួន)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> សេចក្តីផ្តើមអំពី PHP Package Manager (Composer)<br>
+                            <i class="fa-solid fa-circle-check" style="color: #6366F1; font-size: 7.5pt; margin-right: 5px;"></i> ស្ថាបត្យកម្ម MVC (Model-View-Controller) ជាគន្លឹះឆ្ពោះទៅ Framework</span>
+                            
+                            <div class="exercise-box">
+                                <div class="exercise-title"><i class="fa-solid fa-users-viewfinder"></i> សកម្មភាពក្នុងថ្នាក់ ៖</div>
+                                <ul class="exercise-list">
+                                    <li><b>Active Presentation:</b> និស្សិតឡើងធ្វើបទបង្ហាញជាក្រុមនូវគម្រោងប្រចាំឆមាស។</li>
+                                    <li><b>Code Review:</b> បង្ហាញពីការគ្រប់គ្រងកូដដោយប្រើប្រាស់ GitHub (Commits, Pulls) របស់សមាជិកក្រុម។</li>
+                                    <li><b>Q&A Session:</b> ការឆ្លើយសំណួរពីសាស្ត្រាចារ្យពាក់ព័ន្ធនឹង Logic កូដ និង Database Structure។</li>
+                                    <li><b>Orientation:</b> ស្តាប់ការណែនាំត្រៀមខ្លួនសម្រាប់រៀន Laravel Framework នៅវគ្គក្រោយ។</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-ear-listen text-orange"></i> ស្តាប់បទបង្ហាញ, ផ្តល់មតិស្ថាបនា (Feedback) លើកូដគម្រោង</td>
+                    <td><i class="fa-solid fa-users-viewfinder text-red"></i> បទបង្ហាញគម្រោង (១៥%)</td>
+                    <td><i class="fa-brands fa-github text-muted"></i> Project Code, GitHub, Projector</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១៧ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 18: Week 15 Outline (Final Exam) -->
+<div class="a4-page-landscape">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-calendar-week"></i> ៤. ប្លង់មេរៀនលម្អិត ៖ សប្តាហ៍ទី ១៥ (ប្រឡងបញ្ចប់ឆមាស)</div>
+        <table class="outline-table" style="height: 85%;">
+            <thead>
+                <tr>
+                    <th class="col-week"><i class="fa-solid fa-calendar-day"></i><br>សប្តាហ៍</th>
+                    <th class="col-session"><i class="fa-regular fa-clock"></i><br>Session</th>
+                    <th class="col-clo"><i class="fa-solid fa-crosshairs"></i><br>CLO Code</th>
+                    <th class="col-llo"><i class="fa-solid fa-graduation-cap"></i> លទ្ធផលសិក្សារំពឹងទុក (LLO - Lesson Learning Outcomes)</th>
+                    <th class="col-topics"><i class="fa-solid fa-book-open"></i> ខ្លឹមសារមេរៀន និងលំហាត់ (Topics & Exercises)</th>
+                    <th class="col-teach"><i class="fa-solid fa-person-chalkboard"></i> សកម្មភាព</th>
+                    <th class="col-assess"><i class="fa-solid fa-clipboard-check"></i> វាយតម្លៃ</th>
+                    <th class="col-mat"><i class="fa-solid fa-laptop-file"></i> សម្ភារៈ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="exam-row">
+                    <td class="col-week">១៥</td>
+                    <td class="col-session">29 - 30</td>
+                    <td class="col-clo"><b>CLO 1-5</b></td>
+                    <td>
+                        <ol style="padding-left: 16px; margin: 0; font-size: 9pt; line-height: 1.5;">
+                            <li><span class="bloom-verb">វាស់ស្ទង់</span> សមត្ថភាពសរុប គ្របដណ្តប់រាល់គោលការណ៍កូដ (PHP/OOP) និងការគ្រប់គ្រង Database (MySQL/PDO)។</li>
+                            <li><span class="bloom-verb">បង្កើត</span> ប្រព័ន្ធខ្នាតតូច យោងតាមវិញ្ញាសាក្នុងរយៈពេលកំណត់ (Under Pressure Testing)។</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div style="padding: 10px;">
+                            <b style="font-size: 12pt; display: block; margin-bottom: 10px;"><i class="fa-solid fa-graduation-cap text-red" style="font-size: 13pt; margin-right: 5px;"></i>ប្រឡងបញ្ចប់ឆមាស (Final Exam)</b>
+                            <p style="font-size: 9.5pt; font-weight: normal; color: #0F172A; line-height: 1.7;">
+                                - វាយតម្លៃសមត្ថភាពជាក់ស្តែងក្នុងការកសាង Web Application ប្រកបដោយសុវត្ថិភាព។<br>
+                                - វិញ្ញាសានឹងតម្រូវឲ្យនិស្សិតបង្កើត Database, សរសេរកូដភ្ជាប់ PDO, បង្កើតមុខងារ CRUD (Create, Read, Update, Delete) យ៉ាងតិចមួយ Table, និងភ្ជាប់ប្រព័ន្ធ Login ដ៏សាមញ្ញមួយ។<br>
+                                - រយៈពេលប្រឡង៖ <b>១២០ ទៅ ១៥០ នាទី</b> (អនុវត្តសរសេរកូដផ្ទាល់លើម៉ាស៊ីនកុំព្យូទ័រ)។
+                            </p>
+                        </div>
+                    </td>
+                    <td><i class="fa-solid fa-user-shield text-orange"></i> ការប្រឡងបញ្ចប់ឆមាស</td>
+                    <td><i class="fa-solid fa-file-signature text-red"></i> ប្រឡង Final<br>(៤០%)</td>
+                    <td><i class="fa-solid fa-computer text-muted"></i> កុំព្យូទ័រ Lab, វិញ្ញាសា</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១៨ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 19: Teaching Methods & Assessments Overview -->
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-chalkboard-user"></i> ៥. វិធីសាស្រ្តបង្រៀន (Teaching Methods)</div>
+        <p style="font-size: 10pt; margin-bottom: 8px;">មុខវិជ្ជានេះត្រូវបានអនុវត្តនូវវិធីសាស្រ្តបង្រៀន និងរៀនសំខាន់ៗដូចខាងក្រោម៖</p>
+        <ul style="padding-left: 18px; font-size: 9.5pt; line-height: 1.7; margin-bottom: 12px; list-style: none;">
+            <li><i class="fa-solid fa-chalkboard text-muted icon-spacing"></i> ការពន្យល់ទ្រឹស្តី (Lectures) និងបង្ហាញកូដផ្ទាល់ជាជំហានៗ (Live Coding Step-by-Step) ក្នុង VS Code (Visual Studio Code)។</li>
+            <li><i class="fa-solid fa-laptop-code text-muted icon-spacing"></i> <b>ការអនុវត្តជាក់ស្តែង (Hands-on Practice)៖</b> ផ្តល់អាទិភាពខ្ពស់លើការអនុវត្តសរសេរកូដផ្ទាល់នៅក្នុងបន្ទប់ពិសោធន៍។ និស្សិតត្រូវកសាងគម្រោងពីចំណុចសូន្យ ដោយមិនពឹងផ្អែកលើ Template ស្រាប់ឡើយ។</li>
+            <li><i class="fa-solid fa-users-gear text-muted icon-spacing"></i> ការបង្រៀនបែបសហការ (Collaborative Learning) តាមរយៈការពិភាក្សាក្រុម (Pair Programming) និងការចែករំលែកកូដ (Push/Pull) លើប្រព័ន្ធ Version Control System <b>GitHub</b> ដើម្បីផ្ស៊ាំនឹងបរិស្ថានការងារជាក់ស្តែង។</li>
+            <li><i class="fa-solid fa-magnifying-glass-chart text-muted icon-spacing"></i> ការអនុវត្តគោលវិធីសិស្សមជ្ឈមណ្ឌល ផ្តោតលើការដោះស្រាយបញ្ហា (Problem-Based Learning) ជាពិសេសការស្វែងរក និងជួសជុល Error (Debugging Code) ដោយខ្លួនឯង។</li>
+            <li><i class="fa-solid fa-list-check text-muted icon-spacing"></i> ការផ្តល់កិច្ចការគម្រោងតូចៗ (Mini-projects) ដើម្បីពង្រឹងជំនាញជាក់ស្តែងមុនពេលឈានដល់ការប្រឡង។</li>
+        </ul>
+
+        <div class="section-title"><i class="fa-solid fa-chart-pie"></i> ៦. ការវាយតម្លៃ (Assessment) ផ្អែកលើលទ្ធផល (CLOs)</div>
+        <p style="font-size: 10pt; margin-bottom: 8px;">ការវាយតម្លៃលើលទ្ធផលសិក្សារបស់និស្សិតសម្រាប់មុខវិជ្ជានេះគឺមានដូចខាងក្រោម ៖</p>
+
+        <table>
+            <tr>
+                <th style="width: 5%;">ល.រ</th>
+                <th style="width: 35%;">លក្ខណៈវិនិច្ឆ័យ (Assessment Methods)</th>
+                <th style="width: 10%;">ពិន្ទុ %</th>
+                <th style="width: 50%;">លទ្ធផលសិក្សាដែលត្រូវបានវាស់វែង (CLO Mappings)</th>
+            </tr>
+            <tr>
+                <td class="center-text">១</td>
+                <td><i class="fa-solid fa-user-check text-green icon-spacing"></i> វត្តមាន និងការចូលរួម (Attendance)</td>
+                <td class="center-text">១០%</td>
+                <td><span class="bloom-verb">អនុវត្ត</span> កូដក្នុងថ្នាក់ និងចូលរួមសកម្មភាពដោះស្រាយបញ្ហា (CLO 1, CLO 2)។</td>
+            </tr>
+            <tr>
+                <td class="center-text">២</td>
+                <td><i class="fa-solid fa-house-laptop text-blue icon-spacing"></i> កិច្ចការផ្ទះ និងស្រាវជ្រាវ (HW & Assignment)</td>
+                <td class="center-text">៣០%</td>
+                <td><span class="bloom-verb">អភិវឌ្ឍ</span> គម្រោងខ្នាតតូច, <span class="bloom-verb">ប្រើប្រាស់</span> GitHub និង <span class="bloom-verb">ធ្វើបទបង្ហាញ</span> (CLO 3, CLO 5)។</td>
+            </tr>
+            <tr>
+                <td class="center-text">៣</td>
+                <td><i class="fa-solid fa-file-pen text-orange icon-spacing"></i> ប្រឡងពាក់កណ្តាលឆមាស (Mid-Term Exam)</td>
+                <td class="center-text">២០%</td>
+                <td><span class="bloom-verb">បកស្រាយ</span> និង <span class="bloom-verb">សរសេរ</span> កូដ PHP មូលដ្ឋាន, OOP និងការប្រើ Form (CLO 2, CLO 3)។</td>
+            </tr>
+            <tr>
+                <td class="center-text">៤</td>
+                <td><i class="fa-solid fa-award text-red icon-spacing"></i> ប្រឡងបញ្ចប់ឆមាស (Final Exam)</td>
+                <td class="center-text">៤០%</td>
+                <td><span class="bloom-verb">បង្កើត</span> ប្រព័ន្ធ Web CRUD ភ្ជាប់ MySQL តាមរយៈ PDO ពេញលេញ (CLO 4, CLO 5)។</td>
+            </tr>
+        </table>
+
+        <h4 class="sub-heading" style="margin-top: 10px;">៦.១- រង្វាយតម្លៃលើវត្តមាន និងការចូលរួម</h4>
+        <p style="font-size: 9.5pt; text-align: justify; line-height: 1.7;">និស្សិតត្រូវបានណែនាំឲ្យចូលរៀនទាន់ពេលវេលា។ និស្សិតចូលរៀនយឺតចន្លោះពី ១០នាទី ទៅ ២០នាទី នៃ session នីមួយៗ ត្រូវចាត់ទុកថាអវត្តមានចូលរៀនយឺតដែលសម្គាល់ដោយ AL (Absent Late)។ ករណីនិស្សិតវត្តមានចូលរៀនយឺត AL ចំនួន៣ដង ស្មើនឹងនិស្សិតអវត្តមាន A (Absent) មួយ session។ និស្សិតរៀនយឺតលើសពី ២០នាទី មិនត្រូវអនុញ្ញាតឲ្យចូលរៀនក្នុងថ្នាក់ឡើយ ប៉ុន្តែអាចសិក្សាស្រាវជ្រាវក្នុងបណ្ណាល័យ។ ការចូលរួមសកម្មក្នុងការសរសេរកូដ និងការឆ្លើយសំណួរក្នុងថ្នាក់នឹងត្រូវបានវាយតម្លៃខ្ពស់។</p>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ១៩ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 20: Detailed Assessment Criteria -->
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <h4 class="sub-heading" style="margin-top: 2px;">៦.២- កិច្ចការស្រាវជ្រាវ (Assignments) និងការប្រើប្រាស់ GitHub</h4>
+        
+        <p style="font-weight: bold; font-size: 10pt; margin-top: 8px; color: var(--accent-purple);">៦.២.១- កិច្ចការស្រាវជ្រាវជាក្រុមតូចៗនៅក្រៅថ្នាក់ (Group Assignment - Project Based)</p>
+        <ul style="list-style-type: disc; padding-left: 18px; font-size: 9.5pt; line-height: 1.7;">
+            <li><b>កាលបរិច្ឆេទ៖</b> ចុងសប្តាហ៍ទី ១៤ (បទបង្ហាញ)</li>
+            <li><b>ដាក់ពិន្ទុ៖</b> ១៥% (តម្រូវឱ្យមានការ Push កូដចូល GitHub ជាប្រចាំដើម្បីវាយតម្លៃសមាជិក)</li>
+            <li><b>ប្រធានបទដែលដាក់ឲ្យអនុវត្ត (ចំនួន ៣ គម្រោងជ្រើសរើស) ៖</b>
+                <ol style="margin-top: 3px; padding-left: 18px;">
+                    <li><b>School & Student Management (CLO 3, 4):</b> រចនា Database និងសរសេរកូដដើម្បីគ្រប់គ្រងទិន្នន័យ (Model) អនុញ្ញាតឱ្យរដ្ឋបាលសាលាបញ្ចូល និងកែប្រែទិន្នន័យនិស្សិតបាន។</li>
+                    <li><b>E-Commerce Product Catalog (CLO 4, 5):</b> បង្កើត Web Page សម្រាប់គ្រប់គ្រងផលិតផល ដែលអតិថិជនមើលមុខទំនិញបាន ហើយមានតែម្ចាស់ហាង (Login ចូល) ទើបអាចកែប្រែទំនិញបាន។</li>
+                    <li><b>Task Manager / To-Do App (CLO 2, 4):</b> កសាងប្រព័ន្ធកត់ត្រាកិច្ចការប្រចាំថ្ងៃ ដោយមានមុខងារ Insert និង Update Status។</li>
+                </ol>
+            </li>
+            <li><b>ភារកិច្ចនិស្សិត៖</b> សហការគ្នាសរសេរកូដតាមទម្រង់ចែករំលែកលើ GitHub, ធានាសុវត្ថិភាពទិន្នន័យ និងធ្វើបទបង្ហាញលើដំណើរការគម្រោងរបស់ខ្លួនរយៈពេល ១៥នាទី។</li>
+        </ul>
+
+        <p style="font-weight: bold; font-size: 10pt; margin-top: 12px; color: var(--accent-purple);">៦.២.២- កិច្ចការពិភាក្សាជាក្រុមតូចៗនៅក្នុងថ្នាក់ (Group Discussion)</p>
+        <ul style="list-style-type: disc; padding-left: 18px; font-size: 9.5pt; line-height: 1.7;">
+            <li><b>កាលបរិច្ឆេទ ៖</b> អនុវត្តជាប្រចាំ (ឧទាហរណ៍៖ ចុងសប្តាហ៍ទី ៥)</li>
+            <li><b>ដាក់ពិន្ទុ ៖</b> ៥ % (យកពីចំណុចចូលរួមក្នុងថ្នាក់)</li>
+            <li><b>ប្រធានបទពិភាក្សា (តក្កវិទ្យាកូដ) ៖</b> 
+                <br> - ប្រៀបធៀបគុណសម្បត្តិនៃការសរសេរកូដបែប OOP ធៀបនឹង Procedural ចាស់។
+                <br> - វិភាគពីហានិភ័យនៃការមិនធ្វើ Form Validation នៅផ្នែក Server-side (PHP) ទោះបីជាមាន HTML5/JS Validation ក៏ដោយ។
+            </li>
+        </ul>
+
+        <p style="font-weight: bold; font-size: 10pt; margin-top: 12px; color: var(--accent-purple);">៦.២.៣- សំណួរសរសេររយៈពេល១៥នាទី (Short Quizzes)</p>
+        <ul style="list-style-type: disc; padding-left: 18px; font-size: 9.5pt; line-height: 1.7;">
+            <li><b>កាលបរិច្ឆេទ ៖</b> ធ្វើឡើង ៣ ទៅ ៤ ដង ក្នុងឆមាស (Surprise Quiz)</li>
+            <li><b>ដាក់ពិន្ទុ ៖</b> ១០ %</li>
+            <li><b>ប្រធានបទសរសេរ ៖</b> ភាពខុសគ្នារវាង Session និង Cookie, ការប្រើប្រាស់ Variables, ឬ ការសរសេរកូដភ្ជាប់ Database ដោយប្រើ PDO ផ្ទាល់លើក្រដាស។</li>
+        </ul>
+
+        <h4 class="sub-heading" style="margin-top: 12px;">៦.៣- ប្រឡងពាក់កណ្តាលឆមាស (Mid-Term Exam)</h4>
+        <ul style="list-style-type: disc; padding-left: 18px; font-size: 9.5pt; line-height: 1.7;">
+            <li><b>កាលបរិច្ឆេទ ៖</b> ចុងសប្តាហ៍ទី ៨ ដាក់ពិន្ទុ ២០ %</li>
+            <li><b>ប្រធានបទ ៖</b> សំដៅលើជំពូកទី១ ដល់ទី៦ (PHP Fundamentals, Control Logic, OOP Basics) ដោយមិនទាន់ប៉ះ Database ឡើយ។ រយៈពេល ៩០ នាទី អនុវត្តកូដលើកុំព្យូទ័រ។</li>
+        </ul>
+
+        <h4 class="sub-heading" style="margin-top: 12px;">៦.៤- ប្រឡងបញ្ចប់ឆមាស (Final Exam)</h4>
+        <ul style="list-style-type: disc; padding-left: 18px; font-size: 9.5pt; line-height: 1.7;">
+            <li><b>កាលបរិច្ឆេទ ៖</b> ផ្តល់ព័ត៌មានដោយការិយាល័យសិក្សា (ដាក់ពិន្ទុ ៤០ %)</li>
+            <li><b>ប្រធានបទ ៖</b> គ្របដណ្តប់លើមេរៀនទាំងមូល ដោយផ្តោតជាចម្បងលើ ការភ្ជាប់ Database ដោយប្រើប្រាស់ PDO, ប្រតិបត្តិការ CRUD ពេញលេញ និងប្រព័ន្ធ Authentication (Login Form)។ រយៈពេល ១២០ ទៅ ១៥០ នាទី។</li>
+        </ul>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ២០ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+<!-- Page 21: Books, Bibliography, Signatures -->
+<div class="a4-page">
+    <div class="header-wrapper">
+        <div class="global-header">
+            <div class="header-item"><img src="Logo.png" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+            <div class="header-center">
+                <h1>គម្រោងមុខវិជ្ជា | Course Syllabus</h1>
+                <p>Web Application Development with PHP & MySQL</p>
+            </div>
+            <div class="header-item"><i class="fa-brands fa-php" style="font-size: 30px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-book"></i> ៧. សៀវភៅសិក្សា (Course Books)</div>
+        <div style="margin-bottom: 12px;">
+            <ul style="list-style: none; padding-left: 0; line-height: 1.7; margin-bottom: 0; font-size: 10pt;">
+                <li><i class='fa-solid fa-book-bookmark text-blue' style="font-size:10pt; margin-right:6px;"></i> Jon Duckett, <b>PHP & MySQL: Server-side Web Development</b> (ឆ្នាំ ២០២២)។ (សៀវភៅល្អបំផុតសម្រាប់អ្នកចាប់ផ្តើម ដែលមានការរៀបចំ Layout ងាយស្រួលយល់)</li>
+                <li><i class='fa-solid fa-book-bookmark text-blue' style="font-size:10pt; margin-right:6px;"></i> Kevin Yank, <b>PHP & MySQL: Novice to Ninja, 7th Edition</b> (ឆ្នាំ ២០២២)។</li>
+                <li><i class='fa-solid fa-book-bookmark text-blue' style="font-size:10pt; margin-right:6px;"></i> សៀវភៅជំនួយការបង្រៀនផ្នែក <b>Web Application Development (PHP OOP & PDO)</b>, រៀបរៀងដោយសាស្ត្រាចារ្យ សឿង លីម សាកលវិទ្យាល័យអង្គរ AU (Angkor University)។</li>
+            </ul>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-link"></i> ៨. គន្ថនិទ្ទេស (Bibliography & Online Resources)</div>
+        <div>
+            <ul style="list-style: none; padding-left: 0; line-height: 1.7; margin-bottom: 0; font-size: 10pt;">
+                <li><i class='fa-brands fa-php text-blue' style="font-size:10pt; margin-right:6px;"></i> <b>PHP Official Documentation:</b> <i>https://www.php.net/manual/en/</i> (ឯកសារយោងផ្លូវការសម្រាប់ការសរសេរកូដ PHP)</li>
+                <li><i class='fa-solid fa-database text-orange' style="font-size:10pt; margin-right:6px;"></i> <b>MySQL Documentation:</b> <i>https://dev.mysql.com/doc/</i> (សម្រាប់ស្វែងយល់បន្ថែមពី SQL Queries និង Data Types)</li>
+                <li><i class='fa-solid fa-globe text-green' style="font-size:10pt; margin-right:6px;"></i> <b>PHP: The Right Way:</b> <i>https://phptherightway.com/</i> (ប្រភពដ៏ល្អសម្រាប់ការអនុវត្តស្តង់ដារកូដ PHP ទំនើប និងសុវត្ថិភាព)</li>
+                <li><i class='fa-solid fa-video text-red' style="font-size:10pt; margin-right:6px;"></i> <b>Laracasts ("PHP for Beginners"):</b> <i>https://laracasts.com</i> (វីដេអូបង្រៀនដ៏ល្អឥតខ្ចោះត្រៀមសម្រាប់ការផ្លាស់ប្តូរទៅកាន់ MVC Laravel Framework នៅវគ្គបន្ត)។</li>
+                <li><i class='fa-brands fa-github' style="font-size:10pt; margin-right:6px;"></i> <b>GitHub Guides:</b> <i>https://docs.github.com/</i> (សម្រាប់ការគ្រប់គ្រងកូដ និងការធ្វើការងារជាក្រុមតាមរយៈ Version Control System)។</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 45px; display: flex; justify-content: space-between; align-items: flex-end; page-break-inside: avoid;">
+            <div style="text-align: center; width: 200px;">
+                <p style="font-size: 10.5pt;">បានឃើញ និងឯកភាព</p>
+                <p style="font-size: 10.5pt; margin-top: 45px;">..........................................</p>
+                <p style="font-size: 10.5pt; font-weight: bold;">ព្រឹទ្ធបុរសមហាវិទ្យាល័យ</p>
+            </div>
+            <div style="text-align: center; width: 280px;">
+                <p style="font-size: 10.5pt;">ធ្វើនៅសៀមរាប ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 10.5pt; margin-top: 45px; font-weight: bold;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="global-footer">
+            <div class="footer-left"><img src="Lim.jpg" alt="Prof. Lim"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+            <div class="footer-right">ទំព័រទី ២១ នៃ ២១</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
