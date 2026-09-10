@@ -29,12 +29,23 @@
             --text-muted: #475569;
             
             --bg-page: #FFFFFF;
-            --bg-workspace: #E2E8F0;
+            --bg-workspace: #0F172A;
             --bg-light: #F8FAFC;
             --bg-card: #FFFFFF;
-            --bg-code: #F8FAFC;
-            --bg-output: #F1F5F9;
             
+            /* CLASSIC PHP CODE EDITOR THEME (#1E1E1E) */
+            --bg-code-classic: #1E1E1E;
+            --code-header-classic: #2D2D2D;
+            --code-text: #D4D4D4;
+            --code-kw: #C586C0;       /* Keywords: if, foreach, function, match */
+            --code-tag: #569CD6;      /* Tags & Types: <?php, float, int, string */
+            --code-var: #9CDCFE;      /* Variables: $score, $name */
+            --code-str: #CE9178;      /* Strings: "Hello" */
+            --code-num: #B5CEA8;      /* Numbers: 100, 3.14 */
+            --code-func: #DCDCAA;     /* Functions: echo, print_r, var_dump */
+            --code-cmt: #6A9955;      /* Comments: // comment */
+            
+            --bg-output: #F1F5F9;
             --border-light: #E2E8F0;
             --border-dark: #CBD5E1;
             
@@ -53,11 +64,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 15px;
+            padding: 25px 10px;
             line-height: 1.6;
             font-size: 11pt;
         }
 
+        /* Top Bar */
         .no-print-bar {
             background: #FFFFFF;
             border: 1px solid var(--border-dark);
@@ -65,10 +77,11 @@
             border-radius: 12px;
             margin-bottom: 25px;
             width: 210mm;
+            max-width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
         }
         .no-print-bar p { margin: 0; font-size: 11pt; color: var(--text-muted); }
         .print-btn {
@@ -89,11 +102,12 @@
         }
         .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
 
+        /* A4 Page Layout */
         .a4-page {
             width: 210mm;
             min-height: 297mm;
             background: var(--bg-page);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
             margin-bottom: 25px;
             position: relative;
             border-radius: 4px;
@@ -210,25 +224,20 @@
             grid-template-columns: 1fr 1fr;
             gap: 4px;
         }
-        .topic-toc-box li {
-            color: var(--text-main);
-            font-size: 9.5pt;
-        }
-        .topic-toc-box li b {
-            color: var(--secondary);
-            font-family: var(--font-en-main);
-        }
+        .topic-toc-box li { color: var(--text-main); font-size: 9.5pt; }
+        .topic-toc-box li b { color: var(--secondary); font-family: var(--font-en-main); }
 
         .text-block { font-size: 10.5pt; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
         .highlight { color: var(--accent); font-weight: 700; }
         
-        .bloom-tag { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 7.5pt; font-weight: bold; font-family: var(--font-en-main); margin-right: 4px;}
-        .bloom-c1 { background: #E0F2FE; color: #0369A1; } 
-        .bloom-c2 { background: #FEF3C7; color: #B45309; } 
-        .bloom-c3 { background: #DCFCE7; color: #15803D; } 
-        .bloom-c4 { background: #F3E8FF; color: #6B21A8; } 
-        .bloom-c5 { background: #FFE4E6; color: #BE123C; } 
-        .bloom-c6 { background: #E0E7FF; color: #3730A3; } 
+        /* BLOOM'S TAXONOMY BADGES */
+        .bloom-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 7.5pt; font-weight: 800; font-family: var(--font-en-main); margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; border: 1px solid #FECDD3; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; } 
 
         .toc-table { width: 100%; border-collapse: collapse; margin: 6px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
         .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; padding: 6px 8px; text-align: left; }
@@ -280,42 +289,45 @@
             border-left: 4px solid var(--secondary);
             font-family: var(--font-code);
             font-size: 9pt;
-            padding: 5px 8px;
+            padding: 6px 10px;
             margin: 4px 0;
             border-radius: 0 4px 4px 0;
             color: #0F172A;
             white-space: pre-wrap;
+            font-weight: 600;
         }
 
+        /* CLASSIC CODE WINDOW STYLING */
         .code-window { 
-            background: var(--bg-code); 
-            border-radius: 5px; 
+            background: var(--bg-code-classic); 
+            border-radius: 6px; 
             overflow: hidden; 
-            margin: 4px 0; 
-            border: 1px solid var(--border-dark); 
+            margin: 5px 0; 
+            border: 1px solid #333333; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             page-break-inside: avoid;
         }
         .code-header { 
-            background: #E2E8F0; 
-            padding: 3px 8px; 
+            background: var(--code-header-classic); 
+            padding: 4px 12px; 
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            border-bottom: 1px solid var(--border-dark);
+            border-bottom: 1px solid #3C3C3C;
         }
-        .mac-dots { display: flex; gap: 4px; }
-        .dot { width: 7px; height: 7px; border-radius: 50%; }
-        .dot-r { background: var(--danger); }
-        .dot-y { background: var(--warning); }
-        .dot-g { background: var(--success); }
-        .code-title { color: #334155; font-family: var(--font-code); font-size: 8.5pt; font-weight: 600;}
+        .mac-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: #FF5F56; }
+        .dot-y { background: #FFBD2E; }
+        .dot-g { background: #27C93F; }
+        .code-title { color: #858585; font-family: var(--font-code); font-size: 8.5pt; font-weight: 600;}
         pre { 
-            padding: 6px 10px; 
-            color: #0F172A; 
+            padding: 8px 12px; 
+            color: var(--code-text); 
             font-family: var(--font-code); 
-            font-size: 9pt; 
-            line-height: 1.4; 
-            overflow: visible;
+            font-size: 8.8pt; 
+            line-height: 1.45; 
+            overflow-x: auto;
             white-space: pre-wrap;
             word-break: break-all;
             margin: 0; 
@@ -323,9 +335,18 @@
             font-weight: 500;
         }
 
+        /* Syntax Highlight Classes */
+        .cv-tag { color: var(--code-tag); font-weight: bold; }
+        .cv-kw { color: var(--code-kw); font-weight: bold; }
+        .cv-var { color: var(--code-var); }
+        .cv-str { color: var(--code-str); }
+        .cv-num { color: var(--code-num); }
+        .cv-fn { color: var(--code-func); font-weight: bold; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; }
+
         .output-window {
             background: var(--bg-output);
-            border-radius: 5px;
+            border-radius: 6px;
             overflow: hidden;
             margin: 4px 0;
             border: 1px solid var(--border-dark);
@@ -333,8 +354,8 @@
         }
         .output-header {
             background: #CBD5E1;
-            padding: 2px 8px;
-            color: #1E293B;
+            padding: 3px 10px;
+            color: #0F172A;
             font-family: var(--font-code);
             font-size: 7.5pt;
             font-weight: 700;
@@ -345,10 +366,10 @@
             border-bottom: 1px solid #94A3B8;
         }
         .output-body {
-            padding: 6px 10px;
+            padding: 6px 12px;
             color: #0078D4;
             font-family: var(--font-code);
-            font-size: 9pt;
+            font-size: 8.8pt;
             line-height: 1.4;
             white-space: pre-wrap;
             font-weight: 600;
@@ -414,6 +435,7 @@
             gap: 8px;
             justify-content: center;
             margin: 10px 0;
+            flex-wrap: wrap;
         }
         .tech-badge {
             background: #EEF2FF;
@@ -428,6 +450,30 @@
             gap: 5px;
         }
 
+        /* MOBILE & RESPONSIVE DESIGN (DESKTOP & MOBILE FRIENDLY) */
+        @media screen and (max-width: 850px) {
+            body { padding: 10px 5px; }
+            .no-print-bar { width: 100%; flex-direction: column; gap: 10px; text-align: center; }
+            .a4-page {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                padding: 15px 12px !important;
+                margin-bottom: 15px !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            }
+            .global-header { flex-direction: column; text-align: center; gap: 8px; }
+            .header-item { width: 100%; }
+            .mcq-opts, .topic-toc-box ul { grid-template-columns: 1fr !important; }
+            table.standard-table, table.matching-table, table.toc-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        /* PRINT SPECIFIC STYLES */
         @media print {
             body { background: none; padding: 0; margin: 0; display: block; }
             .no-print-bar { display: none !important; }
@@ -457,19 +503,19 @@
         <p style="font-family: 'Inter'; font-size: 10pt; color: var(--text-muted); margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
         
         <div class="tech-badge-bar">
-            <span class="tech-badge"><i class="fa-brands fa-php"></i> PHP 8.x</span>
-            <span class="tech-badge"><i class="fa-solid fa-server"></i> Apache HTTP</span>
-            <span class="tech-badge"><i class="fa-solid fa-database"></i> MySQL</span>
+            <span class="tech-badge"><i class="fa-brands fa-php"></i> PHP 8.x Modern Syntax</span>
+            <span class="tech-badge"><i class="fa-solid fa-briefcase"></i> Industry & Career Ready</span>
+            <span class="tech-badge"><i class="fa-solid fa-layer-group"></i> Bloom's Taxonomy Complete</span>
         </div>
 
         <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 14px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
             <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (CS / IT)
         </div>
         
-        <div style="background: var(--accent); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ២ (Bloom's Taxonomy Complete Edition)</div>
+        <div style="background: var(--accent); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ២ (Professional & Career Edition)</div>
         
         <h2 style="font-family: var(--font-kh-heading); font-size: 16pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">មូលដ្ឋានគ្រឹះ PHP ៨<br>(PHP 8 Syntax, Data Types, Operators & Control Structures)</h2>
-        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 18px; font-weight: 600;">PHP Tags, php.ini Config, Comments, Variables, Scope, Constants, Data Types, Operators, Control Flow & Loops</h3>
+        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 18px; font-weight: 600;">PHP Tags, php.ini Config, Comments, Variables, Scope, Constants, Data Types, Operators, Control Flow, Loops, Industry Career & Classwork</h3>
         
         <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
@@ -482,7 +528,7 @@
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ២២</div>
     </div>
 </div>
 
@@ -500,7 +546,7 @@
             <li><b>LLO 2.2:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">ប្រកាស និងប្រើប្រាស់</span> ប្រភេទទិន្នន័យ Scalar, Compound, និង Special, Type Checking Functions, ថេរ (Constants: <code>define()</code>, <code>const</code>, Magic Constants) និង Type Casting ក្នុងកម្មវិធី web។</li>
             <li><b>LLO 2.3:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">អនុវត្ត</span> ប្រមាណវិធីសាស្ត្រ (Operators) រួមមាន Arithmetic, Assignment, Comparison (Loose <code>==</code> vs Strict <code>===</code>), Logical, String, Increment/Decrement, Null Coalescing (<code>??</code>, <code>??=</code>), និង Spaceship Operator (<code>&lt;=&gt;</code>) ម្ដងមួយៗ។</li>
             <li><b>LLO 2.4:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">រៀបចំ និងវិភាគ</span> លំហូរកូដ ដោយប្រើប្រាស់លក្ខខណ្ឌបញ្ជា <code>if</code>, <code>if...else</code>, <code>if...elseif...else</code>, <code>switch</code>, និង <code>match</code> expression ថ្មីក្នុង PHP 8 ម្ដងមួយៗ។</li>
-            <li><b>LLO 2.5:</b> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">សរសេរ និងអភិវឌ្ឍ</span> កូដរង្វិលជុំ (Loops: <code>while</code>, <code>do-while</code>, <code>for</code>, <code>foreach</code>) ម្ដងមួយៗ និង Jump Statements (<code>break</code>, <code>continue</code>) ដើម្បីគណនាទិន្នន័យដដែលៗ។</li>
+            <li><b>LLO 2.5:</b> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">វាយតម្លៃ និងសរសេរ</span> កូដរង្វិលជុំ (Loops: <code>while</code>, <code>do-while</code>, <code>for</code>, <code>foreach</code>) ម្ដងមួយៗ និង Jump Statements (<code>break</code>, <code>continue</code>) ដើម្បីគណនាទិន្នន័យដដែលៗក្នុងកម្រិតឧស្សាហកម្ម។</li>
         </ul>
 
         <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀន (Lesson Contents)</div>
@@ -521,6 +567,7 @@
                 <tr><td class="toc-num">៣.៦</td><td>លក្ខខណ្ឌបញ្ជា (Conditional Statements: if, if-else, elseif, switch, PHP 8 match) ម្ដងមួយៗ</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td></tr>
                 <tr><td class="toc-num">៣.៧</td><td>រង្វិលជុំ (Loops: while, do-while, for, foreach, break/continue) ម្ដងមួយៗ</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c6">C6</span></td></tr>
                 <tr><td class="toc-num">៣.៨</td><td>អនុគមន៍សម្រាប់ Debugging (var_dump, print_r, var_export)</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td class="toc-num">៤.០</td><td><b>វិជ្ជាជីវៈ និងការអនុវត្តក្នុងឧស្សាហកម្ម (Industry Career Readiness)</b></td><td style="text-align:center;"><span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></td></tr>
             </tbody>
         </table>
     </div>
@@ -529,7 +576,7 @@
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ២ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ២២</div>
     </div>
 </div>
 
@@ -592,17 +639,17 @@
 ; ក្នុងឯកសារ php.ini:
 short_open_tag = On</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code Example)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code Example - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header">
                     <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
                     <div class="code-title">php_tags_config_demo.php</div>
                 </div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$courseName</span> = <span style="color:#0D9488;">"Web Application Development with PHP 8"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$courseName</span> = <span class="cv-str">"Web Application Development with PHP 8"</span>;
+<span class="cv-tag">?&gt;</span>
 &lt;div class="course-header"&gt;
-    &lt;h1&gt;វគ្គសិក្សា៖ <span style="color:#7C3AED; font-weight:bold;">&lt;?=</span> <span style="color:#2563EB;">$courseName</span> <span style="color:#7C3AED; font-weight:bold;">?&gt;</span>&lt;/h1&gt;
+    &lt;h1&gt;វគ្គសិក្សា៖ <span class="cv-tag">&lt;?=</span> <span class="cv-var">$courseName</span> <span class="cv-tag">?&gt;</span>&lt;/h1&gt;
 &lt;/div&gt;</pre>
             </div>
 
@@ -620,7 +667,7 @@ short_open_tag = On</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ៣ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ២២</div>
     </div>
 </div>
 
@@ -651,26 +698,26 @@ short_open_tag = On</div>
 /* Multi-line comment block */
 /** PHPDoc comment block for API documentation */</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">comments_types_demo.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#64748B;">// 1. Single-line comment</span>
-<span style="color:#2563EB;">$price</span> = <span style="color:#C2410C;">100</span>; <span style="color:#64748B;"># តម្លៃដើម</span>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// 1. Single-line comment</span>
+<span class="cv-var">$price</span> = <span class="cv-num">100</span>; <span class="cv-cm"># តម្លៃដើម</span>
 
-<span style="color:#64748B;">/* 2. Multi-line comment 
+<span class="cv-cm">/* 2. Multi-line comment 
       គណនាពន្ធបន្ថែម 10% */</span>
-<span style="color:#2563EB;">$tax</span> = <span style="color:#2563EB;">$price</span> * <span style="color:#C2410C;">0.10</span>;
+<span class="cv-var">$tax</span> = <span class="cv-var">$price</span> * <span class="cv-num">0.10</span>;
 
-<span style="color:#64748B;">/**
+<span class="cv-cm">/**
  * 3. DocBlock Comment
- * @param float $p Price
- * @param float $t Tax
+ * @param float $price Price
+ * @param float $tax Tax
  * @return float Total Price
  */</span>
-<span style="color:#2563EB;">$total</span> = <span style="color:#2563EB;">$price</span> + <span style="color:#2563EB;">$tax</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"តម្លៃសរុប៖ {$total} $"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-var">$total</span> = <span class="cv-var">$price</span> + <span class="cv-var">$tax</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"តម្លៃសរុប៖ {$total} $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
             </div>
 
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
@@ -688,14 +735,14 @@ short_open_tag = On</div>
             <div class="syntax-box">echo arg1, arg2, arg3;
 print arg;</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">echo_vs_print_demo.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"សាកលវិទ្យាល័យ"</span>, <span style="color:#0D9488;">" អង្គរ"</span>, <span style="color:#0D9488;">" (Angkor University)&lt;br&gt;"</span>;
-<span style="color:#2563EB;">$ret</span> = <span style="color:#D97706; font-weight:bold;">print</span>(<span style="color:#0D9488;">"Output តាមរយៈ print"</span>);
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">" | Return Value: "</span> . <span style="color:#2563EB;">$ret</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-fn">echo</span> <span class="cv-str">"សាកលវិទ្យាល័យ"</span>, <span class="cv-str">" អង្គរ"</span>, <span class="cv-str">" (Angkor University)&lt;br&gt;"</span>;
+<span class="cv-var">$ret</span> = <span class="cv-fn">print</span>(<span class="cv-str">"Output តាមរយៈ print"</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">" | Return Value: "</span> . <span class="cv-var">$ret</span>;
+<span class="cv-tag">?&gt;</span></pre>
             </div>
 
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
@@ -707,7 +754,7 @@ print arg;</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ៤ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ២២</div>
     </div>
 </div>
 
@@ -746,15 +793,15 @@ print arg;</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$variable_name = value;</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">variable_rules_demo.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$studentName</span> = <span style="color:#0D9488;">"សុខ ជា"</span>;
-<span style="color:#2563EB;">$_age</span> = <span style="color:#C2410C;">21</span>;
-<span style="color:#2563EB;">$score</span> = <span style="color:#C2410C;">88.5</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"ឈ្មោះ៖ {$studentName}, អាយុ៖ {$_age}, ពិន្ទុ៖ {$score}"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$studentName</span> = <span class="cv-str">"សុខ ជា"</span>;
+<span class="cv-var">$_age</span> = <span class="cv-num">21</span>;
+<span class="cv-var">$score</span> = <span class="cv-num">88.5</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"ឈ្មោះ៖ {$studentName}, អាយុ៖ {$_age}, ពិន្ទុ៖ {$score}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
             </div>
 
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
@@ -778,19 +825,19 @@ print arg;</div>
             <div class="syntax-box">global $global_var;
 static $static_var = initial_value;</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">scope_demo.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$appName</span> = <span style="color:#0D9488;">"Angkor Portal"</span>;
-<span style="color:#7C3AED; font-weight:bold;">function</span> <span style="color:#0078D4; font-weight:bold;">showVisitor</span>() {
-    <span style="color:#7C3AED; font-weight:bold;">global</span> <span style="color:#2563EB;">$appName</span>;
-    <span style="color:#7C3AED; font-weight:bold;">static</span> <span style="color:#2563EB;">$count</span> = <span style="color:#C2410C;">1</span>;
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"[{$appName}] Visitor #: {$count}&lt;br&gt;"</span>;
-    <span style="color:#2563EB;">$count</span>++;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$appName</span> = <span class="cv-str">"Angkor Portal"</span>;
+<span class="cv-kw">function</span> <span class="cv-fn">showVisitor</span>() {
+    <span class="cv-kw">global</span> <span class="cv-var">$appName</span>;
+    <span class="cv-kw">static</span> <span class="cv-var">$count</span> = <span class="cv-num">1</span>;
+    <span class="cv-fn">echo</span> <span class="cv-str">"[{$appName}] Visitor #: {$count}&lt;br&gt;"</span>;
+    <span class="cv-var">$count</span>++;
 }
-<span style="color:#0078D4; font-weight:bold;">showVisitor</span>(); <span style="color:#0078D4; font-weight:bold;">showVisitor</span>();
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-fn">showVisitor</span>(); <span class="cv-fn">showVisitor</span>();
+<span class="cv-tag">?&gt;</span></pre>
             </div>
 
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
@@ -802,7 +849,7 @@ static $static_var = initial_value;</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ៥ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ២២</div>
     </div>
 </div>
 
@@ -824,14 +871,14 @@ static $static_var = initial_value;</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">define("CONSTANT_NAME", value);
 const CONSTANT_NAME = value;</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">constants_demo.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#D97706; font-weight:bold;">define</span>(<span style="color:#0D9488;">"SITE_URL"</span>, <span style="color:#0D9488;">"https://au.edu.kh"</span>);
-<span style="color:#7C3AED; font-weight:bold;">const</span> <span style="color:#2563EB;">DB_NAME</span> = <span style="color:#0D9488;">"db_angkor_univ"</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"URL: "</span> . <span style="color:#2563EB;">SITE_URL</span> . <span style="color:#0D9488;">" | DB: "</span> . <span style="color:#2563EB;">DB_NAME</span> . <span style="color:#0D9488;">" | File: "</span> . <span style="color:#2563EB;">__FILE__</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-fn">define</span>(<span class="cv-str">"SITE_URL"</span>, <span class="cv-str">"https://au.edu.kh"</span>);
+<span class="cv-kw">const</span> <span class="cv-var">DB_NAME</span> = <span class="cv-str">"db_angkor_univ"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"URL: "</span> . SITE_URL . <span class="cv-str">" | DB: "</span> . DB_NAME . <span class="cv-str">" | File: "</span> . __FILE__;
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">URL: https://au.edu.kh | DB: db_angkor_univ | File: /var/www/constants_demo.php</div></div>
@@ -852,13 +899,13 @@ const CONSTANT_NAME = value;</div>
             </div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">is_string($v); is_int($v); is_float($v); is_array($v); is_null($v); gettype($v);</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">data_type_check.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$gpa</span> = <span style="color:#C2410C;">3.85</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Is float? "</span> . (<span style="color:#D97706; font-weight:bold;">is_float</span>(<span style="color:#2563EB;">$gpa</span>) ? <span style="color:#0D9488;">"Yes"</span> : <span style="color:#0D9488;">"No"</span>) . <span style="color:#0D9488;">" | Type: "</span> . <span style="color:#D97706; font-weight:bold;">gettype</span>(<span style="color:#2563EB;">$gpa</span>);
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$gpa</span> = <span class="cv-num">3.85</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"Is float? "</span> . (<span class="cv-fn">is_float</span>(<span class="cv-var">$gpa</span>) ? <span class="cv-str">"Yes"</span> : <span class="cv-str">"No"</span>) . <span class="cv-str">" | Type: "</span> . <span class="cv-fn">gettype</span>(<span class="cv-var">$gpa</span>);
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">Is float? Yes | Type: double</div></div>
@@ -869,7 +916,7 @@ const CONSTANT_NAME = value;</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ៦ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ២២</div>
     </div>
 </div>
 
@@ -903,14 +950,14 @@ const CONSTANT_NAME = value;</div>
             <div class="text-block"><b>Arithmetic Operators</b> ប្រើសម្រាប់គណនាគណិតវិទ្យាមូលដ្ឋានដូចជា បូក (<code>+</code>), ដក (<code>-</code>), គុណ (<code>*</code>), ចែក (<code>/</code>), សំណល់ (<code>%</code> - Modulus), និង ស្វ័យគុណ (<code>**</code> - Exponentiation)។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$sum = $a + $b;  $pow = $a ** $b;  $mod = $a % $b;</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_arithmetic.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$x</span> = <span style="color:#C2410C;">10</span>; <span style="color:#2563EB;">$y</span> = <span style="color:#C2410C;">3</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"សំណល់ (10 % 3) = "</span> . (<span style="color:#2563EB;">$x</span> % <span style="color:#2563EB;">$y</span>) . <span style="color:#0D9488;">"&lt;br&gt;"</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"ស្វ័យគុណ (10 ** 3) = "</span> . (<span style="color:#2563EB;">$x</span> ** <span style="color:#2563EB;">$y</span>);
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$x</span> = <span class="cv-num">10</span>; <span class="cv-var">$y</span> = <span class="cv-num">3</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"សំណល់ (10 % 3) = "</span> . (<span class="cv-var">$x</span> % <span class="cv-var">$y</span>) . <span class="cv-str">"&lt;br&gt;"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"ស្វ័យគុណ (10 ** 3) = "</span> . (<span class="cv-var">$x</span> ** <span class="cv-var">$y</span>);
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">សំណល់ (10 % 3) = 1<br>ស្វ័យគុណ (10 ** 3) = 1000</div></div>
@@ -924,14 +971,14 @@ const CONSTANT_NAME = value;</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$a += $b; // ស្មើនឹង $a = $a + $b;
 $str .= " Text";</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_assignment.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$score</span> = <span style="color:#C2410C;">50</span>; <span style="color:#2563EB;">$score</span> += <span style="color:#C2410C;">25</span>; <span style="color:#64748B;">// $score = 75</span>
-<span style="color:#2563EB;">$text</span> = <span style="color:#0D9488;">"Hello"</span>; <span style="color:#2563EB;">$text</span> .= <span style="color:#0D9488;">" World"</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Score: {$score} | Text: {$text}"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$score</span> = <span class="cv-num">50</span>; <span class="cv-var">$score</span> += <span class="cv-num">25</span>; <span class="cv-cm">// $score = 75</span>
+<span class="cv-var">$text</span> = <span class="cv-str">"Hello"</span>; <span class="cv-var">$text</span> .= <span class="cv-str">" World"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"Score: {$score} | Text: {$text}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">Score: 75 | Text: Hello World</div></div>
@@ -942,7 +989,7 @@ $str .= " Text";</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ៧ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ២២</div>
     </div>
 </div>
 
@@ -962,14 +1009,14 @@ $str .= " Text";</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$a == $b   // Loose Equality
 $a === $b  // Strict Identity</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_comparison.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$val1</span> = <span style="color:#0D9488;">"100"</span>; <span style="color:#2563EB;">$val2</span> = <span style="color:#C2410C;">100</span>;
-<span style="color:#D97706; font-weight:bold;">var_dump</span>(<span style="color:#2563EB;">$val1</span> == <span style="color:#2563EB;">$val2</span>);  <span style="color:#64748B;">// true</span>
-<span style="color:#D97706; font-weight:bold;">var_dump</span>(<span style="color:#2563EB;">$val1</span> === <span style="color:#2563EB;">$val2</span>); <span style="color:#64748B;">// false</span>
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$val1</span> = <span class="cv-str">"100"</span>; <span class="cv-var">$val2</span> = <span class="cv-num">100</span>;
+<span class="cv-fn">var_dump</span>(<span class="cv-var">$val1</span> == <span class="cv-var">$val2</span>);  <span class="cv-cm">// true</span>
+<span class="cv-fn">var_dump</span>(<span class="cv-var">$val1</span> === <span class="cv-var">$val2</span>); <span class="cv-cm">// false</span>
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">bool(true)<br>bool(false)</div></div>
@@ -982,14 +1029,14 @@ $a === $b  // Strict Identity</div>
             <div class="text-block"><b>Spaceship Operator (<code>&lt;=&gt;</code>)</b> ប្រើសម្រាប់ប្រៀបធៀបតម្លៃ ២ ដោយប្រគល់៖ <code>0</code> (ស្មើគ្នា), <code>-1</code> (ឆ្វេងតូចជាង), ឬ <code>1</code> (ឆ្វេងធំជាង)។ សមស្របបំផុតសម្រាប់ការប្រើប្រាស់ក្នុង Custom Sorting Functions (<code>usort</code>)។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$result = $a <=> $b;</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_spaceship.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB; font-weight:bold;">echo</span> (<span style="color:#C2410C;">5</span> &lt;=&gt; <span style="color:#C2410C;">10</span>) . <span style="color:#0D9488;">", "</span>; <span style="color:#64748B;">// -1</span>
-<span style="color:#2563EB; font-weight:bold;">echo</span> (<span style="color:#C2410C;">10</span> &lt;=&gt; <span style="color:#C2410C;">10</span>) . <span style="color:#0D9488;">", "</span>; <span style="color:#64748B;">// 0</span>
-<span style="color:#2563EB; font-weight:bold;">echo</span> (<span style="color:#C2410C;">15</span> &lt;=&gt; <span style="color:#C2410C;">10</span>);       <span style="color:#64748B;">// 1</span>
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-fn">echo</span> (<span class="cv-num">5</span> &lt;=&gt; <span class="cv-num">10</span>) . <span class="cv-str">", "</span>; <span class="cv-cm">// -1</span>
+<span class="cv-fn">echo</span> (<span class="cv-num">10</span> &lt;=&gt; <span class="cv-num">10</span>) . <span class="cv-str">", "</span>; <span class="cv-cm">// 0</span>
+<span class="cv-fn">echo</span> (<span class="cv-num">15</span> &lt;=&gt; <span class="cv-num">10</span>);       <span class="cv-cm">// 1</span>
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">-1, 0, 1</div></div>
@@ -1003,13 +1050,13 @@ $a === $b  // Strict Identity</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">if ($cond1 && $cond2) { ... }
 if ($cond1 || $cond2) { ... }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_logical.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$age</span> = <span style="color:#C2410C;">20</span>; <span style="color:#2563EB;">$hasID</span> = <span style="color:#0078D4; font-weight:bold;">true</span>;
-<span style="color:#2563EB; font-weight:bold;">if</span> (<span style="color:#2563EB;">$age</span> &gt;= <span style="color:#C2410C;">18</span> &amp;&amp; <span style="color:#2563EB;">$hasID</span>) { <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"អនុញ្ញាតឱ្យបោះឆ្នោត"</span>; }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$age</span> = <span class="cv-num">20</span>; <span class="cv-var">$hasID</span> = <span class="cv-kw">true</span>;
+<span class="cv-kw">if</span> (<span class="cv-var">$age</span> &gt;= <span class="cv-num">18</span> &amp;&amp; <span class="cv-var">$hasID</span>) { <span class="cv-fn">echo</span> <span class="cv-str">"អនុញ្ញាតឱ្យបោះឆ្នោត"</span>; }
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">អនុញ្ញាតឱ្យបោះឆ្នោត</div></div>
@@ -1020,7 +1067,7 @@ if ($cond1 || $cond2) { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ៨ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ២២</div>
     </div>
 </div>
 
@@ -1040,14 +1087,14 @@ if ($cond1 || $cond2) { ... }</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">++$a; // Pre-increment
 $a++; // Post-increment</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_inc_dec.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$x</span> = <span style="color:#C2410C;">5</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#2563EB;">$x</span>++ . <span style="color:#0D9488;">"&lt;br&gt;"</span>; <span style="color:#64748B;">// Displays 5, then $x becomes 6</span>
-<span style="color:#2563EB; font-weight:bold;">echo</span> ++<span style="color:#2563EB;">$x</span>;          <span style="color:#64748B;">// $x becomes 7, then displays 7</span>
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$x</span> = <span class="cv-num">5</span>;
+<span class="cv-fn">echo</span> <span class="cv-var">$x</span>++ . <span class="cv-str">"&lt;br&gt;"</span>; <span class="cv-cm">// Displays 5, then $x becomes 6</span>
+<span class="cv-fn">echo</span> ++<span class="cv-var">$x</span>;          <span class="cv-cm">// $x becomes 7, then displays 7</span>
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">5<br>7</div></div>
@@ -1061,13 +1108,13 @@ $a++; // Post-increment</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$value = $var ?? default_value;
 $var ??= default_value;</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_null_coalescing.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$username</span> = <span style="color:#2563EB;">$_GET</span>[<span style="color:#0D9488;">'user'</span>] ?? <span style="color:#0D9488;">"Guest"</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Welcome, {$username}"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$username</span> = <span class="cv-var">$_GET</span>[<span class="cv-str">'user'</span>] ?? <span class="cv-str">"Guest"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"Welcome, {$username}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">Welcome, Guest</div></div>
@@ -1078,7 +1125,7 @@ $var ??= default_value;</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ៩ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ២២</div>
     </div>
 </div>
 
@@ -1112,15 +1159,15 @@ $var ??= default_value;</div>
             <div class="syntax-box">if (condition) {
     // Code executed if condition is true
 }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_if.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$score</span> = <span style="color:#C2410C;">85</span>;
-<span style="color:#2563EB; font-weight:bold;">if</span> (<span style="color:#2563EB;">$score</span> &gt;= <span style="color:#C2410C;">50</span>) {
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"អ្នកបានប្រឡងជាប់!"</span>;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$score</span> = <span class="cv-num">85</span>;
+<span class="cv-kw">if</span> (<span class="cv-var">$score</span> &gt;= <span class="cv-num">50</span>) {
+    <span class="cv-fn">echo</span> <span class="cv-str">"អ្នកបានប្រឡងជាប់!"</span>;
 }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">អ្នកបានប្រឡងជាប់!</div></div>
@@ -1137,17 +1184,17 @@ $var ??= default_value;</div>
 } else {
     // Executed if False
 }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_if_else.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$isLoggedIn</span> = <span style="color:#0078D4; font-weight:bold;">false</span>;
-<span style="color:#2563EB; font-weight:bold;">if</span> (<span style="color:#2563EB;">$isLoggedIn</span>) {
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"ស្វាគមន៍មកកាន់ប្រព័ន្ធ!"</span>;
-} <span style="color:#2563EB; font-weight:bold;">else</span> {
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"សូមធ្វើការ Login ជាមុនសិន!"</span>;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$isLoggedIn</span> = <span class="cv-kw">false</span>;
+<span class="cv-kw">if</span> (<span class="cv-var">$isLoggedIn</span>) {
+    <span class="cv-fn">echo</span> <span class="cv-str">"ស្វាគមន៍មកកាន់ប្រព័ន្ធ!"</span>;
+} <span class="cv-kw">else</span> {
+    <span class="cv-fn">echo</span> <span class="cv-str">"សូមធ្វើការ Login ជាមុនសិន!"</span>;
 }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">សូមធ្វើការ Login ជាមុនសិន!</div></div>
@@ -1158,7 +1205,7 @@ $var ??= default_value;</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១០ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ២២</div>
     </div>
 </div>
 
@@ -1179,15 +1226,15 @@ $var ??= default_value;</div>
             <div class="syntax-box">if (cond1) { ... }
 elseif (cond2) { ... }
 else { ... }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_elseif.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$score</span> = <span style="color:#C2410C;">88</span>;
-<span style="color:#2563EB; font-weight:bold;">if</span> (<span style="color:#2563EB;">$score</span> &gt;= <span style="color:#C2410C;">90</span>) { <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Grade A"</span>; }
-<span style="color:#2563EB; font-weight:bold;">elseif</span> (<span style="color:#2563EB;">$score</span> &gt;= <span style="color:#C2410C;">80</span>) { <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Grade B"</span>; }
-<span style="color:#2563EB; font-weight:bold;">else</span> { <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Grade C/F"</span>; }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$score</span> = <span class="cv-num">88</span>;
+<span class="cv-kw">if</span> (<span class="cv-var">$score</span> &gt;= <span class="cv-num">90</span>) { <span class="cv-fn">echo</span> <span class="cv-str">"Grade A"</span>; }
+<span class="cv-kw">elseif</span> (<span class="cv-var">$score</span> &gt;= <span class="cv-num">80</span>) { <span class="cv-fn">echo</span> <span class="cv-str">"Grade B"</span>; }
+<span class="cv-kw">else</span> { <span class="cv-fn">echo</span> <span class="cv-str">"Grade C/F"</span>; }
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">Grade B</div></div>
@@ -1203,16 +1250,16 @@ else { ... }</div>
     case 'v1': // code; break;
     default: // code;
 }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_switch.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$role</span> = <span style="color:#0D9488;">"admin"</span>;
-<span style="color:#2563EB; font-weight:bold;">switch</span> (<span style="color:#2563EB;">$role</span>) {
-    <span style="color:#7C3AED; font-weight:bold;">case</span> <span style="color:#0D9488;">"admin"</span>: <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Full System Access"</span>; <span style="color:#2563EB; font-weight:bold;">break</span>;
-    <span style="color:#7C3AED; font-weight:bold;">default</span>: <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Limited Access"</span>;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$role</span> = <span class="cv-str">"admin"</span>;
+<span class="cv-kw">switch</span> (<span class="cv-var">$role</span>) {
+    <span class="cv-kw">case</span> <span class="cv-str">"admin"</span>: <span class="cv-fn">echo</span> <span class="cv-str">"Full System Access"</span>; <span class="cv-kw">break</span>;
+    <span class="cv-kw">default</span>: <span class="cv-fn">echo</span> <span class="cv-str">"Limited Access"</span>;
 }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">Full System Access</div></div>
@@ -1228,18 +1275,18 @@ else { ... }</div>
     v1 => res1,
     default => default_res,
 };</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_match.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$status</span> = <span style="color:#C2410C;">200</span>;
-<span style="color:#2563EB;">$msg</span> = <span style="color:#2563EB; font-weight:bold;">match</span>(<span style="color:#2563EB;">$status</span>) {
-    <span style="color:#C2410C;">200</span>, <span style="color:#C2410C;">201</span> =&gt; <span style="color:#0D9488;">"OK / Success"</span>,
-    <span style="color:#C2410C;">404</span>      =&gt; <span style="color:#0D9488;">"Not Found"</span>,
-    <span style="color:#7C3AED; font-weight:bold;">default</span>  =&gt; <span style="color:#0D9488;">"Error"</span>,
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$status</span> = <span class="cv-num">200</span>;
+<span class="cv-var">$msg</span> = <span class="cv-kw">match</span>(<span class="cv-var">$status</span>) {
+    <span class="cv-num">200</span>, <span class="cv-num">201</span> =&gt; <span class="cv-str">"OK / Success"</span>,
+    <span class="cv-num">404</span>      =&gt; <span class="cv-str">"Not Found"</span>,
+    <span class="cv-kw">default</span>  =&gt; <span class="cv-str">"Error"</span>,
 };
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#2563EB;">$msg</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-fn">echo</span> <span class="cv-var">$msg</span>;
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">OK / Success</div></div>
@@ -1250,7 +1297,7 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១១ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ២២</div>
     </div>
 </div>
 
@@ -1284,16 +1331,16 @@ else { ... }</div>
             <div class="syntax-box">while (condition) {
     // Code block to execute
 }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">loop_while.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$i</span> = <span style="color:#C2410C;">1</span>;
-<span style="color:#2563EB; font-weight:bold;">while</span> (<span style="color:#2563EB;">$i</span> &lt;= <span style="color:#C2410C;">3</span>) {
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Count: {$i}&lt;br&gt;"</span>;
-    <span style="color:#2563EB;">$i</span>++;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$i</span> = <span class="cv-num">1</span>;
+<span class="cv-kw">while</span> (<span class="cv-var">$i</span> &lt;= <span class="cv-num">3</span>) {
+    <span class="cv-fn">echo</span> <span class="cv-str">"Count: {$i}&lt;br&gt;"</span>;
+    <span class="cv-var">$i</span>++;
 }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">Count: 1<br>Count: 2<br>Count: 3</div></div>
@@ -1308,15 +1355,15 @@ else { ... }</div>
             <div class="syntax-box">do {
     // Code block
 } while (condition);</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">loop_dowhile.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$i</span> = <span style="color:#C2410C;">10</span>;
-<span style="color:#2563EB; font-weight:bold;">do</span> {
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Exec at least once! ($i)"</span>;
-} <span style="color:#2563EB; font-weight:bold;">while</span> (<span style="color:#2563EB;">$i</span> &lt; <span style="color:#C2410C;">5</span>);
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$i</span> = <span class="cv-num">10</span>;
+<span class="cv-kw">do</span> {
+    <span class="cv-fn">echo</span> <span class="cv-str">"Exec at least once! ($i)"</span>;
+} <span class="cv-kw">while</span> (<span class="cv-var">$i</span> &lt; <span class="cv-num">5</span>);
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">Exec at least once! (10)</div></div>
@@ -1327,7 +1374,7 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១២ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ២២</div>
     </div>
 </div>
 
@@ -1346,12 +1393,12 @@ else { ... }</div>
             <div class="text-block"><b>for Loop</b> ប្រើប្រាស់នៅពេលដឹងចំនួនជុំ (Iterations) ច្បាស់លាស់ ដោយមាន init, condition, និង increment ក្នុងបន្ទាត់តែមួយ។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">for ($i = 0; $i < $count; $i++) { ... }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">loop_for.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB; font-weight:bold;">for</span> (<span style="color:#2563EB;">$i</span> = <span style="color:#C2410C;">1</span>; <span style="color:#2563EB;">$i</span> &lt;= <span style="color:#C2410C;">3</span>; <span style="color:#2563EB;">$i</span>++) { <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Item #{$i}&lt;br&gt;"</span>; }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">for</span> (<span class="cv-var">$i</span> = <span class="cv-num">1</span>; <span class="cv-var">$i</span> &lt;= <span class="cv-num">3</span>; <span class="cv-var">$i</span>++) { <span class="cv-fn">echo</span> <span class="cv-str">"Item #{$i}&lt;br&gt;"</span>; }
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">Item #1<br>Item #2<br>Item #3</div></div>
@@ -1364,13 +1411,13 @@ else { ... }</div>
             <div class="text-block"><b>foreach Loop</b> ប្រើប្រាស់យ៉ាងពិសេសសម្រាប់ទាញ Element / Key ពី <b>Array</b> ឬ <b>Object</b> ដោយស្វ័យប្រវត្តិ។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">foreach ($array as $key => $value) { ... }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">loop_foreach.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$user</span> = [<span style="color:#0D9488;">"name"</span> =&gt; <span style="color:#0D9488;">"Sok"</span>, <span style="color:#0D9488;">"role"</span> =&gt; <span style="color:#0D9488;">"Admin"</span>];
-<span style="color:#2563EB; font-weight:bold;">foreach</span> (<span style="color:#2563EB;">$user</span> <span style="color:#2563EB; font-weight:bold;">as</span> <span style="color:#2563EB;">$k</span> =&gt; <span style="color:#2563EB;">$v</span>) { <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"{$k}: {$v}&lt;br&gt;"</span>; }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$user</span> = [<span class="cv-str">"name"</span> =&gt; <span class="cv-str">"Sok"</span>, <span class="cv-str">"role"</span> =&gt; <span class="cv-str">"Admin"</span>];
+<span class="cv-kw">foreach</span> (<span class="cv-var">$user</span> <span class="cv-kw">as</span> <span class="cv-var">$k</span> =&gt; <span class="cv-var">$v</span>) { <span class="cv-fn">echo</span> <span class="cv-str">"{$k}: {$v}&lt;br&gt;"</span>; }
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">name: Sok<br>role: Admin</div></div>
@@ -1385,13 +1432,13 @@ else { ... }</div>
             <div class="text-block"><b>var_dump()</b> បង្ហាញ Data Type, Length & Value លម្អិតបំផុត។ <b>print_r()</b> បង្ហាញបែប Human-readable។ <b>var_export()</b> បង្ហាញជា Valid PHP Code។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">var_dump($var); print_r($array); var_export($var);</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">debug_demo.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$info</span> = [<span style="color:#0D9488;">"code"</span> =&gt; <span style="color:#0D9488;">"AU"</span>, <span style="color:#0D9488;">"active"</span> =&gt; <span style="color:#0078D4; font-weight:bold;">true</span>];
-<span style="color:#D97706; font-weight:bold;">var_dump</span>(<span style="color:#2563EB;">$info</span>);
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$info</span> = [<span class="cv-str">"code"</span> =&gt; <span class="cv-str">"AU"</span>, <span class="cv-str">"active"</span> =&gt; <span class="cv-kw">true</span>];
+<span class="cv-fn">var_dump</span>(<span class="cv-var">$info</span>);
+<span class="cv-tag">?&gt;</span></pre>
             </div>
             <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផល (Execution Output)៖</div>
             <div class="output-window"><div class="output-header">Output</div><div class="output-body">array(2) { ["code"]=> string(2) "AU" ["active"]=> bool(true) }</div></div>
@@ -1402,11 +1449,11 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១៣ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ២២</div>
     </div>
 </div>
 
-<!-- PAGE 14: GLOSSARY & SUMMARY -->
+<!-- PAGE 14: NEW CAREER & INDUSTRY SECTION -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1414,7 +1461,74 @@ else { ... }</div>
         <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
     </div>
     <div class="page-content">
-        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-briefcase"></i> ៤. វិជ្ជាជីវៈ និងការអនុវត្តក្នុងឧស្សាហកម្ម (Industry Career Readiness)</div>
+        
+        <div class="sub-heading" style="margin-top:4px;"><i class="fa-solid fa-rocket text-blue"></i> ៤.១ ទំនាក់ទំនងរវាងគ្រឹះ PHP ៨ និងក្របខ័ណ្ឌការងារក្នុងទីផ្សារ (Laravel & WordPress) <span class="bloom-tag bloom-c5">C5</span></div>
+        <div class="text-block">
+            ការយល់ដឹងច្បាស់លាស់អំពីមូលដ្ឋានគ្រឹះ PHP ៨ (Syntax, Strict Typing, Modern Operators, Match Expression) មិនត្រឹមតែជាតម្រូវការសិក្សាក្នុងថ្នាក់ប៉ុណ្ណោះទេ ប៉ុន្តែជាគ្រឹះដ៏សំខាន់បំផុតសម្រាប់ផ្លូវវិជ្ជាជីវៈ (Career Path) ជា <b>Backend Developer</b>, <b>Full-Stack Developer</b>, ឬ <b>CMS Engineer</b> ក្នុងឧស្សាហកម្មបច្ចេកវិទ្យា៖
+        </div>
+
+        <table class="standard-table" style="margin-top:6px;">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">ជំនាញគ្រឹះ PHP ៨</th>
+                    <th style="width: 35%;">ការអនុវត្តក្នុង Laravel Framework</th>
+                    <th style="width: 40%;">តួនាទីក្នុងទីផ្សារការងារ (Job Role)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Strict Types & Type Hinting</b></td>
+                    <td>ប្រើប្រាស់ក្នុង Controller Methods, Request Validation & Services</td>
+                    <td><b>Junior / Mid Backend Engineer</b> (សរសេរកូដមានសុវត្ថិភាពខ្ពស់)</td>
+                </tr>
+                <tr>
+                    <td><b>Match Expression & Conditions</b></td>
+                    <td>រៀបចំ API Response Codes & Status Handlers</td>
+                    <td><b>API Developer</b> (សរសេរ Clean & High Performance Code)</td>
+                </tr>
+                <tr>
+                    <td><b>Null Coalescing (??, ??=)</b></td>
+                    <td>ទាញយកតម្លៃអថេរពី Request, Session & Config ស្វ័យប្រវត្តិ</td>
+                    <td><b>Web Application Developer</b> (ការពារ Server Error 500)</td>
+                </tr>
+                <tr>
+                    <td><b>Foreach & Iterations</b></td>
+                    <td>Render HTML Templates (Blade Views) & Eloquent Collections</td>
+                    <td><b>Full-Stack PHP Developer</b> (ចាត់ចែងទិន្នន័យ Database)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="sub-heading" style="margin-top:10px;"><i class="fa-solid fa-user-shield text-blue"></i> ៤.២ ស្តង់ដារសរសេរកូដបែបឧស្សាហកម្ម (PSR Standard Best Practices) <span class="bloom-tag bloom-c6">C6</span></div>
+        <div class="text-block">
+            ដើម្បីក្លាយជាវិស្វករសូហ្វវែរអាជីព និស្សិតត្រូវតែអនុវត្តតាមស្តង់ដារ **PSR-12 (PHP Standard Recommendation)**៖
+            <ul class="obj-list" style="margin-top:4px;">
+                <li><b>CamelCase naming:</b> ប្រើប្រាស់សម្រាប់ឈ្មោះអថេរ និង Functions (ឧទាហរណ៍៖ <code>$studentScore</code>, <code>calculateTotal()</code>)។</li>
+                <li><b>PascalCase naming:</b> ប្រើប្រាស់សម្រាប់ Class និង Interface (ឧទាហរណ៍៖ <code>UserController</code>)។</li>
+                <li><b>UPPER_CASE naming:</b> ប្រើប្រាស់ដាច់ខាតសម្រាប់ Constants (ឧទាហរណ៍៖ <code>MAX_LOGIN_ATTEMPTS</code>)។</li>
+                <li><b>Always Use Strict Typing:</b> ដាក់ <code>declare(strict_types=1);</code> នៅផ្នែកខាងលើបង្អស់នៃឯកសារ PHP ដើម្បីទប់ស្កាត់ Bug។</li>
+            </ul>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ២២</div>
+    </div>
+</div>
+
+<!-- PAGE 15: GLOSSARY & SUMMARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ២</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៥. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
         
         <table class="standard-table">
             <thead>
@@ -1437,7 +1551,7 @@ else { ... }</div>
             </tbody>
         </table>
 
-        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Lesson Summary)</div>
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៦. សង្ខេបមេរៀន (Lesson Summary)</div>
         <div class="text-block">
             មេរៀនទី ២ នេះបានផ្តល់នូវមូលដ្ឋានគ្រឹះដ៏សំខាន់បំផុតនៃភាសា PHP ៨ សម្រាប់និស្សិតវិទ្យាសាស្ត្រកុំព្យូទ័រ។ ការយល់ដឹងអំពី Syntax, Open/Close Tags, php.ini configuration, Comments, វិធាននៃការកំណត់ឈ្មោះអថេរ, Scope, និង Data Types ផ្សេងៗ គឺជាគ្រឹះមិនអាចខ្វះបានឡើយក្នុងការសរសេរកម្មវិធី Web Application ដែលមានសុវត្ថិភាព និងប្រសិទ្ធភាពខ្ពស់។
         </div>
@@ -1454,11 +1568,11 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១៤ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១៥ នៃ ២២</div>
     </div>
 </div>
 
-<!-- PAGE 15: REVIEW QUESTIONS PART 1 -->
+<!-- PAGE 16: REVIEW QUESTIONS PART 1 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1521,11 +1635,11 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១៥ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១៦ នៃ ២២</div>
     </div>
 </div>
 
-<!-- PAGE 16: MATCHING, EXPLANATORY QUESTIONS & LABS -->
+<!-- PAGE 17: MATCHING & EXPLANATORY QUESTIONS -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1555,7 +1669,7 @@ else { ... }</div>
             </tbody>
         </table>
 
-        <!-- NEW SECTION 7.ឃ EXPLANATORY QUESTIONS -->
+        <!-- SECTION 7.ឃ EXPLANATORY QUESTIONS -->
         <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៧.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
         
         <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:3px 0 2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
@@ -1569,7 +1683,7 @@ else { ... }</div>
         <ol class="q-list" start="4">
             <li><b>Q7.4:</b> ធ្វើការប្រៀបធៀបរវាង Loose Comparison Operator (<code>==</code>) និង Strict Comparison Operator (<code>===</code>) ដោយលើកឧទាហរណ៍ជាក់ស្តែង។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
             <li><b>Q7.5:</b> បកស្រាយពីដែនកំណត់អថេរ (Variable Scope) ទាំង ៣ ប្រភេទក្នុង PHP៖ Local Scope, Global Scope, និង Static Scope។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
-            <li><b>Q7.6:</b> ពន្យល់ពីភាពខុសគ្នា និងអត្ថប្រយោជន៍នៃការប្រើប្រាស់ PHP 8 <code>match</code> expression ធៀបទៅនឹង <code>switch</code> statement 传统។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q7.6:</b> ពន្យល់ពីភាពខុសគ្នា និងអត្ថប្រយោជន៍នៃការប្រើប្រាស់ PHP 8 <code>match</code> expression ធៀបទៅនឹង <code>switch</code> statement។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
         </ol>
 
         <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
@@ -1578,9 +1692,58 @@ else { ... }</div>
             <li><b>Q7.8:</b> វិភាគ និងប្រៀបធៀបករណីប្រើប្រាស់សមស្រប (Use Cases) រវាងរង្វិលជុំ <code>while</code>, <code>do-while</code>, <code>for</code>, និង <code>foreach</code>។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
             <li><b>Q7.9:</b> ពន្យល់ស៊ីជម្រៅអំពីរបៀបធ្វើការរបស់ Null Coalescing Operators (<code>??</code>, <code>??=</code>) និង Spaceship Operator (<code>&lt;=&gt;</code>) ព្រមទាំងករណីប្រៀបធៀប NULL។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
         </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៧ នៃ ២២</div>
+    </div>
+</div>
 
-        <!-- SECTION 7.ង PRACTICAL LABS -->
-        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៧.ង. លំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
+<!-- PAGE 18: GRADED CLASSWORK & ASSIGNMENTS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ២</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> ៧.ង. កិច្ចការសិក្សា និងការវាយតម្លៃ (Graded Classwork & Team Review)</div>
+        
+        <div class="sub-heading" style="margin-top:4px; color:var(--accent);"><i class="fa-solid fa-users-gear"></i> កិច្ចការក្រុម និងការវិភាគកូដ (Team Code Review Activity) <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span></div>
+        
+        <div class="text-block">
+            <b>ការណែនាំ៖</b> សូមបែងចែកនិស្សិតជាក្រុម (៣-៤ នាក់ក្នុងមួយក្រុម) ដើម្បីសិក្សា វិភាគ និងរកប្រកាសកូដស្វែងរក Bug (Debugging Challenge) ក្នុង Snippet ខាងក្រោម រួចធ្វើការកែកូដឱ្យត្រូវតាមស្តង់ដារ <b>PHP 8 Strict Types</b>៖
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--danger); margin-top:4px;">• Problem Snippet (មាន Bug និងជម្លោះ Data Type)៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">buggy_code_challenge.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$userRole</span> = <span class="cv-num">100</span>; <span class="cv-cm">// Code expects string "100" or int 100</span>
+<span class="cv-var">$status</span> = <span class="cv-kw">null</span>;
+
+<span class="cv-cm">// Loose comparison vulnerability</span>
+<span class="cv-kw">if</span> (<span class="cv-var">$userRole</span> == <span class="cv-str">"100_admin"</span>) {
+    <span class="cv-var">$status</span> = <span class="cv-str">"Authenticated as Admin"</span>;
+}
+
+<span class="cv-cm">// Potential Undefined variable error if $discount not checked</span>
+<span class="cv-var">$finalPrice</span> = <span class="cv-var">$totalPrice</span> - <span class="cv-var">$discount</span>; 
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--success); margin-top:6px;">• ភារកិច្ចរបស់និស្សិត (Student Tasks)៖</div>
+        <ol class="q-list" style="margin-top:2px;">
+            <li><b>Task 1 (<span class="bloom-tag bloom-c4">C4</span>)៖</b> ចែករំលែក និងកំណត់ចំណុចខុសឆ្គង (Bugs) ចំនួន ២ ក្នុង Code Snippet ខាងលើ។</li>
+            <li><b>Task 2 (<span class="bloom-tag bloom-c5">C5</span>)៖</b> ធ្វើការផ្លាស់ប្តូរ <code>if</code> ធម្មតា មកប្រើប្រាស់ <b>PHP 8 match expression</b>។</li>
+            <li><b>Task 3 (<span class="bloom-tag bloom-c6">C6</span>)៖</b> បន្ថែម <b>Null Coalescing Operator (<code>??</code>)</b> ដើម្បីការពារ Error ត្រង់អថេរ <code>$discount</code>។</li>
+        </ol>
+
+        <!-- SECTION 7.ច PRACTICAL LABS LISTING -->
+        <div class="sub-heading" style="width: 100%; margin-top:10px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៧.ច. បញ្ជីលំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
         
         <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:2px 0 1px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ លំហាត់]</div>
         <ol class="q-list">
@@ -1608,11 +1771,11 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១៦ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១៨ នៃ ២២</div>
     </div>
 </div>
 
-<!-- PAGE 17: ANSWERS KEY PART 1 -->
+<!-- PAGE 19: ANSWERS KEY PART 1 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1640,8 +1803,8 @@ else { ... }</div>
             <tr><td>C</td><td>D</td><td>H</td><td>G</td><td>A</td><td>B</td><td>F</td><td>E</td><td>J</td><td>I</td></tr>
         </table>
 
-        <!-- NEW SECTION 8.ឃ ANSWERS TO EXPLANATORY QUESTIONS -->
-        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៨.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q7.1 - Q7.9)</div>
+        <!-- SECTION 8.ឃ ANSWERS TO EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៨.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q7.1 - Q7.5)</div>
 
         <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--success); margin:2px 0;">[កម្រិតស្រាល - Light/Easy Level Solutions]</div>
         <div class="explain-ans-card">
@@ -1690,11 +1853,11 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១៧ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ១៩ នៃ ២២</div>
     </div>
 </div>
 
-<!-- PAGE 18: EXPLANATORY ANSWERS PART 2 & LAB SOLUTIONS PART 1 -->
+<!-- PAGE 20: EXPLANATORY ANSWERS PART 2 & LAB SOLUTIONS PART 1 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1738,16 +1901,16 @@ else { ... }</div>
         </div>
 
         <!-- SECTION 8.ង LAB SOLUTIONS PART 1 -->
-        <div class="sub-heading" style="margin-top: 8px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-code"></i> ៨.ង. ដំណោះស្រាយលំហាត់អនុវត្តន៍ (Practical Lab Solutions 2.1 - 2.4)</div>
+        <div class="sub-heading" style="margin-top: 8px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-code"></i> ៨.ង. ដំណោះស្រាយលំហាត់អនុវត្តន៍ (Practical Lab Solutions 2.1 - 2.3)</div>
         
         <!-- LAB 2.1 SOLUTION -->
         <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:2px;">• ដំណោះស្រាយ Lab 2.1 (Variables & String Concatenation) <span class="bloom-tag bloom-c3">C3</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_1.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$name</span> = <span style="color:#0D9488;">"សុខ ជា"</span>; <span style="color:#2563EB;">$age</span> = <span style="color:#C2410C;">21</span>; <span style="color:#2563EB;">$city</span> = <span style="color:#0D9488;">"សៀមរាប"</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"ខ្ញុំឈ្មោះ "</span> . <span style="color:#2563EB;">$name</span> . <span style="color:#0D9488;">" អាយុ "</span> . <span style="color:#2563EB;">$age</span> . <span style="color:#0D9488;">" ឆ្នាំ រស់នៅខេត្ត "</span> . <span style="color:#2563EB;">$city</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$name</span> = <span class="cv-str">"សុខ ជា"</span>; <span class="cv-var">$age</span> = <span class="cv-num">21</span>; <span class="cv-var">$city</span> = <span class="cv-str">"សៀមរាប"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"ខ្ញុំឈ្មោះ "</span> . <span class="cv-var">$name</span> . <span class="cv-str">" អាយុ "</span> . <span class="cv-var">$age</span> . <span class="cv-str">" ឆ្នាំ រស់នៅខេត្ត "</span> . <span class="cv-var">$city</span>;
+<span class="cv-tag">?&gt;</span></pre>
         </div>
         <div class="output-window"><div class="output-header">Output</div><div class="output-body">ខ្ញុំឈ្មោះ សុខ ជា អាយុ 21 ឆ្នាំ រស់នៅខេត្ត សៀមរាប</div></div>
 
@@ -1755,11 +1918,11 @@ else { ... }</div>
         <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 2.2 (Savings Calculation) <span class="bloom-tag bloom-c3">C3</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_2.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$savings</span> = <span style="color:#C2410C;">100</span>; <span style="color:#2563EB;">$deposit</span> = <span style="color:#C2410C;">50</span>;
-<span style="color:#2563EB;">$savings</span> += <span style="color:#2563EB;">$deposit</span>;
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"ប្រាក់សន្សំបច្ចុប្បន្ន៖ {$savings} $"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$savings</span> = <span class="cv-num">100</span>; <span class="cv-var">$deposit</span> = <span class="cv-num">50</span>;
+<span class="cv-var">$savings</span> += <span class="cv-var">$deposit</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"ប្រាក់សន្សំបច្ចុប្បន្ន៖ {$savings} $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
         </div>
         <div class="output-window"><div class="output-header">Output</div><div class="output-body">ប្រាក់សន្សំបច្ចុប្បន្ន៖ 150 $</div></div>
     </div>
@@ -1768,11 +1931,11 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១៨ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ២០ នៃ ២២</div>
     </div>
 </div>
 
-<!-- PAGE 19: PRACTICAL LAB SOLUTIONS PART 2 -->
+<!-- PAGE 21: PRACTICAL LAB SOLUTIONS PART 2 -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1784,65 +1947,65 @@ else { ... }</div>
         <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 2.3 (Voting Check) <span class="bloom-tag bloom-c3">C3</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_3.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$userAge</span> = <span style="color:#C2410C;">19</span>;
-<span style="color:#2563EB; font-weight:bold;">if</span> (<span style="color:#2563EB;">$userAge</span> &gt;= <span style="color:#C2410C;">18</span>) { <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"អ្នកមានសិទ្ធិបោះឆ្នោត"</span>; }
-<span style="color:#2563EB; font-weight:bold;">else</span> { <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"អ្នកមិនទាន់មានសិទ្ធិបោះឆ្នោតទេ"</span>; }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$userAge</span> = <span class="cv-num">19</span>;
+<span class="cv-kw">if</span> (<span class="cv-var">$userAge</span> &gt;= <span class="cv-num">18</span>) { <span class="cv-fn">echo</span> <span class="cv-str">"អ្នកមានសិទ្ធិបោះឆ្នោត"</span>; }
+<span class="cv-kw">else</span> { <span class="cv-fn">echo</span> <span class="cv-str">"អ្នកមិនទាន់មានសិទ្ធិបោះឆ្នោតទេ"</span>; }
+<span class="cv-tag">?&gt;</span></pre>
         </div>
 
         <!-- LAB 2.4 SOLUTION -->
         <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 2.4 (Average Score & Grade Calculation) <span class="bloom-tag bloom-c4">C4</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_4.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$m1</span> = <span style="color:#C2410C;">85</span>; <span style="color:#2563EB;">$m2</span> = <span style="color:#C2410C;">90</span>; <span style="color:#2563EB;">$m3</span> = <span style="color:#C2410C;">88</span>;
-<span style="color:#2563EB;">$avg</span> = (<span style="color:#2563EB;">$m1</span> + <span style="color:#2563EB;">$m2</span> + <span style="color:#2563EB;">$m3</span>) / <span style="color:#C2410C;">3</span>;
-<span style="color:#2563EB; font-weight:bold;">if</span> (<span style="color:#2563EB;">$avg</span> &gt;= <span style="color:#C2410C;">90</span>) { <span style="color:#2563EB;">$grade</span> = <span style="color:#0D9488;">"A"</span>; }
-<span style="color:#2563EB; font-weight:bold;">elseif</span> (<span style="color:#2563EB;">$avg</span> &gt;= <span style="color:#C2410C;">80</span>) { <span style="color:#2563EB;">$grade</span> = <span style="color:#0D9488;">"B"</span>; }
-<span style="color:#2563EB; font-weight:bold;">else</span> { <span style="color:#2563EB;">$grade</span> = <span style="color:#0D9488;">"C"</span>; }
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"មធ្យមភាគ៖ "</span> . <span style="color:#D97706; font-weight:bold;">round</span>(<span style="color:#2563EB;">$avg</span>, <span style="color:#C2410C;">2</span>) . <span style="color:#0D9488;">" | និទ្ទេស៖ {$grade}"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$m1</span> = <span class="cv-num">85</span>; <span class="cv-var">$m2</span> = <span class="cv-num">90</span>; <span class="cv-var">$m3</span> = <span class="cv-num">88</span>;
+<span class="cv-var">$avg</span> = (<span class="cv-var">$m1</span> + <span class="cv-var">$m2</span> + <span class="cv-var">$m3</span>) / <span class="cv-num">3</span>;
+<span class="cv-kw">if</span> (<span class="cv-var">$avg</span> &gt;= <span class="cv-num">90</span>) { <span class="cv-var">$grade</span> = <span class="cv-str">"A"</span>; }
+<span class="cv-kw">elseif</span> (<span class="cv-var">$avg</span> &gt;= <span class="cv-num">80</span>) { <span class="cv-var">$grade</span> = <span class="cv-str">"B"</span>; }
+<span class="cv-kw">else</span> { <span class="cv-var">$grade</span> = <span class="cv-str">"C"</span>; }
+<span class="cv-fn">echo</span> <span class="cv-str">"មធ្យមភាគ៖ "</span> . <span class="cv-fn">round</span>(<span class="cv-var">$avg</span>, <span class="cv-num">2</span>) . <span class="cv-str">" | និទ្ទេស៖ {$grade}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
         </div>
 
         <!-- LAB 2.5 SOLUTION -->
         <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 2.5 (PHP 8 Match Expression) <span class="bloom-tag bloom-c4">C4</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_5.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$monthNum</span> = <span style="color:#C2410C;">4</span>;
-<span style="color:#2563EB;">$monthKhmer</span> = <span style="color:#2563EB; font-weight:bold;">match</span>(<span style="color:#2563EB;">$monthNum</span>) {
-    <span style="color:#C2410C;">1</span> =&gt; <span style="color:#0D9488;">"មករា"</span>, <span style="color:#C2410C;">2</span> =&gt; <span style="color:#0D9488;">"កុម្ភៈ"</span>, <span style="color:#C2410C;">3</span> =&gt; <span style="color:#0D9488;">"មីនា"</span>, <span style="color:#C2410C;">4</span> =&gt; <span style="color:#0D9488;">"មេសា"</span>,
-    <span style="color:#7C3AED; font-weight:bold;">default</span> =&gt; <span style="color:#0D9488;">"ខែមិនត្រឹមត្រូវ"</span>,
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$monthNum</span> = <span class="cv-num">4</span>;
+<span class="cv-var">$monthKhmer</span> = <span class="cv-kw">match</span>(<span class="cv-var">$monthNum</span>) {
+    <span class="cv-num">1</span> =&gt; <span class="cv-str">"មករា"</span>, <span class="cv-num">2</span> =&gt; <span class="cv-str">"កុម្ភៈ"</span>, <span class="cv-num">3</span> =&gt; <span class="cv-str">"មីនា"</span>, <span class="cv-num">4</span> =&gt; <span class="cv-str">"មេសា"</span>,
+    <span class="cv-kw">default</span> =&gt; <span class="cv-str">"ខែមិនត្រឹមត្រូវ"</span>,
 };
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"ខែទី {$monthNum} គឺ៖ {$monthKhmer}"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-fn">echo</span> <span class="cv-str">"ខែទី {$monthNum} គឺ៖ {$monthKhmer}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
         </div>
 
-        <!-- LAB 2.6 SOLUTION (NEWLY ADDED) -->
+        <!-- LAB 2.6 SOLUTION -->
         <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 2.6 (Multiplication Table with for Loop) <span class="bloom-tag bloom-c3">C3</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_6.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$num</span> = <span style="color:#C2410C;">5</span>;
-<span style="color:#2563EB; font-weight:bold;">for</span> (<span style="color:#2563EB;">$i</span> = <span style="color:#C2410C;">1</span>; <span style="color:#2563EB;">$i</span> &lt;= <span style="color:#C2410C;">10</span>; <span style="color:#2563EB;">$i</span>++) {
-    <span style="color:#2563EB;">$res</span> = <span style="color:#2563EB;">$num</span> * <span style="color:#2563EB;">$i</span>;
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"{$num} x {$i} = {$res}&lt;br&gt;"</span>;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$num</span> = <span class="cv-num">5</span>;
+<span class="cv-kw">for</span> (<span class="cv-var">$i</span> = <span class="cv-num">1</span>; <span class="cv-var">$i</span> &lt;= <span class="cv-num">10</span>; <span class="cv-var">$i</span>++) {
+    <span class="cv-var">$res</span> = <span class="cv-var">$num</span> * <span class="cv-var">$i</span>;
+    <span class="cv-fn">echo</span> <span class="cv-str">"{$num} x {$i} = {$res}&lt;br&gt;"</span>;
 }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-tag">?&gt;</span></pre>
         </div>
 
         <!-- LAB 2.7 SOLUTION -->
         <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 2.7 (Associative Array Filter with foreach) <span class="bloom-tag bloom-c6">C6</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_7.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$items</span> = [<span style="color:#0D9488;">"Pen"</span> =&gt; <span style="color:#C2410C;">2</span>, <span style="color:#0D9488;">"Book"</span> =&gt; <span style="color:#C2410C;">15</span>, <span style="color:#0D9488;">"Bag"</span> =&gt; <span style="color:#C2410C;">25</span>];
-<span style="color:#2563EB; font-weight:bold;">foreach</span> (<span style="color:#2563EB;">$items</span> <span style="color:#2563EB; font-weight:bold;">as</span> <span style="color:#2563EB;">$name</span> =&gt; <span style="color:#2563EB;">$price</span>) {
-    <span style="color:#2563EB; font-weight:bold;">if</span> (<span style="color:#2563EB;">$price</span> &lt; <span style="color:#C2410C;">10</span>) <span style="color:#2563EB; font-weight:bold;">continue</span>;
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"{$name}: {$price} $&lt;br&gt;"</span>;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$items</span> = [<span class="cv-str">"Pen"</span> =&gt; <span class="cv-num">2</span>, <span class="cv-str">"Book"</span> =&gt; <span class="cv-num">15</span>, <span class="cv-str">"Bag"</span> =&gt; <span class="cv-num">25</span>];
+<span class="cv-kw">foreach</span> (<span class="cv-var">$items</span> <span class="cv-kw">as</span> <span class="cv-var">$name</span> =&gt; <span class="cv-var">$price</span>) {
+    <span class="cv-kw">if</span> (<span class="cv-var">$price</span> &lt; <span class="cv-num">10</span>) <span class="cv-kw">continue</span>;
+    <span class="cv-fn">echo</span> <span class="cv-str">"{$name}: {$price} $&lt;br&gt;"</span>;
 }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-tag">?&gt;</span></pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1850,11 +2013,11 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ១៩ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ២១ នៃ ២២</div>
     </div>
 </div>
 
-<!-- PAGE 20: LAB 2.8, LAB 2.9 & FINAL CONCLUSION -->
+<!-- PAGE 22: LAB 2.8, LAB 2.9 & FINAL CONCLUSION -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1866,14 +2029,14 @@ else { ... }</div>
         <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 2.8 (Strict Types & Null Coalescing Function) <span class="bloom-tag bloom-c6">C6</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_8.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#7C3AED; font-weight:bold;">declare</span>(strict_types=<span style="color:#C2410C;">1</span>);
-<span style="color:#7C3AED; font-weight:bold;">function</span> <span style="color:#0078D4; font-weight:bold;">calcTotal</span>(<span style="color:#2563EB; font-weight:bold;">float</span> <span style="color:#2563EB;">$price</span>, ?<span style="color:#2563EB; font-weight:bold;">float</span> <span style="color:#2563EB;">$discount</span>): <span style="color:#2563EB; font-weight:bold;">float</span> {
-    <span style="color:#2563EB;">$disc</span> = <span style="color:#2563EB;">$discount</span> ?? <span style="color:#C2410C;">0.0</span>;
-    <span style="color:#7C3AED; font-weight:bold;">return</span> <span style="color:#2563EB;">$price</span> - <span style="color:#2563EB;">$disc</span>;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+<span class="cv-kw">function</span> <span class="cv-fn">calcTotal</span>(<span class="cv-tag">float</span> <span class="cv-var">$price</span>, ?<span class="cv-tag">float</span> <span class="cv-var">$discount</span>): <span class="cv-tag">float</span> {
+    <span class="cv-var">$disc</span> = <span class="cv-var">$discount</span> ?? <span class="cv-num">0.0</span>;
+    <span class="cv-kw">return</span> <span class="cv-var">$price</span> - <span class="cv-var">$disc</span>;
 }
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"Total: "</span> . <span style="color:#0078D4; font-weight:bold;">calcTotal</span>(<span style="color:#C2410C;">100.0</span>, <span style="color:#0078D4; font-weight:bold;">null</span>) . <span style="color:#0D9488;">" $"</span>;
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-fn">echo</span> <span class="cv-str">"Total: "</span> . <span class="cv-fn">calcTotal</span>(<span class="cv-num">100.0</span>, <span class="cv-kw">null</span>) . <span class="cv-str">" $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
         </div>
         <div class="output-window"><div class="output-header">Output</div><div class="output-body">Total: 100 $</div></div>
 
@@ -1881,28 +2044,28 @@ else { ... }</div>
         <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:8px;">• ដំណោះស្រាយ Lab 2.9 (Fibonacci Series with while & break) <span class="bloom-tag bloom-c6">C6</span>៖</div>
         <div class="code-window">
             <div class="code-header"><div class="code-title">lab2_9_fibonacci.php</div></div>
-<pre><span style="color:#7C3AED; font-weight:bold;">&lt;?php</span>
-<span style="color:#2563EB;">$n1</span> = <span style="color:#C2410C;">0</span>; 
-<span style="color:#2563EB;">$n2</span> = <span style="color:#C2410C;">1</span>; 
-<span style="color:#2563EB;">$count</span> = <span style="color:#C2410C;">0</span>;
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$n1</span> = <span class="cv-num">0</span>; 
+<span class="cv-var">$n2</span> = <span class="cv-num">1</span>; 
+<span class="cv-var">$count</span> = <span class="cv-num">0</span>;
 
-<span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"ស៊េរី Fibonacci (១០ តួដំបូង, បញ្ឈប់បើ &gt; 30)៖&lt;br&gt;"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"ស៊េរី Fibonacci (១០ តួដំបូង, បញ្ឈប់បើ &gt; 30)៖&lt;br&gt;"</span>;
 
-<span style="color:#2563EB; font-weight:bold;">while</span> (<span style="color:#2563EB;">$count</span> &lt; <span style="color:#C2410C;">10</span>) {
-    <span style="color:#64748B;">// ត្រួតពិនិត្យលក្ខខណ្ឌ break ប្រសិនបើលេខធំជាង ៣០</span>
-    <span style="color:#2563EB; font-weight:bold;">if</span> (<span style="color:#2563EB;">$n1</span> &gt; <span style="color:#C2410C;">30</span>) {
-        <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#0D9488;">"&lt;br&gt;[បញ្ឈប់រង្វិលជុំភ្លាមៗ ដោយសារជួបលេខ "</span> . <span style="color:#2563EB;">$n1</span> . <span style="color:#0D9488;">" ដែលធំជាង 30]"</span>;
-        <span style="color:#2563EB; font-weight:bold;">break</span>;
+<span class="cv-kw">while</span> (<span class="cv-var">$count</span> &lt; <span class="cv-num">10</span>) {
+    <span class="cv-cm">// ត្រួតពិនិត្យលក្ខខណ្ឌ break ប្រសិនបើលេខធំជាង ៣០</span>
+    <span class="cv-kw">if</span> (<span class="cv-var">$n1</span> &gt; <span class="cv-num">30</span>) {
+        <span class="cv-fn">echo</span> <span class="cv-str">"&lt;br&gt;[បញ្ឈប់រង្វិលជុំភ្លាមៗ ដោយសារជួបលេខ "</span> . <span class="cv-var">$n1</span> . <span class="cv-str">" ដែលធំជាង 30]"</span>;
+        <span class="cv-kw">break</span>;
     }
     
-    <span style="color:#2563EB; font-weight:bold;">echo</span> <span style="color:#2563EB;">$n1</span> . <span style="color:#0D9488;">" "</span>;
+    <span class="cv-fn">echo</span> <span class="cv-var">$n1</span> . <span class="cv-str">" "</span>;
     
-    <span style="color:#2563EB;">$next</span> = <span style="color:#2563EB;">$n1</span> + <span style="color:#2563EB;">$n2</span>;
-    <span style="color:#2563EB;">$n1</span> = <span style="color:#2563EB;">$n2</span>;
-    <span style="color:#2563EB;">$n2</span> = <span style="color:#2563EB;">$next</span>;
-    <span style="color:#2563EB;">$count</span>++;
+    <span class="cv-var">$next</span> = <span class="cv-var">$n1</span> + <span class="cv-var">$n2</span>;
+    <span class="cv-var">$n1</span> = <span class="cv-var">$n2</span>;
+    <span class="cv-var">$n2</span> = <span class="cv-var">$next</span>;
+    <span class="cv-var">$count</span>++;
 }
-<span style="color:#7C3AED; font-weight:bold;">?&gt;</span></pre>
+<span class="cv-tag">?&gt;</span></pre>
         </div>
         <div class="output-window">
             <div class="output-header"><i class="fa-solid fa-terminal"></i> Execution Output</div>
@@ -1919,7 +2082,7 @@ else { ... }</div>
                 <i class="fa-solid fa-graduation-cap" style="font-size: 28px; color: var(--success);"></i>
             </div>
             <h3 style="font-family: var(--font-kh-heading); font-size: 11.5pt; color: var(--text-heading); margin-bottom: 3px;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ២ យ៉ាងបរិបូរណ៍។</h3>
-            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 2 HANDOUT (BLOOM's TAXONOMY REVISED & EXPANDED EDITION - TOTAL 20 PAGES) ***</p>
+            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 2 HANDOUT (BLOOM's TAXONOMY & CAREER EXPANDED EDITION - TOTAL 22 PAGES) ***</p>
         </div>
     </div>
     <div class="global-footer">
@@ -1927,7 +2090,7 @@ else { ... }</div>
             <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
             <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
         </div>
-        <div class="footer-right">ទំព័រទី ២០ នៃ ២០</div>
+        <div class="footer-right">ទំព័រទី ២២ នៃ ២២</div>
     </div>
 </div>
 
