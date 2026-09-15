@@ -33,19 +33,19 @@
             --bg-light: #F8FAFC;
             --bg-card: #FFFFFF;
             
-            /* CLASSIC PHP CODE EDITOR THEME (#1E1E1E) */
-            --bg-code-classic: #1E1E1E;
-            --code-header-classic: #2D2D2D;
-            --code-text: #D4D4D4;
-            --code-kw: #C586C0;       /* Keywords: if, foreach, function, match */
-            --code-tag: #569CD6;      /* Tags & Types: <?php, float, int, string */
-            --code-var: #9CDCFE;      /* Variables: $score, $name */
-            --code-str: #CE9178;      /* Strings: "Hello" */
-            --code-num: #B5CEA8;      /* Numbers: 100, 3.14 */
-            --code-func: #DCDCAA;     /* Functions: echo, print_r, var_dump */
-            --code-cmt: #6A9955;      /* Comments: // comment */
+            /* MODERN LIGHT PHP CODE EDITOR THEME (VS CODE / GITHUB LIGHT STYLE) */
+            --bg-code-classic: #F8FAFC;
+            --code-header-classic: #E2E8F0;
+            --code-text: #0F172A;
+            --code-kw: #AF00DB;       /* Keywords: if, foreach, function, match, return */
+            --code-tag: #0000FF;      /* Tags & Types: <?php, float, int, string */
+            --code-var: #001080;      /* Variables: $score, $name */
+            --code-str: #A31515;      /* Strings: "Hello" */
+            --code-num: #098658;      /* Numbers: 100, 3.14 */
+            --code-func: #795E26;     /* Functions: echo, print_r, var_dump */
+            --code-cmt: #008000;      /* Comments: // comment */
             
-            --bg-output: #F1F5F9;
+            --bg-output: #EFF6FF;
             --border-light: #E2E8F0;
             --border-dark: #CBD5E1;
             
@@ -297,14 +297,14 @@
             font-weight: 600;
         }
 
-        /* CLASSIC CODE WINDOW STYLING */
+        /* LIGHT CODE WINDOW STYLING (VS CODE LIGHT THEME) */
         .code-window { 
             background: var(--bg-code-classic); 
             border-radius: 6px; 
             overflow: hidden; 
             margin: 5px 0; 
-            border: 1px solid #333333; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-dark); 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             page-break-inside: avoid;
         }
         .code-header { 
@@ -313,14 +313,14 @@
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            border-bottom: 1px solid #3C3C3C;
+            border-bottom: 1px solid #CBD5E1;
         }
         .mac-dots { display: flex; gap: 5px; }
         .dot { width: 8px; height: 8px; border-radius: 50%; }
         .dot-r { background: #FF5F56; }
         .dot-y { background: #FFBD2E; }
         .dot-g { background: #27C93F; }
-        .code-title { color: #858585; font-family: var(--font-code); font-size: 8.5pt; font-weight: 600;}
+        .code-title { color: #475569; font-family: var(--font-code); font-size: 8.5pt; font-weight: 700;}
         pre { 
             padding: 8px 12px; 
             color: var(--code-text); 
@@ -332,30 +332,30 @@
             word-break: break-all;
             margin: 0; 
             tab-size: 4;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        /* Syntax Highlight Classes */
+        /* Syntax Highlight Classes (Light Theme Palette) */
         .cv-tag { color: var(--code-tag); font-weight: bold; }
         .cv-kw { color: var(--code-kw); font-weight: bold; }
-        .cv-var { color: var(--code-var); }
+        .cv-var { color: var(--code-var); font-weight: 600; }
         .cv-str { color: var(--code-str); }
-        .cv-num { color: var(--code-num); }
+        .cv-num { color: var(--code-num); font-weight: bold; }
         .cv-fn { color: var(--code-func); font-weight: bold; }
-        .cv-cm { color: var(--code-cmt); font-style: italic; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; font-weight: normal; }
 
         .output-window {
             background: var(--bg-output);
             border-radius: 6px;
             overflow: hidden;
             margin: 4px 0;
-            border: 1px solid var(--border-dark);
+            border: 1px solid #BFDBFE;
             page-break-inside: avoid;
         }
         .output-header {
-            background: #CBD5E1;
+            background: #DBEAFE;
             padding: 3px 10px;
-            color: #0F172A;
+            color: #1E40AF;
             font-family: var(--font-code);
             font-size: 7.5pt;
             font-weight: 700;
@@ -363,11 +363,11 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            border-bottom: 1px solid #94A3B8;
+            border-bottom: 1px solid #BFDBFE;
         }
         .output-body {
             padding: 6px 12px;
-            color: #0078D4;
+            color: #1E3A8A;
             font-family: var(--font-code);
             font-size: 8.8pt;
             line-height: 1.4;
@@ -639,7 +639,7 @@
 ; ក្នុងឯកសារ php.ini:
 short_open_tag = On</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code Example - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code Example - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header">
                     <div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
@@ -698,7 +698,7 @@ short_open_tag = On</div>
 /* Multi-line comment block */
 /** PHPDoc comment block for API documentation */</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">comments_types_demo.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -735,7 +735,7 @@ short_open_tag = On</div>
             <div class="syntax-box">echo arg1, arg2, arg3;
 print arg;</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">echo_vs_print_demo.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -793,7 +793,7 @@ print arg;</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$variable_name = value;</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">variable_rules_demo.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -825,7 +825,7 @@ print arg;</div>
             <div class="syntax-box">global $global_var;
 static $static_var = initial_value;</div>
 
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">scope_demo.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -871,7 +871,7 @@ static $static_var = initial_value;</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">define("CONSTANT_NAME", value);
 const CONSTANT_NAME = value;</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">constants_demo.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -899,7 +899,7 @@ const CONSTANT_NAME = value;</div>
             </div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">is_string($v); is_int($v); is_float($v); is_array($v); is_null($v); gettype($v);</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">data_type_check.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -950,7 +950,7 @@ const CONSTANT_NAME = value;</div>
             <div class="text-block"><b>Arithmetic Operators</b> ប្រើសម្រាប់គណនាគណិតវិទ្យាមូលដ្ឋានដូចជា បូក (<code>+</code>), ដក (<code>-</code>), គុណ (<code>*</code>), ចែក (<code>/</code>), សំណល់ (<code>%</code> - Modulus), និង ស្វ័យគុណ (<code>**</code> - Exponentiation)។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$sum = $a + $b;  $pow = $a ** $b;  $mod = $a % $b;</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_arithmetic.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -971,7 +971,7 @@ const CONSTANT_NAME = value;</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$a += $b; // ស្មើនឹង $a = $a + $b;
 $str .= " Text";</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_assignment.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1009,7 +1009,7 @@ $str .= " Text";</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$a == $b   // Loose Equality
 $a === $b  // Strict Identity</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_comparison.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1029,7 +1029,7 @@ $a === $b  // Strict Identity</div>
             <div class="text-block"><b>Spaceship Operator (<code>&lt;=&gt;</code>)</b> ប្រើសម្រាប់ប្រៀបធៀបតម្លៃ ២ ដោយប្រគល់៖ <code>0</code> (ស្មើគ្នា), <code>-1</code> (ឆ្វេងតូចជាង), ឬ <code>1</code> (ឆ្វេងធំជាង)។ សមស្របបំផុតសម្រាប់ការប្រើប្រាស់ក្នុង Custom Sorting Functions (<code>usort</code>)។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$result = $a <=> $b;</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_spaceship.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1050,7 +1050,7 @@ $a === $b  // Strict Identity</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">if ($cond1 && $cond2) { ... }
 if ($cond1 || $cond2) { ... }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_logical.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1087,7 +1087,7 @@ if ($cond1 || $cond2) { ... }</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">++$a; // Pre-increment
 $a++; // Post-increment</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_inc_dec.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1108,7 +1108,7 @@ $a++; // Post-increment</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">$value = $var ?? default_value;
 $var ??= default_value;</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">op_null_coalescing.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1159,7 +1159,7 @@ $var ??= default_value;</div>
             <div class="syntax-box">if (condition) {
     // Code executed if condition is true
 }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_if.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1184,7 +1184,7 @@ $var ??= default_value;</div>
 } else {
     // Executed if False
 }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_if_else.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1226,7 +1226,7 @@ $var ??= default_value;</div>
             <div class="syntax-box">if (cond1) { ... }
 elseif (cond2) { ... }
 else { ... }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_elseif.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1250,7 +1250,7 @@ else { ... }</div>
     case 'v1': // code; break;
     default: // code;
 }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_switch.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1275,7 +1275,7 @@ else { ... }</div>
     v1 => res1,
     default => default_res,
 };</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">ctrl_match.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1331,7 +1331,7 @@ else { ... }</div>
             <div class="syntax-box">while (condition) {
     // Code block to execute
 }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">loop_while.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1355,7 +1355,7 @@ else { ... }</div>
             <div class="syntax-box">do {
     // Code block
 } while (condition);</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">loop_dowhile.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1393,7 +1393,7 @@ else { ... }</div>
             <div class="text-block"><b>for Loop</b> ប្រើប្រាស់នៅពេលដឹងចំនួនជុំ (Iterations) ច្បាស់លាស់ ដោយមាន init, condition, និង increment ក្នុងបន្ទាត់តែមួយ។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">for ($i = 0; $i < $count; $i++) { ... }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">loop_for.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1411,7 +1411,7 @@ else { ... }</div>
             <div class="text-block"><b>foreach Loop</b> ប្រើប្រាស់យ៉ាងពិសេសសម្រាប់ទាញ Element / Key ពី <b>Array</b> ឬ <b>Object</b> ដោយស្វ័យប្រវត្តិ។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">foreach ($array as $key => $value) { ... }</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">loop_foreach.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
@@ -1432,7 +1432,7 @@ else { ... }</div>
             <div class="text-block"><b>var_dump()</b> បង្ហាញ Data Type, Length & Value លម្អិតបំផុត។ <b>print_r()</b> បង្ហាញបែប Human-readable។ <b>var_export()</b> បង្ហាញជា Valid PHP Code។</div>
             <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
             <div class="syntax-box">var_dump($var); print_r($array); var_export($var);</div>
-            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Classic Theme)៖</div>
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Complete Code - Light Theme)៖</div>
             <div class="code-window">
                 <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">debug_demo.php</div></div>
 <pre><span class="cv-tag">&lt;?php</span>

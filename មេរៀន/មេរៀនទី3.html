@@ -1,0 +1,1624 @@
+
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: មេរៀនទី ៣ - Arrays, Functions & Modular Code (PHP 8 Modern Development)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #0078D4;
+            --accent: #4F46E5;
+            --php-color: #7C3AED;
+            --mysql-color: #0284C7;
+            --apache-color: #D97706;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #475569;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #0F172A;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            
+            /* LIGHT PHP CODE EDITOR THEME (EASY READ & PRINT FRIENDLY) */
+            --bg-code-light: #F8FAFC;
+            --code-header-light: #E2E8F0;
+            --code-text: #0F172A;
+            --code-kw: #7C3AED;       /* Purple: function, return, foreach, fn, include, require */
+            --code-tag: #0284C7;      /* Blue: <?php, string, int, float, void, array */
+            --code-var: #0F172A;      /* Dark Slate: $student, $score, $item */
+            --code-str: #B45309;      /* Brown/Amber: "Hello World" */
+            --code-num: #059669;      /* Emerald Green: 100, 3.14 */
+            --code-func: #2563EB;     /* Royal Blue: count, strlen, calculateTotal */
+            --code-cmt: #64748B;      /* Gray Italic: // comment */
+            
+            --bg-output: #F1F5F9;
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            --font-kh-heading: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 10px;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        /* Top Bar */
+        .no-print-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border-dark);
+            padding: 14px 28px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            width: 210mm;
+            max-width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+        .no-print-bar p { margin: 0; font-size: 11pt; color: var(--text-muted); }
+        .print-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: var(--font-kh-body);
+            font-size: 11pt;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
+
+        /* A4 Page Layout */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: var(--bg-page);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            margin-bottom: 25px;
+            position: relative;
+            border-radius: 4px;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 12mm 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .global-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 3px solid var(--accent);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 140px; }
+        .header-item img { height: 32px; object-fit: contain; }
+        .header-item span { font-size: 8.5pt; font-weight: bold; color: var(--accent); text-align: center; font-family: var(--font-kh-heading); line-height: 1.2; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 11pt; color: var(--accent); margin-bottom: 1px; line-height: 1.3;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent);
+            background-color: var(--bg-light);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+        .footer-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 9.5pt; 
+            color: var(--text-heading); 
+            font-weight: bold;
+            font-family: var(--font-kh-heading);
+        }
+        .footer-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .footer-right { font-size: 8.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 10px; border-radius: 15px; font-family: var(--font-kh-body);}
+
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 4px;
+            margin: 8px 0 10px 0;
+            font-family: var(--font-kh-heading);
+            font-size: 12pt;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-inside: avoid;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { 
+            font-family: var(--font-kh-heading); 
+            font-size: 11pt; 
+            color: var(--accent); 
+            margin: 8px 0 6px 0; 
+            page-break-inside: avoid;
+            border-left: 4px solid var(--accent);
+            padding-left: 8px;
+            line-height: 1.4;
+        }
+
+        .topic-toc-box {
+            background: #F1F5F9;
+            border: 1px solid var(--border-dark);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 6px 12px;
+            margin: 4px 0 8px 0;
+            font-size: 10pt;
+            page-break-inside: avoid;
+        }
+        .topic-toc-title {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--accent);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .topic-toc-box ul {
+            list-style: none;
+            padding-left: 6px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .topic-toc-box li { color: var(--text-main); font-size: 9.5pt; }
+        .topic-toc-box li b { color: var(--secondary); font-family: var(--font-en-main); }
+
+        .text-block { font-size: 10.5pt; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        
+        /* BLOOM'S TAXONOMY BADGES */
+        .bloom-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 7.5pt; font-weight: 800; font-family: var(--font-en-main); margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; border: 1px solid #FECDD3; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; } 
+
+        .toc-table { width: 100%; border-collapse: collapse; margin: 6px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; padding: 6px 8px; text-align: left; }
+        .toc-table td { padding: 5px 8px; border-bottom: 1px solid var(--border-light); font-size: 10pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; color: var(--accent); }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 4px; }
+        .obj-list li { position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 10.5pt; line-height: 1.5; page-break-inside: avoid; }
+        .obj-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11pt; top: -1px; }
+
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1px solid var(--border-dark); page-break-inside: avoid; }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 5px 7px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.4; }
+
+        .sub-topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sub-topic-card h4 {
+            font-family: var(--font-kh-heading);
+            font-size: 10.5pt;
+            color: var(--primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 3px;
+        }
+        .content-label {
+            font-weight: bold;
+            color: var(--accent);
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .syntax-box {
+            background: #EEF2FF;
+            border-left: 4px solid var(--accent);
+            font-family: var(--font-code);
+            font-size: 9pt;
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-radius: 0 4px 4px 0;
+            color: #1E1B4B;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        /* LIGHT PHP CODE WINDOW STYLING (EASY READ) */
+        .code-window { 
+            background: var(--bg-code-light); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin: 5px 0; 
+            border: 1px solid var(--border-dark); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        .code-header { 
+            background: var(--code-header-light); 
+            padding: 4px 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .mac-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: #FF5F56; }
+        .dot-y { background: #FFBD2E; }
+        .dot-g { background: #27C93F; }
+        .code-title { color: #475569; font-family: var(--font-code); font-size: 8.5pt; font-weight: 700;}
+        pre { 
+            padding: 8px 12px; 
+            color: var(--code-text); 
+            font-family: var(--font-code); 
+            font-size: 8.8pt; 
+            line-height: 1.45; 
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0; 
+            tab-size: 4;
+            font-weight: 600;
+        }
+
+        /* Light Theme Syntax Highlight Classes */
+        .cv-tag { color: var(--code-tag); font-weight: bold; }
+        .cv-kw { color: var(--code-kw); font-weight: bold; }
+        .cv-var { color: var(--code-var); }
+        .cv-str { color: var(--code-str); }
+        .cv-num { color: var(--code-num); }
+        .cv-fn { color: var(--code-func); font-weight: bold; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; }
+
+        .output-window {
+            background: var(--bg-output);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 4px 0;
+            border: 1px solid var(--border-dark);
+            page-break-inside: avoid;
+        }
+        .output-header {
+            background: #CBD5E1;
+            padding: 3px 10px;
+            color: #0F172A;
+            font-family: var(--font-code);
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid #94A3B8;
+        }
+        .output-body {
+            padding: 6px 12px;
+            color: #0078D4;
+            font-family: var(--font-code);
+            font-size: 8.8pt;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .q-list { 
+            list-style-type: khmer; 
+            padding-left: 24px; 
+            font-size: 10.5pt; 
+            line-height: 1.5; 
+        }
+        .q-list li { 
+            margin-bottom: 6px; 
+            font-weight: normal; 
+            color: var(--text-main); 
+            page-break-inside: avoid;
+        }
+        .mcq-opts { 
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-top: 3px; 
+            font-weight: normal; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 4px;
+        }
+        .mcq-opts li { 
+            font-size: 9.5pt; 
+            background: #F8FAFC; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light); 
+            margin-bottom: 0; 
+        }
+        
+        .ans-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; page-break-inside: avoid;}
+        .ans-table th { background: #F1F5F9; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt; font-weight: bold; color: var(--text-heading); text-align:center;}
+        .ans-table td { font-weight: 700; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt;}
+
+        .matching-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-dark); page-break-inside: avoid;}
+        .matching-table th { background: #E0E7FF; color: var(--accent); border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt; text-align: center; font-family: var(--font-kh-heading); }
+        .matching-table td { border: 1px solid var(--border-dark); padding: 5px 8px; font-size: 9.5pt; line-height: 1.4; vertical-align: top; }
+
+        .explain-ans-card {
+            background: #F8FAFC;
+            border-left: 4px solid var(--accent);
+            border: 1px solid var(--border-dark);
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+        .explain-ans-card h5 {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .tech-badge-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .tech-badge {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 8.5pt;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* MOBILE & RESPONSIVE DESIGN */
+        @media screen and (max-width: 850px) {
+            body { padding: 10px 5px; }
+            .no-print-bar { width: 100%; flex-direction: column; gap: 10px; text-align: center; }
+            .a4-page {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                padding: 15px 12px !important;
+                margin-bottom: 15px !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            }
+            .global-header { flex-direction: column; text-align: center; gap: 8px; }
+            .header-item { width: 100%; }
+            .mcq-opts, .topic-toc-box ul { grid-template-columns: 1fr !important; }
+            table.standard-table, table.matching-table, table.toc-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        /* PRINT SPECIFIC STYLES */
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print-bar { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <p><b><i class="fa-solid fa-file-pdf text-blue"></i> ណែនាំបោះពុម្ព៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print ជា PDF។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF</button>
+</div>
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>សាកលវិទ្យាល័យអង្គរ | ANGKOR UNIVERSITY</h1><p>FACULTY OF SCIENCE & TECHNOLOGY</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #EEF2FF 0%, #FFFFFF 100%); border-radius: 8px;">
+        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 120px; margin-bottom: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" alt="Logo">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 20pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 10pt; color: var(--text-muted); margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div class="tech-badge-bar">
+            <span class="tech-badge"><i class="fa-solid fa-layer-group"></i> PHP 8 Arrays & Collections</span>
+            <span class="tech-badge"><i class="fa-solid fa-gears"></i> Built-in & Custom Functions</span>
+            <span class="tech-badge"><i class="fa-solid fa-cubes"></i> Modular Architecture (DRY)</span>
+        </div>
+
+        <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 14px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (CS / IT)
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ៣ (Professional & Academic Edition)</div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 16pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">Arrays, Functions & Modular Code<br>(ការគ្រប់គ្រងទិន្នន័យសំណុំ, អនុគមន៍ និងការរៀបចំកូដជាចំណែក)</h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 18px; font-weight: 600;">Indexed/Associative/Multidimensional Arrays, Built-in Functions, Void & Return Value Custom Functions, PHP 8 Arrow Functions, Include/Require Directives & Comparison</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
+            <p style="font-family: var(--font-kh-body); font-size: 10pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 11.5pt;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 2: LLO & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> ១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLO)</div>
+        <ul class="obj-list">
+            <li><b>LLO 3.1:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">កំណត់ និងបកស្រាយ</span> រចនាសម្ព័ន្ធ Array ទាំង ៣ ប្រភេទក្នុង PHP (Indexed Array, Associative Array, និង Multidimensional Array) ព្រមទាំងការប្រើប្រាស់ <code>foreach</code> loop រំលឹកធាតុ។</li>
+            <li><b>LLO 3.2:</b> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">ប្រើប្រាស់</span> Built-in Functions សំខាន់ៗរបស់ PHP សម្រាប់ចាត់ចែងទិន្នន័យបែប Array, String, និង Debugging/Inspection។</li>
+            <li><b>LLO 3.3:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">រចនា និងសរសេរ</span> User Defined Functions ទាំងប្រភេទ None Return Value (Void) និង Return Value (មាន/គ្មាន Parameters) ព្រមទាំងអនុវត្ត PHP 8 Strict Types និង Arrow Functions (<code>fn()</code>)។</li>
+            <li><b>LLO 3.4:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="highlight">វិភាគ និងប្រៀបធៀប</span> បញ្ជាតភ្ជាប់ឯកសារ <code>include()</code>, <code>require()</code>, <code>include_once()</code>, និង <code>require_once()</code> តាមរយៈតារាងប្រៀបធៀប និងអនុវត្តគោលការណ៍ DRY (Don't Repeat Yourself)។</li>
+            <li><b>LLO 3.5:</b> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">បង្កើត</span> រចនាសម្ព័ន្ធ Web Application តាមបែប <b>Modular Architecture</b> ដោយបំបែក Header, Footer, Configuration, និង Business Logic យ៉ាងត្រឹមត្រូវ។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀន (Lesson Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Sub-Topics)</th>
+                    <th style="width:20%; text-align:center;">Bloom's Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៣.១</td><td>ប្រភេទទិន្នន័យសំណុំ អារ៉េ (Indexed, Associative & Multidimensional Arrays)</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td class="toc-num">៣.២</td><td>អនុគមន៍ដែលផ្តល់ស្រាប់ (Built-in Functions: Array, String & Inspection)</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៣.៣</td><td>អនុគមន៍បង្កើតដោយអ្នកប្រើប្រាស់ (User Defined Functions - Void & Return Categories)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td class="toc-num">៣.៤</td><td>លក្ខណៈពិសេសអនុគមន៍ PHP 8 (Strict Types, Default Arguments & Arrow Functions)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td class="toc-num">៣.៥</td><td>ការរៀបចំកូដជាចំណែក (Modular Code: include, require, include_once, require_once & Comparison Table)</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 3: SECTION 3.1 ARRAYS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <i class="fa-solid fa-book-open text-blue"></i> ៣. ខ្លឹមសារលម្អិតនៃមេរៀន (Detailed Lesson Contents)
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-layer-group"></i> ៣.១ ប្រភេទទិន្នន័យសំណុំ អារ៉េ (PHP Arrays) <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></div>
+
+        <div class="topic-toc-box">
+            <div class="topic-toc-title"><i class="fa-solid fa-list-ul"></i> មាតិកានៃ ៣.១ ៖</div>
+            <ul>
+                <li><b>៣.១.១</b> Indexed Array (អារ៉េតាមលំដាប់សន្ទស្សន៍)</li>
+                <li><b>៣.១.២</b> Associative Array (អារ៉េតាមគូសោ-តម្លៃ Key-Value)</li>
+                <li><b>៣.១.៣</b> Multidimensional Array (អារ៉េពហុវិមាត្រ)</li>
+            </ul>
+        </div>
+
+        <!-- 3.1.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-list-ol text-blue"></i> ៣.១.១ Indexed Array (អារ៉េតាមលំដាប់សន្ទស្សន៍) <span class="bloom-tag bloom-c1">C1</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>Indexed Array</b> គឺជាសំណុំទិន្នន័យដែលរក្សាទុកធាតុនីមួយៗដោយប្រើប្រាស់សន្ទស្សន៍ជាលេខ (Numeric Index) ស្វ័យប្រវត្តិ ចាប់ផ្តើមរាប់ពី <code>0</code>, <code>1</code>, <code>2</code>... បន្តបន្ទាប់។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">$array_name = [item0, item1, item2, ...];
+$first_item = $array_name[0]; // ចូលប្រើប្រាស់ធាតុតាមសន្ទស្សន៍លេខ</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">indexed_array.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$languages</span> = [<span class="cv-str">"PHP 8"</span>, <span class="cv-str">"JavaScript"</span>, <span class="cv-str">"SQL"</span>];
+<span class="cv-fn">echo</span> <span class="cv-str">"ភាសាទី១៖ "</span> . <span class="cv-var">$languages</span>[<span class="cv-num">0</span>] . <span class="cv-str">" | ភាសាទី៣៖ "</span> . <span class="cv-var">$languages</span>[<span class="cv-num">2</span>];
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">ភាសាទី១៖ PHP 8 | ភាសាទី៣៖ SQL</div></div>
+        </div>
+
+        <!-- 3.1.2 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-key text-blue"></i> ៣.១.២ Associative Array (អារ៉េតាមគូសោ-តម្លៃ) <span class="bloom-tag bloom-c2">C2</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>Associative Array</b> គឺជាអារ៉េដែលប្រើប្រាស់ <b>Named Keys (String)</b> ភ្ជាប់ទៅកាន់តម្លៃ (Key => Value Pair) ដែលងាយស្រួលតំណាងឱ្យព័ត៌មានជាក់លាក់ (ឧទាហរណ៍៖ Student Record)។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">$array_name = [
+    "key1" => value1,
+    "key2" => value2
+];
+$value = $array_name["key1"]; // ចូលប្រើប្រាស់ធាតុតាមឈ្មោះ Key</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">assoc_array.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$student</span> = [
+    <span class="cv-str">"id"</span> =&gt; <span class="cv-str">"AU-CS-001"</span>,
+    <span class="cv-str">"name"</span> =&gt; <span class="cv-str">"សុខ ជា"</span>,
+    <span class="cv-str">"gpa"</span> =&gt; <span class="cv-num">3.85</span>
+];
+<span class="cv-fn">echo</span> <span class="cv-str">"អត្តលេខ៖ {$student['id']} | ឈ្មោះ៖ {$student['name']} | GPA: {$student['gpa']}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">អត្តលេខ៖ AU-CS-001 | ឈ្មោះ៖ សុខ ជា | GPA: 3.85</div></div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 4: MULTIDIMENSIONAL & BUILT-IN FUNCTIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 3.1.3 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-cubes text-blue"></i> ៣.១.៣ Multidimensional Array (អារ៉េពហុវិមាត្រ) <span class="bloom-tag bloom-c2">C2</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>Multidimensional Array</b> គឺជាអារ៉េដែលមានផ្ទុកអារ៉េមួយទៀត ឬច្រើននៅខាងក្នុងវា (Array of Arrays) ប្រើប្រាស់សម្រាប់តំណាងឱ្យទិន្នន័យតារាង (Database Result Sets)។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">$matrix = [
+    ["key1" => val1, "key2" => val2],
+    ["key1" => val3, "key2" => val4]
+];
+$val = $matrix[row_index]["key_name"];</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">multi_array.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$products</span> = [
+    [<span class="cv-str">"title"</span> =&gt; <span class="cv-str">"Laptop Dell"</span>, <span class="cv-str">"price"</span> =&gt; <span class="cv-num">850</span>],
+    [<span class="cv-str">"title"</span> =&gt; <span class="cv-str">"Mouse Logitech"</span>, <span class="cv-str">"price"</span> =&gt; <span class="cv-num">25</span>]
+];
+<span class="cv-fn">echo</span> <span class="cv-str">"ទំនិញទី១៖ "</span> . <span class="cv-var">$products</span>[<span class="cv-num">0</span>][<span class="cv-str">"title"</span>] . <span class="cv-str">" - តម្លៃ៖ "</span> . <span class="cv-var">$products</span>[<span class="cv-num">0</span>][<span class="cv-str">"price"</span>] . <span class="cv-str">" $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">ទំនិញទី១៖ Laptop Dell - តម្លៃ៖ 850 $</div></div>
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-wrench"></i> ៣.២ អនុគមន៍ដែលផ្តល់ស្រាប់ (Built-in Functions) <span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 3.2.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-gears text-blue"></i> ៣.២.១ អនុគមន៍ Built-in សម្រាប់ Array, String & Inspection <span class="bloom-tag bloom-c2">C2</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>Built-in Functions</b> គឺជាអនុគមន៍ដែលមានស្រាប់ក្នុង PHP Core ដែលផ្តល់ភាពងាយស្រួលក្នុងការចាត់ចែងទិន្នន័យដោយមិនបាច់សរសេរ Logic ឡើងវិញឡើយ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">count($array);               // រាប់ចំនួនធាតុក្នុង Array
+array_push($array, $val);     // បន្ថែមធាតុទៅចុង Array
+in_array($val, $array);       // ត្រួតពិនិត្យវត្តមានធាតុ (Returns bool)
+strlen($string);              // រាប់ប្រវែងអក្សរ String
+var_dump($variable);          // បង្ហាញ Data Type, Length & Value</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">builtin_functions.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$fruits</span> = [<span class="cv-str">"Apple"</span>, <span class="cv-str">"Banana"</span>];
+<span class="cv-fn">array_push</span>(<span class="cv-var">$fruits</span>, <span class="cv-str">"Orange"</span>); <span class="cv-cm">// បន្ថែម "Orange" ទៅខាងចុង</span>
+
+<span class="cv-var">$appName</span> = <span class="cv-str">"angkor portal"</span>;
+<span class="cv-var">$upperName</span> = <span class="cv-fn">strtoupper</span>(<span class="cv-var">$appName</span>);
+
+<span class="cv-fn">echo</span> <span class="cv-str">"ចំនួនធាតុ៖ "</span> . <span class="cv-fn">count</span>(<span class="cv-var">$fruits</span>) . <span class="cv-str">" | ឈ្មោះធំ៖ {$upperName}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">ចំនួនធាតុ៖ 3 | ឈ្មោះធំ៖ ANGKOR PORTAL</div></div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 5: USER DEFINED FUNCTIONS (PART 1 - VOID FUNCTIONS) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-code"></i> ៣.៣ អនុគមន៍បង្កើតដោយអ្នកប្រើប្រាស់ (User Defined Functions) <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></div>
+
+        <div class="topic-toc-box">
+            <div class="topic-toc-title"><i class="fa-solid fa-list-ul"></i> រចនាសម្ព័ន្ធបែងចែក User Defined Functions ៖</div>
+            <ul>
+                <li><b>៣.៣.១</b> Function None Return Value (Void) - គ្មាន Return</li>
+                <li><b>៣.៣.២</b> Function Return Value - មាន Return Value</li>
+            </ul>
+        </div>
+
+        <div class="sub-heading" style="border-left-color: var(--secondary);"><i class="fa-solid fa-arrow-right-from-bracket"></i> ៣.៣.១ Function None Return Value (Void Function - គ្មាន Return)</div>
+
+        <!-- 3.3.1.A CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-terminal text-blue"></i> ក. Function None Return Value - Without Parameter (គ្មាន Return & គ្មាន ប៉ារ៉ាម៉ែត្រ) <span class="bloom-tag bloom-c3">C3</span></h4>
+            <div class="text-block">ជាអនុគមន៍ដែលគ្រាន់តែប្រតិបត្តិកូដមួយចំនួន (ដូចជាបង្ហាញ UI) ដោយមិនទទួលប៉ារ៉ាម៉ែត្រពីខាងក្រៅ និងមិនបញ្ជូនតម្លៃ <code>return</code> ចេញមកក្រៅវិញឡើយ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">function functionName(): void {
+    // Statements to execute (e.g., echo)
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">func_void_noparam.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// 1. Function None Return Value - Without Parameter</span>
+<span class="cv-kw">function</span> <span class="cv-fn">showHeaderBanner</span>(): <span class="cv-tag">void</span> {
+    <span class="cv-fn">echo</span> <span class="cv-str">"====================================&lt;br&gt;"</span>;
+    <span class="cv-fn">echo</span> <span class="cv-str">"&lt;h3&gt;ប្រព័ន្ធគ្រប់គ្រងនិស្សិត សាកលវិទ្យាល័យអង្គរ&lt;/h3&gt;"</span>;
+    <span class="cv-fn">echo</span> <span class="cv-str">"====================================&lt;br&gt;"</span>;
+}
+
+<span class="cv-cm">// ហៅអនុគមន៍មកប្រកាសប្រតិបត្តិ</span>
+<span class="cv-fn">showHeaderBanner</span>();
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">====================================
+ប្រព័ន្ធគ្រប់គ្រងនិស្សិត សាកលវិទ្យាល័យអង្គរ
+====================================</div></div>
+        </div>
+
+        <!-- 3.3.1.B CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-sliders text-blue"></i> ខ. Function None Return Value - With Parameters (គ្មាន Return & មាន ប៉ារ៉ាម៉ែត្រ) <span class="bloom-tag bloom-c3">C3</span></h4>
+            <div class="text-block">ជាអនុគមន៍ដែលទទួលប៉ារ៉ាម៉ែត្រពីខាងក្រៅមកធ្វើការ ប៉ុន្តែមិនបញ្ជូនតម្លៃ <code>return</code> ឡើយ (ប្រតិបត្តិការបង្ហាញ Output ភ្លាមៗ)។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">function functionName(type $param1, type $param2): void {
+    // Code using $param1 and $param2
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">func_void_withparam.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// 2. Function None Return Value - With Parameters</span>
+<span class="cv-kw">function</span> <span class="cv-fn">printStudentNotice</span>(<span class="cv-tag">string</span> <span class="cv-var">$name</span>, <span class="cv-tag">string</span> <span class="cv-var">$status</span>): <span class="cv-tag">void</span> {
+    <span class="cv-fn">echo</span> <span class="cv-str">"ជំរាបសួរ និស្សិត៖ &lt;b&gt;{$name}&lt;/b&gt; - ស្ថានភាព៖ {$status}&lt;br&gt;"</span>;
+}
+
+<span class="cv-cm">// ហៅអនុគមន៍ដោយបញ្ជូន Parameters</span>
+<span class="cv-fn">printStudentNotice</span>(<span class="cv-str">"សុខ ជា"</span>, <span class="cv-str">"បានចុះឈ្មោះរួចរាល់"</span>);
+<span class="cv-fn">printStudentNotice</span>(<span class="cv-str">"កែវ ណារ៉ា"</span>, <span class="cv-str">"រង់ចាំការផ្ទៀងផ្ទាត់"</span>);
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">ជំរាបសួរ និស្សិត៖ សុខ ជា - ស្ថានភាព៖ បានចុះឈ្មោះរួចរាល់
+ជំរាបសួរ និស្សិត៖ កែវ ណារ៉ា - ស្ថានភាព៖ រង់ចាំការផ្ទៀងផ្ទាត់</div></div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 6: USER DEFINED FUNCTIONS (PART 2 - RETURN VALUE FUNCTIONS) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="border-left-color: var(--success);"><i class="fa-solid fa-right-left"></i> ៣.៣.២ Function Return Value (អនុគមន៍មាន Return Value)</div>
+
+        <!-- 3.3.2.A CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-arrow-rotate-left text-blue"></i> ក. Function Return Value - Without Parameter (មាន Return & គ្មាន ប៉ារ៉ាម៉ែត្រ) <span class="bloom-tag bloom-c3">C3</span></h4>
+            <div class="text-block">ជាអនុគមន៍ដែលមិនទទួលប៉ារ៉ាម៉ែត្រពីខាងក្រៅឡើយ ប៉ុន្តែវាទាញយក ឬគណនាតម្លៃអ្វីមួយរួចប្រគល់តម្លៃ <code>return</code> ចេញមកក្រៅវិញ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">function functionName(): returnType {
+    // Computation logic
+    return $resultValue;
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">func_return_noparam.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// 3. Function Return Value - Without Parameter</span>
+<span class="cv-kw">function</span> <span class="cv-fn">getAcademicYear</span>(): <span class="cv-tag">string</span> {
+    <span class="cv-var">$startYear</span> = <span class="cv-num">2025</span>;
+    <span class="cv-var">$endYear</span> = <span class="cv-num">2026</span>;
+    <span class="cv-kw">return</span> <span class="cv-str">"ឆ្នាំសិក្សា {$startYear}-{$endYear}"</span>;
+}
+
+<span class="cv-var">$currentAcademicYear</span> = <span class="cv-fn">getAcademicYear</span>();
+<span class="cv-fn">echo</span> <span class="cv-str">"ព័ត៌មាន៖ "</span> . <span class="cv-var">$currentAcademicYear</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">ព័ត៌មាន៖ ឆ្នាំសិក្សា 2025-2026</div></div>
+        </div>
+
+        <!-- 3.3.2.B CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-calculator text-blue"></i> ខ. Function Return Value - With Parameters (មាន Return & មាន ប៉ារ៉ាម៉ែត្រ) <span class="bloom-tag bloom-c4">C4</span></h4>
+            <div class="text-block">ជាទម្រង់អនុគមន៍ដែលពេញនិយមបំផុតក្នុងឧស្សាហកម្ម ដោយទទួលប៉ារ៉ាម៉ែត្រពីខាងក្រៅ យកមកធ្វើការគណនា រួចបញ្ជូនលទ្ធផលត្រឡប់មកវិញតាម <code>return</code>។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">function functionName(type $param1, type $param2): returnType {
+    $result = $param1 + $param2;
+    return $result;
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">func_return_withparam.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// 4. Function Return Value - With Parameters</span>
+<span class="cv-kw">function</span> <span class="cv-fn">calculateFinalScore</span>(<span class="cv-tag">float</span> <span class="cv-var">$midterm</span>, <span class="cv-tag">float</span> <span class="cv-var">$final</span>): <span class="cv-tag">float</span> {
+    <span class="cv-var">$total</span> = (<span class="cv-var">$midterm</span> * <span class="cv-num">0.40</span>) + (<span class="cv-var">$final</span> * <span class="cv-num">0.60</span>);
+    <span class="cv-kw">return</span> <span class="cv-var">$total</span>;
+}
+
+<span class="cv-var">$studentScore</span> = <span class="cv-fn">calculateFinalScore</span>(<span class="cv-num">85.0</span>, <span class="cv-num">90.0</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"ពិន្ទុសរុបចុងក្រោយ៖ {$studentScore} ពិន្ទុ"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">ពិន្ទុសរុបចុងក្រោយ៖ 88 ពិន្ទុ</div></div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 7: MODERN PHP 8 FUNCTION FEATURES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-bolt"></i> ៣.៤ លក្ខណៈពិសេសអនុគមន៍ PHP 8 (Modern PHP Features) <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></div>
+
+        <!-- 3.4.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-shield-halved text-blue"></i> ៣.៤.១ Strict Types, Default Parameters & Arrow Functions (<code>fn()</code>) <span class="bloom-tag bloom-c4">C4</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">PHP ៨ ផ្តល់នូវសមត្ថភាពទំនើបៗជាច្រើនដើម្បីទប់ស្កាត់ Bug ក្នុងកម្រិត Software Production៖
+                <ul style="padding-left: 20px; margin-top: 3px;">
+                    <li><b>Strict Types (<code>declare(strict_types=1);</code>)៖</b> បង្ខំឱ្យប្រព័ន្ធផ្ទៀងផ្ទាត់ Data Type នៃ Parameters និង Return Value យ៉ាងតឹងរ៉ឹងបំផុត។</li>
+                    <li><b>Default Parameter Values៖</b> កំណត់តម្លៃបម្រុងទុកស្វ័យប្រវត្តិ ប្រសិនបើCaller មិនបានផ្ញើ Parameter មក។</li>
+                    <li><b>Arrow Functions (<code>fn() => expression</code>)៖</b> ទម្រង់សរសេរ Function កាត់ខ្លីក្នុង PHP 8 ដែលចាប់យក Outer Variables ស្វ័យប្រវត្តិ។</li>
+                </ul>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">declare(strict_types=1);
+
+function funcName(type $param = defaultValue): returnType { return $val; }
+
+$arrowFn = fn(type $param): returnType => expression;</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> ខ. កូដ PHP ពេញលេញ (Light Code Theme)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">php8_advanced_functions.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-cm">// 1. Function ជាមួយ Default Parameter Value & Type Declarations</span>
+<span class="cv-kw">function</span> <span class="cv-fn">calcPriceWithTax</span>(<span class="cv-tag">float</span> <span class="cv-var">$price</span>, <span class="cv-tag">float</span> <span class="cv-var">$taxRate</span> = <span class="cv-num">0.10</span>): <span class="cv-tag">float</span> {
+    <span class="cv-kw">return</span> <span class="cv-var">$price</span> + (<span class="cv-var">$price</span> * <span class="cv-var">$taxRate</span>);
+}
+
+<span class="cv-cm">// 2. Modern PHP 8 Arrow Function</span>
+<span class="cv-var">$factor</span> = <span class="cv-num">2</span>;
+<span class="cv-var">$doubleFn</span> = <span class="cv-kw">fn</span>(<span class="cv-tag">int</span> <span class="cv-var">$n</span>): <span class="cv-tag">int</span> =&gt; <span class="cv-var">$n</span> * <span class="cv-var">$factor</span>;
+
+<span class="cv-fn">echo</span> <span class="cv-str">"Price + Default Tax: "</span> . <span class="cv-fn">calcPriceWithTax</span>(<span class="cv-num">100.0</span>) . <span class="cv-str">" $&lt;br&gt;"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"Arrow Fn Result: "</span> . <span class="cv-var">$doubleFn</span>(<span class="cv-num">15</span>);
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+            <div class="output-window"><div class="output-header">Output</div><div class="output-body">Price + Default Tax: 110 $
+Arrow Fn Result: 30</div></div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 8: MODULAR CODE & FILE INCLUSION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-diagram-project"></i> ៣.៥ ការរៀបចំកូដជាចំណែក (Modular Code & File Inclusion) <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span></div>
+
+        <!-- 3.5.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-file-import text-blue"></i> ៣.៥.១ បញ្ជាតភ្ជាប់ឯកសារ (include, require, include_once, require_once) <span class="bloom-tag bloom-c4">C4</span></h4>
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>Modular Architecture</b> គឺជាការបំបែកកូដជាចំណែកៗ (Header, Footer, Navigation, Config, Business Logic) ទៅក្នុងឯកសារដាច់ដោយឡែកពីគ្នា ដើម្បីភាពងាយស្រួលថែទាំ និងជៀសវាងការសរសេរកូដដដែលៗ (គោលការណ៍ **DRY - Don't Repeat Yourself**)។ PHP មានបញ្ជា ៤ សម្រាប់តភ្ជាប់ឯកសារ៖
+                <ul style="padding-left: 20px; margin-top: 4px;">
+                    <li><b><code>include()</code>:</b> បើកឯកសារមកប្រើ។ ប្រសិនបើបាត់ឯកសារ វានឹងបោះតែ <b>Warning</b> ហើយ **បន្តប្រកាសប្រតិបត្តិកូដខាងក្រោមទៀត**។</li>
+                    <li><b><code>require()</code>:</b> បើកឯកសារមកប្រើ។ ប្រសិនបើបាត់ឯកសារ វានឹងបោះ <b>Fatal Error</b> ហើយ **បញ្ឈប់កម្មវិធីភ្លាមៗ**។</li>
+                    <li><b><code>include_once()</code>:</b> បើករកឯកសារ។ ប្រសិនបើឯកសារធ្លាប់ត្រូវបាន Load រួចហើយ វានឹងមិន Load ជាន់គ្នាជាលើកទី២ ឡើយ (Warning បើបាត់)។</li>
+                    <li><b><code>require_once()</code>:</b> បើករកឯកសារ។ ធានាថា Load តែ **១ ដងគត់** និងបោះ **Fatal Error** ឈប់រត់ភ្លាមបើបាត់ឯកសារ។</li>
+                </ul>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">include "filename.php";
+require "filename.php";
+include_once "filename.php";
+require_once "filename.php";</div>
+
+            <div class="content-label"><i class="fa-solid fa-table"></i> ខ. តារាងប្រៀបធៀបបញ្ជាតភ្ជាប់ឯកសារទាំង ៤ (Directive Comparison Table)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:18%;">បញ្ជា (Directive)</th>
+                        <th style="width:22%;">ពេលបាត់ឯកសារ (Missing File Error)</th>
+                        <th style="width:25%;">ការបន្តរត់កូដ (Execution Flow)</th>
+                        <th style="width:15%;">ការពារ Load ជាន់គ្នា</th>
+                        <th style="width:20%;">ករណីប្រើប្រាស់សមស្រប (Industry Best Practice)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b><code>include()</code></b></td>
+                        <td><span style="color:var(--warning); font-weight:bold;">E_WARNING</span></td>
+                        <td>បន្តរត់កូដខាងក្រោមធម្មតា</td>
+                        <td>គ្មាន</td>
+                        <td>HTML Templates មិនសូវសំខាន់ (Sidebar, Ads)</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>require()</code></b></td>
+                        <td><span style="color:var(--danger); font-weight:bold;">E_COMPILE_ERROR (Fatal)</span></td>
+                        <td>បញ្ឈប់ Script ភ្លាមៗ</td>
+                        <td>គ្មាន</td>
+                        <td>ឯកសារសំខាន់ចាំបាច់ (HTML Header, Layout)</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>include_once()</code></b></td>
+                        <td><span style="color:var(--warning); font-weight:bold;">E_WARNING</span></td>
+                        <td>បន្តរត់កូដខាងក្រោមធម្មតា</td>
+                        <td><span style="color:var(--success); font-weight:bold;">មាន</span></td>
+                        <td>Optional Helper Scripts, Extension Libraries</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>require_once()</code></b></td>
+                        <td><span style="color:var(--danger); font-weight:bold;">E_COMPILE_ERROR (Fatal)</span></td>
+                        <td>បញ្ឈប់ Script ភ្លាមៗ</td>
+                        <td><span style="color:var(--success); font-weight:bold;">មាន</span></td>
+                        <td><b><span style="color:var(--success);">ណែនាំខ្ពស់បំផុត</span></b> (DB Config, Functions, Classes)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Light Code Theme - Modular Layout)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">index.php (Main Entry Point File)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// 1. Load Essential Config & Helper Functions Once</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">"config.php"</span>;
+<span class="cv-kw">require_once</span> <span class="cv-str">"functions.php"</span>;
+
+<span class="cv-cm">// 2. Render Page Header</span>
+<span class="cv-kw">require</span> <span class="cv-str">"header.php"</span>;
+<span class="cv-tag">?&gt;</span>
+&lt;main class="container"&gt;
+    &lt;h2&gt;ស្វាគមន៍មកកាន់៖ <span class="cv-tag">&lt;?=</span> APP_NAME <span class="cv-tag">?&gt;</span>&lt;/h2&gt;
+    &lt;p&gt;នេះជាទំព័រដើមដែលត្រូវបានរៀបចំតាមបែប Modular Architecture។&lt;/p&gt;
+&lt;/main&gt;
+<span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// 3. Render Page Footer</span>
+<span class="cv-kw">include</span> <span class="cv-str">"footer.php"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 9: GLOSSARY & SUMMARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                    <th style="width: 28%;">ឈ្មោះពេញ / ប្រភពពាក្យ</th>
+                    <th style="width: 35%;">ការពន្យល់ន័យជាភាសាខ្មែរ</th>
+                    <th style="width: 15%; text-align:center;">Bloom Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>Indexed Array</b></td><td>Numeric Index Collection</td><td>អារ៉េដែលប្រើប្រាស់សន្ទស្សន៍ជាលេខរៀង (0, 1, 2...)។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Associative Array</b></td><td>Key-Value Pair Collection</td><td>អារ៉េដែលប្រើប្រាស់ឈ្មោះ (String Key) ភ្ជាប់ទៅកាន់តម្លៃ។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>Void Function</b></td><td>None Return Value Function</td><td>អនុគមន៍ដែលមិនប្រគល់តម្លៃ <code>return</code> ចេញមកក្រៅវិញឡើយ។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>Return Value</b></td><td>Function Output Value</td><td>តម្លៃដែលបញ្ជូនចេញពី Function តាមបញ្ជា <code>return</code>។</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td><b>DRY Principle</b></td><td>Don't Repeat Yourself</td><td>គោលការណ៍សរសេរកូដជៀសវាងការស្ទួន តាមរយៈការបង្កើត Function/Module។</td><td style="text-align:center;"><span class="bloom-tag bloom-c5">C5</span></td></tr>
+                <tr><td><b>require_once</b></td><td>Strict File Inclusion</td><td>បញ្ជាហៅឯកសារមកប្រើតែ ១ ដង និងបោះ Fatal Error បើបាត់ឯកសារ។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Lesson Summary)</div>
+        <div class="text-block">
+            មេរៀនទី ៣ នេះបានផ្តល់នូវគ្រឹះយ៉ាងរឹងមាំលើការចាត់ចែងសំណុំទិន្នន័យ និងការរៀបចំកូដឱ្យមានរចនាសម្ព័ន្ធស្អាតបាត (Clean Code) តាមស្តង់ដារវិជ្ជាជីវៈ៖
+        </div>
+
+        <ul class="obj-list">
+            <li><b class="highlight">១. ប្រភេទទិន្នន័យ អារ៉េ៖</b> PHP គាំទ្រ Indexed Array (សន្ទស្សន៍លេខ), Associative Array (Key => Value), និង Multidimensional Array (អារ៉េជាន់គ្នា)។</li>
+            <li><b class="highlight">២. Built-in Functions:</b> PHP មាន Built-in Functions ស្រាប់ៗជាច្រើនដូចជា <code>count()</code>, <code>array_push()</code>, <code>in_array()</code>, <code>strlen()</code>, និង <code>var_dump()</code>។</li>
+            <li><b class="highlight">៣. User Defined Functions:</b> ត្រូវបានបែងចែកជា ២ ក្រុមធំៗ៖ <b>None Return Value (Void)</b> និង <b>Return Value</b> (ដែលមាន/គ្មាន Parameters) ព្រមទាំងគាំទ្រ Strict Types និង Arrow Functions ក្នុង PHP 8។</li>
+            <li><b class="highlight">៤. Modular Code Structure:</b> ការប្រើប្រាស់ <code>require_once</code> (សម្រាប់ DB Config, Functions) និង <code>include</code> (សម្រាប់ Layout Headers/Footers) ជួយបំបែកកូដជាចំណែកៗ ស្របតាមគោលការណ៍ DRY។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 10: REVIEW QUESTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:6px; border-left:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-pen-to-square"></i> ៦. សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">៦.ក. សំណួរ ខុស/ត្រូវ (True/False - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>សន្ទស្សន៍ (Index) ដំបូងបង្អស់នៃ Indexed Array ក្នុង PHP គឺចាប់ផ្តើមពីលេខ <code>1</code> ជានិច្ច។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Associative Array ប្រើប្រាស់ Named Keys ជា String ដើម្បីភ្ជាប់ទៅកាន់តម្លៃ (Key => Value)។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>Function ប្រភេទ None Return Value (Void) ប្រើប្រាស់បញ្ជា <code>return</code> ដើម្បីបញ្ជូនតម្លៃចេញមកក្រៅ។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>ប្រសិនបើហៅ <code>include()</code> លើឯកសារដែលគ្មានពិតប្រាកដ PHP នឹងបោះ Warning ហើយបន្តរត់កូដខាងក្រោមទៀត។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>បញ្ជា <code>require_once()</code> ធានាថានឹង Load ឯកសារតែ ១ ដងគត់ក្នុងដំណើរការ Script។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>ប្រសិនបើហៅ <code>require()</code> លើឯកសារដែលបាត់បង់ PHP នឹងបោះ Fatal Error ហើយបញ្ឈប់កម្មវិធីភ្លាមៗ។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>អនុគមន៍ <code>count()</code> ប្រើប្រាស់សម្រាប់រាប់ប្រវែងអក្សររបស់ String តែប៉ុណ្ណោះ។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>PHP 8 Arrow Functions សរសេរឡើងដោយប្រើប្រាស់ syntax <code>fn() => expression</code>។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>គោលការណ៍ DRY ឈរលើពាក្យពេញថា "Don't Repeat Yourself"។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>អនុគមន៍ <code>include_once()</code> បោះ Fatal Error និងបញ្ឈប់ Script ប្រសិនបើបាត់ឯកសារ។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:6px;">៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>តើអនុគមន៍មួយណាប្រើសម្រាប់បន្ថែមធាតុថ្មីទៅចុងបញ្ចប់នៃ អារ៉េ? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. array_pop()</li><li>B. array_push()</li><li>C. count()</li><li>D. in_array()</li></ul>
+            </li>
+            <li>តើបញ្ជា (Directive) មួយណាដែលបោះ <b>Fatal Error</b> និងបញ្ឈប់ Script ប្រសិនបើបាត់ឯកសារ? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. include()</li><li>B. include_once()</li><li>C. require()</li><li>D. readfile()</li></ul>
+            </li>
+            <li>តើអនុគមន៍ប្រភេទណាដែល **គ្មានបញ្ជា <code>return</code>** នៅក្នុងកូដ Logic របស់វា? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. Return Value Function</li><li>B. None Return Value (Void)</li><li>C. Arrow Function</li><li>D. Built-in Function</li></ul>
+            </li>
+            <li>តើអនុគមន៍មួយណាប្រើសម្រាប់ត្រួតពិនិត្យថាតើតម្លៃមួយមាននៅក្នុង អារ៉េ ឬទេ? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. in_array()</li><li>B. is_array()</li><li>C. count()</li><li>D. array_keys()</li></ul>
+            </li>
+            <li>តើអត្ថប្រយោជន៍ចម្បងនៃ <code>require_once()</code> ធៀបនឹង <code>require()</code> គឺអ្វី? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. មិនបោះ Error ឡើយ</li><li>B. ការពារការ Load ឯកសារស្ទួនជាន់គ្នា</li><li>C. រត់លឿនជាង ១០ដង</li><li>D. បំប្លែងជា HTML ស្វ័យប្រវត្តិ</li></ul>
+            </li>
+            <li>តើអនុគមន៍ <code>strlen($str)</code> ប្រគល់លទ្ធផលជាប្រភេទទិន្នន័យអ្វី? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. String</li><li>B. Integer</li><li>C. Boolean</li><li>D. Array</li></ul>
+            </li>
+            <li>តើបញ្ជា <code>return</code> ក្នុង Function មានតួនាទីអ្វី? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. បញ្ឈប់ Script ទាំងមូល</li><li>B. បញ្ជូនតម្លៃចេញពី Function ទៅ Caller</li><li>C. បង្កើត Loop</li><li>D. បោះ Error</li></ul>
+            </li>
+            <li>តើការប្រកាស <code>declare(strict_types=1);</code> ត្រូវដាក់នៅទីតាំងណា? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. ផ្នែកខាងលើបង្អស់នៃឯកសារ PHP</li><li>B. ខាងក្នុង Function</li><li>C. ផ្នែកខាងក្រោមបង្អស់</li><li>D. ក្នុង <code>php.ini</code></li></ul>
+            </li>
+            <li>តើអនុគមន៍ <code>var_dump()</code> មានប្រយោជន៍អ្វីខ្លះ? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. តែបង្ហាញ Value</li><li>B. បង្ហាញ Type, Length & Value លម្អិត</li><li>C. លុបអថេរ</li><li>D. ភ្ជាប់ DB</li></ul>
+            </li>
+            <li>តើការបំបែក Layout ជា <code>header.php</code> និង <code>footer.php</code> ស្របតាមគោលការណ៍អ្វី? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. OOP Only</li><li>B. DRY (Don't Repeat Yourself)</li><li>C. SOLID Only</li><li>D. MVC Only</li></ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 11: MATCHING & EXPLANATORY QUESTIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ សំណួរ)</div>
+        <table class="matching-table">
+            <thead>
+                <tr>
+                    <th style="width:50%;">ជួរ A (PHP Concept / Function)</th>
+                    <th style="width:50%;">ជួរ B (ការពិពណ៌នា / និយមន័យ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>១. <code>include()</code></td><td>A. ធានា Load ឯកសារតែ ១ ដង និងបោះ Fatal Error បើបាត់ឯកសារ</td></tr>
+                <tr><td>២. <code>require()</code></td><td>B. អនុគមន៍គ្មានបញ្ជា return (គ្រាន់តែបង្ហាញ Output)</td></tr>
+                <tr><td>៣. <code>require_once()</code></td><td>C. បើកឯកសារ បើបាត់គឺបោះ Warning និងបន្តរត់កូដខាងក្រោម</td></tr>
+                <tr><td>៤. <code>Void Function</code></td><td>D. បើកឯកសារ បើបាត់គឺបោះ Fatal Error បញ្ឈប់ Script ភ្លាម</td></tr>
+                <tr><td>៥. <code>Return Function</code></td><td>E. រាប់ចំនួនធាតុសរុបដែលមានក្នុង អារ៉េ</td></tr>
+                <tr><td>៦. <code>count()</code></td><td>F. បញ្ជូនតម្លៃដែលគណនារួចចេញមកក្រៅវិញតាម <code>return</code></td></tr>
+                <tr><td>៧. <code>strlen()</code></td><td>G. បង្ហាញ Data Type, Length និង Value លម្អិតសម្រាប់ Debug</td></tr>
+                <tr><td>៨. <code>var_dump()</code></td><td>H. រាប់ប្រវែងអក្សរសរុបនៃ String</td></tr>
+                <tr><td>៩. <code>fn($x) => $x * 2</code></td><td>I. គោលការណ៍កាត់បន្ថយកូដស្ទួន (Don't Repeat Yourself)</td></tr>
+                <tr><td>១០. <code>DRY</code></td><td>J. Modern PHP 8 Arrow Function Syntax</td></tr>
+            </tbody>
+        </table>
+
+        <!-- SECTION 6.ឃ EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៦.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:3px 0 2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
+        <ol class="q-list">
+            <li><b>Q3.1:</b> ពន្យល់ពីភាពខុសគ្នារវាង Indexed Array និង Associative Array ដោយលើកឧទាហរណ៍ប្រកាសកូដខ្លីៗ។ <span class="bloom-tag bloom-c1">C1 - Remember</span></li>
+            <li><b>Q3.2:</b> រៀបរាប់ពីតួនាទីរបស់ Built-in Functions ៣ រួមមាន៖ <code>count()</code>, <code>strlen()</code>, និង <code>var_dump()</code>។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+            <li><b>Q3.3:</b> ពន្យល់ពីភាពខុសគ្នារវាង Function None Return Value (Void) និង Function Return Value។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="4">
+            <li><b>Q3.4:</b> ធ្វើការប្រៀបធៀបស៊ីជម្រៅរវាង <code>include()</code>, <code>require()</code>, <code>include_once()</code>, និង <code>require_once()</code>។ តើបញ្ជាណាដែលសមស្របបំផុតសម្រាប់ Load Database Configuration? <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q3.5:</b> បកស្រាយពីការរៀបចំ Function ប្រភេទ None Return Value និង Return Value ដែលមាន Parameter ធៀបនឹងគ្មាន Parameter។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+            <li><b>Q3.6:</b> ពន្យល់ពីអត្ថប្រយោជន៍នៃការប្រើប្រាស់ PHP 8 Strict Types (<code>declare(strict_types=1);</code>) ក្នុង Custom Functions។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="7">
+            <li><b>Q3.7:</b> វិភាគពីរបៀបសរសេរ PHP 8 Arrow Functions (<code>fn()</code>) និងរបៀបដែលវាចាប់យក Outer Scope Variables ស្វ័យប្រវត្តិ។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q3.8:</b> បកស្រាយពីការអនុវត្តគោលការណ៍ DRY (Don't Repeat Yourself) ក្នុងការរចនា Modular Layout Architecture សម្រាប់ Web Project ធំៗ។ <span class="bloom-tag bloom-c5">C5 - Evaluate</span></li>
+            <li><b>Q3.9:</b> វិភាគពីរបៀបរៀបចំ និងទាញយកទិន្នន័យពី Multidimensional Associative Arrays ដើម្បីបង្ហាញជា HTML Table ស្មុគស្មាញ។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 12: GRADED CLASSWORK & ASSIGNMENTS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> ៦.ង. កិច្ចការសិក្សា និងការវាយតម្លៃ (Graded Classwork & Team Review)</div>
+        
+        <div class="sub-heading" style="margin-top:4px; color:var(--accent);"><i class="fa-solid fa-users-gear"></i> កិច្ចការក្រុម និងការវិភាគកូដ (Team Code Review Activity) <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span></div>
+        
+        <div class="text-block">
+            <b>ការណែនាំ៖</b> សូមបែងចែកនិស្សិតជាក្រុម (៣-៤ នាក់ក្នុងមួយក្រុម) ដើម្បីសិក្សា វិភាគ និងស្វែងរក Bug ក្នុង Snippet ខាងក្រោម ព្រមទាំងធ្វើការ Refactor ឱ្យត្រូវតាមស្តង់ដារ **PHP 8 Strict Types, Helper Functions & Modular Layout**៖
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--danger); margin-top:4px;">• Problem Snippet (កូដស្ទួន និងគ្មាន Type Safety)៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">buggy_store_script.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// Duplicate code without DRY, missing strict types, unsafe include</span>
+<span class="cv-kw">include</span> <span class="cv-str">"header.php"</span>; <span class="cv-cm">// Unsafe if header is missing!</span>
+
+<span class="cv-var">$price1</span> = <span class="cv-num">100</span>; <span class="cv-var">$tax1</span> = <span class="cv-var">$price1</span> * <span class="cv-num">0.10</span>; <span class="cv-var">$total1</span> = <span class="cv-var">$price1</span> + <span class="cv-var">$tax1</span>;
+<span class="cv-var">$price2</span> = <span class="cv-num">200</span>; <span class="cv-var">$tax2</span> = <span class="cv-var">$price2</span> * <span class="cv-num">0.10</span>; <span class="cv-var">$total2</span> = <span class="cv-var">$price2</span> + <span class="cv-var">$tax2</span>;
+
+<span class="cv-fn">echo</span> <span class="cv-str">"Total 1: "</span> . <span class="cv-var">$total1</span> . <span class="cv-str">" | Total 2: "</span> . <span class="cv-var">$total2</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--success); margin-top:6px;">• ភារកិច្ចរបស់និស្សិត (Student Tasks)៖</div>
+        <ol class="q-list" style="margin-top:2px;">
+            <li><b>Task 1 (<span class="bloom-tag bloom-c4">C4</span>)៖</b> ចែករំលែក និងកំណត់ចំណុចខ្វះខាត ២ ក្នុង Code Snippet ខាងលើ។</li>
+            <li><b>Task 2 (<span class="bloom-tag bloom-c5">C5</span>)៖</b> បង្កើត Custom Function ឈ្មោះ <code>calculateTotal(float $price, float $taxRate = 0.10): float</code> ដើម្បីលុបបំបាត់កូដស្ទួន (DRY)។</li>
+            <li><b>Task 3 (<span class="bloom-tag bloom-c6">C6</span>)៖</b> ប្តូរការប្រើប្រាស់ <code>include</code> មកប្រើ <code>require_once</code> សម្រាប់ Helper/Config Files។</li>
+        </ol>
+
+        <!-- SECTION 6.ច PRACTICAL LABS LISTING -->
+        <div class="sub-heading" style="width: 100%; margin-top:10px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៦.ច. បញ្ជីលំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:2px 0 1px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ លំហាត់]</div>
+        <ol class="q-list">
+            <li><b>Lab 3.1:</b> បង្កើត Indexed Array រក្សាទុកឈ្មោះមុខវិជ្ជា ៥ រួចប្រើប្រាស់ <code>count()</code> និង <code>array_push()</code> បន្ថែម ១ មុខវិជ្ជាទៀត។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 3.2:</b> បង្កើត Function ប្រភេទ **None Return Value - Without Parameter** ដើម្បី echo បង្ហាញ Banner សាលា។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 3.3:</b> បង្កើត Function ប្រភេទ **None Return Value - With Parameters** ទទួល $name និង $age រួច echo បង្ហាញព័ត៌មាន។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:3px 0 1px 0;">[កម្រិតមធ្យម - Medium Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="4">
+            <li><b>Lab 3.4:</b> បង្កើត Function ប្រភេទ **Return Value - Without Parameter** ឈ្មោះ <code>getSystemVersion()</code> បញ្ជូន String ត្រឡប់មកវិញ។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 3.5:</b> បង្កើត Function ប្រភេទ **Return Value - With Parameters** គណនាមធ្យមភាគពិន្ទុ ៣ មុខវិជ្ជា រួច return តម្លៃ Float។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 3.6:</b> បង្កើត <code>header.php</code>, <code>footer.php</code>, និង <code>index.php</code> រួចភ្ជាប់វាដោយ <code>require</code> និង <code>include</code>។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:3px 0 1px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="7">
+            <li><b>Lab 3.7:</b> ប្រើប្រាស់ PHP 8 Arrow Function (<code>fn()</code>) ជាមួយ <code>array_map()</code> ដើម្បីគណនាដំឡើងថ្លៃទំនិញទាំងអស់ក្នុង Array ចំនួន ១៥%។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 3.8:</b> បង្កើត Multidimensional Associative Array នៃនិស្សិត រួចប្រើ <code>foreach</code> និង Return Function គណនានិទ្ទេស (Grade A, B, C, F) បង្ហាញលើ HTML Table។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 3.9:</b> អភិវឌ្ឍ Modular Application មាន <code>config.php</code>, <code>functions.php</code>, <code>header.php</code>, <code>footer.php</code>, និង <code>index.php</code> ដោយប្រើ <code>require_once</code>។ <span class="bloom-tag bloom-c6">C6</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 13: ANSWERS KEY PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:6px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> ៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys & Solutions)</div>
+            
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ក. ចម្លើយ សំណួរ ខុស/ត្រូវ (True/False Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ខ. ចម្លើយ សំណួរ ពហុជ្រើសរើស (MCQ Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>C</td><td>B</td><td>A</td><td>B</td><td>B</td><td>B</td><td>A</td><td>B</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.គ. ចម្លើយ សំណួរ ផ្គូផ្គង (Matching Answers 1-10)</div>
+        <table class="ans-table" style="margin-bottom: 6px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>C</td><td>D</td><td>A</td><td>B</td><td>F</td><td>E</td><td>H</td><td>G</td><td>J</td><td>I</td></tr>
+        </table>
+
+        <!-- SECTION 7.ឃ ANSWERS TO EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q3.1 - Q3.5)</div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--success); margin:2px 0;">[កម្រិតស្រាល - Light/Easy Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q3.1 (Indexed vs Associative Arrays)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Indexed Array ប្រើសន្ទស្សន៍លេខរៀង (ឧទាហរណ៍ <code>$a[0]</code>)។ ឯ Associative Array ប្រើ Named Keys ជា String ភ្ជាប់ទៅ Value (ឧទាហរណ៍ <code>$user['name']</code>) ដែលងាយស្រួលសម្គាល់បរិបទទិន្នន័យ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q3.2 (Built-in Functions Role)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • <code>count($arr)</code>: រាប់ចំនួនធាតុសរុបក្នុង អារ៉េ។<br>
+                • <code>strlen($str)</code>: រាប់ចំនួនអក្សរសរុបនៃ String។<br>
+                • <code>var_dump($var)</code>: បង្ហាញ Data Type, Length និង Value លម្អិតសម្រាប់ Debugging។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q3.3 (Void vs Return Value Functions)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Function None Return Value (Void) គ្រាន់តែប្រតិបត្តិកូដ (ដូចជា <code>echo</code>) ដោយគ្មានបញ្ជា <code>return</code> ឡើយ។ ឯ Function Return Value បញ្ជូនលទ្ធផលចេញមកក្រៅវិញតាមបញ្ជា <code>return</code> សម្រាប់យកទៅប្រើប្រាស់ក្នុង Expressions បន្ត។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q3.4 (Modular Directives Comparison)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                <code>include</code> បោះ Warning ពេលបាត់ឯកសារ និងរត់កូដបន្ត។ <code>require</code> បោះ Fatal Error និងបញ្ឈប់ Script ភ្លាមៗ។ បញ្ជាដែលមាន <code>_once</code> ការពារ Load ឯកសារស្ទួនជាន់គ្នា។ សម្រាប់ DB Config ត្រូវតែប្រើ <code>require_once</code> ជាដាច់ខាត។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q3.5 (Function Classification Breakdown)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • Void W/O Param: <code>function a(): void { echo "A"; }</code><br>
+                • Void With Param: <code>function b(string $p): void { echo $p; }</code><br>
+                • Return W/O Param: <code>function c(): int { return 10; }</code><br>
+                • Return With Param: <code>function d(int $x): int { return $x * 2; }</code>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 14: EXPLANATORY ANSWERS PART 2 & LAB SOLUTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q3.6 (PHP 8 Strict Types Benefits)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                <code>declare(strict_types=1);</code> បង្ខំឱ្យ PHP ផ្ទៀងផ្ទាត់ Type យ៉ាងតឹងរ៉ឹង បដិសេធការបំប្លែង Type ស្វ័យប្រវត្តិដោយអចេតនា និងទប់ស្កាត់ Bug ធ្ងន់ធ្ងរក្នុង Enterprise Systems។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q3.7 (PHP 8 Arrow Functions Mechanics)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Arrow Function (<code>fn($x) => $x * $factor</code>) ចាប់យកអថេរ <code>$factor</code> ពី Outer Scope ដោយស្វ័យប្រវត្តិ (Auto-capture by value) ដោយមិនបាច់សរសេរ <code>use ($factor)</code> ឡើយ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q3.8 (DRY & Modular Layout)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                ការបំបែក <code>header.php</code>, <code>footer.php</code>, និង <code>config.php</code> ធ្វើឱ្យយើងកែសម្រួល Layout តែមួយកន្លែង និងរំលែកកូដទៅគ្រប់ទំព័រ (Pages) ដោយមិនបាច់ Copy-Paste HTML ឡើយ។
+            </div>
+        </div>
+
+        <!-- SECTION 7.ង LAB SOLUTIONS PART 1 -->
+        <div class="sub-heading" style="margin-top: 8px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-code"></i> ៧.ង. ដំណោះស្រាយលំហាត់អនុវត្តន៍ (Practical Lab Solutions 3.1 - 3.4)</div>
+        
+        <!-- LAB 3.1 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:2px;">• ដំណោះស្រាយ Lab 3.1 (Indexed Array & Push) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab3_1.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$subjects</span> = [<span class="cv-str">"PHP"</span>, <span class="cv-str">"MySQL"</span>, <span class="cv-str">"HTML"</span>, <span class="cv-str">"CSS"</span>, <span class="cv-str">"JS"</span>];
+<span class="cv-fn">array_push</span>(<span class="cv-var">$subjects</span>, <span class="cv-str">"Laravel"</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"ចំនួនមុខវិជ្ជាសរុប៖ "</span> . <span class="cv-fn">count</span>(<span class="cv-var">$subjects</span>);
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 3.2 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 3.2 (Void Function - No Param) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab3_2.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">function</span> <span class="cv-fn">showSchoolBanner</span>(): <span class="cv-tag">void</span> {
+    <span class="cv-fn">echo</span> <span class="cv-str">"&lt;h2&gt;សាកលវិទ្យាល័យអង្គរ - ANGKOR UNIVERSITY&lt;/h2&gt;"</span>;
+}
+<span class="cv-fn">showSchoolBanner</span>();
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 3.3 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 3.3 (Void Function - With Param) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab3_3.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">function</span> <span class="cv-fn">displayUser</span>(<span class="cv-tag">string</span> <span class="cv-var">$name</span>, <span class="cv-tag">int</span> <span class="cv-var">$age</span>): <span class="cv-tag">void</span> {
+    <span class="cv-fn">echo</span> <span class="cv-str">"ឈ្មោះ៖ {$name} | អាយុ៖ {$age} ឆ្នាំ"</span>;
+}
+<span class="cv-fn">displayUser</span>(<span class="cv-str">"សុខ ជា"</span>, <span class="cv-num">21</span>);
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 15: PRACTICAL LAB SOLUTIONS PART 2 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 3.4 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 3.4 (Return Function - No Param) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab3_4.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">function</span> <span class="cv-fn">getSystemVersion</span>(): <span class="cv-tag">string</span> {
+    <span class="cv-kw">return</span> <span class="cv-str">"Angkor Portal v2.5 (PHP 8.2)"</span>;
+}
+<span class="cv-fn">echo</span> <span class="cv-str">"កំណែប្រព័ន្ធ៖ "</span> . <span class="cv-fn">getSystemVersion</span>();
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 3.5 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 3.5 (Return Function - With Param) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab3_5.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+<span class="cv-kw">function</span> <span class="cv-fn">calcAverage</span>(<span class="cv-tag">float</span> <span class="cv-var">$m1</span>, <span class="cv-tag">float</span> <span class="cv-var">$m2</span>, <span class="cv-tag">float</span> <span class="cv-var">$m3</span>): <span class="cv-tag">float</span> {
+    <span class="cv-kw">return</span> (<span class="cv-var">$m1</span> + <span class="cv-var">$m2</span> + <span class="cv-var">$m3</span>) / <span class="cv-num">3</span>;
+}
+<span class="cv-var">$avg</span> = <span class="cv-fn">calcAverage</span>(<span class="cv-num">85.0</span>, <span class="cv-num">90.0</span>, <span class="cv-num">88.0</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"មធ្យមភាគពិន្ទុ៖ "</span> . <span class="cv-fn">round</span>(<span class="cv-var">$avg</span>, <span class="cv-num">2</span>);
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 3.6 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 3.6 (Modular Include) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab3_6_index.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">require</span> <span class="cv-str">"header.php"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"&lt;main&gt;&lt;h2&gt;មាតិកាទំព័រដើម&lt;/h2&gt;&lt;/main&gt;"</span>;
+<span class="cv-kw">include</span> <span class="cv-str">"footer.php"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 3.7 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 3.7 (PHP 8 Arrow Function with array_map) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab3_7.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$prices</span> = [<span class="cv-num">100</span>, <span class="cv-num">200</span>, <span class="cv-num">300</span>];
+<span class="cv-var">$newPrices</span> = <span class="cv-fn">array_map</span>(<span class="cv-kw">fn</span>(<span class="cv-var">$p</span>) =&gt; <span class="cv-var">$p</span> * <span class="cv-num">1.15</span>, <span class="cv-var">$prices</span>);
+<span class="cv-fn">print_r</span>(<span class="cv-var">$newPrices</span>);
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៥ នៃ ១៦</div>
+    </div>
+</div>
+
+<!-- PAGE 16: LAB 3.8, 3.9 & FINAL CONCLUSION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៣</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 3.8 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 3.8 (Multi-Array & Grade Return Function) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab3_8.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">function</span> <span class="cv-fn">getGrade</span>(<span class="cv-tag">float</span> <span class="cv-var">$s</span>): <span class="cv-tag">string</span> {
+    <span class="cv-kw">if</span> (<span class="cv-var">$s</span> &gt;= <span class="cv-num">80</span>) <span class="cv-kw">return</span> <span class="cv-str">"A"</span>;
+    <span class="cv-kw">if</span> (<span class="cv-var">$s</span> &gt;= <span class="cv-num">70</span>) <span class="cv-kw">return</span> <span class="cv-str">"B"</span>;
+    <span class="cv-kw">return</span> <span class="cv-str">"F"</span>;
+}
+<span class="cv-var">$students</span> = [
+    [<span class="cv-str">"name"</span> =&gt; <span class="cv-str">"សុខ ជា"</span>, <span class="cv-str">"score"</span> =&gt; <span class="cv-num">85.0</span>],
+    [<span class="cv-str">"name"</span> =&gt; <span class="cv-str">"កែវ ណារ៉ា"</span>, <span class="cv-str">"score"</span> =&gt; <span class="cv-num">65.0</span>]
+];
+<span class="cv-kw">foreach</span> (<span class="cv-var">$students</span> <span class="cv-kw">as</span> <span class="cv-var">$st</span>) {
+    <span class="cv-fn">echo</span> <span class="cv-str">"ឈ្មោះ៖ {$st['name']} | និទ្ទេស៖ "</span> . <span class="cv-fn">getGrade</span>(<span class="cv-var">$st</span>[<span class="cv-str">'score'</span>]) . <span class="cv-str">"&lt;br&gt;"</span>;
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 3.9 SOLUTION (FULL MODULAR APPLICATION) -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:6px;">• ដំណោះស្រាយ Lab 3.9 (Full Modular Application with require_once) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">config.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-fn">define</span>(<span class="cv-str">"APP_NAME"</span>, <span class="cv-str">"Angkor Portal"</span>);
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">functions.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">function</span> <span class="cv-fn">formatTitle</span>(<span class="cv-tag">string</span> <span class="cv-var">$t</span>): <span class="cv-tag">string</span> {
+    <span class="cv-kw">return</span> <span class="cv-str">"*** "</span> . <span class="cv-fn">strtoupper</span>(<span class="cv-var">$t</span>) . <span class="cv-str">" ***"</span>;
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">index.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">"config.php"</span>;
+<span class="cv-kw">require_once</span> <span class="cv-str">"functions.php"</span>;
+
+<span class="cv-fn">echo</span> <span class="cv-fn">formatTitle</span>(APP_NAME);
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-terminal"></i> Execution Output</div>
+            <div class="output-body">*** ANGKOR PORTAL ***</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 12px; padding: 15px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 10px;">
+            <h3 style="font-family: var(--font-kh-heading); font-size: 11.5pt; color: var(--text-heading); margin-bottom: 3px;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ៣ យ៉ាងបរិបូរណ៍។</h3>
+            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 3 HANDOUT (TOTAL 16 PAGES) ***</p>
+        </div>
+
+        <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
+            <div style="text-align: center; width: 220px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">បានឃើញ និងពិនិត្យត្រឹមត្រូវ</p>
+                <p style="font-size: 9.5pt; margin-top: 45px; font-family: var(--font-kh-body);">..........................................</p>
+                <p style="font-size: 10pt; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">ប្រធានដេប៉ាតឺម៉ង់</p>
+            </div>
+            <div style="text-align: center; width: 260px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">ធ្វើនៅសៀមរាប, ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 10pt; margin-top: 45px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៦ នៃ ១៦</div>
+    </div>
+</div>
+
+</body>
+</html>
