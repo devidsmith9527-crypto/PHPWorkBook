@@ -1,0 +1,1413 @@
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: មេរៀនទី ៨ - ការភ្ជាប់ទិន្នន័យជាមួយ Database តាមវិធីសាស្ត្រ PDO (PHP 8 Modern Development)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #0078D4;
+            --accent: #4F46E5;
+            --php-color: #7C3AED;
+            --mysql-color: #0284C7;
+            --apache-color: #D97706;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #475569;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #0F172A;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            
+            /* LIGHT PHP & PDO CODE EDITOR THEME */
+            --bg-code-light: #F8FAFC;
+            --code-header-light: #E2E8F0;
+            --code-text: #0F172A;
+            --code-kw: #7C3AED;       /* Purple: class, new, try, catch, public, private, static, return, function */
+            --code-tag: #0284C7;      /* Blue: PDO, PDOException, string, int, array, bool, self */
+            --code-var: #0F172A;      /* Dark Slate: $pdo, $db, $e, $dsn, $options */
+            --code-str: #B45309;      /* Brown/Amber: "mysql:host=localhost;dbname=..." */
+            --code-num: #059669;      /* Emerald Green: 3306, 1 */
+            --code-func: #2563EB;     /* Royal Blue: __construct, getInstance, setAttribute, getMessage */
+            --code-cmt: #64748B;      /* Gray Italic: // comment */
+            
+            --bg-output: #F1F5F9;
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            --font-kh-heading: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 10px;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        /* Top Bar */
+        .no-print-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border-dark);
+            padding: 14px 28px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            width: 210mm;
+            max-width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+        .no-print-bar p { margin: 0; font-size: 11pt; color: var(--text-muted); }
+        .print-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: var(--font-kh-body);
+            font-size: 11pt;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
+
+        /* A4 Page Layout */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: var(--bg-page);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            margin-bottom: 25px;
+            position: relative;
+            border-radius: 4px;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 12mm 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .global-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 3px solid var(--accent);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 140px; }
+        .header-item img { height: 32px; object-fit: contain; }
+        .header-item span { font-size: 8.5pt; font-weight: bold; color: var(--accent); text-align: center; font-family: var(--font-kh-heading); line-height: 1.2; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 11pt; color: var(--accent); margin-bottom: 1px; line-height: 1.3;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent);
+            background-color: var(--bg-light);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+        .footer-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 9.5pt; 
+            color: var(--text-heading); 
+            font-weight: bold;
+            font-family: var(--font-kh-heading);
+        }
+        .footer-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .footer-right { font-size: 8.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 10px; border-radius: 15px; font-family: var(--font-kh-body);}
+
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 4px;
+            margin: 8px 0 10px 0;
+            font-family: var(--font-kh-heading);
+            font-size: 12pt;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-inside: avoid;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { 
+            font-family: var(--font-kh-heading); 
+            font-size: 11pt; 
+            color: var(--accent); 
+            margin: 8px 0 6px 0; 
+            page-break-inside: avoid;
+            border-left: 4px solid var(--accent);
+            padding-left: 8px;
+            line-height: 1.4;
+        }
+
+        .text-block { font-size: 10.5pt; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        
+        /* BLOOM'S TAXONOMY BADGES */
+        .bloom-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 7.5pt; font-weight: 800; font-family: var(--font-en-main); margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; border: 1px solid #FECDD3; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; } 
+
+        .toc-table { width: 100%; border-collapse: collapse; margin: 6px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; padding: 6px 8px; text-align: left; }
+        .toc-table td { padding: 5px 8px; border-bottom: 1px solid var(--border-light); font-size: 10pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; color: var(--accent); }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 4px; }
+        .obj-list li { position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 10.5pt; line-height: 1.5; page-break-inside: avoid; }
+        .obj-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11pt; top: -1px; }
+
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1px solid var(--border-dark); page-break-inside: avoid; }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 5px 7px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.4; }
+
+        .sub-topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sub-topic-card h4 {
+            font-family: var(--font-kh-heading);
+            font-size: 10.5pt;
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 4px;
+        }
+        .content-label {
+            font-weight: bold;
+            color: var(--accent);
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .syntax-box {
+            background: #EEF2FF;
+            border-left: 4px solid var(--accent);
+            font-family: var(--font-code);
+            font-size: 9pt;
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-radius: 0 4px 4px 0;
+            color: #1E1B4B;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .code-window { 
+            background: var(--bg-code-light); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin: 5px 0; 
+            border: 1px solid var(--border-dark); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        .code-header { 
+            background: var(--code-header-light); 
+            padding: 4px 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .mac-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: #FF5F56; }
+        .dot-y { background: #FFBD2E; }
+        .dot-g { background: #27C93F; }
+        .code-title { color: #475569; font-family: var(--font-code); font-size: 8.5pt; font-weight: 700;}
+        pre { 
+            padding: 8px 12px; 
+            color: var(--code-text); 
+            font-family: var(--font-code); 
+            font-size: 8.8pt; 
+            line-height: 1.45; 
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0; 
+            tab-size: 4;
+            font-weight: 600;
+        }
+
+        /* Syntax Highlight Classes */
+        .cv-kw { color: var(--code-kw); font-weight: bold; }
+        .cv-tag { color: var(--code-tag); font-weight: bold; }
+        .cv-var { color: var(--code-var); }
+        .cv-str { color: var(--code-str); }
+        .cv-num { color: var(--code-num); }
+        .cv-fn { color: var(--code-func); font-weight: bold; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; }
+
+        .output-window {
+            background: var(--bg-output);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 4px 0;
+            border: 1px solid var(--border-dark);
+            page-break-inside: avoid;
+        }
+        .output-header {
+            background: #CBD5E1;
+            padding: 3px 10px;
+            color: #0F172A;
+            font-family: var(--font-code);
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid #94A3B8;
+        }
+        .output-body {
+            padding: 6px 12px;
+            color: #0078D4;
+            font-family: var(--font-code);
+            font-size: 8.8pt;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .extra-box {
+            background: #FFFBEB;
+            border-left: 4px solid var(--warning);
+            border: 1px solid #FDE68A;
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-size: 9.5pt;
+            line-height: 1.45;
+            page-break-inside: avoid;
+        }
+        .extra-box-title {
+            font-weight: bold;
+            color: #B45309;
+            font-family: var(--font-kh-heading);
+            font-size: 9pt;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .q-list { 
+            list-style-type: khmer; 
+            padding-left: 24px; 
+            font-size: 10.5pt; 
+            line-height: 1.5; 
+        }
+        .q-list li { 
+            margin-bottom: 6px; 
+            font-weight: normal; 
+            color: var(--text-main); 
+            page-break-inside: avoid;
+        }
+        .mcq-opts { 
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-top: 3px; 
+            font-weight: normal; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 4px;
+        }
+        .mcq-opts li { 
+            font-size: 9.5pt; 
+            background: #F8FAFC; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light); 
+            margin-bottom: 0; 
+        }
+        
+        .ans-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; page-break-inside: avoid;}
+        .ans-table th { background: #F1F5F9; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt; font-weight: bold; color: var(--text-heading); text-align:center;}
+        .ans-table td { font-weight: 700; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt;}
+
+        .matching-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-dark); page-break-inside: avoid;}
+        .matching-table th { background: #E0E7FF; color: var(--accent); border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt; text-align: center; font-family: var(--font-kh-heading); }
+        .matching-table td { border: 1px solid var(--border-dark); padding: 5px 8px; font-size: 9.5pt; line-height: 1.4; vertical-align: top; }
+
+        .explain-ans-card {
+            background: #F8FAFC;
+            border-left: 4px solid var(--accent);
+            border: 1px solid var(--border-dark);
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+        .explain-ans-card h5 {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .tech-badge-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .tech-badge {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 8.5pt;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* PRINT SPECIFIC STYLES */
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print-bar { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <p><b><i class="fa-solid fa-file-pdf text-blue"></i> ណែនាំបោះពុម្ព៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print ជា PDF។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF</button>
+</div>
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>សាកលវិទ្យាល័យអង្គរ | ANGKOR UNIVERSITY</h1><p>FACULTY OF SCIENCE & TECHNOLOGY</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #EEF2FF 0%, #FFFFFF 100%); border-radius: 8px;">
+        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 120px; margin-bottom: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" alt="Logo">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 20pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 10pt; color: var(--text-muted); margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div class="tech-badge-bar">
+            <span class="tech-badge"><i class="fa-solid fa-database"></i> PDO Architecture & Database Portability</span>
+            <span class="tech-badge"><i class="fa-solid fa-triangle-exclamation"></i> Exception Handling (`try...catch` & `PDOException`)</span>
+            <span class="tech-badge"><i class="fa-solid fa-cubes"></i> Reusable OOP Singleton Database Wrapper</span>
+        </div>
+
+        <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 14px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (CS / IT)
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ៨ (Professional & Academic Edition)</div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 16pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">ការភ្ជាប់ទិន្នន័យជាមួយ Database តាមវិធីសាស្ត្រ PDO<br>(Data Connection & Exception Handling with PDO)</h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 18px; font-weight: 600;">PDO Abstraction Layer vs MySQLi, DSN Configuration, PDO Attributes (`ATTR_ERRMODE`, `FETCH_ASSOC`), Robust Exception Handling (`try...catch`), Reusable `db.php` Component & Modern PHP 8 Singleton OOP Database Wrapper</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
+            <p style="font-family: var(--font-kh-body); font-size: 10pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 11.5pt;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 2: LLO & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> ១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLO)</div>
+        <ul class="obj-list">
+            <li><b>LLO 8.1:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">ពន្យល់ និងប្រៀបធៀប</span> ស្ថាបត្យកម្មភ្ជាប់ Database របស់ **PDO (PHP Data Objects)** ធៀបនឹង MySQLi ដោយបង្ហាញពីអត្ថប្រយោជន៍ Database Portability, Security និង Object-Oriented Interface។</li>
+            <li><b>LLO 8.2:</b> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">កំណត់ និងរៀបចំ</span> **DSN (Data Source Name)** ព្រមទាំងបង្កើត PDO Object Connection ដោយកំណត់ Attributes ចាំបាច់ (ដូចជា `PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION`, `PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC`)។</li>
+            <li><b>LLO 8.3:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">អនុវត្ត និងវិភាគ</span> ប្រព័ន្ធចាប់កំហុស **Exception Handling (`try...catch`)** ដោយប្រើប្រាស់ `PDOException` ដើម្បីទប់ស្កាត់ការលេចធ្លាយព័ត៌មានសម្ងាត់ (Database Credentials Leakage) ទៅកាន់អ្នកប្រើប្រាស់។</li>
+            <li><b>LLO 8.4:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="highlight">វាយតម្លៃ និងរៀបចំ</span> រចនាសម្ព័ន្ធកូដតភ្ជាប់ជាលក្ខណៈ **Modular Reusable Component (`db.php`)** ព្រមទាំងកសាង **PHP 8 OOP Singleton Pattern Database Wrapper Class** សម្រាប់ប្រើប្រាស់ក្នុង Enterprise Projects។</li>
+            <li><b>LLO 8.5:</b> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">រចនា និងបង្កើត</span> Connection Layer ប្រកបដោយសុវត្ថិភាព និងប្រសិទ្ធភាពខ្ពស់ ត្រៀមខ្លួនសម្រាប់ប្រតិបត្តិការ CRUD ដោយប្រើ PDO Prepared Statements ក្នុងមេរៀនបន្ទាប់។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀន (Lesson Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Sub-Topics)</th>
+                    <th style="width:20%; text-align:center;">Bloom's Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៨.១</td><td>សេចក្តីផ្តើមអំពី PDO & ការប្រៀបធៀប PDO ធៀបនឹង MySQLi (Database Abstraction Layer)</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td class="toc-num">៨.២</td><td>ការកំណត់ DSN Syntax & ការបង្កើត PDO Connection Object (PDO Attributes Setup)</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៨.៣</td><td>ការគ្រប់គ្រង Exception Handling តាមរយៈ `try...catch` & `PDOException` (Security & Debugging)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td class="toc-num">៨.៤</td><td>ការបង្កើត Reusable Component (`db.php`) & PHP 8 OOP Singleton Database Wrapper</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 3: SECTION 8.1 INTRODUCTION TO PDO & PARADIGM COMPARISON -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <i class="fa-solid fa-book-open text-blue"></i> ៣. ខ្លឹមសារលម្អិតនៃមេរៀន (Detailed Lesson Contents)
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-cubes"></i> ៨.១ សេចក្តីផ្តើមអំពី PDO & ការប្រៀបធៀប PDO ធៀបនឹង MySQLi <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></div>
+
+        <!-- 8.1.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-scale-balanced text-blue"></i> ៨.១.១ អ្វីទៅជា PDO? (PHP Data Objects Overview & Technical Matrix) <span class="bloom-tag bloom-c2">C2</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                • <b>PDO (PHP Data Objects)៖</b> គឺជា Database Abstraction Layer មួយដែលត្រូវបានបង្កើតឡើងក្នុង PHP (ចាប់ពី PHP 5.1+ និងអភិវឌ្ឍយ៉ាងខ្លាំងក្នុង PHP 8) សម្រាប់ផ្តល់នូវ Interface រួមមួយដែលមានសុវត្ថិភាពខ្ពស់ក្នុងការតភ្ជាប់ និងបញ្ជា Database Engines ផ្សេងៗគ្នា។<br>
+                • <b>Database Portability (ភាពងាយស្រួលក្នុងការប្តូរ Database):</b> ខុសពី MySQLi ដែលដំណើរការបានតែជាមួយ MySQL មួយមុខ PDO គាំទ្រ RDBMS Drivers រហូតដល់ទៅ <b>១២ ប្រភេទផ្សេងគ្នា</b> (ដូចជា MySQL, PostgreSQL, SQLite, MS SQL Server, Oracle) តែតាមរយៈ Code Base រួមមួយ!
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-table"></i> ខ. តារាងប្រៀបធៀបលក្ខណៈបច្ចេកទេស (PDO vs MySQLi Comparison Table)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:25%;">លក្ខណៈ (Technical Feature)</th>
+                        <th style="width:35%;">MySQLi Extension</th>
+                        <th style="width:40%;">PDO (PHP Data Objects)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>ការគាំទ្រ Database (Database Support)</b></td>
+                        <td>គាំទ្រតែ **MySQL / MariaDB** មួយគត់</td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ គាំទ្រ RDBMS ដល់ទៅ ១២ ប្រភេទ</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>ទម្រង់សរសេរកូដ (Coding Paradigm)</b></td>
+                        <td>គាំទ្រ Procedural និង OOP គួបផ្សំ</td>
+                        <td><span style="color:var(--accent); font-weight:bold;">✓ OOP Standard 100% ស្អាត និងទំនើប</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Named Parameters ក្នុង Security Queries</b></td>
+                        <td>មិនគាំទ្រឡើយ (ប្រើបានតែសញ្ញា <code>?</code>)</td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ គាំទ្រ <code>:name</code> (ងាយស្រួលសរសេរ)</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>ការចាប់កំហុស (Error Trapping)</b></td>
+                        <td>ប្រើប្រាស់ Error Codes / Warning String</td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ ប្រើប្រាស់ `PDOException` ទំនើប</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដប្រៀបធៀបទម្រង់ភ្ជាប់ (MySQLi vs PDO Connection Syntax)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">connection_paradigm_comparison.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// --- 1. OLD MYSQLI APPROACH (Procedural & Single DB Support) ---</span>
+<span class="cv-var">$mysqli_conn</span> = <span class="cv-fn">mysqli_connect</span>(<span class="cv-str">"localhost"</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>, <span class="cv-str">"db_university_app"</span>);
+<span class="cv-kw">if</span> (!<span class="cv-var">$mysqli_conn</span>) {
+    <span class="cv-fn">die</span>(<span class="cv-str">"MySQLi Failed: "</span> . <span class="cv-fn">mysqli_connect_error</span>());
+}
+
+<span class="cv-cm">// --- 2. MODERN PDO APPROACH (OOP, Portable & Secure Abstraction) ---</span>
+<span class="cv-var">$dsn</span> = <span class="cv-str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>;
+<span class="cv-kw">try</span> {
+    <span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>);
+    <span class="cv-cm">// PDO Object ភ្ជាប់ជោគជ័យ និងត្រៀមខ្លួនប្រើប្រាស់!</span>
+} <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+    <span class="cv-fn">die</span>(<span class="cv-str">"PDO Connection Failed: "</span> . <span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>());
+}
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 4: SECTION 8.2 DSN & PDO INSTANTIATION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-sliders"></i> ៨.២ ការកំណត់ DSN Syntax & ការបង្កើត PDO Connection Object <span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 8.2.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-gears text-blue"></i> ៨.២.១ DSN Anatomy & Essential PDO Options/Attributes <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ DSN (Data Source Name Anatomy)៖</div>
+            <div class="text-block">
+                <b>DSN (Data Source Name)</b> គឺជា String ពិសេសមួយដែលប្រាប់ទៅ PDO នូវ Driver ប្រភេទណាដែលត្រូវប្រើប្រាស់, អាសយដ្ឋាន Host, ឈ្មោះ Database, Port, និងប្រភេទ Character Set encoding៖
+            </div>
+            
+            <div class="syntax-box">// DSN Formatting Structure
+$dsn = "mysql:host=HOSTNAME;dbname=DATABASE_NAME;charset=utf8mb4;port=3306";</div>
+
+            <div class="content-label"><i class="fa-solid fa-list-check"></i> ខ. ការកំណត់ PDO Attributes/Options សំខាន់ៗ (Core PDO Attributes Matrix)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:30%;">PDO Attribute Key</th>
+                        <th style="width:35%;">តម្លៃកំណត់ (Recommended Value)</th>
+                        <th style="width:35%;">ពន្យល់ពីផលប្រយោជន៍</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b><code>PDO::ATTR_ERRMODE</code></b></td>
+                        <td><code>PDO::ERRMODE_EXCEPTION</code></td>
+                        <td>ឱ្យ PDO បោះ **Exception Error** ពេលមានបញ្ហា ងាយស្រួល Catch</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>PDO::ATTR_DEFAULT_FETCH_MODE</code></b></td>
+                        <td><code>PDO::FETCH_ASSOC</code></td>
+                        <td>ទាញយកទិន្នន័យជា **Associative Array** ស្វ័យប្រវត្តិ</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>PDO::ATTR_EMULATE_PREPARES</code></b></td>
+                        <td><code>false</code></td>
+                        <td>បិទ Emulation ឱ្យ MySQL ធ្វើ Prepared Statement ផ្ទាល់ (សុវត្ថិភាពខ្ពស់)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ភ្ជាប់ PDO ប្រកបដោយស្តង់ដារ (Clean PDO Connection Script)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">pdo_standard_connection.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-var">$host</span> = <span class="cv-str">"localhost"</span>;
+<span class="cv-var">$db</span>   = <span class="cv-str">"db_university_app"</span>;
+<span class="cv-var">$user</span> = <span class="cv-str">"root"</span>;
+<span class="cv-var">$pass</span> = <span class="cv-str">""</span>;
+<span class="cv-var">$charset</span> = <span class="cv-str">"utf8mb4"</span>;
+
+<span class="cv-var">$dsn</span> = <span class="cv-str">"mysql:host={$host};dbname={$db};charset={$charset}"</span>;
+
+<span class="cv-var">$options</span> = [
+    <span class="cv-tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="cv-tag">PDO</span>::ERRMODE_EXCEPTION,
+    <span class="cv-tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="cv-tag">PDO</span>::FETCH_ASSOC,
+    <span class="cv-tag">PDO</span>::ATTR_EMULATE_PREPARES   =&gt; <span class="cv-kw">false</span>,
+];
+
+<span class="cv-kw">try</span> {
+    <span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-var">$user</span>, <span class="cv-var">$pass</span>, <span class="cv-var">$options</span>);
+    <span class="cv-fn">echo</span> <span class="cv-str">"&lt;span style='color:green; font-weight:bold;'&gt;[Success] ភ្ជាប់ទៅកាន់ MySQL Database តាម PDO ជោគជ័យ!&lt;/span&gt;"</span>;
+} <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+    <span class="cv-fn">echo</span> <span class="cv-str">"&lt;span style='color:red;'&gt;[Error] ការភ្ជាប់បរាជ័យ៖ "</span> . <span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>() . <span class="cv-str">"&lt;/span&gt;"</span>;
+}
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Execution Output</div>
+                <div class="output-body">[Success] ភ្ជាប់ទៅកាន់ MySQL Database តាម PDO ជោគជ័យ!</div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 5: SECTION 8.3 EXCEPTION HANDLING & SECURITY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-shield-halved"></i> ៨.៣ ការគ្រប់គ្រង Exception Handling តាមរយៈ `try...catch` <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></div>
+
+        <!-- 8.3.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-triangle-exclamation text-blue"></i> ៨.៣.១ `PDOException` Trapping & Credentials Exposure Prevention <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ និងហានិភ័យ (Exception Trapping & Security Risk)៖</div>
+            <div class="text-block">
+                • <b>ហានិភ័យនៃការលេចធ្លាយព័ត៌មាន (Information Disclosure Vulnerability):</b> ប្រសិនបើកូដភ្ជាប់ Database កើតមាន Error (ដូចជា បញ្ចូល Password ខុស ឬ Database Name ខុស) ហើយយើង **មិនបានប្រើ `try...catch`** នោះ PHP នឹងបង្ហាញ Fatal Error Uncaught Exception លើទំព័រ Web Browser ដោយបង្ហាញទាំង **Database Password, Hostname, និង Path ឯកសារក្នុង Server** ឱ្យ Hacker មើលឃើញ!
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> ខ. កូដ PHP បង្ហាញពីការតេស្តចាប់ Error សុវត្ថិភាព (Safe Exception Catching)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">pdo_safe_exception_handling.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// ឧទាហរណ៍៖ តេស្តប្តូរឈ្មោះ Database ទៅដកឃ្លាខុស ដើម្បីឱ្យវាលោត Exception</span>
+<span class="cv-var">$bad_dsn</span> = <span class="cv-str">"mysql:host=localhost;dbname=db_invalid_name;charset=utf8mb4"</span>;
+
+<span class="cv-kw">try</span> {
+    <span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$bad_dsn</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>);
+} <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+    <span class="cv-cm">// 1. កត់ត្រាកំហុសពិតប្រាកដចូលក្នុង System Log សម្រាប់ Developer ពិនិត្យ (Production Standard)</span>
+    <span class="cv-fn">error_log</span>(<span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>());
+
+    <span class="cv-cm">// 2. បង្ហាញសារទន់ភ្លន់ សុវត្ថិភាពខ្ពស់ ជូនអ្នកប្រើប្រាស់ (កុំឱ្យលេច Password)</span>
+    <span class="cv-fn">die</span>(<span class="cv-str">"&lt;div style='padding:15px; background:#FEE2E2; border:1px solid #EF4444; border-radius:6px; color:#991B1B;'&gt;
+            &lt;b&gt;[ប្រព័ន្ធមានបញ្ហា]:&lt;/b&gt; មិនអាចតភ្ជាប់ទៅកាន់ Database ពេលនេះបានឡើយ! សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។
+         &lt;/div&gt;"</span>);
+}
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> គ. លទ្ធផលបង្ហាញជារូបភាពសុវត្ថិភាព (User Friendly Error Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Safe User Output (No Leakage)</div>
+                <div class="output-body" style="color:#991B1B; background:#FEE2E2;">[ប្រព័ន្ធមានបញ្ហា]: មិនអាចតភ្ជាប់ទៅកាន់ Database ពេលនេះបានឡើយ! សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ឃ. ការអនុវត្តល្អៗក្នុង Enterprise Systems (Production Best Practices)៖</div>
+                • <b>`error_log()` Function:</b> ក្នុងដំណាក់កាល Development យើងអាច echo <code>$e->getMessage()</code> ដើម្បីស្វែងរក Bug។ ប៉ុន្តែពេល Deploy ទៅកាន់ Production Web Server ត្រូវតែប្រើ <code>error_log($e->getMessage())</code> ដើម្បីរុញសារ Error ទៅទុកក្នុងឯកសារ <code>php_error.log</code> របស់ Server វិញ!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 6: SECTION 8.4 REUSABLE COMPONENT & OOP SINGLETON WRAPPER -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-diagram-project"></i> ៨.៤ ការបង្កើត Reusable Component (`db.php`) & PHP 8 OOP Singleton <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></div>
+
+        <!-- 8.4.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-boxes-stacked text-blue"></i> ៨.៤.១ Reusable Connection & Modern Singleton Database Class <span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition & Architecture Pattern)៖</div>
+            <div class="text-block">
+                • <b>Modular `db.php` Inclusion:</b> ជំនួសឱ្យការ Copy-Paste កូដតភ្ជាប់ PDO ១០-២០ ដងក្នុងគ្រប់ Page យើងសរសេរកូដតភ្ជាប់តែម្ដងគត់ក្នុងឯកសារ <code>db.php</code> រួចប្រើប្រាស់ <code>require_once 'db.php';</code> តាមទំព័រដែលត្រូវការ។<br>
+                • <b>OOP Singleton Pattern (PHP 8 Design Pattern):</b> គឺជា Design Pattern ខ្ពស់មួយដែលធានាថា PDO Connection Instance ត្រូវបានបង្កើតឡើង **តែ ១ ដងគត់ក្នុង Memory** ក្នុងអំឡុងពេល Page Execution ការពារការបង្កើត Connection ច្រើនដងហួសហេតុ (Overhead Memory Connection Leak)!
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> ខ. កូដ PHP 8 OOP Singleton Database Class ពេញលេញ (Production Grade Wrapper)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">Database.php (PHP 8 OOP Singleton)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-kw">class</span> <span class="cv-tag">Database</span> {
+    <span class="cv-kw">private</span> <span class="cv-kw">static</span> ?<span class="cv-tag">PDO</span> <span class="cv-var">$instance</span> = <span class="cv-kw">null</span>;
+
+    <span class="cv-cm">// Private Constructor ការពារមិនឱ្យ new Database() ពីខាងក្រៅបាន</span>
+    <span class="cv-kw">private</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>() {}
+
+    <span class="cv-kw">public</span> <span class="cv-kw">static</span> <span class="cv-kw">function</span> <span class="cv-fn">getInstance</span>(): <span class="cv-tag">PDO</span> {
+        <span class="cv-kw">if</span> (<span class="cv-tag">self</span>::<span class="cv-var">$instance</span> === <span class="cv-kw">null</span>) {
+            <span class="cv-var">$dsn</span> = <span class="cv-str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>;
+            <span class="cv-var">$options</span> = [
+                <span class="cv-tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="cv-tag">PDO</span>::ERRMODE_EXCEPTION,
+                <span class="cv-tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="cv-tag">PDO</span>::FETCH_ASSOC,
+                <span class="cv-tag">PDO</span>::ATTR_EMULATE_PREPARES   =&gt; <span class="cv-kw">false</span>,
+            ];
+            <span class="cv-kw">try</span> {
+                <span class="cv-tag">self</span>::<span class="cv-var">$instance</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>, <span class="cv-var">$options</span>);
+            } <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+                <span class="cv-fn">die</span>(<span class="cv-str">"Database Singleton Error: "</span> . <span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>());
+            }
+        }
+        <span class="cv-kw">return</span> <span class="cv-tag">self</span>::<span class="cv-var">$instance</span>;
+    }
+}
+
+<span class="cv-cm">// --- របៀបហៅប្រើប្រាស់តាមទំព័រផ្សេងៗ (Usage Example) ---</span>
+<span class="cv-var">$pdo</span> = <span class="cv-tag">Database</span>::<span class="cv-fn">getInstance</span>();
+<span class="cv-fn">echo</span> <span class="cv-str">" Singleton Database Instance ត្រូវបានបង្កើត និងទាញយកជោគជ័យ!"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> គ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Execution Output</div>
+                <div class="output-body">Singleton Database Instance ត្រូវបានបង្កើត និងទាញយកជោគជ័យ!</div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 7: GLOSSARY & LESSON SUMMARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                    <th style="width: 28%;">ឈ្មោះពេញ / ប្រភពពាក្យ</th>
+                    <th style="width: 35%;">ការពន្យល់ន័យជាភាសាខ្មែរ</th>
+                    <th style="width: 15%; text-align:center;">Bloom Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>PDO</b></td><td>PHP Data Objects</td><td>Abstraction Layer សម្រាប់ភ្ជាប់ PHP ទៅកាន់ Database Engines ជាច្រើន។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>DSN</b></td><td>Data Source Name</td><td>String ប្រាប់ព័ត៌មាន Driver, Host, DB Name, Charset ទៅ PDO។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>`PDOException`</b></td><td>PDO Specific Error Class</td><td>Class Exception ពិសេសសម្រាប់ចាប់យកកំហុស Database ក្នុង `try...catch`។</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td><b>`FETCH_ASSOC`</b></td><td>PDO Fetch Associative Flag</td><td>Attribute កំណត់ឱ្យ PDO ទាញយក Record ជា Associative Array។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>Singleton Pattern</b></td><td>OOP Design Pattern</td><td>ទម្រង់រចនាកូដ OOP ដែលធានាការបង្កើត Object តែ ១ គត់ក្នុង Memory។</td><td style="text-align:center;"><span class="bloom-tag bloom-c5">C5</span></td></tr>
+                <tr><td><b>Credentials Exposure</b></td><td>Security Vulnerability</td><td>ហានិភ័យលេចធ្លាយ Password ពេលកើតមាន Uncaught Exception Error។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Lesson Summary)</div>
+        <div class="text-block">
+            មេរៀនទី ៨ នេះបានផ្តល់នូវគ្រឹះដ៏រឹងមាំផ្នែក Database Connection Security និង PDO Architecture សម្រាប់រៀបចំ Web Applications៖
+        </div>
+
+        <ul class="obj-list">
+            <li><b class="highlight">១. PDO Paradigm Advantage:</b> PDO ផ្តល់នូវភាពបត់បែនខ្ពស់ក្នុងការគាំទ្រ Database ច្រើនប្រភេទ (Portability) និងមានសុវត្ថិភាពជាង MySQLi ចាស់ៗ។</li>
+            <li><b class="highlight">២. Correct DSN & Attribute Setup:</b> DSN ត្រូវកំណត់ Charset `utf8mb4` ជានិច្ច ហើយ PDO Options ត្រូវតែបើក `ERRMODE_EXCEPTION` និងកំណត់ `FETCH_ASSOC` ជា Default។</li>
+            <li><b class="highlight">៣. Secure Exception Trapping:</b> ត្រូវប្រើប្រាស់ `try...catch (PDOException $e)` ជានិច្ចដើម្បីទប់ស្កាត់ការលេចធ្លាយព័ត៌មាន Database Credentials ទៅលើ Screen។</li>
+            <li><b class="highlight">៤. Modular Reusability:</b> ការបំបែកកូដតភ្ជាប់ជា `db.php` ឬការប្រើប្រាស់ **PHP 8 Singleton Pattern Wrapper (`Database.php`)** ជួយឱ្យកូដមានរបៀប សន្សំ Memory និងងាយស្រួលថែទាំ។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 8: REVIEW QUESTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:6px; border-left:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-pen-to-square"></i> ៦. សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">៦.ក. សំណួរ ខុស/ត្រូវ (True/False - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>PDO អាចគាំទ្រការភ្ជាប់ទៅកាន់ Database Engine តែ MySQL មួយមុខប៉ុណ្ណោះ ដូច MySQLi ដែរ។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>DSN (Data Source Name) គឺជា String ដែលប្រាប់ PDO ពីឈ្មោះ Driver, Host, និង DB Name។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>ប្រសិនបើការភ្ជាប់ PDO មាន Error ហើយគ្មាន `try...catch` នោះ Password អាចនឹងលេចធ្លាយលើ Browser។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>`PDO::ERRMODE_EXCEPTION` បង្ខំឱ្យ PDO បោះ `PDOException` រាល់ពេលមាន Error។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>`PDO::FETCH_ASSOC` នឹងបញ្ចេញទិន្នន័យពី Query ជាទម្រង់ Numeric Index Array (0, 1, 2)។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>`try...catch` Block ត្រូវបានប្រើប្រាស់សម្រាប់ចាប់ Exception Errors មិនឱ្យ Crash Web App។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>Singleton Pattern អនុញ្ញាតឱ្យគេ Instantiate Object ដដែលៗបាន ១០០០ ដងក្នុង Memory។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>`error_log()` ប្រើសម្រាប់សរសេរសារ Error ទុកក្នុង File Log របស់ Server ដោយសុវត្ថិភាព។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>ក្នុងការប្រើ PDO DSN យើងគួរតែបន្ថែម `charset=utf8mb4` ដើម្បីគាំទ្រអក្សរខ្មែរ និង Emoji។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>`PDO::ATTR_EMULATE_PREPARES => false` ជួយឱ្យ MySQL ប្រតិបត្តិ Prepared Statement ពិតប្រាកដ។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:6px;">៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>តើពាក្យពេញរបស់អក្សរកាត់ PDO គឺអ្វី? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. PHP Database Object</li><li>B. PHP Data Objects</li><li>C. Portable Data Operator</li><li>D. Process Data Online</li></ul>
+            </li>
+            <li>តើ DSN Formatting មួយណាដែលត្រឹមត្រូវសម្រាប់តភ្ជាប់ MySQL តាម PDO? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. mysql://host=localhost;db=app</li><li>B. mysql:host=localhost;dbname=app;charset=utf8mb4</li><li>C. pdo:mysql:localhost:app</li><li>D. connect:host=localhost;name=app</li></ul>
+            </li>
+            <li>តើ Class មួយណាដែលប្រើប្រាស់សម្រាប់ Catch Exception Errors របស់ PDO? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. Exception</li><li>B. DatabaseException</li><li>C. PDOException</li><li>D. SqlException</li></ul>
+            </li>
+            <li>តើ Option មួយណាដែលប្រាប់ PDO ឱ្យបោះ Exception ពេលកើតមាន Error? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. PDO::ERRMODE_SILENT</li><li>B. PDO::ERRMODE_WARNING</li><li>C. PDO::ERRMODE_EXCEPTION</li><li>D. PDO::ERRMODE_HALT</li></ul>
+            </li>
+            <li>តើ Option មួយណាដែលកំណត់ Fetch Mode ឱ្យបកប្រែ Row ជា Associative Array? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. PDO::FETCH_NUM</li><li>B. PDO::FETCH_ASSOC</li><li>C. PDO::FETCH_BOTH</li><li>D. PDO::FETCH_OBJ</li></ul>
+            </li>
+            <li>តើអត្ថប្រយោជន៍ចម្បងនៃ PDO ធៀបនឹង MySQLi គឺអ្វី? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. រត់លឿនជាង ១០០ ដង</li><li>B. គាំទ្រ Database ច្រើនប្រភេទ (Portability)</li><li>C. មិនបាច់ប្រើ Password</li><li>D. ប្រើបានតែក្នុង Windows</li></ul>
+            </li>
+            <li>តើ Function មួយណាដែលប្រើប្រាស់សម្រាប់ទាញយកសារ Error ពី `$e` ក្នុង Catch block? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. $e->getError()</li><li>B. $e->getMessage()</li><li>C. $e->toString()</li><li>D. $e->code()</li></ul>
+            </li>
+            <li>តើគោលបំណងចម្បងនៃការបង្កើត `db.php` គឺអ្វី? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. លុប Database</li><li>B. បង្កើត Reusable Connection Component</li><li>C. បង្កើត HTML Form</li><li>D. បង្កើត Table</li></ul>
+            </li>
+            <li>តើ Design Pattern អ្វីដែលធានាថា Database Instance ត្រូវបានបង្កើតតែ ១ ដងក្នុង Memory? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. Factory Pattern</li><li>B. Singleton Pattern</li><li>C. Observer Pattern</li><li>D. MVC Pattern</li></ul>
+            </li>
+            <li>តើក្នុងការរៀបចំ Production Web Server តើយើងควរបង្ហាញ `$e->getMessage()` ផ្ទាល់ទៅ User ដែរឬទេ? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. គួរ ព្រោះឱ្យ User ដឹង</li><li>B. មិនគួរដាច់ខាត (គួរប្រើ error_log ជំនួស)</li><li>C. បង្ហាញបានតែពេលយប់</li><li>D. គ្មានចម្លើយត្រូវ</li></ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 9: MATCHING & EXPLANATORY QUESTIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ សំណួរ)</div>
+        <table class="matching-table">
+            <thead>
+                <tr>
+                    <th style="width:50%;">ជួរ A (PDO Concept / Syntax)</th>
+                    <th style="width:50%;">ជួរ B (ការពិពណ៌នា / និយមន័យ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>១. <code>PDO</code></td><td>A. Class Exception សម្រាប់ Trapping កំហុស Database</td></tr>
+                <tr><td>២. <code>DSN</code></td><td>B. Abstraction Layer ភ្ជាប់ PHP ទៅកាន់ Database Engines 12+</td></tr>
+                <tr><td>៣. <code>PDOException</code></td><td>C. String ប្រាប់ Driver, Host, DB Name, និង Charset</td></tr>
+                <tr><td>៤. <code>try...catch</code></td><td>D. Block សម្រាប់ Catch Exception Errors មិនឱ្យលេច Credentials</td></tr>
+                <tr><td>៥. <code>PDO::ERRMODE_EXCEPTION</code></td><td>E. Attribute កំណត់ឱ្យ PDO បោះ Exception ពេលមាន Error</td></tr>
+                <tr><td>៦. <code>PDO::FETCH_ASSOC</code></td><td>F. Mode ទាញយក Record ជា Associative Array (`$row['col']`)</td></tr>
+                <tr><td>៧. <code>error_log()</code></td><td>G. Function សរសេរសារ Error ទុកក្នុង Server Log File</td></tr>
+                <tr><td>៨. <code>require_once 'db.php'</code></td><td>H. វិធីសាស្ត្រ Include ឯកសារតភ្ជាប់ឡើងវិញ មិនឱ្យស្ទួន</td></tr>
+                <tr><td>៩. <code>Singleton Pattern</code></td><td>I. Design Pattern បង្កើត Connection Instance តែ ១ គត់ក្នុង Memory</td></tr>
+                <tr><td>១០. <code>utf8mb4</code></td><td>J. Character Set Encoding គាំទ្រអក្សរខ្មែរ និង Emoji ពេញលេញ</td></tr>
+            </tbody>
+        </table>
+
+        <!-- SECTION 6.ឃ EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៦.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:3px 0 2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
+        <ol class="q-list">
+            <li><b>Q8.1:</b> ពន្យល់ពីអត្ថប្រយោជន៍ចម្បង ៣ នៃការប្រើប្រាស់ PDO ធៀបនឹង MySQLi Extension ចាស់។ <span class="bloom-tag bloom-c1">C1 - Remember</span></li>
+            <li><b>Q8.2:</b> រៀបរាប់ពីសមាសភាគសំខាន់ៗដែលស្ថិតនៅក្នុង PDO DSN String។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+            <li><b>Q8.3:</b> ពន្យល់ពីតួនាទីរបស់ `try...catch` Block ក្នុងការតភ្ជាប់ Database។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="4">
+            <li><b>Q8.4:</b> វិភាគពីហានិភ័យសន្តិសុខវិប (Credentials Leakage) ប្រសិនបើកូដភ្ជាប់ PDO គ្មាន `try...catch` Block។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q8.5:</b> ធ្វើការប្រៀបធៀបការបង្ហាញសារ Error ជូន User ក្នុងដំណាក់កាល Development ធៀបនឹង Production Server។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q8.6:</b> បកស្រាយពីតួនាទីរបស់ PDO Attributes: `ATTR_ERRMODE` និង `ATTR_DEFAULT_FETCH_MODE`។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="7">
+            <li><b>Q8.7:</b> វាយតម្លៃពីប្រសិទ្ធភាព Memory នៃការប្រើប្រាស់ Singleton Pattern សម្រាប់ PDO Connection ក្នុង Enterprise Applications។ <span class="bloom-tag bloom-c5">C5 - Evaluate</span></li>
+            <li><b>Q8.8:</b> វិភាគពីរបៀបដែល PDO បង្ការ SQL Injection មូលដ្ឋានតាមរយៈការកំណត់ `PDO::ATTR_EMULATE_PREPARES => false`។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q8.9:</b> ធ្វើការរចនា និងបង្កើត PHP 8 Singleton Class ឈ្មោះ `Database` ដែលមានវិធីសាស្ត្ររៀបចំ Error Logging ចូល File។ <span class="bloom-tag bloom-c6">C6 - Create</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 10: GRADED CLASSWORK & PRACTICAL LAB LISTING -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> ៦.ង. កិច្ចការសិក្សា និងការវាយតម្លៃ (Graded Classwork & Team Review)</div>
+        
+        <div class="sub-heading" style="margin-top:4px; color:var(--accent);"><i class="fa-solid fa-users-gear"></i> កិច្ចការក្រុម និងការវិភាគកូដ (Team Code Vulnerability Audit) <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span></div>
+        
+        <div class="text-block">
+            <b>การណែនាំ៖</b> សូមបែងចែកនិស្សិតជាក្រុម (៣-៤ នាក់) ដើម្បីសិក្សា វិភាគ រកចន្លោះប្រហោងសុវត្ថិភាព (Credentials Leakage & Poor Error Handling) ក្នុង PDO Script ខាងក្រោម រួចធ្វើការ Refactor ឱ្យទៅជា **Production-Grade PDO Connection Component**៖
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--danger); margin-top:4px;">• Problem Snippet (កូដភ្ជាប់ PDO មានចន្លោះប្រហោង និងលេច Password ពេល Error)៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">vulnerable_pdo_script.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// DANGEROUS CODE: Uncaught Exception leaks Database Password on Browser Screen!</span>
+<span class="cv-var">$dsn</span> = <span class="cv-str">"mysql:host=localhost;dbname=db_fake_app"</span>;
+<span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-str">"root"</span>, <span class="cv-str">"SuperSecretPassword123"</span>); <span class="cv-cm">// No try-catch!</span>
+<span class="cv-fn">echo</span> <span class="cv-str">"Connected!"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--success); margin-top:6px;">• ភារកិច្ចរបស់និស្សិត (Student Tasks)៖</div>
+        <ol class="q-list" style="margin-top:2px;">
+            <li><b>Task 1 (<span class="bloom-tag bloom-c4">C4</span>)៖</b> កំណត់ហានិភ័យសុវត្ថិភាព ៣ ក្នុង Code Snippet ខាងលើ។</li>
+            <li><b>Task 2 (<span class="bloom-tag bloom-c5">C5</span>)៖</b> ដាក់ព័ទ្ធ `try...catch (PDOException $e)` និងបន្ថែម PDO Options Array (`ERRMODE_EXCEPTION`, `FETCH_ASSOC`, `utf8mb4`)។</li>
+            <li><b>Task 3 (<span class="bloom-tag bloom-c6">C6</span>)៖</b> បំបែកកូដនេះជាឯកសារ `db.php` ស្អាតមួយសម្រាប់ Include ប្រើប្រាស់ជាទូទៅ។</li>
+        </ol>
+
+        <!-- SECTION 6.ច PRACTICAL LABS LISTING -->
+        <div class="sub-heading" style="width: 100%; margin-top:10px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៦.ច. បញ្ជីលំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:2px 0 1px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ លំហាត់]</div>
+        <ol class="q-list">
+            <li><b>Lab 8.1:</b> បង្កើត DSN String សម្រាប់តភ្ជាប់ Database `db_university_app` លើ Localhost។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 8.2:</b> សរសេរកូដបង្កើត Object `new PDO()` ភ្ជាប់ទៅ MySQL ដោយប្រើ User `root` គ្មាន Password។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 8.3:</b> ដាក់ព័ទ្ធកូដភ្ជាប់ PDO ខាងលើដោយប្រើ `try...catch` បង្ហាញសារស្វាគមន៍ពេលជោគជ័យ។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:3px 0 1px 0;">[កម្រិតមធ្យម - Medium Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="4">
+            <li><b>Lab 8.4:</b> បង្កើត PDO Options Array ដោយកំណត់ `PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION` និង `PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC`។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 8.5:</b> ធ្វើការតេស្តប្តូរឈ្មោះ Database ទៅជាឈ្មោះខុស ដើម្បីពិនិត្យមើលសារ `PDOException` Catch Block។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 8.6:</b> បំបែកកូដភ្ជាប់ PDO ទៅជាឯកសារ `db.php` រួចសរសេរ `index.php` ប្រើ `require_once 'db.php'`។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:3px 0 1px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="7">
+            <li><b>Lab 8.7:</b> ប្រើប្រាស់ `error_log()` ក្នុង Catch Block ដើម្បីសរសេរសារ Error ទៅទុកក្នុង Log File ជំនួសឱ្យការ echo។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 8.8:</b> អភិវឌ្ឍ Class `Database` ដោយប្រើប្រាស់ **PHP 8 Singleton Pattern** (`getInstance()`)។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 8.9:</b> បង្កើត Production-Grade PDO Database Singleton Wrapper ពេញលេញ ដែលមាន Error Logging, Character Encoding, និង Reusable Method សម្រាប់ទាញយក PDO Handle។ <span class="bloom-tag bloom-c6">C6</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 11: ANSWERS KEY PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:6px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> ៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys & Solutions)</div>
+            
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ក. ចម្លើយ សំណួរ ខុស/ត្រូវ (True/False Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ខ. ចម្លើយ សំណួរ ពហុជ្រើសរើស (MCQ Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>B</td><td>C</td><td>C</td><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.គ. ចម្លើយ សំណួរ ផ្គូផ្គង (Matching Answers 1-10)</div>
+        <table class="ans-table" style="margin-bottom: 6px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>C</td><td>A</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
+        </table>
+
+        <!-- SECTION 7.ឃ ANSWERS TO EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q8.1 - Q8.5)</div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--success); margin:2px 0;">[កម្រិតស្រាល - Light/Easy Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q8.1 (PDO Advantages over MySQLi)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                ១. <b>Database Portability:</b> គាំទ្រ DB Engines ដល់ទៅ ១២ ប្រភេទ។<br>
+                ២. <b>Named Parameters:</b> គាំទ្រការសរសេរ Security Prepared Statements ជាមួយ `:name`។<br>
+                ៣. <b>OOP Object Standard:</b> មានភាពរលូន និងទម្រង់ស្អាតជាមួយ PHP 8 Modern Frameworks។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q8.2 (DSN Anatomy Components)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                DSN រួមមាន Driver Name (`mysql:`), Host Address (`host=localhost`), DB Name (`dbname=db_app`), និង Character Set (`charset=utf8mb4`)។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q8.3 (Role of `try...catch` Block)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                `try...catch` ចាប់យក Exception Error ពេលភ្ជាប់ Database បរាជ័យ ការពារកុំឱ្យ PHP បង្ហាញ Fatal Error និងស្ទាក់ការពារមិនឱ្យលេច leak Credentials/Password លើ Screen។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q8.4 (Credentials Exposure Vulnerability)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                បើគ្មាន `try...catch` ទេ ពេលមាន Error ភ្ជាប់ DB (ដូចជា Password ខុស) នោះ PHP Uncaught Exception នឹងបង្ហាញទាំង DB Password, Host, Username, និង File Path ឱ្យ Hacker មើលឃើញជានិច្ច!
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q8.5 (Development vs Production Error Display)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • Development: អាច echo `$e->getMessage()` ដើម្បីឱ្យ Developer ងាយស្រួល Debug Bug។<br>
+                • Production: ត្រូវប្រើ `error_log($e->getMessage())` ទៅ Log File ហើយបង្ហាញតែសារទន់ភ្លន់ជូន User ធម្មតា។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 12: EXPLANATORY ANSWERS PART 2 & LAB SOLUTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q8.6 (PDO Attributes Purpose)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • `ATTR_ERRMODE => ERRMODE_EXCEPTION`: ឱ្យ PDO បោះ Exception ពេលមាន Error។<br>
+                • `ATTR_DEFAULT_FETCH_MODE => FETCH_ASSOC`: ឱ្យ PDO ទាញ Record ជា Associative Array ស្វ័យប្រវត្តិ។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q8.7 (Memory Efficiency of Singleton Pattern)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Singleton Pattern ធានាថាក្នុងការរត់ ១ Page Request នោះ PDO Connection ត្រូវបានបង្កើតឡើង **តែ ១ ដងគត់** សន្សំសំចៃ Memory និងការពារ Database Connection Limit Exhaustion។
+            </div>
+        </div>
+
+        <!-- SECTION 7.ង LAB SOLUTIONS PART 1 -->
+        <div class="sub-heading" style="margin-top: 8px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-code"></i> ៧.ង. ដំណោះស្រាយលំហាត់អនុវត្តន៍ (Practical Lab Solutions 8.1 - 8.4)</div>
+        
+        <!-- LAB 8.1 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:2px;">• ដំណោះស្រាយ Lab 8.1 & 8.2 (Basic DSN & Connection) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab8_1_2.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$dsn</span> = <span class="cv-str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>;
+<span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"Connected!"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 8.3 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 8.3 (Connection with try...catch) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab8_3.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$dsn</span> = <span class="cv-str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>;
+<span class="cv-kw">try</span> {
+    <span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>);
+    <span class="cv-fn">echo</span> <span class="cv-str">"ភ្ជាប់ PDO ជោគជ័យ!"</span>;
+} <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+    <span class="cv-fn">die</span>(<span class="cv-str">"Error: "</span> . <span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>());
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 8.4 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 8.4 (PDO Options Setup) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab8_4.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$options</span> = [
+    <span class="cv-tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="cv-tag">PDO</span>::ERRMODE_EXCEPTION,
+    <span class="cv-tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="cv-tag">PDO</span>::FETCH_ASSOC,
+    <span class="cv-tag">PDO</span>::ATTR_EMULATE_PREPARES   =&gt; <span class="cv-kw">false</span>,
+];
+<span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>, <span class="cv-var">$options</span>);
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 13: PRACTICAL LAB SOLUTIONS PART 2 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 8.6 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 8.6 (Modular `db.php` Inclusion) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">db.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// db.php - Modular Connection Component</span>
+<span class="cv-var">$dsn</span> = <span class="cv-str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>;
+<span class="cv-var">$options</span> = [
+    <span class="cv-tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="cv-tag">PDO</span>::ERRMODE_EXCEPTION,
+    <span class="cv-tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="cv-tag">PDO</span>::FETCH_ASSOC
+];
+<span class="cv-kw">try</span> {
+    <span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>, <span class="cv-var">$options</span>);
+} <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+    <span class="cv-fn">error_log</span>(<span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>());
+    <span class="cv-fn">die</span>(<span class="cv-str">"Database connection failed."</span>);
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">index.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"ទំព័រដើមបានរាប់បញ្ចូល db.php និងភ្ជាប់ PDO ជោគជ័យ!"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 8.7 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 8.7 (Server Error Logging) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab8_7.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">try</span> {
+    <span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-str">"mysql:host=localhost;dbname=invalid_db"</span>, <span class="cv-str">"root"</span>, <span class="cv-str">""</span>);
+} <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+    <span class="cv-cm">// កត់ត្រាកំហុសក្នុង Log មិនឱ្យលេចលើ Screen ឡើយ</span>
+    <span class="cv-fn">error_log</span>(<span class="cv-str">"[PDO Error] "</span> . <span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>(), <span class="cv-num">3</span>, <span class="cv-str">"errors.log"</span>);
+    <span class="cv-fn">die</span>(<span class="cv-str">"មានបញ្ហាក្នុងការតភ្ជាប់! សារ Error ត្រូវបានកត់ត្រាក្នុង System Log។"</span>);
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 14: LAB 8.8, 8.9 & FINAL CONCLUSION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៨</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-plug-circle-bolt" style="font-size: 28px; color: #4F46E5;"></i><span>PHP PDO & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 8.8 & 8.9 SOLUTION (FULL PRODUCTION SINGLETON WRAPPER) -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 8.8 & 8.9 (Production Enterprise PDO Singleton Wrapper) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">Database.php (Enterprise Grade Singleton)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-kw">class</span> <span class="cv-tag">Database</span> {
+    <span class="cv-kw">private</span> <span class="cv-kw">static</span> ?<span class="cv-tag">PDO</span> <span class="cv-var">$connection</span> = <span class="cv-kw">null</span>;
+
+    <span class="cv-cm">// Private Constructor & Clone to prevent direct instantiation</span>
+    <span class="cv-kw">private</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>() {}
+    <span class="cv-kw">private</span> <span class="cv-kw">function</span> <span class="cv-fn">__clone</span>() {}
+
+    <span class="cv-kw">public</span> <span class="cv-kw">static</span> <span class="cv-kw">function</span> <span class="cv-fn">getConnection</span>(): <span class="cv-tag">PDO</span> {
+        <span class="cv-kw">if</span> (<span class="cv-tag">self</span>::<span class="cv-var">$connection</span> === <span class="cv-kw">null</span>) {
+            <span class="cv-var">$host</span> = <span class="cv-str">"localhost"</span>;
+            <span class="cv-var">$db</span>   = <span class="cv-str">"db_university_app"</span>;
+            <span class="cv-var">$user</span> = <span class="cv-str">"root"</span>;
+            <span class="cv-var">$pass</span> = <span class="cv-str">""</span>;
+            <span class="cv-var">$dsn</span>  = <span class="cv-str">"mysql:host={$host};dbname={$db};charset=utf8mb4"</span>;
+
+            <span class="cv-var">$options</span> = [
+                <span class="cv-tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="cv-tag">PDO</span>::ERRMODE_EXCEPTION,
+                <span class="cv-tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="cv-tag">PDO</span>::FETCH_ASSOC,
+                <span class="cv-tag">PDO</span>::ATTR_EMULATE_PREPARES   =&gt; <span class="cv-kw">false</span>,
+            ];
+
+            <span class="cv-kw">try</span> {
+                <span class="cv-tag">self</span>::<span class="cv-var">$connection</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-var">$user</span>, <span class="cv-var">$pass</span>, <span class="cv-var">$options</span>);
+            } <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+                <span class="cv-fn">error_log</span>(<span class="cv-str">"[PDO Singleton Error] "</span> . <span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>());
+                <span class="cv-fn">die</span>(<span class="cv-str">"&lt;h3 style='color:red;'&gt;[System Error]: Unable to connect to database.&lt;/h3&gt;"</span>);
+            }
+        }
+        <span class="cv-kw">return</span> <span class="cv-tag">self</span>::<span class="cv-var">$connection</span>;
+    }
+}
+
+<span class="cv-cm">// --- Usage Test ---</span>
+<span class="cv-var">$db</span> = <span class="cv-tag">Database</span>::<span class="cv-fn">getConnection</span>();
+<span class="cv-fn">echo</span> <span class="cv-str">"Enterprise PDO Singleton Wrapper Ready!"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-desktop"></i> Execution Output</div>
+            <div class="output-body">Enterprise PDO Singleton Wrapper Ready!</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 12px; padding: 15px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 10px;">
+            <h3 style="font-family: var(--font-kh-heading); font-size: 11.5pt; color: var(--text-heading); margin-bottom: 3px;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ៨ យ៉ាងបរិបូរណ៍។</h3>
+            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 8 HANDOUT (TOTAL 14 PAGES) ***</p>
+        </div>
+
+        <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
+            <div style="text-align: center; width: 220px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">បានឃើញ និងពិនិត្យត្រឹមត្រូវ</p>
+                <p style="font-size: 9.5pt; margin-top: 45px; font-family: var(--font-kh-body);">..........................................</p>
+                <p style="font-size: 10pt; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">ប្រធានដេប៉ាតឺម៉ង់</p>
+            </div>
+            <div style="text-align: center; width: 260px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">ធ្វើនៅសៀមរាប, ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 10pt; margin-top: 45px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ១៤</div>
+    </div>
+</div>
+
+</body>
+</html>
