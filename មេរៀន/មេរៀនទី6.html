@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: មេរៀនទី ៦ - មូលដ្ឋានគ្រឹះ OOP (ភាគ២) - Encapsulation & Inheritance (PHP 8 Modern Development)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #0078D4;
+            --accent: #4F46E5;
+            --php-color: #7C3AED;
+            --mysql-color: #0284C7;
+            --apache-color: #D97706;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #475569;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #0F172A;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            
+            /* LIGHT PHP CODE EDITOR THEME (EASY READ & PRINT FRIENDLY) */
+            --bg-code-light: #F8FAFC;
+            --code-header-light: #E2E8F0;
+            --code-text: #0F172A;
+            --code-kw: #7C3AED;       /* Purple: class, extends, public, private, protected, return, function, parent, readonly */
+            --code-tag: #0284C7;      /* Blue: <?php, string, int, float, void, array, bool, self, parent */
+            --code-var: #0F172A;      /* Dark Slate: $this, $user, $admin, $account, $balance */
+            --code-str: #B45309;      /* Brown/Amber: "Hello World" */
+            --code-num: #059669;      /* Emerald Green: 100, 3.14 */
+            --code-func: #2563EB;     /* Royal Blue: __construct, getBalance, setPassword, banUser, calculateInterest */
+            --code-cmt: #64748B;      /* Gray Italic: // comment */
+            
+            --bg-output: #F1F5F9;
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            --font-kh-heading: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 10px;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        /* Top Bar */
+        .no-print-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border-dark);
+            padding: 14px 28px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            width: 210mm;
+            max-width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+        .no-print-bar p { margin: 0; font-size: 11pt; color: var(--text-muted); }
+        .print-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: var(--font-kh-body);
+            font-size: 11pt;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
+
+        /* A4 Page Layout */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: var(--bg-page);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            margin-bottom: 25px;
+            position: relative;
+            border-radius: 4px;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 12mm 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .global-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 3px solid var(--accent);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 140px; }
+        .header-item img { height: 32px; object-fit: contain; }
+        .header-item span { font-size: 8.5pt; font-weight: bold; color: var(--accent); text-align: center; font-family: var(--font-kh-heading); line-height: 1.2; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 11pt; color: var(--accent); margin-bottom: 1px; line-height: 1.3;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent);
+            background-color: var(--bg-light);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+        .footer-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 9.5pt; 
+            color: var(--text-heading); 
+            font-weight: bold;
+            font-family: var(--font-kh-heading);
+        }
+        .footer-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .footer-right { font-size: 8.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 10px; border-radius: 15px; font-family: var(--font-kh-body);}
+
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 4px;
+            margin: 8px 0 10px 0;
+            font-family: var(--font-kh-heading);
+            font-size: 12pt;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-inside: avoid;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { 
+            font-family: var(--font-kh-heading); 
+            font-size: 11pt; 
+            color: var(--accent); 
+            margin: 8px 0 6px 0; 
+            page-break-inside: avoid;
+            border-left: 4px solid var(--accent);
+            padding-left: 8px;
+            line-height: 1.4;
+        }
+
+        .topic-toc-box {
+            background: #F1F5F9;
+            border: 1px solid var(--border-dark);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 6px 12px;
+            margin: 4px 0 8px 0;
+            font-size: 10pt;
+            page-break-inside: avoid;
+        }
+        .topic-toc-title {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--accent);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .topic-toc-box ul {
+            list-style: none;
+            padding-left: 6px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .topic-toc-box li { color: var(--text-main); font-size: 9.5pt; }
+        .topic-toc-box li b { color: var(--secondary); font-family: var(--font-en-main); }
+
+        .text-block { font-size: 10.5pt; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        
+        /* BLOOM'S TAXONOMY BADGES */
+        .bloom-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 7.5pt; font-weight: 800; font-family: var(--font-en-main); margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; border: 1px solid #FECDD3; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; } 
+
+        .toc-table { width: 100%; border-collapse: collapse; margin: 6px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; padding: 6px 8px; text-align: left; }
+        .toc-table td { padding: 5px 8px; border-bottom: 1px solid var(--border-light); font-size: 10pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; color: var(--accent); }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 4px; }
+        .obj-list li { position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 10.5pt; line-height: 1.5; page-break-inside: avoid; }
+        .obj-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11pt; top: -1px; }
+
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1px solid var(--border-dark); page-break-inside: avoid; }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 5px 7px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.4; }
+
+        .sub-topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sub-topic-card h4 {
+            font-family: var(--font-kh-heading);
+            font-size: 10.5pt;
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 4px;
+        }
+        .content-label {
+            font-weight: bold;
+            color: var(--accent);
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .syntax-box {
+            background: #EEF2FF;
+            border-left: 4px solid var(--accent);
+            font-family: var(--font-code);
+            font-size: 9pt;
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-radius: 0 4px 4px 0;
+            color: #1E1B4B;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .code-window { 
+            background: var(--bg-code-light); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin: 5px 0; 
+            border: 1px solid var(--border-dark); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        .code-header { 
+            background: var(--code-header-light); 
+            padding: 4px 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .mac-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: #FF5F56; }
+        .dot-y { background: #FFBD2E; }
+        .dot-g { background: #27C93F; }
+        .code-title { color: #475569; font-family: var(--font-code); font-size: 8.5pt; font-weight: 700;}
+        pre { 
+            padding: 8px 12px; 
+            color: var(--code-text); 
+            font-family: var(--font-code); 
+            font-size: 8.8pt; 
+            line-height: 1.45; 
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0; 
+            tab-size: 4;
+            font-weight: 600;
+        }
+
+        /* Light Theme Syntax Highlight Classes */
+        .cv-tag { color: var(--code-tag); font-weight: bold; }
+        .cv-kw { color: var(--code-kw); font-weight: bold; }
+        .cv-var { color: var(--code-var); }
+        .cv-str { color: var(--code-str); }
+        .cv-num { color: var(--code-num); }
+        .cv-fn { color: var(--code-func); font-weight: bold; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; }
+
+        .output-window {
+            background: var(--bg-output);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 4px 0;
+            border: 1px solid var(--border-dark);
+            page-break-inside: avoid;
+        }
+        .output-header {
+            background: #CBD5E1;
+            padding: 3px 10px;
+            color: #0F172A;
+            font-family: var(--font-code);
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid #94A3B8;
+        }
+        .output-body {
+            padding: 6px 12px;
+            color: #0078D4;
+            font-family: var(--font-code);
+            font-size: 8.8pt;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .extra-box {
+            background: #FFFBEB;
+            border-left: 4px solid var(--warning);
+            border: 1px solid #FDE68A;
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-size: 9.5pt;
+            line-height: 1.45;
+            page-break-inside: avoid;
+        }
+        .extra-box-title {
+            font-weight: bold;
+            color: #B45309;
+            font-family: var(--font-kh-heading);
+            font-size: 9pt;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .q-list { 
+            list-style-type: khmer; 
+            padding-left: 24px; 
+            font-size: 10.5pt; 
+            line-height: 1.5; 
+        }
+        .q-list li { 
+            margin-bottom: 6px; 
+            font-weight: normal; 
+            color: var(--text-main); 
+            page-break-inside: avoid;
+        }
+        .mcq-opts { 
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-top: 3px; 
+            font-weight: normal; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 4px;
+        }
+        .mcq-opts li { 
+            font-size: 9.5pt; 
+            background: #F8FAFC; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light); 
+            margin-bottom: 0; 
+        }
+        
+        .ans-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; page-break-inside: avoid;}
+        .ans-table th { background: #F1F5F9; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt; font-weight: bold; color: var(--text-heading); text-align:center;}
+        .ans-table td { font-weight: 700; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt;}
+
+        .matching-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-dark); page-break-inside: avoid;}
+        .matching-table th { background: #E0E7FF; color: var(--accent); border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt; text-align: center; font-family: var(--font-kh-heading); }
+        .matching-table td { border: 1px solid var(--border-dark); padding: 5px 8px; font-size: 9.5pt; line-height: 1.4; vertical-align: top; }
+
+        .explain-ans-card {
+            background: #F8FAFC;
+            border-left: 4px solid var(--accent);
+            border: 1px solid var(--border-dark);
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+        .explain-ans-card h5 {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .tech-badge-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .tech-badge {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 8.5pt;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* MOBILE & RESPONSIVE DESIGN */
+        @media screen and (max-width: 850px) {
+            body { padding: 10px 5px; }
+            .no-print-bar { width: 100%; flex-direction: column; gap: 10px; text-align: center; }
+            .a4-page {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                padding: 15px 12px !important;
+                margin-bottom: 15px !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            }
+            .global-header { flex-direction: column; text-align: center; gap: 8px; }
+            .header-item { width: 100%; }
+            .mcq-opts, .topic-toc-box ul { grid-template-columns: 1fr !important; }
+            table.standard-table, table.matching-table, table.toc-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        /* PRINT SPECIFIC STYLES */
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print-bar { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <p><b><i class="fa-solid fa-file-pdf text-blue"></i> ណែនាំបោះពុម្ព៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print ជា PDF។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF</button>
+</div>
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>សាកលវិទ្យាល័យអង្គរ | ANGKOR UNIVERSITY</h1><p>FACULTY OF SCIENCE & TECHNOLOGY</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #EEF2FF 0%, #FFFFFF 100%); border-radius: 8px;">
+        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 120px; margin-bottom: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" alt="Logo">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 20pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 10pt; color: var(--text-muted); margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div class="tech-badge-bar">
+            <span class="tech-badge"><i class="fa-solid fa-user-shield"></i> Encapsulation & Data Hiding</span>
+            <span class="tech-badge"><i class="fa-solid fa-sitemap"></i> Class Inheritance (`extends`)</span>
+            <span class="tech-badge"><i class="fa-solid fa-code-branch"></i> Method Overriding & `parent::`</span>
+        </div>
+
+        <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 14px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (CS / IT)
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ៦ (Professional & Academic Edition)</div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 16pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">មូលដ្ឋានគ្រឹះ OOP (ភាគ២) - Encapsulation & Inheritance<br>(Fundamentals of OOP Part 2: Encapsulation & Inheritance)</h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 18px; font-weight: 600;">Access Modifiers (`public`, `private`, `protected`), Getter & Setter Validation Pipelines, Class Extension (`extends`), Method Overriding, `parent::` Scope Resolution, and PHP 8.3 `#[\Override]` Attribute Features</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
+            <p style="font-family: var(--font-kh-body); font-size: 10pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 11.5pt;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 2: LLO & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> ១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLO)</div>
+        <ul class="obj-list">
+            <li><b>LLO 6.1:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">បកស្រាយ និងប្រៀបធៀប</span> គោលការណ៍ **Encapsulation (ការខ្ចប់ និងលាក់ទិន្នន័យ)** ព្រមទាំងសិទ្ធិមើលឃើញ Access Modifiers ទាំង៣ (`public`, `protected`, `private`) ក្នុងស្ថាបត្យកម្ម PHP 8 OOP។</li>
+            <li><b>LLO 6.2:</b> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">រចនា និងអនុវត្ត</span> **Getter & Setter Methods** ជាមួយ Validation Pipeline ដើម្បីការពារ Data Integrity ពីការបំពានទិន្នន័យពីខាងក្រៅ។</li>
+            <li><b>LLO 6.3:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">វិភាគ និងសរសេរ</span> **Class Inheritance (ការបន្តពូជ)** ដោយប្រើប្រាស់ពាក្យគន្លឹះ `extends` រវាង Parent (Base) Class និង Child (Derived) Class ដើម្បីអនុវត្តគោលការណ៍ DRY (Don't Repeat Yourself)។</li>
+            <li><b>LLO 6.4:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="highlight">វាយតម្លៃ និងអនុវត្ត</span> បច្ចេកទេស **Method Overriding** និងពាក្យគន្លឹះ `parent::` (រួមទាំង `parent::__construct()`) ព្រមទាំង PHP 8.3 `#[\Override]` Attribute ដើម្បីពង្រីកសមត្ថភាព Class កូន ដោយមិនបាត់បង់ Logic មេ។</li>
+            <li><b>LLO 6.5:</b> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">បង្កើត</span> ប្រព័ន្ធ Domain Models ខ្នាត Enterprise (ដូចជា ប្រព័ន្ធគណនីធនាគារ `BankAccount` -> `SavingsAccount` ឬ ប្រព័ន្ធសិទ្ធិអ្នកប្រើប្រាស់ `User` -> `Admin`) ដែលមានភាពរឹងមាំផ្នែក Security និង Visibility Control។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀន (Lesson Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Sub-Topics)</th>
+                    <th style="width:20%; text-align:center;">Bloom's Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៦.១</td><td>គោលការណ៍ Encapsulation & Access Modifiers (`public`, `protected`, `private`)</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td class="toc-num">៦.២</td><td>ការគ្រប់គ្រងទិន្នន័យតាមរយៈ Getter & Setter Methods (Controlled Access & Validation)</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៦.៣</td><td>ស្ថាបត្យកម្ម Class Inheritance តាមរយៈពាក្យគន្លឹះ `extends` (Parent & Child Classes)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td class="toc-num">៦.៤</td><td>បច្ចេកទេស Method Overriding, `parent::` Scope Operator & PHP 8.3 `#[\Override]`</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 3: SECTION 6.1 ENCAPSULATION & ACCESS MODIFIERS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <i class="fa-solid fa-book-open text-blue"></i> ៣. ខ្លឹមសារលម្អិតនៃមេរៀន (Detailed Lesson Contents)
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-user-shield"></i> ៦.១ គោលការណ៍ Encapsulation & Access Modifiers <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></div>
+
+        <!-- 6.1.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-lock text-blue"></i> ៦.១.១ និយមន័យ Encapsulation & Visibility Matrix Table <span class="bloom-tag bloom-c2">C2</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                • <b>Encapsulation (ការខ្ចប់ និងលាក់ទិន្នន័យ)៖</b> គឺជាសសរទ្រូងទី១ នៃ OOP ដែលធ្វើការខ្ចប់ Data (Properties) និង Operations (Methods) ចូលគ្នាក្នុង Class តែមួយ ព្រមទាំង **លាក់បាំងបដិសេធ (Data Hiding)** ការចូលប្រើប្រាស់ទិន្នន័យសំខាន់ៗដោយផ្ទាល់ពីខាងក្រៅ Class (External Scope) ដើម្បីការពារ Data Corruption។<br>
+                • <b>Access Modifiers (កម្រិតសិទ្ធិមើលឃើញ / Visibility)៖</b> ត្រូវបានប្រើប្រាស់កំណត់សិទ្ធិក្នុងការចូលប្រើ Member របស់ Class៖
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-table"></i> ខ. តារាងប្រៀបធៀប Access Modifiers (Visibility Matrix Table)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:20%;">Access Modifier</th>
+                        <th style="width:25%;">ខាងក្នុង Class ខ្លួនឯង (Inside Same Class)</th>
+                        <th style="width:25%;">ខាងក្នុង Class កូន (Subclass / Child Class)</th>
+                        <th style="width:30%;">ខាងក្រៅ Class (Global / External Scope)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b><code>public</code></b></td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ អាចចូលប្រើបាន</span></td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ អាចចូលប្រើបាន</span></td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ អាចចូលប្រើបាន</span></td>
+                    </tr>
+                    <tr>
+                        <td><b><code>protected</code></b></td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ អាចចូលប្រើបាន</span></td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ អាចចូលប្រើបាន</span></td>
+                        <td><span style="color:var(--danger); font-weight:bold;">✗ បដិសេធសិទ្ធិ (Fatal Error)</span></td>
+                    </tr>
+                    <tr>
+                        <td><b><code>private</code></b></td>
+                        <td><span style="color:var(--success); font-weight:bold;">✓ អាចចូលប្រើបាន</span></td>
+                        <td><span style="color:var(--danger); font-weight:bold;">✗ បដិសេធសិទ្ធិ (Fatal Error)</span></td>
+                        <td><span style="color:var(--danger); font-weight:bold;">✗ បដិសេធសិទ្ធិ (Fatal Error)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP បង្ហាញពី Access Modifiers (Visibility Demo)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">visibility_demo.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">UserAccount</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$username</span> = <span class="cv-str">"sok_chia"</span>;       <span class="cv-cm">// ចូលប្រើបានគ្រប់ទីកន្លែង</span>
+    <span class="cv-kw">protected</span> <span class="cv-tag">string</span> <span class="cv-var">$email</span> = <span class="cv-str">"sok@au.edu.kh"</span>;  <span class="cv-cm">// ចូលប្រើបានតែក្នុង Class នេះ & Child Class</span>
+    <span class="cv-kw">private</span> <span class="cv-tag">string</span> <span class="cv-var">$password</span> = <span class="cv-str">"Secret123"</span>;    <span class="cv-cm">// ចូលប្រើបានតែក្នុង Class នេះ ១ គត់</span>
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">showInternalDetails</span>(): <span class="cv-tag">void</span> {
+        <span class="cv-cm">// ខាងក្នុង Class ខ្លួនឯង អាចអានបានទាំង public, protected & private!</span>
+        <span class="cv-fn">echo</span> <span class="cv-str">"User: {$this-&gt;username} | Email: {$this-&gt;email} | Pass: {$this-&gt;password}"</span>;
+    }
+}
+
+<span class="cv-var">$user</span> = <span class="cv-kw">new</span> <span class="cv-tag">UserAccount</span>();
+<span class="cv-fn">echo</span> <span class="cv-var">$user</span>-&gt;<span class="cv-var">username</span> . <span class="cv-str">"&lt;br&gt;"</span>; <span class="cv-cm">// OK: public property</span>
+<span class="cv-cm">// echo $user-&gt;password; // FATAL ERROR: Cannot access private property UserAccount::$password!</span>
+<span class="cv-var">$user</span>-&gt;<span class="cv-fn">showInternalDetails</span>();
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output</div>
+                <div class="output-body">sok_chia
+User: sok_chia | Email: sok@au.edu.kh | Pass: Secret123</div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 4: SECTION 6.2 GETTERS & SETTERS VALIDATION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-key"></i> ៦.២ ការគ្រប់គ្រងទិន្នន័យតាមរយៈ Getter & Setter Methods <span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 6.2.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-filter text-blue"></i> ៦.២.១ Controlled Access & Data Validation Pipeline <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                ដើម្បីអនុវត្ត Encapsulation ឱ្យត្រឹមត្រូវ យើងត្រូវកំណត់ Properties សំខាន់ៗជា <code>private</code> ឬ <code>protected</code> រួចបង្កើត Public Methods ចំនួនពីរក្រុមដើម្បីគ្រប់គ្រងទិន្នន័យ៖
+                <ul style="padding-left: 20px; margin-top: 3px;">
+                    <li><b>Getter Method (<code>get...()</code>)៖</b> ប្រើប្រាស់សម្រាប់ **ទាញយក/អាន (Read)** តម្លៃ Property មកបង្ហាញខាងក្រៅ។</li>
+                    <li><b>Setter Method (<code>set...()</code>)៖</b> ប្រើប្រាស់សម្រាប់ **កំណត់/កែប្រែ (Write)** តម្លៃ Property ដោយឆ្លងកាត់ការ **Validate (ផ្ទៀងផ្ទាត់)** សុពលភាពទិន្នន័យមុននឹងរក្សាទុក ទប់ស្កាត់មិនឱ្យមានទិន្នន័យខុសច្បាប់ (ឧ. ប្រាក់សល់ $balance < 0, អាយុអវិជ្ជមាន)។</li>
+                </ul>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">class ClassName {
+    private DataType $property;
+
+    public function getProperty(): DataType { return $this->property; }
+
+    public function setProperty(DataType $val): void {
+        // Validation Logic
+        $this->property = $val;
+    }
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">getter_setter_validation.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">BankAccount</span> {
+    <span class="cv-kw">private</span> <span class="cv-tag">float</span> <span class="cv-var">$balance</span> = <span class="cv-num">0.0</span>;
+
+    <span class="cv-cm">// Getter Method for Balance</span>
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getBalance</span>(): <span class="cv-tag">float</span> {
+        <span class="cv-kw">return</span> <span class="cv-var">$this</span>-&gt;<span class="cv-var">balance</span>;
+    }
+
+    <span class="cv-cm">// Setter Method with Validation Pipeline</span>
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">deposit</span>(<span class="cv-tag">float</span> <span class="cv-var">$amount</span>): <span class="cv-tag">void</span> {
+        <span class="cv-kw">if</span> (<span class="cv-var">$amount</span> &lt;= <span class="cv-num">0</span>) {
+            <span class="cv-fn">echo</span> <span class="cv-str">"&lt;span style='color:red;'&gt;[Error] ចំនួនប្រាក់ផ្ញើត្រូវតែធំជាង 0 $!&lt;/span&gt;&lt;br&gt;"</span>;
+            <span class="cv-kw">return</span>;
+        }
+        <span class="cv-var">$this</span>-&gt;<span class="cv-var">balance</span> += <span class="cv-var">$amount</span>;
+        <span class="cv-fn">echo</span> <span class="cv-str">"បានផ្ញើប្រាក់ចំនួន {$amount} $ ជោគជ័យ។&lt;br&gt;"</span>;
+    }
+}
+
+<span class="cv-var">$acc</span> = <span class="cv-kw">new</span> <span class="cv-tag">BankAccount</span>();
+<span class="cv-var">$acc</span>-&gt;<span class="cv-fn">deposit</span>(-<span class="cv-num">50.00</span>); <span class="cv-cm">// Rejected by Setter Validation!</span>
+<span class="cv-var">$acc</span>-&gt;<span class="cv-fn">deposit</span>(<span class="cv-num">200.00</span>); <span class="cv-cm">// Approved!</span>
+<span class="cv-fn">echo</span> <span class="cv-str">"ប្រាក់ក្នុងគណនីបច្ចុប្បន្ន៖ "</span> . <span class="cv-var">$acc</span>-&gt;<span class="cv-fn">getBalance</span>() . <span class="cv-str">" $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output</div>
+                <div class="output-body">[Error] ចំនួនប្រាក់ផ្ញើត្រូវតែធំជាង 0 $!
+បានផ្ញើប្រាក់ចំនួន 200 $ ជោគជ័យ។
+ប្រាក់ក្នុងគណនីបច្ចុប្បន្ន៖ 200 $</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights)៖</div>
+                • <b>Data Integrity Guarantee:</b> ការប្រើប្រាស់ Getter/Setter ធានាថាមិនមានកូដខាងក្រៅណាអាចលួចប្តូរ <code>$acc->balance = -99999;</code> បានឡើយ! គ្រប់ការកែប្រែទាំងអស់ត្រូវឆ្លងកាត់ការផ្ទៀងផ្ទាត់ (Validation Rules) ជាដាច់ខាត។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 5: SECTION 6.3 CLASS INHERITANCE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-sitemap"></i> ៦.៣ ស្ថាបត្យកម្ម Class Inheritance តាមរយៈពាក្យគន្លឹះ `extends` <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></div>
+
+        <!-- 6.3.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-diagram-project text-blue"></i> ៦.៣.១ Parent (Base) Class & Child (Derived) Class Structure <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                • <b>Inheritance (ការបន្តពូជ)៖</b> គឺជាសសរទ្រូងទី២ នៃ OOP ដែលអនុញ្ញាតឱ្យ Class ថ្មីមួយ (**Child / Derived Class**) អាចបន្តពូជទាញយក Properties និង Methods ទាំងប៉ុន្មាន (ប្រភេទ <code>public</code> និង <code>protected</code>) ពី Class ដើម (**Parent / Base Class**) មកប្រើប្រាស់ស្វ័យប្រវត្តិ តាមរយៈពាក្យគន្លឹះ <b><code>extends</code></b> ដោយមិនបាច់សរសេរកូដដដែលៗឡើងវិញឡើយ (គោលការណ៍ **DRY - Don't Repeat Yourself**)!
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">// Parent Class Definition
+class ParentClass {
+    protected DataType $property;
+}
+
+// Child Class Inheriting Parent Class
+class ChildClass extends ParentClass {
+    // Child inherits $property and can add its own new features
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">inheritance_demo.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// 1. Parent Class (Base Class)</span>
+<span class="cv-kw">class</span> <span class="cv-tag">User</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$username</span>;
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$email</span>;
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getProfile</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-kw">return</span> <span class="cv-str">"User: {$this-&gt;username} ({$this-&gt;email})"</span>;
+    }
+}
+
+<span class="cv-cm">// 2. Child Class Inheriting from User Class</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Admin</span> <span class="cv-kw">extends</span> <span class="cv-tag">User</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">array</span> <span class="cv-var">$permissions</span> = []; <span class="cv-cm">// Feature ថ្មីបន្ថែមសម្រាប់ Admin</span>
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">banUser</span>(<span class="cv-tag">string</span> <span class="cv-var">$targetUser</span>): <span class="cv-tag">void</span> {
+        <span class="cv-fn">echo</span> <span class="cv-str">"&lt;span style='color:red;'&gt;Admin {$this-&gt;username} បានគៀបសង្កត់ Ban គណនី៖ {$targetUser}!&lt;/span&gt;&lt;br&gt;"</span>;
+    }
+}
+
+<span class="cv-var">$admin</span> = <span class="cv-kw">new</span> <span class="cv-tag">Admin</span>();
+<span class="cv-var">$admin</span>-&gt;<span class="cv-var">username</span> = <span class="cv-str">"lim_sysadmin"</span>; <span class="cv-cm">// Inherited Property</span>
+<span class="cv-var">$admin</span>-&gt;<span class="cv-var">email</span> = <span class="cv-str">"admin@au.edu.kh"</span>;  <span class="cv-cm">// Inherited Property</span>
+
+<span class="cv-fn">echo</span> <span class="cv-var">$admin</span>-&gt;<span class="cv-fn">getProfile</span>() . <span class="cv-str">"&lt;br&gt;"</span>; <span class="cv-cm">// Inherited Method</span>
+<span class="cv-var">$admin</span>-&gt;<span class="cv-fn">banUser</span>(<span class="cv-str">"bad_user99"</span>);       <span class="cv-cm">// Admin Specific Method</span>
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output</div>
+                <div class="output-body">User: lim_sysadmin (admin@au.edu.kh)
+Admin lim_sysadmin បានគៀបសង្កត់ Ban គណនី៖ bad_user99!</div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 6: SECTION 6.4 METHOD OVERRIDING & PARENT:: KEYWORD -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-code-branch"></i> ៦.៤ បច្ចេកទេស Method Overriding, `parent::` Scope & PHP 8.3 `#[\Override]` <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c6">C6</span></div>
+
+        <!-- 6.4.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-arrow-rotate-right text-blue"></i> ៦.៤.១ Method Overriding & `parent::__construct()` <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c6">C6</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                • <b>Method Overriding:</b> គឺជាការសរសេរឡើងវិញ (Redefine) នូវ Method របស់ Parent Class នៅក្នុង Child Class ដើម្បីកែប្រែ ឬបន្ថែមតក្កវិទ្យាថ្មីសមស្របតាមបរិបទ Class កូន។<br>
+                • <b>`parent::` Scope Resolution Operator:</b> ត្រូវបានប្រើប្រាស់នៅក្នុង Child Class ដើម្បី **ហៅ/រំលឹក (Invoke)** Method ដើមរបស់ Parent Class មកប្រតិបត្តិជាមុន (ជាពិសេសការហៅ <code>parent::__construct()</code>) ដើម្បីកាត់បន្ថយកូដស្ទួនពេលបន្តពូជ Constructor។
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">class ChildClass extends ParentClass {
+    #[\Override] // PHP 8.3 Attribute
+    public function __construct(type $parentProp, type $childProp) {
+        parent::__construct($parentProp); // Call Parent Constructor
+        $this->childProp = $childProp;
+    }
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">method_overriding_parent.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-kw">class</span> <span class="cv-tag">Employee</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$name</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$salary</span>
+    ) {}
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getSalaryDetails</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-kw">return</span> <span class="cv-str">"បុគ្គលិក៖ {$this-&gt;name} | ប្រាក់ខែគោល៖ {$this-&gt;salary} $"</span>;
+    }
+}
+
+<span class="cv-kw">class</span> <span class="cv-tag">Manager</span> <span class="cv-kw">extends</span> <span class="cv-tag">Employee</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-tag">string</span> <span class="cv-var">$name</span>,
+        <span class="cv-tag">float</span> <span class="cv-var">$salary</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$bonus</span> <span class="cv-cm">// Bonus បន្ថែមពិសេសសម្រាប់ Manager</span>
+    ) {
+        <span class="cv-tag">parent</span>::<span class="cv-fn">__construct</span>(<span class="cv-var">$name</span>, <span class="cv-var">$salary</span>); <span class="cv-cm">// ហៅ Parent Constructor</span>
+    }
+
+    <span class="cv-cm">// Method Overriding: បង្កើនសមត្ថភាព getSalaryDetails() ដើម</span>
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getSalaryDetails</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-var">$total</span> = <span class="cv-var">$this</span>-&gt;<span class="cv-var">salary</span> + <span class="cv-var">$this</span>-&gt;<span class="cv-var">bonus</span>;
+        <span class="cv-kw">return</span> <span class="cv-tag">parent</span>::<span class="cv-fn">getSalaryDetails</span>() . <span class="cv-str">" + ប្រាក់រង្វាន់៖ {$this-&gt;bonus} $ = សរុប៖ {$total} $"</span>;
+    }
+}
+
+<span class="cv-var">$mgr</span> = <span class="cv-kw">new</span> <span class="cv-tag">Manager</span>(<span class="cv-str">"សឿង លីម"</span>, <span class="cv-num">1500.00</span>, <span class="cv-num">500.00</span>);
+<span class="cv-fn">echo</span> <span class="cv-var">$mgr</span>-&gt;<span class="cv-fn">getSalaryDetails</span>();
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output</div>
+                <div class="output-body">បុគ្គលិក៖ សឿង លីម | ប្រាក់ខែគោល៖ 1500 $ + ប្រាក់រង្វាន់៖ 500 $ = សរុប៖ 2000 $</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (PHP 8.3 Attribute Note)៖</div>
+                • <b>PHP 8.3 `#[\Override]` Attribute:</b> ចាប់ពី PHP 8.3+ យើងអាចបន្ថែម Attribute <code>#[\Override]</code> ពីលើ Method ក្នុង Child Class ដើម្បីឱ្យ PHP Compiler ផ្ទៀងផ្ទាត់ថា Method នោះមាននៅក្នុង Parent Class ពិតប្រាកដ ប្រសិនបើវាយឈ្មោះ Method ខុស វានឹងបោះ Error ភ្លាមៗ!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 7: GLOSSARY & LESSON SUMMARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                    <th style="width: 28%;">ឈ្មោះពេញ / ប្រភពពាក្យ</th>
+                    <th style="width: 35%;">ការពន្យល់ន័យជាភាសាខ្មែរ</th>
+                    <th style="width: 15%; text-align:center;">Bloom Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>Encapsulation</b></td><td>Data Hiding Concept</td><td>ការខ្ចប់ Data និង Methods ចូលគ្នាក្នុង Class និងលាក់បាំង Data សំខាន់ៗ។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Inheritance</b></td><td>Class Code Reusability</td><td>ការបន្តពូជទាញយក Properties/Methods ពី Parent Class មក Child Class។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>`private`</b></td><td>Strict Visibility Modifier</td><td>កម្រិតសិទ្ធិដែលអនុញ្ញាតឱ្យចូលប្រើប្រាស់បានតែក្នុង Class ខ្លួនឯង ១ គត់។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>`protected`</b></td><td>Inheritance Visibility Modifier</td><td>កម្រិតសិទ្ធិដែលអនុញ្ញាតឱ្យចូលប្រើប្រាស់បានក្នុង Class ខ្លួនឯង និង Class កូន។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>Method Overriding</b></td><td>Polymorphic Behavior Redefinition</td><td>ការសរសេរ Redefine Method របស់ Parent Class ឡើងវិញក្នុង Child Class។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td><b>`parent::`</b></td><td>Scope Resolution Operator</td><td>ពាក្យគន្លឹះសម្រាប់ហៅ Method/Constructor ដើមរបស់ Parent Class។</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Lesson Summary)</div>
+        <div class="text-block">
+            មេរៀនទី ៦ នេះបានបំពាក់នូវសសរទ្រូងសំខាន់ពីរនៃ OOP គឺ **Encapsulation** និង **Inheritance** សម្រាប់រៀបចំ Enterprise Applications៖
+        </div>
+
+        <ul class="obj-list">
+            <li><b class="highlight">១. Encapsulation & Data Protection:</b> ការកំណត់ Properties ជា <code>private</code> ឬ <code>protected</code> ការពារការបំពានទិន្នន័យពីខាងក្រៅ ហើយតម្រូវឱ្យប្រើប្រាស់ Getter & Setter Methods ដែលមាន Validation Pipeline។</li>
+            <li><b class="highlight">២. Visibility Levels:</b> យល់ដឹងច្បាស់ពីសិទ្ធិ <code>public</code> (គ្រប់ទីកន្លែង), <code>protected</code> (ក្នុង Class ដើម និង Class កូន), និង <code>private</code> (ក្នុង Class ដើមតែមួយគត់)។</li>
+            <li><b class="highlight">៣. Inheritance Reusability:</b> ការប្រើប្រាស់ <code>class Child extends Parent</code> ជួយកាត់បន្ថយកូដស្ទួនយ៉ាងច្រើន តាមរយៈការរំលែក Properties និង Methods ពី Class មេ។</li>
+            <li><b class="highlight">៤. Overriding & `parent::`:</b> Child Class អាចសរសេរ Overriding Method ដើមបាន ហើយអាចប្រើ <code>parent::__construct()</code> ដើម្បីបន្តពូជ logic បន្ថែមសមត្ថភាពឱ្យកាន់តែមានថាមពល។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 8: REVIEW QUESTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:6px; border-left:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-pen-to-square"></i> ៦. សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">៦.ក. សំណួរ ខុស/ត្រូវ (True/False - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>Property ដែលប្រកាសជា <code>private</code> អាចចូលប្រើប្រាស់បានដោយសេរីពីខាងក្រៅ Class (Global Scope)។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Property ប្រកាសជា <code>protected</code> អាចចូលប្រើប្រាស់បាននៅក្នុង Child Class ដែល <code>extends</code> ពី Parent Class នោះ។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>Encapsulation គឺជាបច្ចេកទេសលាក់បាំងទិន្នន័យ (Data Hiding) ដើម្បីការពារ Data Corruption។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Setter Method ប្រើប្រាស់សម្រាប់តែអានទិន្នន័យបង្ហាញលើ Screen តែប៉ុណ្ណោះ គ្មានការកែប្រែឡើយ។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>ពាក្យគន្លឹះ <code>extends</code> ត្រូវបានប្រើប្រាស់សម្រាប់ធ្វើ Class Inheritance ក្នុង PHP។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Child Class មិនអាចបង្កើត Methods ឬ Properties ថ្មីបន្ថែមពីលើ Parent Class បានឡើយ។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>ពាក្យគន្លឹះ <code>parent::</code> ប្រើសម្រាប់ហៅ Method របស់ Parent Class ពីខាងក្នុង Child Class។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>Method Overriding គឺជាការលុប Parent Class ចោលពីប្រព័ន្ធ Server។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><code>private</code> Members របស់ Parent Class មិនត្រូវ បានបន្តពូជឱ្យ Child Class ចូលប្រើដោយផ្ទាល់ឡើយ។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>Getter Method គួរតែប្រកាសជា <code>public</code> ដើម្បីអនុញ្ញាតឱ្យខាងក្រៅអានតម្លៃ Property ដែលត្រូវ Encapsulate បាន។ <span class="bloom-tag bloom-c2">C2</span></li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:6px;">៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>តើ Access Modifier មួយណាដែល **រឹតបន្តឹងបំផុត** (ចូលប្រើបានតែក្នុង Class ខ្លួនឯង ១ គត់)? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. public</li><li>B. protected</li><li>C. private</li><li>D. global</li></ul>
+            </li>
+            <li>តើ Access Modifier មួយណាដែលអនុញ្ញាតឱ្យ Child Class ចូលប្រើបាន តែបដិសេធសិទ្ធិពីខាងក្រៅ Class? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. public</li><li>B. protected</li><li>C. private</li><li>D. static</li></ul>
+            </li>
+            <li>តើពាក្យគន្លឹះមួយណាប្រើសម្រាប់បង្កើត Child Class ឱ្យបន្តពូជពី Parent Class? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. inherits</li><li>B. implements</li><li>C. extends</li><li>D. includes</li></ul>
+            </li>
+            <li>តើគោលបំណងចម្បងនៃ Setter Method (<code>set...()</code>) គឺអ្វី? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. អានទិន្នន័យ</li><li>B. កែប្រែ Property ដោយមាន Data Validation</li><li>C. លុប Object</li><li>D. ភ្ជាប់ DB</li></ul>
+            </li>
+            <li>តើ Syntax មួយណាដែលត្រឹមត្រូវសម្រាប់ហៅ Parent Constructor ពី Child Class? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. parent->construct()</li><li>B. parent::__construct()</li><li>C. $this->parent()</li><li>D. Base::__construct()</li></ul>
+            </li>
+            <li>តើអ្វីទៅជា Method Overriding? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. ការលុប Method</li><li>B. ការសរសេរ Redefine Method របស់ Parent Class ឡើងវិញក្នុង Child Class</li><li>C. ការបង្កើត Variable</li><li>D. ការបំបែក File</li></ul>
+            </li>
+            <li>តើ Attribute អ្វីក្នុង PHP 8.3+ ដែលប្រើសម្រាប់ផ្ទៀងផ្ទាត់ថាតើ Method មានក្នុង Parent Class ពិតមែន? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. #[\Override]</li><li>B. @Override</li><li>C. #[\Parent]</li><li>D. [Override]</li></ul>
+            </li>
+            <li>ប្រសិនបើ Property មួយប្រកាសជា <code>private</code> តើ Child Class អាចចូលប្រើប្រាស់ដោយផ្ទាល់តាម <code>$this->prop</code> បានដែរឬទេ? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. បានធម្មតា</li><li>B. មិនបានទេ (បោះ Error)</li><li>C. បានតែពេល Night time</li><li>D. បានតែក្នុង PHP 7</li></ul>
+            </li>
+            <li>តើគោលការណ៍ DRY ឈរលើពាក្យពេញថាដូចម្តេច? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. Do Repeat Yourself</li><li>B. Don't Repeat Yourself</li><li>C. Data Read Yearly</li><li>D. Direct Return Yield</li></ul>
+            </li>
+            <li>តើ Getter Method មានប្រភេទ Return Type ដូចម្តេច? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. ត្រូវតែ void ជានិច្ច</li><li>B. ដូចទៅនឹង Data Type របស់ Property ដែលវាអាន</li><li>C. ជា Array ជានិច្ច</li><li>D. គ្មាន Return Type</li></ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 9: MATCHING & EXPLANATORY QUESTIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ សំណួរ)</div>
+        <table class="matching-table">
+            <thead>
+                <tr>
+                    <th style="width:50%;">ជួរ A (OOP Concept / Syntax)</th>
+                    <th style="width:50%;">ជួរ B (ការពិពណ៌នា / និយមន័យ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>១. <code>Encapsulation</code></td><td>A. ចូលប្រើបានតែក្នុង Class ខ្លួនឯង និង Child Class</td></tr>
+                <tr><td>២. <code>Inheritance</code></td><td>B. ចូលប្រើបានតែក្នុង Class ខ្លួនឯង ១ គត់</td></tr>
+                <tr><td>៣. <code>private</code></td><td>C. បច្ចេកទេសខ្ចប់ Data & Methods និងលាក់ Data សំខាន់ៗ</td></tr>
+                <tr><td>៤. <code>protected</code></td><td>D. ការបន្តពូជរំលែក Properties/Methods ពី Parent ទៅ Child</td></tr>
+                <tr><td>៥. <code>public</code></td><td>E. ចូលប្រើប្រាស់បានគ្រប់ទីកន្លែងដោយសេរី</td></tr>
+                <tr><td>៦. <code>Getter Method</code></td><td>F. Method សម្រាប់កំណត់/កែប្រែ Property ដោយឆ្លងកាត់ Validation</td></tr>
+                <tr><td>៧. <code>Setter Method</code></td><td>G. Method សម្រាប់អាន/ទាញយកតម្លៃ Property មកបង្ហាញ</td></tr>
+                <tr><td>៨. <code>extends</code></td><td>H. Scope Resolution Operator សម្រាប់ហៅ Member របស់ Parent Class</td></tr>
+                <tr><td>៩. <code>parent::</code></td><td>I. ពាក្យគន្លឹះសម្រាប់ប្រកាស Child Class ឱ្យបន្តពូជពី Parent</td></tr>
+                <tr><td>១០. <code>#[\Override]</code></td><td>J. PHP 8.3 Attribute ផ្ទៀងផ្ទាត់ការធ្វើ Method Overriding</td></tr>
+            </tbody>
+        </table>
+
+        <!-- SECTION 6.ឃ EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៦.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:3px 0 2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
+        <ol class="q-list">
+            <li><b>Q6.1:</b> ពន្យល់ពីភាពខុសគ្នារវាង Access Modifiers ទាំង៣៖ <code>public</code>, <code>protected</code>, និង <code>private</code>។ <span class="bloom-tag bloom-c1">C1 - Remember</span></li>
+            <li><b>Q6.2:</b> តើអ្វីទៅជា Encapsulation? ហេតុអ្វីបានជាយើងមិនគួរប្រកាស Property ទាំងអស់ជា <code>public</code>? <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+            <li><b>Q6.3:</b> រៀបរាប់ពីតួនាទីរបស់ Getter និង Setter Methods ក្នុងការគ្រប់គ្រង Property ប្រភេទ <code>private</code>។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="4">
+            <li><b>Q6.4:</b> វិភាគពីរបៀបដែល Inheritance (<code>extends</code>) ជួយកាត់បន្ថយកូដស្ទួន និងអនុវត្តគោលការណ៍ DRY។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q6.5:</b> ពន្យល់ពីរបៀបប្រើប្រាស់ <code>parent::__construct()</code> នៅក្នុង Child Class និងអត្ថប្រយោជន៍របស់វា។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+            <li><b>Q6.6:</b> បកស្រាយពីបច្ចេកទេស Method Overriding និងប្រកាសពីរបៀបប្រើប្រាស់ PHP 8.3 Attribute <code>#[\Override]</code>។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="7">
+            <li><b>Q6.7:</b> វាយតម្លៃពីផលប៉ះពាល់នៃការប្រកាស Property ជា <code>public</code> ធៀបនឹង <code>private</code> ជាមួយ Setter Validation ក្នុងប្រព័ន្ធធនាគារ។ <span class="bloom-tag bloom-c5">C5 - Evaluate</span></li>
+            <li><b>Q6.8:</b> វិភាគពីភាពខុសគ្នារវាងការប្រើប្រាស់ <code>protected</code> និង <code>private</code> ពេលដែល Class នោះត្រូវ បានបន្តពូជទៅ Child Class ច្រើនជាន់។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q6.9:</b> ធ្វើការរចនា និងបង្កើត Enterprise Multi-Level Hierarchy (<code>User</code> -> <code>Employee</code> -> <code>Manager</code>) ដោយប្រើប្រាស់ PHP 8 OOP ស្តង់ដារ។ <span class="bloom-tag bloom-c6">C6 - Create</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 10: GRADED CLASSWORK & PRACTICAL LAB LISTING -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> ៦.ង. កិច្ចការសិក្សា និងការវាយតម្លៃ (Graded Classwork & Team Review)</div>
+        
+        <div class="sub-heading" style="margin-top:4px; color:var(--accent);"><i class="fa-solid fa-users-gear"></i> កិច្ចការក្រុម និងការវិភាគកូដ (Team Code Architecture Audit) <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span></div>
+        
+        <div class="text-block">
+            <b>ការណែនាំ៖</b> សូមបែងចែកនិស្សិតជាក្រុម (៣-៤ នាក់) ដើម្បីសិក្សា វិភាគ រកចន្លោះប្រហោងសុវត្ថិភាព (Public Properties គ្មាន Validation) ក្នុង Code Snippet ខាងក្រោម រួចធ្វើការ Refactor ឱ្យទៅជា **PHP 8 Encapsulated & Inherited Architecture**៖
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--danger); margin-top:4px;">• Problem Snippet (កូដគ្មាន Encapsulation ងាយរង Data Corruption)៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">vulnerable_bank_account.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// DANGEROUS CODE: Public property allows direct manipulation without validation!</span>
+<span class="cv-kw">class</span> <span class="cv-tag">UnsafeAccount</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$balance</span> = <span class="cv-num">100.0</span>;
+}
+
+<span class="cv-var">$acc</span> = <span class="cv-kw">new</span> <span class="cv-tag">UnsafeAccount</span>();
+<span class="cv-var">$acc</span>-&gt;<span class="cv-var">balance</span> = -<span class="cv-num">99999.00</span>; <span class="cv-cm">// Bypassed balance restriction completely!</span>
+<span class="cv-fn">echo</span> <span class="cv-str">"Balance: "</span> . <span class="cv-var">$acc</span>-&gt;<span class="cv-var">balance</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--success); margin-top:6px;">• ភារកិច្ចរបស់និស្សិត (Student Tasks)៖</div>
+        <ol class="q-list" style="margin-top:2px;">
+            <li><b>Task 1 (<span class="bloom-tag bloom-c4">C4</span>)៖</b> កំណត់ហានិភ័យសុវត្ថិភាព ២ ក្នុង Code Snippet ខាងលើ។</li>
+            <li><b>Task 2 (<span class="bloom-tag bloom-c5">C5</span>)៖</b> ប្តូរ <code>$balance</code> ទៅជា <code>private</code> រួចបង្កើត Setter <code>deposit()</code> & <code>withdraw()</code> ជាមួយ Validation Rules។</li>
+            <li><b>Task 3 (<span class="bloom-tag bloom-c6">C6</span>)៖</b> បង្កើត Child Class <code>SavingsAccount extends BankAccount</code> មានបន្ថែមប្រាក់ការ (Interest Rate)។</li>
+        </ol>
+
+        <!-- SECTION 6.ច PRACTICAL LABS LISTING -->
+        <div class="sub-heading" style="width: 100%; margin-top:10px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៦.ច. បញ្ជីលំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:2px 0 1px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ លំហាត់]</div>
+        <ol class="q-list">
+            <li><b>Lab 6.1:</b> បង្កើត Class <code>Person</code> មាន Private Property <code>$name</code> រួចបង្កើត Getter និង Setter សម្រាប់វា។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 6.2:</b> បង្កើត Class <code>Student extends Person</code> រួចប្រើប្រាស់ Property របស់ Parent Class។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 6.3:</b> ធ្វើការតេស្តចូលប្រើ Private Property ពីខាងក្រៅ Class ដើម្បីមើល Fatal Error របស់ PHP។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:3px 0 1px 0;">[កម្រិតមធ្យម - Medium Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="4">
+            <li><b>Lab 6.4:</b> បង្កើត Class <code>Vehicle</code> មាន Protected Property <code>$brand</code> រួចឱ្យ Child Class <code>Car</code> អានវា។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 6.5:</b> អនុវត្ត Method Overriding លើ Method <code>getInfo()</code> នៅក្នុង Child Class <code>Car</code>។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 6.6:</b> ប្រើប្រាស់ <code>parent::__construct()</code> ដើម្បីបន្តពូជ Constructor ពី Parent Class ទៅ Child Class។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:3px 0 1px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="7">
+            <li><b>Lab 6.7:</b> ប្រើប្រាស់ PHP 8.3 Attribute <code>#[\Override]</code> លើ Overridden Method ក្នុង Child Class។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 6.8:</b> អភិវឌ្ឍប្រព័ន្ធ <code>BankAccount</code> -> <code>SavingsAccount</code> មានគណនាប្រាក់ការ និងកាត់កម្រៃសេវា។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 6.9:</b> អភិវឌ្ឍប្រព័ន្ធ User Permission Hierarchy ពេញលេញ (<code>User</code> -> <code>Employee</code> -> <code>Manager</code>) តាមស្តង់ដារ PHP 8 OOP។ <span class="bloom-tag bloom-c6">C6</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 11: ANSWERS KEY PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:6px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> ៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys & Solutions)</div>
+            
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ក. ចម្លើយ សំណួរ ខុស/ត្រូវ (True/False Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ខ. ចម្លើយ សំណួរ ពហុជ្រើសរើស (MCQ Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>C</td><td>B</td><td>C</td><td>B</td><td>B</td><td>B</td><td>A</td><td>B</td><td>B</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.គ. ចម្លើយ សំណួរ ផ្គូផ្គង (Matching Answers 1-10)</div>
+        <table class="ans-table" style="margin-bottom: 6px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>C</td><td>D</td><td>B</td><td>A</td><td>E</td><td>G</td><td>F</td><td>I</td><td>H</td><td>J</td></tr>
+        </table>
+
+        <!-- SECTION 7.ឃ ANSWERS TO EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q6.1 - Q6.5)</div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--success); margin:2px 0;">[កម្រិតស្រាល - Light/Easy Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q6.1 (Access Modifiers Difference)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • <code>public</code>: ចូលប្រើបានពីគ្រប់ទីកន្លែង។<br>
+                • <code>protected</code>: ចូលប្រើបានតែក្នុង Class ខ្លួនឯង និង Child Classes។<br>
+                • <code>private</code>: ចូលប្រើបានតែក្នុង Class ខ្លួនឯង ១ គត់។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q6.2 (Encapsulation Purpose)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Encapsulation គឺជាការលាក់ទិន្នន័យ (Data Hiding)។ យើងមិនគួរប្រកាស Property ជា public ឡើយ ព្រោះកូដខាងក្រៅអាចបំពានកែប្រែទិន្នន័យមិនត្រឹមត្រូវ (ឧ. $balance = -500) ដោយរំលង Validation Rules។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q6.3 (Getters & Setters Role)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Getter អនុញ្ញាតឱ្យខាងក្រៅអានតម្លៃ private property ដោយសុវត្ថិភាព។ ឯ Setter អនុញ្ញាតឱ្យខាងក្រៅកែប្រែតម្លៃ property ដោយឆ្លងកាត់ការ Validate ត្រឹមត្រូវ។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q6.4 (Inheritance & DRY Principle)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Inheritance អនុញ្ញាតឱ្យ Child Class ទាញយកកូដពី Parent Class មកប្រើប្រាស់ស្វ័យប្រវត្តិ ធ្វើឱ្យយើងមិនបាច់សរសេរ Properties/Methods ដដែលៗឡើយ (DRY Principle)។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q6.5 (`parent::__construct()` Mechanics)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                <code>parent::__construct()</code> ប្រើសម្រាប់រំលឹក និងរត់ Constructor របស់ Parent Class ជាមុន ដើម្បីផ្ញើតម្លៃ Properties ដើមឱ្យ Initialize មុននឹង Child Class បន្ថែម Properties ថ្មីរបស់ខ្លួន។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 12: EXPLANATORY ANSWERS PART 2 & LAB SOLUTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q6.6 (Method Overriding & PHP 8.3 Attribute)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Method Overriding គឺជាការសរសេរ Redefine Method របស់ Parent Class ឡើងវិញក្នុង Child Class។ ចាប់ពី PHP 8.3+ ការបន្ថែម Attribute <code>#[\Override]</code> ជួយឱ្យ PHP Compiler ផ្ទៀងផ្ទាត់ថាតើ Method នោះមានក្នុង Parent Class ពិតមែន ឬអត់។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q6.7 (Public vs Private in Banking Systems)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                ការប្រើ public property ធ្វើឱ្យ Hacker ឬ Developer ផ្សេងអាចកែប្រែប្រាក់សល់ប្រព័ន្ធ $balance ជាលេខអវិជ្ជមានបាន។ ឯ private property ជាមួយ Setter Validation ធានាថាប្រាក់ត្រូវតែ > 0 ជានិច្ច។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q6.8 (Protected vs Private in Multi-level Inheritance)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                <code>protected</code> អនុញ្ញាតឱ្យ Child Class គ្រប់ជាន់ (Subclasses) ចូលប្រើប្រាស់ Property នោះបាន។ ឯ <code>private</code> អនុញ្ញាតឱ្យប្រើបានតែក្នុង Class ដើមដំបូងដែលប្រកាសវាប៉ុណ្ណោះ។
+            </div>
+        </div>
+
+        <!-- SECTION 7.ង LAB SOLUTIONS PART 1 -->
+        <div class="sub-heading" style="margin-top: 8px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-code"></i> ៧.ង. ដំណោះស្រាយលំហាត់អនុវត្តន៍ (Practical Lab Solutions 6.1 - 6.4)</div>
+        
+        <!-- LAB 6.1 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:2px;">• ដំណោះស្រាយ Lab 6.1 (Getter & Setter) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab6_1.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Person</span> {
+    <span class="cv-kw">private</span> <span class="cv-tag">string</span> <span class="cv-var">$name</span>;
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getName</span>(): <span class="cv-tag">string</span> { <span class="cv-kw">return</span> <span class="cv-var">$this</span>-&gt;<span class="cv-var">$name</span>; }
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">setName</span>(<span class="cv-tag">string</span> <span class="cv-var">$n</span>): <span class="cv-tag">void</span> { <span class="cv-var">$this</span>-&gt;<span class="cv-var">name</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$n</span>); }
+}
+<span class="cv-var">$p</span> = <span class="cv-kw">new</span> <span class="cv-tag">Person</span>(); <span class="cv-var">$p</span>-&gt;<span class="cv-fn">setName</span>(<span class="cv-str">"សុខ ជា"</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"ឈ្មោះ៖ "</span> . <span class="cv-var">$p</span>-&gt;<span class="cv-fn">getName</span>();
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 6.2 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 6.2 (Basic Inheritance) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab6_2.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Person</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$name</span> = <span class="cv-str">"កែវ ណារ៉ា"</span>;
+}
+<span class="cv-kw">class</span> <span class="cv-tag">Student</span> <span class="cv-kw">extends</span> <span class="cv-tag">Person</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$studentId</span> = <span class="cv-str">"AU-CS-001"</span>;
+}
+<span class="cv-var">$st</span> = <span class="cv-kw">new</span> <span class="cv-tag">Student</span>();
+<span class="cv-fn">echo</span> <span class="cv-str">"ID: {$st-&gt;studentId} | ឈ្មោះ៖ {$st-&gt;name}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 6.4 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 6.4 (Protected Access Modifier) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab6_4.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Vehicle</span> {
+    <span class="cv-kw">protected</span> <span class="cv-tag">string</span> <span class="cv-var">$brand</span> = <span class="cv-str">"Toyota"</span>;
+}
+<span class="cv-kw">class</span> <span class="cv-tag">Car</span> <span class="cv-kw">extends</span> <span class="cv-tag">Vehicle</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getBrand</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-kw">return</span> <span class="cv-var">$this</span>-&gt;<span class="cv-var">brand</span>; <span class="cv-cm">// អាចអាន Protected Property បានក្នុង Child Class</span>
+    }
+}
+<span class="cv-var">$c</span> = <span class="cv-kw">new</span> <span class="cv-tag">Car</span>();
+<span class="cv-fn">echo</span> <span class="cv-str">"ម៉ាករថយន្ត៖ "</span> . <span class="cv-var">$c</span>-&gt;<span class="cv-fn">getBrand</span>();
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 13: PRACTICAL LAB SOLUTIONS PART 2 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 6.5 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 6.5 (Method Overriding) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab6_5.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Vehicle</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getInfo</span>(): <span class="cv-tag">string</span> { <span class="cv-kw">return</span> <span class="cv-str">"ជាយានយន្តទូទៅ"</span>; }
+}
+<span class="cv-kw">class</span> <span class="cv-tag">Car</span> <span class="cv-kw">extends</span> <span class="cv-tag">Vehicle</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getInfo</span>(): <span class="cv-tag">string</span> { <span class="cv-kw">return</span> <span class="cv-str">"ជារថយន្ត Prius ទំនើប"</span>; }
+}
+<span class="cv-var">$c</span> = <span class="cv-kw">new</span> <span class="cv-tag">Car</span>();
+<span class="cv-fn">echo</span> <span class="cv-var">$c</span>-&gt;<span class="cv-fn">getInfo</span>();
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 6.6 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 6.6 (parent::__construct Call) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab6_6.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">User</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(<span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$username</span>) {}
+}
+<span class="cv-kw">class</span> <span class="cv-tag">Admin</span> <span class="cv-kw">extends</span> <span class="cv-tag">User</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(<span class="cv-tag">string</span> <span class="cv-var">$username</span>, <span class="cv-kw">public</span> <span class="cv-tag">int</span> <span class="cv-var">$level</span>) {
+        <span class="cv-tag">parent</span>::<span class="cv-fn">__construct</span>(<span class="cv-var">$username</span>);
+    }
+}
+<span class="cv-var">$a</span> = <span class="cv-kw">new</span> <span class="cv-tag">Admin</span>(<span class="cv-str">"lim_admin"</span>, <span class="cv-num">1</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"Admin: {$a-&gt;username} | Level: {$a-&gt;level}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 6.7 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 6.7 (PHP 8.3 #[\Override] Attribute) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab6_7.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">BaseService</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">execute</span>(): <span class="cv-tag">string</span> { <span class="cv-kw">return</span> <span class="cv-str">"Base execution"</span>; }
+}
+<span class="cv-kw">class</span> <span class="cv-tag">CustomService</span> <span class="cv-kw">extends</span> <span class="cv-tag">BaseService</span> {
+    #[\Override]
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">execute</span>(): <span class="cv-tag">string</span> { <span class="cv-kw">return</span> <span class="cv-str">"Custom overridden execution"</span>; }
+}
+<span class="cv-var">$s</span> = <span class="cv-kw">new</span> <span class="cv-tag">CustomService</span>();
+<span class="cv-fn">echo</span> <span class="cv-var">$s</span>-&gt;<span class="cv-fn">execute</span>();
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 14: LAB 6.8, 6.9 & FINAL CONCLUSION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៦</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 6.8 & 6.9 SOLUTION (FULL ENTERPRISE HIERARCHY APPLICATION) -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 6.8 & 6.9 (Enterprise Multi-Level User Hierarchy) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">enterprise_user_hierarchy.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-kw">class</span> <span class="cv-tag">User</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-kw">protected</span> <span class="cv-tag">string</span> <span class="cv-var">$username</span>,
+        <span class="cv-kw">protected</span> <span class="cv-tag">string</span> <span class="cv-var">$email</span>
+    ) {}
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getDetails</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-kw">return</span> <span class="cv-str">"User: {$this-&gt;username} ({$this-&gt;email})"</span>;
+    }
+}
+
+<span class="cv-kw">class</span> <span class="cv-tag">Employee</span> <span class="cv-kw">extends</span> <span class="cv-tag">User</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-tag">string</span> <span class="cv-var">$username</span>,
+        <span class="cv-tag">string</span> <span class="cv-var">$email</span>,
+        <span class="cv-kw">protected</span> <span class="cv-tag">float</span> <span class="cv-var">$salary</span>
+    ) {
+        <span class="cv-tag">parent</span>::<span class="cv-fn">__construct</span>(<span class="cv-var">$username</span>, <span class="cv-var">$email</span>);
+    }
+
+    #[\Override]
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getDetails</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-kw">return</span> <span class="cv-tag">parent</span>::<span class="cv-fn">getDetails</span>() . <span class="cv-str">" | ប្រាក់ខែ៖ {$this-&gt;salary} $"</span>;
+    }
+}
+
+<span class="cv-kw">class</span> <span class="cv-tag">Manager</span> <span class="cv-kw">extends</span> <span class="cv-tag">Employee</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-tag">string</span> <span class="cv-var">$username</span>,
+        <span class="cv-tag">string</span> <span class="cv-var">$email</span>,
+        <span class="cv-tag">float</span> <span class="cv-var">$salary</span>,
+        <span class="cv-kw">private</span> <span class="cv-tag">float</span> <span class="cv-var">$allowance</span>
+    ) {
+        <span class="cv-tag">parent</span>::<span class="cv-fn">__construct</span>(<span class="cv-var">$username</span>, <span class="cv-var">$email</span>, <span class="cv-var">$salary</span>);
+    }
+
+    #[\Override]
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getDetails</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-var">$totalSalary</span> = <span class="cv-var">$this</span>-&gt;<span class="cv-var">salary</span> + <span class="cv-var">$this</span>-&gt;<span class="cv-var">allowance</span>;
+        <span class="cv-kw">return</span> <span class="cv-tag">parent</span>::<span class="cv-fn">getDetails</span>() . <span class="cv-str">" + ប្រាក់ឧបត្ថម្ភ៖ {$this-&gt;allowance} $ = សរុប៖ {$totalSalary} $"</span>;
+    }
+}
+
+<span class="cv-var">$mgr</span> = <span class="cv-kw">new</span> <span class="cv-tag">Manager</span>(<span class="cv-str">"lim_soeurng"</span>, <span class="cv-str">"lim@au.edu.kh"</span>, <span class="cv-num">1800.00</span>, <span class="cv-num">400.00</span>);
+<span class="cv-fn">echo</span> <span class="cv-var">$mgr</span>-&gt;<span class="cv-fn">getDetails</span>();
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-desktop"></i> Execution Output</div>
+            <div class="output-body">User: lim_soeurng (lim@au.edu.kh) | ប្រាក់ខែ៖ 1800 $ + ប្រាក់ឧបត្ថម្ភ៖ 400 $ = សរុប៖ 2200 $</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 12px; padding: 15px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 10px;">
+            <h3 style="font-family: var(--font-kh-heading); font-size: 11.5pt; color: var(--text-heading); margin-bottom: 3px;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ៦ យ៉ាងបរិបូរណ៍។</h3>
+            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 6 HANDOUT (TOTAL 14 PAGES) ***</p>
+        </div>
+
+        <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
+            <div style="text-align: center; width: 220px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">បានឃើញ និងពិនិត្យត្រឹមត្រូវ</p>
+                <p style="font-size: 9.5pt; margin-top: 45px; font-family: var(--font-kh-body);">..........................................</p>
+                <p style="font-size: 10pt; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">ប្រធានដេប៉ាតឺម៉ង់</p>
+            </div>
+            <div style="text-align: center; width: 260px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">ធ្វើនៅសៀមរាប, ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 10pt; margin-top: 45px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ១៤</div>
+    </div>
+</div>
+
+</body>
+</html>

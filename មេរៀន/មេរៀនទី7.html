@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: មេរៀនទី ៧ - មូលដ្ឋានគ្រឹះ MySQL & Database Design (Modern Web Development)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #0078D4;
+            --accent: #4F46E5;
+            --php-color: #7C3AED;
+            --mysql-color: #0284C7;
+            --apache-color: #D97706;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #475569;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #0F172A;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            
+            /* SQL & CODE EDITOR THEME */
+            --bg-code-light: #F8FAFC;
+            --code-header-light: #E2E8F0;
+            --code-text: #0F172A;
+            --code-kw: #0284C7;       /* Blue: SELECT, INSERT, UPDATE, DELETE, CREATE TABLE, WHERE, ORDER BY */
+            --code-tag: #7C3AED;      /* Purple: INT, VARCHAR, DATETIME, DECIMAL, PRIMARY KEY, AUTO_INCREMENT */
+            --code-var: #0F172A;      /* Dark Slate: tbl_students, tbl_courses, email, price */
+            --code-str: #B45309;      /* Brown/Amber: 'Sok Chea', 'CS' */
+            --code-num: #059669;      /* Emerald Green: 100, 3.14, 1 */
+            --code-func: #2563EB;     /* Royal Blue: COUNT(), NOW(), ROUND(), SUM() */
+            --code-cmt: #64748B;      /* Gray Italic: -- comment */
+            
+            --bg-output: #F1F5F9;
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            --font-kh-heading: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 10px;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        /* Top Bar */
+        .no-print-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border-dark);
+            padding: 14px 28px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            width: 210mm;
+            max-width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+        .no-print-bar p { margin: 0; font-size: 11pt; color: var(--text-muted); }
+        .print-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: var(--font-kh-body);
+            font-size: 11pt;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
+
+        /* A4 Page Layout */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: var(--bg-page);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            margin-bottom: 25px;
+            position: relative;
+            border-radius: 4px;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 12mm 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .global-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 3px solid var(--accent);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 140px; }
+        .header-item img { height: 32px; object-fit: contain; }
+        .header-item span { font-size: 8.5pt; font-weight: bold; color: var(--accent); text-align: center; font-family: var(--font-kh-heading); line-height: 1.2; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 11pt; color: var(--accent); margin-bottom: 1px; line-height: 1.3;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent);
+            background-color: var(--bg-light);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+        .footer-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 9.5pt; 
+            color: var(--text-heading); 
+            font-weight: bold;
+            font-family: var(--font-kh-heading);
+        }
+        .footer-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .footer-right { font-size: 8.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 10px; border-radius: 15px; font-family: var(--font-kh-body);}
+
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 4px;
+            margin: 8px 0 10px 0;
+            font-family: var(--font-kh-heading);
+            font-size: 12pt;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-inside: avoid;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { 
+            font-family: var(--font-kh-heading); 
+            font-size: 11pt; 
+            color: var(--accent); 
+            margin: 8px 0 6px 0; 
+            page-break-inside: avoid;
+            border-left: 4px solid var(--accent);
+            padding-left: 8px;
+            line-height: 1.4;
+        }
+
+        .text-block { font-size: 10.5pt; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        
+        /* BLOOM'S TAXONOMY BADGES */
+        .bloom-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 7.5pt; font-weight: 800; font-family: var(--font-en-main); margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; border: 1px solid #FECDD3; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; } 
+
+        .toc-table { width: 100%; border-collapse: collapse; margin: 6px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; padding: 6px 8px; text-align: left; }
+        .toc-table td { padding: 5px 8px; border-bottom: 1px solid var(--border-light); font-size: 10pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; color: var(--accent); }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 4px; }
+        .obj-list li { position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 10.5pt; line-height: 1.5; page-break-inside: avoid; }
+        .obj-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11pt; top: -1px; }
+
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1px solid var(--border-dark); page-break-inside: avoid; }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 5px 7px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.4; }
+
+        .sub-topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sub-topic-card h4 {
+            font-family: var(--font-kh-heading);
+            font-size: 10.5pt;
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 4px;
+        }
+        .content-label {
+            font-weight: bold;
+            color: var(--accent);
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .syntax-box {
+            background: #EEF2FF;
+            border-left: 4px solid var(--accent);
+            font-family: var(--font-code);
+            font-size: 9pt;
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-radius: 0 4px 4px 0;
+            color: #1E1B4B;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .code-window { 
+            background: var(--bg-code-light); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin: 5px 0; 
+            border: 1px solid var(--border-dark); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        .code-header { 
+            background: var(--code-header-light); 
+            padding: 4px 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .mac-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: #FF5F56; }
+        .dot-y { background: #FFBD2E; }
+        .dot-g { background: #27C93F; }
+        .code-title { color: #475569; font-family: var(--font-code); font-size: 8.5pt; font-weight: 700;}
+        pre { 
+            padding: 8px 12px; 
+            color: var(--code-text); 
+            font-family: var(--font-code); 
+            font-size: 8.8pt; 
+            line-height: 1.45; 
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0; 
+            tab-size: 4;
+            font-weight: 600;
+        }
+
+        /* Syntax Highlight Classes */
+        .cv-kw { color: var(--code-kw); font-weight: bold; }
+        .cv-tag { color: var(--code-tag); font-weight: bold; }
+        .cv-var { color: var(--code-var); }
+        .cv-str { color: var(--code-str); }
+        .cv-num { color: var(--code-num); }
+        .cv-fn { color: var(--code-func); font-weight: bold; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; }
+
+        .output-window {
+            background: var(--bg-output);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 4px 0;
+            border: 1px solid var(--border-dark);
+            page-break-inside: avoid;
+        }
+        .output-header {
+            background: #CBD5E1;
+            padding: 3px 10px;
+            color: #0F172A;
+            font-family: var(--font-code);
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid #94A3B8;
+        }
+        .output-body {
+            padding: 6px 12px;
+            color: #0078D4;
+            font-family: var(--font-code);
+            font-size: 8.8pt;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .extra-box {
+            background: #FFFBEB;
+            border-left: 4px solid var(--warning);
+            border: 1px solid #FDE68A;
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-size: 9.5pt;
+            line-height: 1.45;
+            page-break-inside: avoid;
+        }
+        .extra-box-title {
+            font-weight: bold;
+            color: #B45309;
+            font-family: var(--font-kh-heading);
+            font-size: 9pt;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .q-list { 
+            list-style-type: khmer; 
+            padding-left: 24px; 
+            font-size: 10.5pt; 
+            line-height: 1.5; 
+        }
+        .q-list li { 
+            margin-bottom: 6px; 
+            font-weight: normal; 
+            color: var(--text-main); 
+            page-break-inside: avoid;
+        }
+        .mcq-opts { 
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-top: 3px; 
+            font-weight: normal; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 4px;
+        }
+        .mcq-opts li { 
+            font-size: 9.5pt; 
+            background: #F8FAFC; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light); 
+            margin-bottom: 0; 
+        }
+        
+        .ans-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; page-break-inside: avoid;}
+        .ans-table th { background: #F1F5F9; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt; font-weight: bold; color: var(--text-heading); text-align:center;}
+        .ans-table td { font-weight: 700; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt;}
+
+        .matching-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-dark); page-break-inside: avoid;}
+        .matching-table th { background: #E0E7FF; color: var(--accent); border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt; text-align: center; font-family: var(--font-kh-heading); }
+        .matching-table td { border: 1px solid var(--border-dark); padding: 5px 8px; font-size: 9.5pt; line-height: 1.4; vertical-align: top; }
+
+        .explain-ans-card {
+            background: #F8FAFC;
+            border-left: 4px solid var(--accent);
+            border: 1px solid var(--border-dark);
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+        .explain-ans-card h5 {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .tech-badge-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .tech-badge {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 8.5pt;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* PRINT SPECIFIC STYLES */
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print-bar { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <p><b><i class="fa-solid fa-file-pdf text-blue"></i> ណែនាំបោះពុម្ព៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print ជា PDF។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF</button>
+</div>
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>សាកលវិទ្យាល័យអង្គរ | ANGKOR UNIVERSITY</h1><p>FACULTY OF SCIENCE & TECHNOLOGY</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #E0F2FE 0%, #FFFFFF 100%); border-radius: 8px;">
+        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 120px; margin-bottom: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" alt="Logo">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 20pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 10pt; color: var(--text-muted); margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div class="tech-badge-bar">
+            <span class="tech-badge"><i class="fa-solid fa-database"></i> RDBMS & Database Architecture</span>
+            <span class="tech-badge"><i class="fa-solid fa-key"></i> Primary Key, Auto Increment & Foreign Keys</span>
+            <span class="tech-badge"><i class="fa-solid fa-code"></i> SQL Queries (SELECT, INSERT, UPDATE, DELETE)</span>
+        </div>
+
+        <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 14px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (CS / IT)
+        </div>
+        
+        <div style="background: var(--mysql-color); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ៧ (Professional & Academic Edition)</div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 16pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">មូលដ្ឋានគ្រឹះ MySQL & Database Design<br>(Fundamentals of MySQL & Database Design)</h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 18px; font-weight: 600;">RDBMS Architecture, phpMyAdmin GUI Management, Field Data Types (INT, VARCHAR, DECIMAL, DATETIME), Primary Keys, Auto Increment, Foreign Keys & SQL CRUD Operations</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
+            <p style="font-family: var(--font-kh-body); font-size: 10pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 11.5pt;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 2: LLO & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> ១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLO)</div>
+        <ul class="obj-list">
+            <li><b>LLO 7.1:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">ពន្យល់ និងបកស្រាយ</span> ពីស្ថាបត្យកម្មប្រព័ន្ធគ្រប់គ្រងមូលដ្ឋានទិន្នន័យទំនាក់ទំនង **RDBMS (Relational Database Management System)**, តួនាទីរបស់ MySQL Engine, និងការប្រើប្រាស់ GUI Interface ឧបករណ៍ phpMyAdmin ក្នុង XAMPP។</li>
+            <li><b>LLO 7.2:</b> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">ជ្រើសរើស និងកំណត់</span> **Data Types** (INT, VARCHAR, TEXT, DECIMAL, DATETIME) ព្រមទាំងលក្ខខណ្ឌ **Constraints** រួមមាន **Primary Key (PK)**, **Auto Increment (AI)**, **Foreign Key (FK)**, និង `NOT NULL` ឱ្យត្រូវតាមស្តង់ដារ Data Integrity។</li>
+            <li><b>LLO 7.3:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">សរសេរ និងប្រតិបត្តិ</span> **SQL Queries (DDL & DML)** ដូចជា `CREATE TABLE`, `INSERT INTO`, និង `SELECT` (ប្រើប្រាស់ `WHERE`, `ORDER BY`, `LIMIT`, `LIKE`) ដើម្បីទាញយក និងរក្សាទុកទិន្នន័យដោយត្រឹមត្រូវ។</li>
+            <li><b>LLO 7.4:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="highlight">វិភាគ និងការពារ</span> ហានិភ័យនៃការបាត់បង់ទិន្នន័យក្នុងប្រតិបត្តិការ `UPDATE` និង `DELETE` ( safety guards ដោយប្រើ `WHERE` Clause) ព្រមទាំងប្រៀបធៀប **Hard Delete vs. Soft Delete Strategy** ក្នុង enterprise systems។</li>
+            <li><b>LLO 7.5:</b> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">រចនា និងកសាង</span> Database Schema ពេញលេញមួយ (រាប់ចាប់ពី Table Structure, Relational Keys ដល់ SQL Queries) សម្រាប់គម្រោង Web Application ជាក់ស្តែង។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀន (Lesson Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Sub-Topics)</th>
+                    <th style="width:20%; text-align:center;">Bloom's Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៧.១</td><td>ស្ថាបត្យកម្ម RDBMS & ឧបករណ៍ phpMyAdmin Interface (Database Concepts & Setup)</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td class="toc-num">៧.២</td><td>ការរចនា Schema & MySQL Data Types (PK, FK, Auto Increment & Constraints)</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៧.៣</td><td>SQL Operations (ភាគ១)៖ ការបង្កើត Schema & ការទាញយក/បញ្ចូលទិន្នន័យ (INSERT & SELECT)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td class="toc-num">៧.៤</td><td>SQL Operations (ភាគ២)៖ ការកែប្រែ និងលុបទិន្នន័យប្រកបដោយសុវត្ថិភាព (UPDATE, DELETE & Soft Delete)</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 3: SECTION 7.1 RDBMS & PHPMYADMIN -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <i class="fa-solid fa-book-open text-blue"></i> ៣. ខ្លឹមសារលម្អិតនៃមេរៀន (Detailed Lesson Contents)
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-server"></i> ៧.១ ស្ថាបត្យកម្ម RDBMS & ឧបករណ៍ phpMyAdmin Interface <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></div>
+
+        <!-- 7.1.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-network-wired text-blue"></i> ៧.១.១ គំនិតគ្រឹះនៃ Relational Database & phpMyAdmin Architecture <span class="bloom-tag bloom-c2">C2</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                • <b>Database (មូលដ្ឋានទិន្នន័យ)៖</b> គឺជាប្រព័ន្ធសាំងខាងក្នុង Memory/Disk សម្រាប់រៀបចំ រក្សាទុក និងគ្រប់គ្រងទិន្នន័យឱ្យមានរបៀបរៀបរយ។<br>
+                • <b>RDBMS (Relational Database Management System)៖</b> គឺជាប្រព័ន្ធគ្រប់គ្រងទិន្នន័យដែលរៀបចំទិន្នន័យជាទម្រង់ **តារាងទិន្នន័យ (Tables)** មានជួរឈរ (**Columns / Fields**) និងជួរដេក (**Rows / Records**) ព្រមទាំងភ្ជាប់ទំនាក់ទំនងរវាងតារាងតាមរយៈ **Keys (PK & FK)**។ MySQL និង MariaDB គឺជា RDBMS ដ៏ពេញនិយមបំផុតលើពិភពលោក។<br>
+                • <b>phpMyAdmin GUI Interface:</b> គឺជា Web Application បង្កើតឡើងដោយ PHP សម្រាប់សម្រួលដល់ Web Developer ក្នុងការគ្រប់គ្រង MySQL Server តាមរយៈ Web Browser ដោយមិនបាច់សរសេរ Command-line សញាំញាំឡើយ។
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-sitemap"></i> ខ. រចនាសម្ព័ន្ធតារាងទិន្នន័យ (Table Structural Components)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:25%;">សមាសភាគ (Component)</th>
+                        <th style="width:35%;">ឈ្មោះបច្ចេកទេស Database</th>
+                        <th style="width:40%;">ការពន្យល់ និងឧទាហរណ៍</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Table (តារាង)</b></td>
+                        <td>Entity / Relation</td>
+                        <td>សំណុំទិន្នន័យប្រធានបទតែមួយ (ឧ. <code>tbl_students</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Column (ជួរឈរ)</b></td>
+                        <td>Field / Attribute</td>
+                        <td>លក្ខណៈនៃទិន្នន័យ (ឧ. <code>id</code>, <code>fullname</code>, <code>email</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Row (ជួរដេក)</b></td>
+                        <td>Record / Tuple</td>
+                        <td>ទិន្នន័យម្នាក់ៗជាក់ស្តែង (ឧ. Record របស់និស្សិត សុខ ជា)</td>
+                    </tr>
+                    <tr>
+                        <td><b>Primary Key (PK)</b></td>
+                        <td>Unique Identifier</td>
+                        <td>កូនសោចម្បងសម្គាល់ Record នីមួយៗមិនឱ្យជាន់គ្នាដាច់ខាត</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> គ. របៀបចូលប្រើប្រាស់ phpMyAdmin តាមរយៈ XAMPP Control Panel៖</div>
+            <div class="syntax-box">1. បើក XAMPP Control Panel -> ចុច [Start] លើ Module Apache និង MySQL
+2. បើក Web Browser -> វាយអាសយដ្ឋាន៖ http://localhost/phpmyadmin/
+3. ឬ ចុចប៊ូតុង [Admin] នៅត្រង់ជួរ MySQL ក្នុង XAMPP Control Panel</div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ឃ. បទពិសោធន៍សាស្ត្រាចារ្យ (Teacher Insights - Table Naming Conventions)៖</div>
+                • <b>Table Prefixing Strategy:</b> ក្នុងការអភិវឌ្ឍ Web Applications ជាទូទៅយើងគួរដាក់អក្សរបុព្វបទ (Prefix) ពីមុខឈ្មោះ Table ដូចជា <code>tbl_students</code>, <code>tbl_users</code> ឬ <code>tbl_orders</code> ដើម្បីងាយស្រួលបែងចែក Table ក្នុង Database និងជៀសវាងការប៉ះទង្គិចឈ្មោះពាក្យreserved keywords របស់ SQL!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 4: SECTION 7.2 DATA TYPES & SCHEMA DESIGN -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-ruler-combined"></i> ៧.២ ការរចនា Schema & MySQL Data Types <span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 7.2.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-database text-blue"></i> ៧.២.១ MySQL Field Data Types, PK, AI & Constraints <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. ការជ្រើសរើស Data Types សំខាន់ៗ (MySQL Data Types Selection)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:20%;">Data Type</th>
+                        <th style="width:30%;">កម្រិតទំហំ (Capacity/Range)</th>
+                        <th style="width:50%;">ករណីប្រើប្រាស់សមស្រប (Use Cases)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b><code>INT</code></b></td>
+                        <td>-2,147,483,648 ដល់ 2,147,483,647</td>
+                        <td>ប្រើសម្រាប់ ID (Primary Key), ចំនួនសរុប, លេខរៀង</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>VARCHAR(length)</code></b></td>
+                        <td>អក្សរប្រែប្រួលទំហំ (១ ដល់ ៦៥,៥៣៥ ចរិត)</td>
+                        <td>ប្រើសម្រាប់ ឈ្មោះ, អ៊ីម៉ែល, លេខទូរស័ព្ទ, លេខសម្ងាត់</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>TEXT</code></b></td>
+                        <td>អត្ថបទវែង (រហូតដល់ ៦៥,៥៣៥ ចរិត)</td>
+                        <td>ប្រើសម្រាប់ ជីវប្រវត្តិ, ព័ត៌មានលម្អិត, អត្ថបទមេរៀន/Blog</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>DECIMAL(M,D)</code></b></td>
+                        <td>លេខមានក្បៀសច្បាស់លាស់ (Precision)</td>
+                        <td><b>ប្រាក់ខែ, តម្លៃទំនិញ</b> (ឧ. <code>DECIMAL(10,2)</code> គឺ $99,999,999.99)</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>DATETIME</code></b></td>
+                        <td>YYYY-MM-DD HH:MM:SS</td>
+                        <td>កាលបរិច្ឆេទបង្កើត ឬធ្វើបច្ចុប្បន្នភាព (<code>created_at</code>)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="content-label"><i class="fa-solid fa-key"></i> ខ. គំនិតគ្រឹះនៃ Keys & Field Constraints៖</div>
+            <div class="text-block">
+                • <b>Primary Key (PK):</b> កូនសោចម្បងដែលធានាថា Row នីមួយៗមិនជាន់គ្នាឡើយ (`UNIQUE` + `NOT NULL`)។<br>
+                • <b>Auto Increment (AI):</b> កំណត់ឱ្យ MySQL បន្ថែមលេខ ID ឡើងស្វ័យប្រវត្តិ (1, 2, 3, ...) រាល់ពេលមាន Record ថ្មីបញ្ជូល។<br>
+                • <b>Foreign Key (FK):</b> កូនសោក្រៅដែលភ្ជាប់ទំនាក់ទំនងរវាង Table មួយ ទៅកាន់ Primary Key នៃ Table មួយទៀត។<br>
+                • <b><code>NOT NULL</code> Constraint:</b> កំណត់បម្រាមមិនឱ្យ Field នោះទទេរស្អាត (ត្រូវតែមានទិន្នន័យជានិច្ច)។
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-triangle-exclamation"></i> គ. បទពិសោធន៍សាស្ត្រាចារ្យ (Avoid Float/Double for Currency!)៖</div>
+                • <b>សុំកុំប្រើ `FLOAT` ឬ `DOUBLE` សម្រាប់រក្សាទុកលុយកាក់ដាច់ខាត!</b> ព្រោះវាមាន Floating-point Precision Issue (គណនាប្រាក់បាត់សេន)។ ត្រូវតែប្រើប្រាស់ <b><code>DECIMAL(10,2)</code></b> ជានិច្ចសម្រាប់ការងារទាក់ទងនឹងប្រាក់ខែ ឬតម្លៃទំនិញ E-commerce!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 5: SECTION 7.3 SQL DDL & DML (CREATE, INSERT, SELECT) -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-code"></i> ៧.៣ SQL Operations (ភាគ១)៖ DDL Schema & INSERT / SELECT <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></div>
+
+        <!-- 7.3.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-table-list text-blue"></i> ៧.៣.១ DDL Table Creation & DML Insert / Query Operations <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ក. កូដ SQL បង្កើត Database & Table (`CREATE TABLE`)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">create_schema.sql</div></div>
+<pre><span class="cv-cm">-- 1. បង្កើត Database ថ្មី (បើមិនទាន់មាន)</span>
+<span class="cv-kw">CREATE DATABASE IF NOT EXISTS</span> <span class="cv-var">db_university_app</span>
+<span class="cv-kw">CHARACTER SET</span> <span class="cv-str">utf8mb4</span> <span class="cv-kw">COLLATE</span> <span class="cv-str">utf8mb4_unicode_ci</span>;
+
+<span class="cv-kw">USE</span> <span class="cv-var">db_university_app</span>;
+
+<span class="cv-cm">-- 2. បង្កើត Table ឈ្មោះ tbl_students ជាមួយ Primary Key & Auto Increment</span>
+<span class="cv-kw">CREATE TABLE IF NOT EXISTS</span> <span class="cv-var">tbl_students</span> (
+    <span class="cv-var">id</span> <span class="cv-tag">INT</span> <span class="cv-kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cv-var">fullname</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">100</span>) <span class="cv-kw">NOT NULL</span>,
+    <span class="cv-var">email</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">100</span>) <span class="cv-kw">NOT NULL UNIQUE</span>,
+    <span class="cv-var">major</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">50</span>) <span class="cv-kw">DEFAULT</span> <span class="cv-str">'CS'</span>,
+    <span class="cv-var">gpa</span> <span class="cv-tag">DECIMAL</span>(<span class="cv-num">3</span>,<span class="cv-num">2</span>) <span class="cv-kw">DEFAULT</span> <span class="cv-num">0.00</span>,
+    <span class="cv-var">created_at</span> <span class="cv-tag">DATETIME</span> <span class="cv-kw">DEFAULT CURRENT_TIMESTAMP</span>
+) <span class="cv-kw">ENGINE</span>=<span class="cv-str">InnoDB</span>;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-plus-circle"></i> ខ. កូដ SQL បញ្ចូលទិន្នន័យ (`INSERT INTO`)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="code-title">insert_records.sql</div></div>
+<pre><span class="cv-cm">-- បញ្ចូលទិន្នន័យនិស្សិតចំនួន ៣ នាក់ចូលក្នុង tbl_students</span>
+<span class="cv-kw">INSERT INTO</span> <span class="cv-var">tbl_students</span> (<span class="cv-var">fullname</span>, <span class="cv-var">email</span>, <span class="cv-var">major</span>, <span class="cv-var">gpa</span>) 
+<span class="cv-kw">VALUES</span> 
+(<span class="cv-str">'សុខ ជា'</span>, <span class="cv-str">'sokchea@au.edu.kh'</span>, <span class="cv-str">'CS'</span>, <span class="cv-num">3.75</span>),
+(<span class="cv-str">'កែវ ណារ៉ា'</span>, <span class="cv-str">'nara@au.edu.kh'</span>, <span class="cv-str">'IT'</span>, <span class="cv-num">3.20</span>),
+(<span class="cv-str">'លី ម៉េង'</span>, <span class="cv-str">'limeng@au.edu.kh'</span>, <span class="cv-str">'CS'</span>, <span class="cv-num">2.85</span>);</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-magnifying-glass"></i> គ. កូដ SQL ទាញយកទិន្នន័យ (`SELECT` with `WHERE`, `ORDER BY`, `LIMIT`)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="code-title">select_queries.sql</div></div>
+<pre><span class="cv-cm">-- ទាញយកនិស្សិតជំនាញ 'CS' ដែលមាន GPA >= 3.00 រៀបតាម GPA ពីធំមកតូច</span>
+<span class="cv-kw">SELECT</span> <span class="cv-var">id</span>, <span class="cv-var">fullname</span>, <span class="cv-var">email</span>, <span class="cv-var">gpa</span> 
+<span class="cv-kw">FROM</span> <span class="cv-var">tbl_students</span>
+<span class="cv-kw">WHERE</span> <span class="cv-var">major</span> = <span class="cv-str">'CS'</span> <span class="cv-kw">AND</span> <span class="cv-var">gpa</span> >= <span class="cv-num">3.00</span>
+<span class="cv-kw">ORDER BY</span> <span class="cv-var">gpa</span> <span class="cv-kw">DESC</span>
+<span class="cv-kw">LIMIT</span> <span class="cv-num">10</span>;</pre>
+            </div>
+
+            <div class="output-window">
+                <div class="output-header">Query Result Set (1 row returned)</div>
+                <div class="output-body">id | fullname | email            | gpa
+--------------------------------------
+1  | សុខ ជា   | sokchea@au.edu.kh| 3.75</div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 6: SECTION 7.4 UPDATE, DELETE & SOFT DELETE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-pen-to-square"></i> ៧.៤ SQL Operations (ភាគ២)៖ UPDATE, DELETE & Soft Delete <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></div>
+
+        <!-- 7.4.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-shield-cat text-blue"></i> ៧.៤.១ Safe Data Modification & Enterprise Soft Delete Strategy <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-pen"></i> ក. កូដ SQL កែប្រែទិន្នន័យ (`UPDATE` with Safety `WHERE`)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">update_record.sql</div></div>
+<pre><span class="cv-cm">-- ត្រូវតែមាន WHERE Clause ជានិច្ច ការពារការកែប្រែទិន្នន័យទាំងអស់ក្នុង Table!</span>
+<span class="cv-kw">UPDATE</span> <span class="cv-var">tbl_students</span> 
+<span class="cv-kw">SET</span> <span class="cv-var">fullname</span> = <span class="cv-str">'សុខ ជា (ប្រធានថ្នាក់)'</span>, <span class="cv-var">gpa</span> = <span class="cv-num">3.90</span> 
+<span class="cv-kw">WHERE</span> <span class="cv-var">id</span> = <span class="cv-num">1</span>;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-trash-can"></i> ខ. កូដ SQL លុបទិន្នន័យដាច់ (`DELETE` Hard Delete)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="code-title">hard_delete.sql</div></div>
+<pre><span class="cv-cm">-- HARD DELETE: លុប Record នោះចេញពី Disk មិនអាចស្ដារឡើងវិញបានឡើយ!</span>
+<span class="cv-kw">DELETE FROM</span> <span class="cv-var">tbl_students</span> 
+<span class="cv-kw">WHERE</span> <span class="cv-var">id</span> = <span class="cv-num">3</span>;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-box-archive"></i> គ. យុទ្ធសាស្ត្រ Soft Delete ក្នុងប្រព័ន្ធ Enterprise (Soft Delete Pattern)៖</div>
+            <div class="text-block">
+                ក្នុងប្រព័ន្ធធំៗ (ដូចជា Banking ឬ E-commerce) គេ **ប្រឆាំងដាច់ខាតមិនឱ្យប្រើ Hard Delete** ឡើយ ព្រោះអាចធ្វើឱ្យបាត់បង់ប្រវត្តិប្រតិបត្តិការ (Audit Logs)។ គេអនុវត្ត **Soft Delete** ដោយបន្ថែម Flag Field (ដូចជា <code>is_deleted TINYINT DEFAULT 0</code>)៖
+            </div>
+
+            <div class="code-window">
+                <div class="code-header"><div class="code-title">soft_delete_strategy.sql</div></div>
+<pre><span class="cv-cm">-- 1. ធ្វើ Soft Delete ដោយគ្រាន់តែប្តូរ Flag is_deleted = 1</span>
+<span class="cv-kw">UPDATE</span> <span class="cv-var">tbl_students</span> 
+<span class="cv-kw">SET</span> <span class="cv-var">is_deleted</span> = <span class="cv-num">1</span> 
+<span class="cv-kw">WHERE</span> <span class="cv-var">id</span> = <span class="cv-num">2</span>;
+
+<span class="cv-cm">-- 2. ពេល SELECT ទាញតែ Record ណាដែលមិនទាន់លុប (is_deleted = 0)</span>
+<span class="cv-kw">SELECT</span> * <span class="cv-kw">FROM</span> <span class="cv-var">tbl_students</span> 
+<span class="cv-kw">WHERE</span> <span class="cv-var">is_deleted</span> = <span class="cv-num">0</span>;</pre>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-triangle-exclamation"></i> ឃ. ការព្រមានដ៏សំខាន់ (The Disaster of Missing WHERE Clause!)៖</div>
+                • <b>ប្រយ័ត្នជីវិតចុងក្រោយរបស់ Developer!</b> ប្រសិនបើអ្នកភ្លេចសរសេរ <code>WHERE</code> Clause ក្នុងបញ្ជា <code>UPDATE</code> ឬ <code>DELETE</code> នោះ MySQL នឹងកែប្រែ ឬ **លុបទិន្នន័យទាំងអស់ដែលមានក្នុង Table នោះចោលស្អាតគ្មានសល់**! ត្រូវតែតេស្ត Query ជាមួយ `SELECT` ជាមុនជានិច្ច!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 7: GLOSSARY & LESSON SUMMARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                    <th style="width: 28%;">ឈ្មោះពេញ / ប្រភពពាក្យ</th>
+                    <th style="width: 35%;">ការពន្យល់ន័យជាភាសាខ្មែរ</th>
+                    <th style="width: 15%; text-align:center;">Bloom Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>RDBMS</b></td><td>Relational Database Management System</td><td>ប្រព័ន្ធគ្រប់គ្រង Database ទំនាក់ទំនងដែលរៀបចំជា Tables, Rows, និង Columns។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Primary Key (PK)</b></td><td>Unique Entity Identifier</td><td>កូនសោចម្បងសម្រាប់សម្គាល់ Record នីមួយៗមិនឱ្យស្ទួនដាច់ខាត។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Auto Increment</b></td><td>Automatic Serial Generator</td><td>មុខងារបង្កើនលេខ ID ស្វ័យប្រវត្តិ 1, 2, 3... រាល់ពេល Insert Record ថ្មី។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>SQL</b></td><td>Structured Query Language</td><td>ភាសាស្តង់ដារសម្រាប់សាកសួរ និងបញ្ជាប្រតិបត្តិការលើ RDBMS Database។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Soft Delete</b></td><td>Logical Data Deletion Strategy</td><td>ការលុបទិន្នន័យបែបបណ្តោះអាសន្នដោយប្រើ Flag (`is_deleted`) ការពារបាត់ History។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td><b>Data Integrity</b></td><td>Accuracy & Consistency Standard</td><td>ភាពត្រឹមត្រូវ និងឥតខ្ចោះនៃទិន្នន័យ តាមរយៈការកំណត់ Data Types & Constraints។</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Lesson Summary)</div>
+        <div class="text-block">
+            មេរៀនទី ៧ នេះបានផ្តល់នូវគ្រឹះដ៏រឹងមាំផ្នែក Database Management និង SQL Operations សម្រាប់រៀបចំ Web Applications៖
+        </div>
+
+        <ul class="obj-list">
+            <li><b class="highlight">១. Database Relational Model:</b> RDBMS រៀបចំទិន្នន័យជា Tables ដែលមាន Primary Key (PK) ជាសម្គាល់ចម្បង និង Auto Increment (AI) សម្រួលដល់ការបង្កើត Serial IDs។</li>
+            <li><b class="highlight">២. Correct Data Types & Constraints:</b> ការជ្រើសរើស Data Types ត្រឹមត្រូវ (ដូចជា `DECIMAL` សម្រាប់លុយកាក់, `VARCHAR` សម្រាប់អត្ថបទខ្លី, `DATETIME` សម្រាប់កាលបរិច្ឆេទ) ធានាបាននូវ Data Integrity និងសន្សំសំចៃ Memory Storage។</li>
+            <li><b class="highlight">៣. SQL CRUD Operations:</b> ចង់ចាំ និងសរសេរជំនាញលើ Query គោលទាំង៤ គឺ `CREATE/INSERT` (បង្កើត), `SELECT` (អាន), `UPDATE` (កែប្រែ), និង `DELETE` (លុប)។</li>
+            <li><b class="highlight">៤. Data Safety & Enterprise Soft Delete:</b> ត្រូវតែដាក់ `WHERE` Clause ជានិច្ចពេល UPDATE ឬ DELETE ព្រមទាំងយល់ដឹងពីការប្រើប្រាស់ Soft Delete ក្នុងប្រព័ន្ធធំៗ។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 8: REVIEW QUESTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:6px; border-left:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-pen-to-square"></i> ៦. សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">៦.ក. សំណួរ ខុស/ត្រូវ (True/False - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>Primary Key អាចអនុញ្ញាតឱ្យមានតម្លៃស្ទួន (Duplicate Values) គ្នាក្នុង Table តែមួយបាន។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li> Auto Increment (AI) ត្រូវបានប្រើប្រាស់សម្រាប់បង្កើនលេខ ID ដោយស្វ័យប្រវត្តិពេល Insert Record ថ្មី។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Data Type ប្រភេទ `FLOAT` គឺជាជម្រើសល្អបំផុតសម្រាប់ការរក្សាទុកប្រាក់ខែ ឬតម្លៃទំនិញលុយកាក់។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>បញ្ជា `INSERT INTO` ត្រូវបានប្រើប្រាស់សម្រាប់បន្ថែម Record ថ្មីចូលក្នុង Table។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>ប្រសិនបើយើងរត់បញ្ជា `UPDATE tbl_students SET gpa = 4.00;` ដោយគ្មាន `WHERE` Clause នោះទិន្នន័យនិស្សិតទាំងអស់នឹងត្រូវប្តូរ GPA ទៅ 4.00 ទាំងអស់! <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>`VARCHAR(100)` នឹងយកលំហ Disk រហូតដល់ ១០០ ចរិតជានិច្ច ទោះបីជាយើងបញ្ចូលអក្សរតែ ៣ ខ្ទង់ក៏ដោយ។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>phpMyAdmin គឺជាឧបករណ៍ Web-based GUI សម្រាប់គ្រប់គ្រង MySQL Database។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Soft Delete គឺជាការលុបទិន្នន័យចេញពី Disk ឱ្យបាត់ជារៀងរហូត។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>បញ្ជា `SELECT *` ត្រូវបានប្រើប្រាស់សម្រាប់ទាញយក Columns ទាំងអស់ចេញពី Table។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>`NOT NULL` Constraint ធានាថាមិនអនុញ្ញាតឱ្យ Field នោះទទេរស្អាតឡើយ។ <span class="bloom-tag bloom-c2">C2</span></li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:6px;">៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>តើអក្សរកាត់ RDBMS ឈរលើពាក្យពេញថាដូចម្តេច? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. Real Database Management System</li><li>B. Relational Database Management System</li><li>C. Rapid Data Base Method Script</li><li>D. Record Data Business System</li></ul>
+            </li>
+            <li>តើ Data Type មួយណាដែលស័ក្តិសមបំផុតសម្រាប់រក្សាទុកតម្លៃលុយកាក់ $1250.50? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. INT</li><li>B. TEXT</li><li>C. DECIMAL(10,2)</li><li>D. VARCHAR(10)</li></ul>
+            </li>
+            <li>តើបញ្ជា SQL មួយណាប្រើសម្រាប់ទាញយកទិន្នន័យចេញពី Database? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. GET</li><li>B. FETCH</li><li>C. SELECT</li><li>D. READ</li></ul>
+            </li>
+            <li>តើ Clause មួយណាដែលប្រើសម្រាប់កំណត់លក្ខខណ្ឌចម្រាញ់ទិន្នន័យក្នុង SQL? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. WHERE</li><li>B. ORDER BY</li><li>C. GROUP BY</li><li>D. LIMIT</li></ul>
+            </li>
+            <li>តើ Clause មួយណាប្រើសម្រាប់តម្រៀបទិន្នន័យពីធំមកតូច? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. ORDER BY col ASC</li><li>B. ORDER BY col DESC</li><li>C. GROUP BY col</li><li>D. SORT DESC</li></ul>
+            </li>
+            <li>តើ Constraint មួយណាដែលបង្កើនលេខ Primary Key ស្វ័យប្រវត្តិក្នុង MySQL? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. UNIQUE</li><li>B. AUTO_INCREMENT</li><li>C. DEFAULT</li><li>D. FOREIGN KEY</li></ul>
+            </li>
+            <li>តើបញ្ជា SQL មួយណាដែលប្រើសម្រាប់កែប្រែទិន្នន័យដែលមានស្រាប់ក្នុង Table? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. MODIFY</li><li>B. CHANGE</li><li>C. UPDATE</li><li>D. EDIT</li></ul>
+            </li>
+            <li>តើអ្វីទៅជាគ្រោះថ្នាក់បំផុតនៃការភ្លេចសរសេរ `WHERE` ក្នុងបញ្ជា `DELETE`? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. លុបតែ Record ទី១</li><li>B. លុបទិន្នន័យទាំងអស់ក្នុង Table</li><li>C. លុប Table ចោល</li><li>D. គ្មានអ្វីកើតឡើង</li></ul>
+            </li>
+            <li>តើអត្ថប្រយោជន៍ចម្បងនៃយុទ្ធសាស្ត្រ Soft Delete គឺអ្វី? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. សន្សំ Disk Space</li><li>B. ការពារបាត់បង់ History & អាច Recover វិញបាន</li><li>C. កូដរត់លឿនជាង</li><li>D. មិនបាច់ប្រើ Primary Key</li></ul>
+            </li>
+            <li>តើបញ្ជា SQL មួយណាប្រើសម្រាប់បង្កើត Table ថ្មី? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. MAKE TABLE</li><li>B. CREATE TABLE</li><li>C. NEW TABLE</li><li>D. ADD TABLE</li></ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 9: MATCHING & EXPLANATORY QUESTIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ សំណួរ)</div>
+        <table class="matching-table">
+            <thead>
+                <tr>
+                    <th style="width:50%;">ជួរ A (SQL Concept / Keyword)</th>
+                    <th style="width:50%;">ជួរ B (ការពិពណ៌នា / និយមន័យ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>១. <code>PRIMARY KEY</code></td><td>A. បញ្ជា SQL សម្រាប់បន្ថែម Record ថ្មីចូល Table</td></tr>
+                <tr><td>២. <code>AUTO_INCREMENT</code></td><td>B. បញ្ជា SQL សម្រាប់កែប្រែទិន្នន័យដែលមានស្រាប់</td></tr>
+                <tr><td>៣. <code>DECIMAL(10,2)</code></td><td>C. កូនសោចម្បងសម្គាល់ Record នីមួយៗមិនឱ្យស្ទួន</td></tr>
+                <tr><td>៤. <code>VARCHAR(100)</code></td><td>D. មុខងារបង្កើតលេខ ID បង្កើនឡើងស្វ័យប្រវត្តិ</td></tr>
+                <tr><td>៥. <code>INSERT INTO</code></td><td>E. Data Type ស័ក្តិសមបំផុតសម្រាប់រក្សាទុកតម្លៃលុយកាក់</td></tr>
+                <tr><td>៦. <code>SELECT</code></td><td>F. Data Type អត្ថបទខ្លីប្រែប្រួលទំហំតាមប្រវែងជាក់ស្តែង</td></tr>
+                <tr><td>៧. <code>UPDATE</code></td><td>G. បញ្ជា SQL សម្រាប់ទាញយកទិន្នន័យមកបង្ហាញ</td></tr>
+                <tr><td>៨. <code>WHERE</code></td><td>H. Clause សម្រាប់កំណត់លក្ខខណ្ឌ Filter ទិន្នន័យ</td></tr>
+                <tr><td>៩. <code>Soft Delete</code></td><td>I. ការលុបទិន្នន័យដាច់ចេញពី Disk Storage</td></tr>
+                <tr><td>១០. <code>Hard Delete</code></td><td>J. ការលុបតាមបែប Logical ដោយប្រើ Flag `is_deleted = 1`</td></tr>
+            </tbody>
+        </table>
+
+        <!-- SECTION 6.ឃ EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៦.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:3px 0 2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
+        <ol class="q-list">
+            <li><b>Q7.1:</b> ពន្យល់ពីតួនាទីរបស់ Primary Key និង Auto Increment នៅក្នុងការរចនា Database Table។ <span class="bloom-tag bloom-c1">C1 - Remember</span></li>
+            <li><b>Q7.2:</b> រៀបរាប់ពីភាពខុសគ្នារវាង Data Types `VARCHAR` និង `TEXT`។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+            <li><b>Q7.3:</b> ពន្យល់ពីរបៀបប្រើប្រាស់ Clause `WHERE` ជាមួយបញ្ជា `SELECT`។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="4">
+            <li><b>Q7.4:</b> វិភាគពីមូលហេតុដែលយើងត្រូវប្រើ Data Type `DECIMAL` ជំនួសឲ្យ `FLOAT` សម្រាប់រក្សាទុកប្រាក់ខែ/លុយកាក់។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q7.5:</b> ធ្វើការប្រៀបធៀបភាពខុសគ្នារវាងការលុបទិន្នន័យបែប Hard Delete និង Soft Delete Strategy។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q7.6:</b> បកស្រាយពីគ្រោះថ្នាក់នៃការភ្លេចដាក់ `WHERE` Clause ពេលរត់បញ្ជា `UPDATE` ឬ `DELETE`។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="7">
+            <li><b>Q7.7:</b> វាយតម្លៃពីសារៈសំខាន់នៃ Data Integrity និងការកំណត់ Constraints (`NOT NULL`, `UNIQUE`, `DEFAULT`) ក្នុងការប្រកួតប្រជែងប្រព័ន្ធធំៗ។ <span class="bloom-tag bloom-c5">C5 - Evaluate</span></li>
+            <li><b>Q7.8:</b> វិភាគ និងរចនា Database Schema សម្រាប់ប្រព័ន្ធហាងទំនិញ E-commerce (`tbl_products`) ឱ្យបានត្រឹមត្រូវតាមស្តង់ដារ។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q7.9:</b> សរសេរ Script SQL ពេញលេញមួយ (រាប់ចាប់ពី `CREATE DATABASE`, `CREATE TABLE`, `INSERT`, `UPDATE`, រហូតដល់ `SELECT` ជាមួយ Filter)។ <span class="bloom-tag bloom-c6">C6 - Create</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 10: GRADED CLASSWORK & PRACTICAL LAB LISTING -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> ៦.ង. កិច្ចការសិក្សា និងការវាយតម្លៃ (Graded Classwork & Team Review)</div>
+        
+        <div class="sub-heading" style="margin-top:4px; color:var(--accent);"><i class="fa-solid fa-users-gear"></i> កិច្ចការក្រុម និងការវិភាគកូដ (Team Schema Audit) <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span></div>
+        
+        <div class="text-block">
+            <b>ការណែនាំ៖</b> សូមបែងចែកនិស្សិតជាក្រុម (៣-៤ នាក់) ដើម្បីសិក្សា វិភាគ រកកំហុសឆ្គងរចនាសម្ព័ន្ធ Schema (Bad Data Types, Missing Primary Keys) ក្នុង SQL Script ខាងក្រោម រួចធ្វើការ Refactor ឱ្យទៅជា **Standard MySQL Enterprise Schema**៖
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--danger); margin-top:4px;">• Problem Snippet (Schema មានកំហុស និងគ្មាន Primary Key/Data Integrity)៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">bad_schema_design.sql</div></div>
+<pre><span class="cv-cm">-- BAD DESIGN: Missing Primary Key, Float used for money, Age stored as String</span>
+<span class="cv-kw">CREATE TABLE</span> <span class="cv-var">tbl_bad_products</span> (
+    <span class="cv-var">name</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">100</span>),
+    <span class="cv-var">price</span> <span class="cv-tag">FLOAT</span>, <span class="cv-cm">-- Danger: Floating point error for currency!</span>
+    <span class="cv-var">qty</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">10</span>) <span class="cv-cm">-- Bad Type: Quantity should be INT</span>
+);</pre>
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--success); margin-top:6px;">• ភារកិច្ចរបស់និស្សិត (Student Tasks)៖</div>
+        <ol class="q-list" style="margin-top:2px;">
+            <li><b>Task 1 (<span class="bloom-tag bloom-c4">C4</span>)៖</b> កំណត់កំហុសរចនាសម្ព័ន្ធ Schema ចំនួន ៣ ក្នុង Script ខាងលើ។</li>
+            <li><b>Task 2 (<span class="bloom-tag bloom-c5">C5</span>)៖</b> កែប្រែ Schema នោះដោយបន្ថែម `id INT AUTO_INCREMENT PRIMARY KEY`, ប្តូរ `price` ទៅ `DECIMAL(10,2)`, និង `qty` ទៅ `INT`។</li>
+            <li><b>Task 3 (<span class="bloom-tag bloom-c6">C6</span>)៖</b> បន្ថែម `created_at DATETIME` និង `is_deleted TINYINT DEFAULT 0` សម្រាប់គាំទ្រ Soft Delete Strategy។</li>
+        </ol>
+
+        <!-- SECTION 6.ច PRACTICAL LABS LISTING -->
+        <div class="sub-heading" style="width: 100%; margin-top:10px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៦.ច. បញ្ជីលំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:2px 0 1px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ លំហាត់]</div>
+        <ol class="q-list">
+            <li><b>Lab 7.1:</b> បង្កើត Database ឈ្មោះ `db_lab_store` តាមរយៈ phpMyAdmin Interface និង SQL Command. <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 7.2:</b> បង្កើត Table `tbl_categories` (id PK AI, category_name VARCHAR) ។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 7.3:</b> សរសេរ SQL `INSERT` បញ្ចូលឈ្មោះ Category ចំនួន ៣ ចូលក្នុង Table។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:3px 0 1px 0;">[កម្រិតមធ្យម - Medium Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="4">
+            <li><b>Lab 7.4:</b> បង្កើត Table `tbl_products` (id, title, price DECIMAL, stock INT, created_at DATETIME)។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 7.5:</b> សរសេរ SQL `SELECT` ទាញយកផលិតផលណាដែលមានតម្លៃ > $100 និងមាន Stock > 0។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 7.6:</b> សរសេរ SQL `UPDATE` កែប្រែតម្លៃផលិតផល ID = 1 ដោយបញ្ចុះតម្លៃ ១០%។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:3px 0 1px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="7">
+            <li><b>Lab 7.7:</b> បន្ថែម Column `is_deleted TINYINT DEFAULT 0` រួចសរសេរ SQL ធ្វើ Soft Delete លើផលិតផល ID = 2។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 7.8:</b> សរសេរ SQL Query ទាញយកតែផលិតផលណាដែលមិនទាន់រងការលុប (is_deleted = 0) ដោយតម្រៀបតាមតម្លៃពីធំមកតូច។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 7.9:</b> អភិវឌ្ឍប្រព័ន្ធគ្រប់គ្រងនិស្សិតពេញលេញមួយ រួមមាន Database Schema Creation, Multi-row Insertion, Selective Querying, ព្រមទាំង Safe Update/Soft Delete Operations។ <span class="bloom-tag bloom-c6">C6</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 11: ANSWERS KEY PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:6px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> ៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys & Solutions)</div>
+            
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ក. ចម្លើយ សំណួរ ខុស/ត្រូវ (True/False Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ខ. ចម្លើយ សំណួរ ពហុជ្រើសរើស (MCQ Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>C</td><td>C</td><td>A</td><td>B</td><td>B</td><td>C</td><td>B</td><td>B</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.គ. ចម្លើយ សំណួរ ផ្គូផ្គង (Matching Answers 1-10)</div>
+        <table class="ans-table" style="margin-bottom: 6px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>C</td><td>D</td><td>E</td><td>F</td><td>A</td><td>G</td><td>B</td><td>H</td><td>J</td><td>I</td></tr>
+        </table>
+
+        <!-- SECTION 7.ឃ ANSWERS TO EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q7.1 - Q7.5)</div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--success); margin:2px 0;">[កម្រិតស្រាល - Light/Easy Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.1 (Primary Key & Auto Increment Role)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • Primary Key: ធានាថារាល់ Record មាន Unique ID មិនស្ទួនគ្នាដាច់ខាត។<br>
+                • Auto Increment: ឱ្យ MySQL បង្កើតលេខ ID (1, 2, 3...) ស្វ័យប្រវត្តិ មិនបាច់បញ្ចូលដោយដៃឡើយ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.2 (VARCHAR vs TEXT)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • `VARCHAR`: សម្រាប់អត្ថបទខ្លីប្រែប្រួលទំហំ (ឧ. ឈ្មោះ, អ៊ីម៉ែល) មិនសូវស៊ី Disk Space។<br>
+                • `TEXT`: សម្រាប់អត្ថបទវែងៗខ្លាំង (ឧ. អត្ថបទ Blog, ព័ត៌មានលម្អិត)។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.3 (WHERE Clause in SELECT)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                `WHERE` ប្រើប្រាស់សម្រាប់ Filter ចម្រាញ់យកតែ Record ណាដែលផ្ទៀងផ្ទាត់ត្រូវតាមលក្ខខណ្ឌ (ឧ. `WHERE major = 'CS'`)។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.4 (DECIMAL vs FLOAT for Currency)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                `FLOAT` មានបញ្ហា Floating-point Rounding Error (បាត់បង់សេនពេលគណនា)។ ឯ `DECIMAL(10,2)` រក្សាទុកក្បៀសច្បាស់លាស់ 100% សម្រាប់លុយកាក់។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.5 (Hard Delete vs Soft Delete)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • Hard Delete (`DELETE FROM`): លុបបាត់ចេញពី Disk មិនអាច Recover បានឡើយ។<br>
+                • Soft Delete (`UPDATE ... SET is_deleted = 1`): រក្សាទុក Record ដដែល តែលាក់វាមិនឱ្យបង្ហាញ រក្សាបាននូវ Audit Trail History។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 12: EXPLANATORY ANSWERS PART 2 & LAB SOLUTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.6 (Disaster of Missing WHERE Clause)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                ការភ្លេច `WHERE` Clause ក្នុង `UPDATE` ឬ `DELETE` នឹងបណ្តាលឱ្យ MySQL កែប្រែ ឬលុបទិន្នន័យទាំងអស់ដែលមានក្នុង Table នោះចោលស្អាត (Data Disaster)!
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q7.7 (Importance of Data Integrity Constraints)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Constraints (`NOT NULL`, `UNIQUE`, `DEFAULT`) ការពារមិនឱ្យមានទិន្នន័យខុសច្បាប់ ឬទិន្នន័យស្ទួនចូលក្នុង Database បង្កើន Data Quality និងភាពជឿជាក់នៃប្រព័ន្ធ។
+            </div>
+        </div>
+
+        <!-- SECTION 7.ង LAB SOLUTIONS PART 1 -->
+        <div class="sub-heading" style="margin-top: 8px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-code"></i> ៧.ង. ដំណោះស្រាយលំហាត់អនុវត្តន៍ (Practical Lab Solutions 7.1 - 7.4)</div>
+        
+        <!-- LAB 7.1 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:2px;">• ដំណោះស្រាយ Lab 7.1 (Database Creation) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab7_1.sql</div></div>
+<pre><span class="cv-kw">CREATE DATABASE IF NOT EXISTS</span> <span class="cv-var">db_lab_store</span> 
+<span class="cv-kw">CHARACTER SET</span> <span class="cv-str">utf8mb4</span> <span class="cv-kw">COLLATE</span> <span class="cv-str">utf8mb4_unicode_ci</span>;</pre>
+        </div>
+
+        <!-- LAB 7.2 & 7.3 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 7.2 & 7.3 (Categories Table & Insert) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab7_2_3.sql</div></div>
+<pre><span class="cv-kw">USE</span> <span class="cv-var">db_lab_store</span>;
+
+<span class="cv-kw">CREATE TABLE IF NOT EXISTS</span> <span class="cv-var">tbl_categories</span> (
+    <span class="cv-var">id</span> <span class="cv-tag">INT</span> <span class="cv-kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cv-var">category_name</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">50</span>) <span class="cv-kw">NOT NULL UNIQUE</span>
+);
+
+<span class="cv-kw">INSERT INTO</span> <span class="cv-var">tbl_categories</span> (<span class="cv-var">category_name</span>) 
+<span class="cv-kw">VALUES</span> (<span class="cv-str">'Electronics'</span>), (<span class="cv-str">'Accessories'</span>), (<span class="cv-str">'Office'</span>);</pre>
+        </div>
+
+        <!-- LAB 7.4 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 7.4 (Products Table Creation) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab7_4.sql</div></div>
+<pre><span class="cv-kw">CREATE TABLE IF NOT EXISTS</span> <span class="cv-var">tbl_products</span> (
+    <span class="cv-var">id</span> <span class="cv-tag">INT</span> <span class="cv-kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cv-var">title</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">100</span>) <span class="cv-kw">NOT NULL</span>,
+    <span class="cv-var">price</span> <span class="cv-tag">DECIMAL</span>(<span class="cv-num">10</span>,<span class="cv-num">2</span>) <span class="cv-kw">NOT NULL</span>,
+    <span class="cv-var">stock</span> <span class="cv-tag">INT</span> <span class="cv-kw">DEFAULT</span> <span class="cv-num">0</span>,
+    <span class="cv-var">created_at</span> <span class="cv-tag">DATETIME</span> <span class="cv-kw">DEFAULT CURRENT_TIMESTAMP</span>
+);</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 13: PRACTICAL LAB SOLUTIONS PART 2 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 7.5 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 7.5 (Selective SELECT Query) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab7_5.sql</div></div>
+<pre><span class="cv-kw">SELECT</span> * <span class="cv-kw">FROM</span> <span class="cv-var">tbl_products</span> 
+<span class="cv-kw">WHERE</span> <span class="cv-var">price</span> > <span class="cv-num">100.00</span> <span class="cv-kw">AND</span> <span class="cv-var">stock</span> > <span class="cv-num">0</span>
+<span class="cv-kw">ORDER BY</span> <span class="cv-var">price</span> <span class="cv-kw">DESC</span>;</pre>
+        </div>
+
+        <!-- LAB 7.6 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 7.6 (Safe UPDATE Query) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab7_6.sql</div></div>
+<pre><span class="cv-cm">-- កែប្រែតម្លៃបញ្ចុះ ១០% (គុណ 0.90) សម្រាប់ផលិតផល ID = 1</span>
+<span class="cv-kw">UPDATE</span> <span class="cv-var">tbl_products</span> 
+<span class="cv-kw">SET</span> <span class="cv-var">price</span> = <span class="cv-var">price</span> * <span class="cv-num">0.90</span> 
+<span class="cv-kw">WHERE</span> <span class="cv-var">id</span> = <span class="cv-num">1</span>;</pre>
+        </div>
+
+        <!-- LAB 7.7 & 7.8 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 7.7 & 7.8 (Soft Delete Implementation & Query) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab7_7_8.sql</div></div>
+<pre><span class="cv-cm">-- 1. បន្ថែម Column is_deleted ទៅក្នុង tbl_products</span>
+<span class="cv-kw">ALTER TABLE</span> <span class="cv-var">tbl_products</span> <span class="cv-kw">ADD COLUMN</span> <span class="cv-var">is_deleted</span> <span class="cv-tag">TINYINT</span> <span class="cv-kw">DEFAULT</span> <span class="cv-num">0</span>;
+
+<span class="cv-cm">-- 2. ធ្វើ Soft Delete លើផលិតផល ID = 2</span>
+<span class="cv-kw">UPDATE</span> <span class="cv-var">tbl_products</span> <span class="cv-kw">SET</span> <span class="cv-var">is_deleted</span> = <span class="cv-num">1</span> <span class="cv-kw">WHERE</span> <span class="cv-var">id</span> = <span class="cv-num">2</span>;
+
+<span class="cv-cm">-- 3. ទាញយកតែផលិតផលណាដែលមិនទាន់រងការលុប (is_deleted = 0)</span>
+<span class="cv-kw">SELECT</span> <span class="cv-var">id</span>, <span class="cv-var">title</span>, <span class="cv-var">price</span>, <span class="cv-var">stock</span> <span class="cv-kw">FROM</span> <span class="cv-var">tbl_products</span> 
+<span class="cv-kw">WHERE</span> <span class="cv-var">is_deleted</span> = <span class="cv-num">0</span> 
+<span class="cv-kw">ORDER BY</span> <span class="cv-var">price</span> <span class="cv-kw">DESC</span>;</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 14: LAB 7.9 & FINAL CONCLUSION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៧</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-database" style="font-size: 28px; color: #0284C7;"></i><span>MySQL & phpMyAdmin</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 7.9 SOLUTION (FULL ENTERPRISE SQL SCRIPT) -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 7.9 (Full Student Management Database Script) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">full_student_db_script.sql</div></div>
+<pre><span class="cv-cm">-- =========================================================</span>
+<span class="cv-cm">-- FULL ENTERPRISE SQL SCRIPT: Student Management System</span>
+<span class="cv-cm">-- =========================================================</span>
+<span class="cv-kw">CREATE DATABASE IF NOT EXISTS</span> <span class="cv-var">db_au_student_system</span>
+<span class="cv-kw">CHARACTER SET</span> <span class="cv-str">utf8mb4</span> <span class="cv-kw">COLLATE</span> <span class="cv-str">utf8mb4_unicode_ci</span>;
+
+<span class="cv-kw">USE</span> <span class="cv-var">db_au_student_system</span>;
+
+<span class="cv-kw">CREATE TABLE IF NOT EXISTS</span> <span class="cv-var">tbl_students</span> (
+    <span class="cv-var">id</span> <span class="cv-tag">INT</span> <span class="cv-kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cv-var">student_code</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">20</span>) <span class="cv-kw">NOT NULL UNIQUE</span>,
+    <span class="cv-var">fullname</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">100</span>) <span class="cv-kw">NOT NULL</span>,
+    <span class="cv-var">email</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">100</span>) <span class="cv-kw">NOT NULL UNIQUE</span>,
+    <span class="cv-var">major</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">50</span>) <span class="cv-kw">DEFAULT</span> <span class="cv-str">'CS'</span>,
+    <span class="cv-var">gpa</span> <span class="cv-tag">DECIMAL</span>(<span class="cv-num">3</span>,<span class="cv-num">2</span>) <span class="cv-kw">DEFAULT</span> <span class="cv-num">0.00</span>,
+    <span class="cv-var">is_deleted</span> <span class="cv-tag">TINYINT</span> <span class="cv-kw">DEFAULT</span> <span class="cv-num">0</span>,
+    <span class="cv-var">created_at</span> <span class="cv-tag">DATETIME</span> <span class="cv-kw">DEFAULT CURRENT_TIMESTAMP</span>
+) <span class="cv-kw">ENGINE</span>=<span class="cv-str">InnoDB</span>;
+
+<span class="cv-cm">-- Insert Student Records</span>
+<span class="cv-kw">INSERT INTO</span> <span class="cv-var">tbl_students</span> (<span class="cv-var">student_code</span>, <span class="cv-var">fullname</span>, <span class="cv-var">email</span>, <span class="cv-var">major</span>, <span class="cv-var">gpa</span>) <span class="cv-kw">VALUES</span>
+(<span class="cv-str">'AU-CS-001'</span>, <span class="cv-str">'សុខ ជា'</span>, <span class="cv-str">'sokchea@au.edu.kh'</span>, <span class="cv-str">'CS'</span>, <span class="cv-num">3.80</span>),
+(<span class="cv-str">'AU-CS-002'</span>, <span class="cv-str">'កែវ ណារ៉ា'</span>, <span class="cv-str">'nara@au.edu.kh'</span>, <span class="cv-str">'IT'</span>, <span class="cv-num">3.10</span>),
+(<span class="cv-str">'AU-CS-003'</span>, <span class="cv-str">'លី ម៉េង'</span>, <span class="cv-str">'limeng@au.edu.kh'</span>, <span class="cv-str">'CS'</span>, <span class="cv-num">3.50</span>);
+
+<span class="cv-cm">-- Query Active Honors Students (GPA >= 3.50 & Active)</span>
+<span class="cv-kw">SELECT</span> <span class="cv-var">student_code</span>, <span class="cv-var">fullname</span>, <span class="cv-var">email</span>, <span class="cv-var">gpa</span> <span class="cv-kw">FROM</span> <span class="cv-var">tbl_students</span>
+<span class="cv-kw">WHERE</span> <span class="cv-var">is_deleted</span> = <span class="cv-num">0</span> <span class="cv-kw">AND</span> <span class="cv-var">gpa</span> >= <span class="cv-num">3.50</span>
+<span class="cv-kw">ORDER BY</span> <span class="cv-var">gpa</span> <span class="cv-kw">DESC</span>;</pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-desktop"></i> Execution Result Set</div>
+            <div class="output-body">student_code | fullname | email            | gpa
+--------------------------------------------
+AU-CS-001    | សុខ ជា   | sokchea@au.edu.kh| 3.80
+AU-CS-003    | លី ម៉េង   | limeng@au.edu.kh | 3.50</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 12px; padding: 15px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 10px;">
+            <h3 style="font-family: var(--font-kh-heading); font-size: 11.5pt; color: var(--text-heading); margin-bottom: 3px;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ៧ យ៉ាងបរិបូរណ៍។</h3>
+            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 7 HANDOUT (TOTAL 14 PAGES) ***</p>
+        </div>
+
+        <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
+            <div style="text-align: center; width: 220px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">បានឃើញ និងពិនិត្យត្រឹមត្រូវ</p>
+                <p style="font-size: 9.5pt; margin-top: 45px; font-family: var(--font-kh-body);">..........................................</p>
+                <p style="font-size: 10pt; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">ប្រធានដេប៉ាតឺម៉ង់</p>
+            </div>
+            <div style="text-align: center; width: 260px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">ធ្វើនៅសៀមរាប, ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 10pt; margin-top: 45px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ១៤</div>
+    </div>
+</div>
+
+</body>
+</html>

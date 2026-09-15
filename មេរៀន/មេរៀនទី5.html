@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: មេរៀនទី ៥ - មូលដ្ឋានគ្រឹះ OOP (ភាគ១) - Class & Object (PHP 8 Modern Development)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #0078D4;
+            --accent: #4F46E5;
+            --php-color: #7C3AED;
+            --mysql-color: #0284C7;
+            --apache-color: #D97706;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #475569;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #0F172A;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            
+            /* LIGHT PHP CODE EDITOR THEME (EASY READ & PRINT FRIENDLY) */
+            --bg-code-light: #F8FAFC;
+            --code-header-light: #E2E8F0;
+            --code-text: #0F172A;
+            --code-kw: #7C3AED;       /* Purple: class, new, public, private, protected, return, function, readonly */
+            --code-tag: #0284C7;      /* Blue: <?php, string, int, float, void, array, bool, self */
+            --code-var: #0F172A;      /* Dark Slate: $this, $student, $name, $score */
+            --code-str: #B45309;      /* Brown/Amber: "Hello World" */
+            --code-num: #059669;      /* Emerald Green: 100, 3.14 */
+            --code-func: #2563EB;     /* Royal Blue: __construct, getDetails, calculateGPA */
+            --code-cmt: #64748B;      /* Gray Italic: // comment */
+            
+            --bg-output: #F1F5F9;
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            --font-kh-heading: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 10px;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        /* Top Bar */
+        .no-print-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border-dark);
+            padding: 14px 28px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            width: 210mm;
+            max-width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+        .no-print-bar p { margin: 0; font-size: 11pt; color: var(--text-muted); }
+        .print-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: var(--font-kh-body);
+            font-size: 11pt;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
+
+        /* A4 Page Layout */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: var(--bg-page);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            margin-bottom: 25px;
+            position: relative;
+            border-radius: 4px;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 12mm 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .global-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 3px solid var(--accent);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 140px; }
+        .header-item img { height: 32px; object-fit: contain; }
+        .header-item span { font-size: 8.5pt; font-weight: bold; color: var(--accent); text-align: center; font-family: var(--font-kh-heading); line-height: 1.2; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 10px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 11pt; color: var(--accent); margin-bottom: 1px; line-height: 1.3;}
+        .header-text p { font-family: var(--font-en-main); font-size: 7.5pt; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent);
+            background-color: var(--bg-light);
+            padding: 5px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+        .footer-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 9.5pt; 
+            color: var(--text-heading); 
+            font-weight: bold;
+            font-family: var(--font-kh-heading);
+        }
+        .footer-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .footer-right { font-size: 8.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 10px; border-radius: 15px; font-family: var(--font-kh-body);}
+
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 4px;
+            margin: 8px 0 10px 0;
+            font-family: var(--font-kh-heading);
+            font-size: 12pt;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            page-break-inside: avoid;
+        }
+        .section-title i { color: var(--accent); }
+        
+        .sub-heading { 
+            font-family: var(--font-kh-heading); 
+            font-size: 11pt; 
+            color: var(--accent); 
+            margin: 8px 0 6px 0; 
+            page-break-inside: avoid;
+            border-left: 4px solid var(--accent);
+            padding-left: 8px;
+            line-height: 1.4;
+        }
+
+        .topic-toc-box {
+            background: #F1F5F9;
+            border: 1px solid var(--border-dark);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 6px 12px;
+            margin: 4px 0 8px 0;
+            font-size: 10pt;
+            page-break-inside: avoid;
+        }
+        .topic-toc-title {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--accent);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .topic-toc-box ul {
+            list-style: none;
+            padding-left: 6px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .topic-toc-box li { color: var(--text-main); font-size: 9.5pt; }
+        .topic-toc-box li b { color: var(--secondary); font-family: var(--font-en-main); }
+
+        .text-block { font-size: 10.5pt; line-height: 1.5; margin-bottom: 6px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        
+        /* BLOOM'S TAXONOMY BADGES */
+        .bloom-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 7.5pt; font-weight: 800; font-family: var(--font-en-main); margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; border: 1px solid #FECDD3; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; } 
+
+        .toc-table { width: 100%; border-collapse: collapse; margin: 6px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; padding: 6px 8px; text-align: left; }
+        .toc-table td { padding: 5px 8px; border-bottom: 1px solid var(--border-light); font-size: 10pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 10%; text-align: center; color: var(--accent); }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 4px; }
+        .obj-list li { position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 10.5pt; line-height: 1.5; page-break-inside: avoid; }
+        .obj-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 11pt; top: -1px; }
+
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1px solid var(--border-dark); page-break-inside: avoid; }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 5px 7px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 9.5pt; text-align: center; }
+        table.standard-table td { font-size: 10pt; line-height: 1.4; }
+
+        .sub-topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sub-topic-card h4 {
+            font-family: var(--font-kh-heading);
+            font-size: 10.5pt;
+            color: var(--primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 4px;
+        }
+        .content-label {
+            font-weight: bold;
+            color: var(--accent);
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .syntax-box {
+            background: #EEF2FF;
+            border-left: 4px solid var(--accent);
+            font-family: var(--font-code);
+            font-size: 9pt;
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-radius: 0 4px 4px 0;
+            color: #1E1B4B;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .code-window { 
+            background: var(--bg-code-light); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin: 5px 0; 
+            border: 1px solid var(--border-dark); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            page-break-inside: avoid;
+        }
+        .code-header { 
+            background: var(--code-header-light); 
+            padding: 4px 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .mac-dots { display: flex; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-r { background: #FF5F56; }
+        .dot-y { background: #FFBD2E; }
+        .dot-g { background: #27C93F; }
+        .code-title { color: #475569; font-family: var(--font-code); font-size: 8.5pt; font-weight: 700;}
+        pre { 
+            padding: 8px 12px; 
+            color: var(--code-text); 
+            font-family: var(--font-code); 
+            font-size: 8.8pt; 
+            line-height: 1.45; 
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0; 
+            tab-size: 4;
+            font-weight: 600;
+        }
+
+        /* Light Theme Syntax Highlight Classes */
+        .cv-tag { color: var(--code-tag); font-weight: bold; }
+        .cv-kw { color: var(--code-kw); font-weight: bold; }
+        .cv-var { color: var(--code-var); }
+        .cv-str { color: var(--code-str); }
+        .cv-num { color: var(--code-num); }
+        .cv-fn { color: var(--code-func); font-weight: bold; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; }
+
+        .output-window {
+            background: var(--bg-output);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 4px 0;
+            border: 1px solid var(--border-dark);
+            page-break-inside: avoid;
+        }
+        .output-header {
+            background: #CBD5E1;
+            padding: 3px 10px;
+            color: #0F172A;
+            font-family: var(--font-code);
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid #94A3B8;
+        }
+        .output-body {
+            padding: 6px 12px;
+            color: #0078D4;
+            font-family: var(--font-code);
+            font-size: 8.8pt;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .extra-box {
+            background: #FFFBEB;
+            border-left: 4px solid var(--warning);
+            border: 1px solid #FDE68A;
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-size: 9.5pt;
+            line-height: 1.45;
+            page-break-inside: avoid;
+        }
+        .extra-box-title {
+            font-weight: bold;
+            color: #B45309;
+            font-family: var(--font-kh-heading);
+            font-size: 9pt;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .q-list { 
+            list-style-type: khmer; 
+            padding-left: 24px; 
+            font-size: 10.5pt; 
+            line-height: 1.5; 
+        }
+        .q-list li { 
+            margin-bottom: 6px; 
+            font-weight: normal; 
+            color: var(--text-main); 
+            page-break-inside: avoid;
+        }
+        .mcq-opts { 
+            list-style-type: none; 
+            padding-left: 0; 
+            margin-top: 3px; 
+            font-weight: normal; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 4px;
+        }
+        .mcq-opts li { 
+            font-size: 9.5pt; 
+            background: #F8FAFC; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light); 
+            margin-bottom: 0; 
+        }
+        
+        .ans-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; page-break-inside: avoid;}
+        .ans-table th { background: #F1F5F9; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt; font-weight: bold; color: var(--text-heading); text-align:center;}
+        .ans-table td { font-weight: 700; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 3px; font-size: 8.5pt;}
+
+        .matching-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-dark); page-break-inside: avoid;}
+        .matching-table th { background: #E0E7FF; color: var(--accent); border: 1px solid var(--border-dark); padding: 5px; font-size: 9.5pt; text-align: center; font-family: var(--font-kh-heading); }
+        .matching-table td { border: 1px solid var(--border-dark); padding: 5px 8px; font-size: 9.5pt; line-height: 1.4; vertical-align: top; }
+
+        .explain-ans-card {
+            background: #F8FAFC;
+            border-left: 4px solid var(--accent);
+            border: 1px solid var(--border-dark);
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            page-break-inside: avoid;
+        }
+        .explain-ans-card h5 {
+            font-family: var(--font-kh-heading);
+            font-size: 9.5pt;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .tech-badge-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .tech-badge {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 8.5pt;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* MOBILE & RESPONSIVE DESIGN */
+        @media screen and (max-width: 850px) {
+            body { padding: 10px 5px; }
+            .no-print-bar { width: 100%; flex-direction: column; gap: 10px; text-align: center; }
+            .a4-page {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                padding: 15px 12px !important;
+                margin-bottom: 15px !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            }
+            .global-header { flex-direction: column; text-align: center; gap: 8px; }
+            .header-item { width: 100%; }
+            .mcq-opts, .topic-toc-box ul { grid-template-columns: 1fr !important; }
+            table.standard-table, table.matching-table, table.toc-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        /* PRINT SPECIFIC STYLES */
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print-bar { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <p><b><i class="fa-solid fa-file-pdf text-blue"></i> ណែនាំបោះពុម្ព៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print ជា PDF។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF</button>
+</div>
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>សាកលវិទ្យាល័យអង្គរ | ANGKOR UNIVERSITY</h1><p>FACULTY OF SCIENCE & TECHNOLOGY</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #EEF2FF 0%, #FFFFFF 100%); border-radius: 8px;">
+        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 120px; margin-bottom: 12px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" alt="Logo">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 20pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 10pt; color: var(--text-muted); margin-bottom: 12px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div class="tech-badge-bar">
+            <span class="tech-badge"><i class="fa-solid fa-cubes"></i> Procedural vs OOP Paradigm</span>
+            <span class="tech-badge"><i class="fa-solid fa-boxes-stacked"></i> Class Definition & Instantiation (`new`)</span>
+            <span class="tech-badge"><i class="fa-solid fa-bolt"></i> Modern PHP 8 Constructor Promotion</span>
+        </div>
+
+        <div style="font-family: var(--font-kh-heading); font-size: 10.5pt; color: var(--text-main); margin-bottom: 14px; background: #F1F5F9; padding: 5px 18px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (CS / IT)
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 8px 20px; border-radius: 8px; font-size: 12pt; font-family: var(--font-kh-heading); margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ៥ (Professional & Academic Edition)</div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 16pt; color: var(--text-heading); margin-bottom: 8px; line-height: 1.4;">មូលដ្ឋានគ្រឹះ OOP (ភាគ១) - Class & Object<br>(Fundamentals of OOP Part 1: Class & Object)</h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 11pt; color: var(--secondary); margin-bottom: 18px; font-weight: 600;">Procedural vs Object-Oriented Programming (OOP), Class Definition, Object Instantiation, Typed Properties, Methods, `$this` Pseudo-variable, PHP 8 Constructor Property Promotion & Readonly Properties</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; background: white; padding: 12px 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
+            <p style="font-family: var(--font-kh-body); font-size: 10pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 11.5pt;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 2: LLO & TOC -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> ១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLO)</div>
+        <ul class="obj-list">
+            <li><b>LLO 5.1:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">ពន្យល់ និងប្រៀបធៀប</span> ភាពខុសគ្នារវាងការសរសេរកូដបែបទម្លាប់ចាស់ (Procedural Programming) និងស្ថាបត្យកម្មទំនើប **OOP (Object-Oriented Programming)** ព្រមទាំងអត្ថប្រយោជន៍ចម្បងក្នុងការអភិវឌ្ឍ Software ខ្នាតធំ។</li>
+            <li><b>LLO 5.2:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">ប្រកាស និងបង្កើត</span> **Class (Blueprint)** និងធ្វើ **Object Instantiation** ដោយប្រើប្រាស់ពាក្យគន្លឹះ `new` ក្នុងការបង្កើត Instance Variables ផ្សេងៗគ្នាក្នុង Memory។</li>
+            <li><b>LLO 5.3:</b> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">កំណត់ និងប្រើប្រាស់</span> **Typed Properties**, **Methods** និងយល់ដឹងពីបរិបទប្រតិបត្តិការរបស់ Pseudo-variable `$this` ក្នុងការចូលប្រើប្រាស់ព័ត៌មានខាងក្នុង Instance។</li>
+            <li><b>LLO 5.4:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="highlight">អនុវត្ត</span> លក្ខណៈពិសេសទំនើបៗរបស់ **PHP 8 OOP** ដូចជា **Constructor Property Promotion**, **Readonly Properties**, និង **Named Arguments** ដើម្បីកាត់បន្ថយកូដស្ទួន និងបង្កើន Type Safety។</li>
+            <li><b>LLO 5.5:</b> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">វិភាគ រចនា និងបង្កើត</span> Domain Model (Class & Objects) សម្រាប់ប្រព័ន្ធជាក់ស្តែង (ដូចជា ប្រព័ន្ធគ្រប់គ្រងនិស្សិត, ផលិតផល, ឬគណនី) ដោយឈរលើគោលការណ៍ Clean OOP Architecture។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀន (Lesson Contents)</div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">ចំណុច</th>
+                    <th>ខ្លឹមសារមេរៀន (Sub-Topics)</th>
+                    <th style="width:20%; text-align:center;">Bloom's Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="toc-num">៥.១</td><td>ការផ្លាស់ប្តូរផ្នត់គំនិតកូដ (Procedural vs. Object-Oriented Programming Paradigm Shift)</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td class="toc-num">៥.២</td><td>ការបង្កើត Class & Object Instantiation (Class Syntax & `new` Operator)</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td class="toc-num">៥.៣</td><td>Properties, Methods & Pseudo-Variable `$this` (Instance Context & Operations)</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td class="toc-num">៥.៤</td><td>លក្ខណៈពិសេស OOP ទំនើបក្នុង PHP 8 (Constructor Property Promotion, Readonly & Named Arguments)</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c6">C6</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 3: SECTION 5.1 PROCEDURAL VS OOP -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <i class="fa-solid fa-book-open text-blue"></i> ៣. ខ្លឹមសារលម្អិតនៃមេរៀន (Detailed Lesson Contents)
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-retweet"></i> ៥.១ ការផ្លាស់ប្តូរផ្នត់គំនិតកូដ (Procedural vs. OOP Paradigm) <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></div>
+
+        <!-- 5.1.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-scale-balanced text-blue"></i> ៥.១.១ ការប្រៀបធៀប Procedural ធៀបនឹង Object-Oriented Programming <span class="bloom-tag bloom-c2">C2</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ និងការប្រៀបធៀប (Definition & Paradigm Shift)៖</div>
+            <div class="text-block">
+                • <b>Procedural Programming:</b> គឺជាទម្រង់សរសេរកូដដែលផ្តោតលើ **Functions/Procedures** រត់តាមលំដាប់លំដោយ (Top-to-bottom)។ ទិន្នន័យ (Variables) និង logic ដំណើរការ (Functions) ស្ថិតនៅដាច់ដោយឡែកពីគ្នា ដែលធ្វើឱ្យកូដពិបាកថែទាំ ងាយកើត Bug ពេល System រីកធំ (Spaghetti Code)។<br>
+                • <b>Object-Oriented Programming (OOP):</b> គឺជាស្ថាបត្យកម្មសរសេរកូដដែលចម្លងតាម **ពិភពពិត (Real-world Modeling)** ដោយចងភ្ជាប់ **ទិន្នន័យ (Properties)** និង **សកម្មភាព (Methods)** ឱ្យស្ថិតនៅក្នុងកញ្ចប់តែមួយ ហៅថា **Object**។
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-table"></i> ខ. តារាងប្រៀបធៀបលក្ខណៈបច្ចេកទេស (Paradigm Comparison Table)៖</div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:20%;">លក្ខណៈ (Feature)</th>
+                        <th style="width:40%;">Procedural Programming</th>
+                        <th style="width:40%;">Object-Oriented Programming (OOP)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>ការផ្តោតសំខាន់ (Focus)</b></td>
+                        <td>ផ្តោតលើ **Functions & Algorithms**</td>
+                        <td>ផ្តោតលើ **Objects & Data Structures**</td>
+                    </tr>
+                    <tr>
+                        <td><b>រចនាសម្ព័ន្ធទិន្នន័យ</b></td>
+                        <td>ទិន្នន័យ និង Functions នៅដាច់ដោយឡែកពីគ្នា</td>
+                        <td>ចងភ្ជាប់ Data និង Behavior ចូលគ្នាក្នុង **Class**</td>
+                    </tr>
+                    <tr>
+                        <td><b>ការប្រើកូដឡើងវិញ (Reusability)</b></td>
+                        <td>ទាប (ត្រូវ Copy-Paste កូដច្រើន)</td>
+                        <td>ខ្ពស់ខ្លាំង (តាមរយៈ Class, Objects & Inheritance)</td>
+                    </tr>
+                    <tr>
+                        <td><b>ភាពងាយស្រួលថែទាំ (Maintenance)</b></td>
+                        <td>ពិបាកខ្លាំងពេល Project ធំ (Spaghetti)</td>
+                        <td>ងាយស្រួល បំបែកជា Modules ច្បាស់លាស់</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដប្រៀបធៀប (Procedural vs OOP Comparison Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">procedural_vs_oop.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// --- 1. PROCEDURAL APPROACH (ទិន្នន័យ និង Function នៅដាច់ពីគ្នា) ---</span>
+<span class="cv-var">$student_name</span> = <span class="cv-str">"សុខ ជា"</span>;
+<span class="cv-var">$student_score</span> = <span class="cv-num">85.5</span>;
+
+<span class="cv-kw">function</span> <span class="cv-fn">printStudentInfo</span>(<span class="cv-tag">string</span> <span class="cv-var">$name</span>, <span class="cv-tag">float</span> <span class="cv-var">$score</span>): <span class="cv-tag">void</span> {
+    <span class="cv-fn">echo</span> <span class="cv-str">"[Procedural] និស្សិត៖ {$name} | ពិន្ទុ៖ {$score}&lt;br&gt;"</span>;
+}
+<span class="cv-fn">printStudentInfo</span>(<span class="cv-var">$student_name</span>, <span class="cv-var">$student_score</span>);
+
+<span class="cv-cm">// --- 2. OBJECT-ORIENTED APPROACH (OOP - ចង Data & Function ក្នុង Class) ---</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Student</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$name</span>;
+    <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$score</span>;
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getDetails</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-kw">return</span> <span class="cv-str">"[OOP] និស្សិត៖ {$this-&gt;name} | ពិន្ទុ៖ {$this-&gt;score}"</span>;
+    }
+}
+
+<span class="cv-var">$st1</span> = <span class="cv-kw">new</span> <span class="cv-tag">Student</span>();
+<span class="cv-var">$st1</span>-&gt;<span class="cv-var">name</span> = <span class="cv-str">"កែវ ណារ៉ា"</span>;
+<span class="cv-var">$st1</span>-&gt;<span class="cv-var">score</span> = <span class="cv-num">92.0</span>;
+<span class="cv-fn">echo</span> <span class="cv-var">$st1</span>-&gt;<span class="cv-fn">getDetails</span>();
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="output-window">
+                <div class="output-header">Execution Output</div>
+                <div class="output-body">[Procedural] និស្សិត៖ សុខ ជា | ពិន្ទុ៖ 85.5
+[OOP] និស្សិត៖ កែវ ណារ៉ា | ពិន្ទុ៖ 92</div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 4: SECTION 5.2 CLASS & OBJECT INSTANTIATION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-boxes-stacked"></i> ៥.២ ការបង្កើត Class & Object Instantiation <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c3">C3</span></div>
+
+        <!-- 5.2.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-cubes text-blue"></i> ៥.២.១ Class Definition & `new` Operator <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                • <b>Class (ប្លង់មេ / Blueprint)៖</b> គឺជាគំរូដើមដែលកំណត់រចនាសម្ព័ន្ធទិន្នន័យ (Properties) និងសមត្ថភាពធ្វើការ (Methods)។ Class មិនទាន់យកលំហ Memory មកប្រើប្រាស់នៅឡើយទេ។<br>
+                • <b>Object (វត្ថុពិត / Instance)៖</b> គឺជា Concrete Entity ដែលត្រូវបានបង្កើតចេញពី Class ដោយប្រើប្រាស់ពាក្យគន្លឹះ <b><code>new</code></b> (ដំណើរការនេះហៅថា **Instantiation**)។ Object នីមួយៗរក្សាទុកទិន្នន័យរៀងៗខ្លួនក្នុង Memory។
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">// 1. Class Declaration (PascalCase Naming Convention)
+class ClassName {
+    // Properties and Methods
+}
+
+// 2. Object Instantiation
+$objectInstance = new ClassName();</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">class_and_object.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// ប្រកាស Class ឈ្មោះ Car (PascalCase)</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Car</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$brand</span>;
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$color</span>;
+}
+
+<span class="cv-cm">// បង្កើត Object ទី១ ចេញពី Class Car</span>
+<span class="cv-var">$car1</span> = <span class="cv-kw">new</span> <span class="cv-tag">Car</span>();
+<span class="cv-var">$car1</span>-&gt;<span class="cv-var">brand</span> = <span class="cv-str">"Toyota Prius"</span>;
+<span class="cv-var">$car1</span>-&gt;<span class="cv-var">color</span> = <span class="cv-str">"White"</span>;
+
+<span class="cv-cm">// បង្កើត Object ទី២ ដាច់ដោយឡែកក្នុង Memory</span>
+<span class="cv-var">$car2</span> = <span class="cv-kw">new</span> <span class="cv-tag">Car</span>();
+<span class="cv-var">$car2</span>-&gt;<span class="cv-var">brand</span> = <span class="cv-str">"Lexus RX350"</span>;
+<span class="cv-var">$car2</span>-&gt;<span class="cv-var">color</span> = <span class="cv-str">"Black"</span>;
+
+<span class="cv-fn">echo</span> <span class="cv-str">"រថយន្តទី១៖ "</span> . <span class="cv-var">$car1</span>-&gt;<span class="cv-var">brand</span> . <span class="cv-str">" ("</span> . <span class="cv-var">$car1</span>-&gt;<span class="cv-var">color</span> . <span class="cv-str">")&lt;br&gt;"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"រថយន្តទី២៖ "</span> . <span class="cv-var">$car2</span>-&gt;<span class="cv-var">brand</span> . <span class="cv-str">" ("</span> . <span class="cv-var">$car2</span>-&gt;<span class="cv-var">color</span> . <span class="cv-str">")"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output</div>
+                <div class="output-body">រថយន្តទី១៖ Toyota Prius (White)
+រថយន្តទី២៖ Lexus RX350 (Black)</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ង. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Naming Conventions)៖</div>
+                • <b>PascalCase Naming:</b> ឈ្មោះ Class ត្រូវតែសរសេរជា **PascalCase** (ឧទាហរណ៍៖ <code>StudentManager</code>, <code>ProductController</code>)។<br>
+                • <b>Object Property Access:</b> ក្នុងការចូលប្រើប្រាស់ Property ឬ Method របស់ Object យើងប្រើប្រាស់ **Single Arrow Operator (<code>-></code>)** ដោយ **មិនបាច់ដាក់សញ្ញា <code>$</code>** ពីមុខឈ្មោះ Property ឡើយ (ឧ. <code>$car1->brand</code>)!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 5: SECTION 5.3 PROPERTIES, METHODS & $THIS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-gears"></i> ៥.៣ Properties, Methods & Pseudo-Variable `$this` <span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></div>
+
+        <!-- 5.3.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-sliders text-blue"></i> ៥.៣.១ Typed Properties & Instance Methods <span class="bloom-tag bloom-c3">C3</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                • <b>Properties (អថេរថ្នាក់)៖</b> គឺជាអថេរដែលប្រកាសខាងក្នុង Class សម្រាប់រក្សាទុកស្ថានភាព (State/Attributes) របស់ Object។ ចាប់ពី PHP 7.4+ យើងអាចប្រកាស **Typed Properties** (ដូចជា <code>public string $name;</code>) ដើម្បីធានា Data Type សុវត្ថិភាព។<br>
+                • <b>Methods (អនុគមន៍ថ្នាក់)៖</b> គឺជា Functions ដែលប្រកាសខាងក្នុង Class សម្រាប់អនុវត្តសកម្មភាព ឬគណនាតក្កវិទ្យា (Behavior) របស់ Object។
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-terminal"></i> ខ. ទម្រង់ទូទៅ (General Syntax)៖</div>
+            <div class="syntax-box">class ClassName {
+    public DataType $propertyName; // Typed Property
+
+    public function methodName(DataType $param): ReturnType {
+        // Method logic
+    }
+}</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> គ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">typed_properties_methods.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">BankAccount</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$accountNumber</span>;
+    <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$balance</span> = <span class="cv-num">0.0</span>; <span class="cv-cm">// Default initial value</span>
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">deposit</span>(<span class="cv-tag">float</span> <span class="cv-var">$amount</span>): <span class="cv-tag">void</span> {
+        <span class="cv-var">$this</span>-&gt;<span class="cv-var">balance</span> += <span class="cv-var">$amount</span>;
+    }
+}
+
+<span class="cv-var">$acc</span> = <span class="cv-kw">new</span> <span class="cv-tag">BankAccount</span>();
+<span class="cv-var">$acc</span>-&gt;<span class="cv-var">accountNumber</span> = <span class="cv-str">"AU-8899-001"</span>;
+<span class="cv-var">$acc</span>-&gt;<span class="cv-fn">deposit</span>(<span class="cv-num">150.50</span>);
+<span class="cv-var">$acc</span>-&gt;<span class="cv-fn">deposit</span>(<span class="cv-num">50.00</span>);
+
+<span class="cv-fn">echo</span> <span class="cv-str">"គណនី៖ {$acc-&gt;accountNumber} | សល់ប្រាក់សរុប៖ {$acc-&gt;balance} $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> ឃ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output</div>
+                <div class="output-body">គណនី៖ AU-8899-001 | សល់ប្រាក់សរុប៖ 200.5 $</div>
+            </div>
+        </div>
+
+        <!-- 5.3.2 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-hand-point-right text-blue"></i> ៥.៣.២ Pseudo-Variable `$this` & Internal Calls <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block"><b>`$this`</b> គឺជា Pseudo-variable ពិសេសមួយក្នុង PHP OOP ដែលតំណាងឱ្យ **Current Object Instance** (វត្ថុបច្ចុប្បន្នដែលកំពុងត្រូវបានប្រតិបត្តិ)។ យើងប្រើ <code>$this->propertyName</code> ឬ <code>$this->methodName()</code> ដើម្បីចូលប្រើប្រាស់ Properties ឬ Methods ផ្សេងទៀតនៅក្នុង Class ជាមួយគ្នានោះ។</div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> ខ. កូដ PHP ពេញលេញ (Full PHP Code)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">this_keyword_demo.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">StudentEvaluator</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$name</span>;
+    <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$score</span>;
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">calculateGrade</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-cm">// ប្រើ $this ដើម្បីអានតម្លៃ score របស់ Instance បច្ចុប្បន្ន</span>
+        <span class="cv-kw">if</span> (<span class="cv-var">$this</span>-&gt;<span class="cv-var">score</span> &gt;= <span class="cv-num">85.0</span>) <span class="cv-kw">return</span> <span class="cv-str">"A"</span>;
+        <span class="cv-kw">if</span> (<span class="cv-var">$this</span>-&gt;<span class="cv-var">score</span> &gt;= <span class="cv-num">70.0</span>) <span class="cv-kw">return</span> <span class="cv-str">"B"</span>;
+        <span class="cv-kw">return</span> <span class="cv-str">"C"</span>;
+    }
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getSummary</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-cm">// ហៅ Method calculateGrade() ផ្ទៃក្នុងតាមរយៈ $this</span>
+        <span class="cv-var">$grade</span> = <span class="cv-var">$this</span>-&gt;<span class="cv-fn">calculateGrade</span>();
+        <span class="cv-kw">return</span> <span class="cv-str">"និស្សិត៖ {$this-&gt;name} | ពិន្ទុ៖ {$this-&gt;score} | និទ្ទេស៖ {$grade}"</span>;
+    }
+}
+
+<span class="cv-var">$eval</span> = <span class="cv-kw">new</span> <span class="cv-tag">StudentEvaluator</span>();
+<span class="cv-var">$eval</span>-&gt;<span class="cv-var">name</span> = <span class="cv-str">"លី ម៉េង"</span>;
+<span class="cv-var">$eval</span>-&gt;<span class="cv-var">score</span> = <span class="cv-num">88.5</span>;
+<span class="cv-fn">echo</span> <span class="cv-var">$eval</span>-&gt;<span class="cv-fn">getSummary</span>();
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="output-window">
+                <div class="output-header">Output</div>
+                <div class="output-body">និស្សិត៖ លី ម៉េង | ពិន្ទុ៖ 88.5 | និទ្ទេស៖ A</div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 6: SECTION 5.4 MODERN PHP 8 OOP FEATURES -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-bolt"></i> ៥.៤ លក្ខណៈពិសេស OOP ទំនើបក្នុង PHP 8 (Modern PHP 8 Features) <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c6">C6</span></div>
+
+        <!-- 5.4.1 CARD -->
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-wand-magic-sparkles text-blue"></i> ៥.៤.១ Constructor Property Promotion, Readonly & Named Arguments <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c6">C6</span></h4>
+            
+            <div class="content-label"><i class="fa-solid fa-circle-info"></i> ក. និយមន័យ (Definition)៖</div>
+            <div class="text-block">
+                PHP 8 បានណែនាំនូវ Syntactic Sugar និងសមត្ថភាពទំនើបៗជាច្រើនដើម្បីកាត់បន្ថយ Boilerplate Code៖
+                <ul style="padding-left: 20px; margin-top: 3px;">
+                    <li><b>Constructor Property Promotion:</b> អនុញ្ញាតឱ្យយើងប្រកាស Properties និងទទួល Parameters ក្នុង <code>__construct()</code> ក្នុងពេលតែមួយ ដោយមិនបាច់សរសេរ <code>$this->prop = $prop</code> ស្ទួនដដែលៗឡើយ!</li>
+                    <li><b>Readonly Properties (PHP 8.1+):</b> កំណត់ Property ឱ្យអាចសរសេរតម្លៃបានតែ **១ ដងគត់** (ពេល Initialize) ការពារការកែប្រែ Mutation ដោយអចេតនា។</li>
+                    <li><b>Named Arguments:</b> ផ្ញើ Parameters ទៅកាន់ Constructor/Method ដោយបញ្ជាក់ឈ្មោះ parameter ផ្ទាល់ មិនបាច់ខ្វល់ពីលំដាប់លំដោយ។</li>
+                </ul>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-code"></i> ខ. កូដប្រៀបធៀប (PHP 7 Traditional vs PHP 8 Promotion)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">php8_constructor_promotion.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-cm">// =========================================================</span>
+<span class="cv-cm">// PHP 8 MODERN CLASS: Constructor Promotion + Readonly</span>
+<span class="cv-cm">// =========================================================</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Product</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-kw">public</span> <span class="cv-kw">readonly</span> <span class="cv-tag">int</span> <span class="cv-var">$id</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$title</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$price</span> = <span class="cv-num">0.0</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">int</span> <span class="cv-var">$stock</span> = <span class="cv-num">10</span>
+    ) {}
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getFormattedPrice</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-kw">return</span> <span class="cv-fn">number_format</span>(<span class="cv-var">$this</span>-&gt;<span class="cv-var">price</span>, <span class="cv-num">2</span>) . <span class="cv-str">" $"</span>;
+    }
+}
+
+<span class="cv-cm">// ប្រើប្រាស់ PHP 8 Named Arguments ពេល Instantiate Object</span>
+<span class="cv-var">$item</span> = <span class="cv-kw">new</span> <span class="cv-tag">Product</span>(
+    title: <span class="cv-str">"Dell XPS 15 Laptop"</span>,
+    price: <span class="cv-num">1250.00</span>,
+    id: <span class="cv-num">101</span>
+);
+
+<span class="cv-fn">echo</span> <span class="cv-str">"ID: {$item-&gt;id} | ទំនិញ៖ {$item-&gt;title} | តម្លៃ៖ "</span> . <span class="cv-var">$item</span>-&gt;<span class="cv-fn">getFormattedPrice</span>();
+<span class="cv-tag">?&gt;</span></pre>
+            </div>
+
+            <div class="content-label"><i class="fa-solid fa-desktop"></i> គ. លទ្ធផលបង្ហាញ (Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header">Output</div>
+                <div class="output-body">ID: 101 | ទំនិញ៖ Dell XPS 15 Laptop | តម្លៃ៖ 1,250.00 $</div>
+            </div>
+
+            <div class="extra-box">
+                <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> ឃ. ចំណុចសម្គាល់ និងការអនុវត្តល្អៗ (Teacher Insights & Industry Standards)៖</div>
+                • <b>កាត់បន្ថយកូដស្ទួនបាន ៦០%៖</b> ការប្រើ **Constructor Property Promotion** ជួយឱ្យយើងមិនបាច់សរសេរប្រកាស Property ផង និងសរសេរ <code>$this->x = $x</code> ក្នុង Body ទៀតផងឡើយ Body របស់ <code>__construct()</code> អាចទុកទទេរ <code>{}</code> បានយ៉ាងស្អាត!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 7: GLOSSARY & LESSON SUMMARY -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                    <th style="width: 28%;">ឈ្មោះពេញ / ប្រភពពាក្យ</th>
+                    <th style="width: 35%;">ការពន្យល់ន័យជាភាសាខ្មែរ</th>
+                    <th style="width: 15%; text-align:center;">Bloom Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>Class</b></td><td>Blueprint / Template</td><td>ប្លង់មេដែលកំណត់ Properties និង Methods សម្រាប់បង្កើត Object។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Object</b></td><td>Class Instance Entity</td><td>វត្ថុពិតដែលបង្កើតចេញពី Class និងមានលំហទិន្នន័យក្នុង Memory។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Property</b></td><td>Class Variable / Attribute</td><td>អថេរដែលស្ថិតក្នុង Class សម្រាប់រក្សាទុកស្ថានភាព (State) របស់ Object។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>Method</b></td><td>Class Function / Behavior</td><td>អនុគមន៍ដែលស្ថិតក្នុង Class សម្រាប់ប្រកាសសកម្មភាព ឬតក្កវិទ្យា។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b><code>$this</code></b></td><td>Current Instance Reference</td><td>Pseudo-variable សម្រាប់យោងទៅកាន់ Object Instance បច្ចុប្បន្ន។</td><td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span></td></tr>
+                <tr><td><b>Property Promotion</b></td><td>PHP 8 Constructor Shortcut</td><td>សមត្ថភាព PHP 8 ក្នុងការប្រកាស និង Assign Properties ក្នុង Constructor។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:12px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Lesson Summary)</div>
+        <div class="text-block">
+            មេរៀនទី ៥ នេះបានផ្តល់នូវគ្រឹះដ៏សំខាន់បំផុតក្នុងការផ្លាស់ប្តូរផ្នត់គំនិតសរសេរកូដពី Procedural ទៅកាន់ស្ថាបត្យកម្មទំនើប **Object-Oriented Programming (OOP)**៖
+        </div>
+
+        <ul class="obj-list">
+            <li><b class="highlight">១. Paradigm Shift:</b> OOP ជួយចងភ្ជាប់ទិន្នន័យ (Properties) និងសកម្មភាព (Methods) ឱ្យស្ថិតក្នុងកញ្ចប់តែមួយ (Class) ការពារកូដរញ៉េរញ៉ៃ (Spaghetti Code) និងបង្កើន Reusability។</li>
+            <li><b class="highlight">២. Class & Object Instantiation:</b> Class គឺជា Blueprint (ប្លង់មេ) ហើយ Object គឺជា Instance ជាក់ស្តែងដែលបង្កើតតាមរយៈពាក្យគន្លឹះ <code>new</code>។</li>
+            <li><b class="highlight">៣. Instance Context (`$this`):</b> ប្រើប្រាស់ <code>$this->property</code> និង <code>$this->method()</code> ដើម្បីចូលប្រើប្រាស់ព័ត៌មានខាងក្នុង Instance បច្ចុប្បន្ន។</li>
+            <li><b class="highlight">៤. Modern PHP 8 Features:</b> ការប្រើប្រាស់ Constructor Property Promotion និង Readonly Properties ជួយកាត់បន្ថយកូដស្ទួន និងបង្កើនភាពតឹងរ៉ឹងនៃ Type Safety ក្នុង Enterprise Systems។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 8: REVIEW QUESTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:6px; border-left:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-pen-to-square"></i> ៦. សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%;">៦.ក. សំណួរ ខុស/ត្រូវ (True/False - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>Class គឺជា Object ដែលយកលំហទិន្នន័យ (Memory) ទៅប្រើប្រាស់រួចជាស្រេច។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>ពាក្យគន្លឹះ <code>new</code> ត្រូវបានប្រើប្រាស់សម្រាប់ធ្វើ Object Instantiation ចេញពី Class។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>ក្នុងការចូលប្រើប្រាស់ Property របស់ Object យើងត្រូវប្រើ Syntax <code>$object->$property</code> (មានសញ្ញា $ ពីមុខ Property)។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>Pseudo-variable <code>$this</code> យោងទៅកាន់ Object Instance បច្ចុប្បន្នដែលកំពុងត្រូវបានប្រតិបត្តិ។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>PHP 8 Constructor Property Promotion ជួយឱ្យយើងមិនបាច់សរសេរ <code>$this->prop = $prop</code> ក្នុង Constructor Body ឡើយ។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>Procedural Programming ចងភ្ជាប់ទិន្នន័យ និង Functions ចូលគ្នាក្នុងកញ្ចប់តែមួយ ដូច OOP ដែរ។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>ឈ្មោះ Class ក្នុង PHP គួរតែអនុវត្តតាមស្តង់ដាររចនា Naming Convention ជា PascalCase។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>Readonly Property ក្នុង PHP 8.1+ អាចឱ្យគេកែប្រែតម្លៃបានច្រើនដងតាមចិត្ត។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>Method គឺជា Function ដែលត្រូវបានប្រកាសនៅខាងក្នុង Class។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>PHP 8 Named Arguments អនុញ្ញាតឱ្យយើងផ្ញើ Parameters ដោយមិនបាច់ខ្វល់ពីលំដាប់លំដោយឡើយ។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:6px;">៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>តើពាក្យគន្លឹះមួយណាប្រើសម្រាប់បង្កើត Object ថ្មីចេញពី Class? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. create</li><li>B. new</li><li>C. make</li><li>D. instance</li></ul>
+            </li>
+            <li>តើ Operator មួយណាប្រើសម្រាប់ចូលប្រើប្រាស់ Property ឬ Method របស់ Object? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. ::</li><li>B. -></li><li>C. =></li><li>D. .</li></ul>
+            </li>
+            <li>តើ Pseudo-variable <code>$this</code> មានតួនាទីអ្វីខាងក្នុង Method? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. យោងទៅ Class មេ</li><li>B. យោងទៅ Object Instance បច្ចុប្បន្ន</li><li>C. បង្កើត អថេរ Global</li><li>D. លុប Object</li></ul>
+            </li>
+            <li>តើលក្ខណៈពិសេសអ្វីក្នុង PHP 8 ដែលកាត់បន្ថយ Boilerplate Code ក្នុង Constructor? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. Arrow Functions</li><li>B. Constructor Property Promotion</li><li>C. Match Expression</li><li>D. Strict Types</li></ul>
+            </li>
+            <li>តើការប្រកាស <code>public readonly string $id;</code> មានន័យដូចម្តេច? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. មិនអាចអានបាន</li><li>B. អាច Assign តម្លៃបានតែ ១ ដងគត់</li><li>C. ជាអថេរ Global</li><li>D. គ្មាន Data Type</li></ul>
+            </li>
+            <li>តើឈ្មោះ Class មួយណាដែលសរសេរត្រូវតាមស្តង់ដារ PascalCase? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. student_manager</li><li>B. studentManager</li><li>C. StudentManager</li><li>D. STUDENTMANAGER</li></ul>
+            </li>
+            <li>តើអត្ថប្រយោជន៍ចម្បងនៃ OOP ធៀបនឹង Procedural គឺអ្វី? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. កូដរត់យឺតជាង</li><li>B. ការពារកូដស្ទួន និងងាយស្រួលថែទាំ</li><li>C. មិនបាច់ប្រើ Variables</li><li>D. ប្រើតែក្នុង HTML</li></ul>
+            </li>
+            <li>តើ Method ពិសេស <code>__construct()</code> រត់នៅពេលណា? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. ពេលលុប Object</li><li>B. ពេលធ្វើ Object Instantiation (`new`)</li><li>C. ពេលមាន Error</li><li>D. ពេលបញ្ចប់ Script</li></ul>
+            </li>
+            <li>តើការប្រើប្រាស់ PHP 8 Named Arguments មានទម្រង់យ៉ាងដូចម្តេច? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. $obj->fn(param = val)</li><li>B. $obj->fn(param: val)</li><li>C. $obj->fn(param => val)</li><li>D. $obj->fn($param)</li></ul>
+            </li>
+            <li>តើទិន្នន័យ (Variables) ដែលប្រកាសខាងក្នុង Class គេហៅថាអ្វី? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. Methods</li><li>B. Properties</li><li>C. Constants</li><li>D. Functions</li></ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 9: MATCHING & EXPLANATORY QUESTIONS -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ សំណួរ)</div>
+        <table class="matching-table">
+            <thead>
+                <tr>
+                    <th style="width:50%;">ជួរ A (OOP Concept / Syntax)</th>
+                    <th style="width:50%;">ជួរ B (ការពិពណ៌នា / និយមន័យ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>១. <code>Class</code></td><td>A. Operator សម្រាប់ចូលប្រើប្រាស់ Member របស់ Object Instance</td></tr>
+                <tr><td>២. <code>Object</code></td><td>B. Pseudo-variable យោងទៅកាន់ Instance បច្ចុប្បន្ន</td></tr>
+                <tr><td>៣. <code>new</code></td><td>C. ប្លង់មេ (Blueprint) កំណត់រចនាសម្ព័ន្ធទិន្នន័យ និងសកម្មភាព</td></tr>
+                <tr><td>៤. <code>Property</code></td><td>D. វត្ថុពិត (Instance) ដែលបង្កើតចេញពី Class ក្នុង Memory</td></tr>
+                <tr><td>៥. <code>Method</code></td><td>E. ពាក្យគន្លឹះសម្រាប់ធ្វើ Object Instantiation</td></tr>
+                <tr><td>៦. <code>-></code></td><td>F. អថេរដែលរក្សាទុកស្ថានភាព (State) ខាងក្នុង Class</td></tr>
+                <tr><td>៧. <code>$this</code></td><td>G. អនុគមន៍ដែលប្រកាសខាងក្នុង Class សម្រាប់កសាង Behavior</td></tr>
+                <tr><td>៨. <code>Constructor Promotion</code></td><td>H. Property ដែលអាច Assign តម្លៃបានតែ ១ ដងគត់ក្នុង PHP 8.1+</td></tr>
+                <tr><td>៩. <code>readonly</code></td><td>I. លក្ខណៈពិសេស PHP 8 ក្នុងការប្រកាស Property ក្នុង Constructor</td></tr>
+                <tr><td>១០. <code>Named Arguments</code></td><td>J. ការបញ្ជូន Parameter ទៅកាន់ Method ដោយប្រើឈ្មោះ <code>param: $val</code></td></tr>
+            </tbody>
+        </table>
+
+        <!-- SECTION 6.ឃ EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="width: 100%; margin-top:8px; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៦.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:3px 0 2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
+        <ol class="q-list">
+            <li><b>Q5.1:</b> ពន្យល់ពីភាពខុសគ្នារវាង Class និង Object ដោយលើកឧទាហរណ៍ក្នុងជីវភាពរស់នៅពិតប្រាកដ។ <span class="bloom-tag bloom-c1">C1 - Remember</span></li>
+            <li><b>Q5.2:</b> រៀបរាប់ពីតួនាទីរបស់ Properties និង Methods នៅក្នុង Class។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+            <li><b>Q5.3:</b> ពន្យល់ពីរបៀបប្រើប្រាស់ Operator <code>-></code> ក្នុងការកំណត់ និងអានតម្លៃ Properties របស់ Object។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="4">
+            <li><b>Q5.4:</b> វិភាគពីតួនាទីរបស់ Pseudo-variable <code>$this</code> ក្នុងការហៅ Method មួយទៀតខាងក្នុង Class ជាមួយគ្នា។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q5.5:</b> ធ្វើការប្រៀបធៀបការសរសេរ Class តាមបែបប្រពៃណី (PHP 7) និងការប្រើប្រាស់ PHP 8 Constructor Property Promotion។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q5.6:</b> បកស្រាយពីអត្ថប្រយោជន៍នៃការប្រើប្រាស់ PHP 8 Typed Properties និង Readonly Properties ក្នុងការការពារទិន្នន័យ។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="7">
+            <li><b>Q5.7:</b> វាយតម្លៃពីផលប៉ះពាល់នៃការប្រើប្រាស់ Procedural Code ក្នុង Enterprise System និងបកស្រាយពីរបៀបដែល OOP ដោះស្រាយវា។ <span class="bloom-tag bloom-c5">C5 - Evaluate</span></li>
+            <li><b>Q5.8:</b> វិភាគពីរបៀបដែល Object ពីរខុសគ្នា (ឧ. <code>$st1</code>, <code>$st2</code>) រក្សាទុកទិន្នន័យដាច់ដោយឡែកពីគ្នាក្នុង Memory។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q5.9:</b> ធ្វើការរចនា និងបង្កើត Class សម្រាប់ប្រព័ន្ធ E-commerce (<code>Product</code>) ដោយប្រើ PHP 8 Modern Features និង Method គណនាបញ្ចុះតម្លៃ។ <span class="bloom-tag bloom-c6">C6 - Create</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 10: GRADED CLASSWORK & PRACTICAL LAB LISTING -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-list-check"></i> ៦.ង. កិច្ចការសិក្សា និងការវាយតម្លៃ (Graded Classwork & Team Review)</div>
+        
+        <div class="sub-heading" style="margin-top:4px; color:var(--accent);"><i class="fa-solid fa-users-gear"></i> កិច្ចការក្រុម និងការវិភាគកូដ (Team Code Architecture Review) <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="bloom-tag bloom-c6">C6 - Create</span></div>
+        
+        <div class="text-block">
+            <b>ការណែនាំ៖</b> សូមបែងចែកនិស្សិតជាក្រុម (៣-៤ នាក់) ដើម្បីសិក្សា វិភាគ និងស្វែងរក Bug ក្នុង Procedural Snippet ខាងក្រោម ព្រមទាំងធ្វើការ Refactor ឱ្យទៅជា **PHP 8 Modern OOP Class ជាមួយ Constructor Property Promotion**៖
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--danger); margin-top:4px;">• Problem Snippet (Procedural Code គ្មាន Structure និងងាយកើត Bug)៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">buggy_procedural_store.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// Procedural Code: Messy array without type validation or encapsulated methods</span>
+<span class="cv-var">$p1_name</span> = <span class="cv-str">"Laptop"</span>; <span class="cv-var">$p1_price</span> = <span class="cv-num">800</span>; <span class="cv-var">$p1_qty</span> = <span class="cv-num">2</span>;
+<span class="cv-var">$p2_name</span> = <span class="cv-str">"Mouse"</span>;  <span class="cv-var">$p2_price</span> = <span class="cv-num">15</span>;  <span class="cv-var">$p2_qty</span> = <span class="cv-num">5</span>;
+
+<span class="cv-kw">function</span> <span class="cv-fn">getTotal</span>(<span class="cv-var">$price</span>, <span class="cv-var">$qty</span>) { <span class="cv-kw">return</span> <span class="cv-var">$price</span> * <span class="cv-var">$qty</span>; }
+
+<span class="cv-fn">echo</span> <span class="cv-str">"Total P1: "</span> . <span class="cv-fn">getTotal</span>(<span class="cv-var">$p1_price</span>, <span class="cv-var">$p1_qty</span>) . <span class="cv-str">" $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--success); margin-top:6px;">• ភារកិច្ចរបស់និស្សិត (Student Tasks)៖</div>
+        <ol class="q-list" style="margin-top:2px;">
+            <li><b>Task 1 (<span class="bloom-tag bloom-c4">C4</span>)៖</b> កំណត់ចំណុចខ្សោយ ២ នៃ Procedural Snippet ខាងលើ។</li>
+            <li><b>Task 2 (<span class="bloom-tag bloom-c5">C5</span>)៖</b> បង្កើត Class ឈ្មោះ <code>CartItem</code> ដោយប្រើប្រាស់ PHP 8 Constructor Property Promotion។</li>
+            <li><b>Task 3 (<span class="bloom-tag bloom-c6">C6</span>)៖</b> បន្ថែម Method <code>calculateSubtotal(): float</code> ខាងក្នុង Class នោះ រួច Instantiate Objects ពីរមកបង្ហាញលទ្ធផល។</li>
+        </ol>
+
+        <!-- SECTION 6.ច PRACTICAL LABS LISTING -->
+        <div class="sub-heading" style="width: 100%; margin-top:10px; color:var(--success);"><i class="fa-solid fa-laptop-code"></i> ៦.ច. បញ្ជីលំហាត់អនុវត្តន៍ (Practical Labs - ៩ លំហាត់តាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--success); margin:2px 0 1px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ លំហាត់]</div>
+        <ol class="q-list">
+            <li><b>Lab 5.1:</b> បង្កើត Class ឈ្មោះ <code>Student</code> មាន Properties: <code>$name</code>, <code>$age</code>, និង <code>$major</code> រួច Instantiate Object ១ បង្ហាញព័ត៌មាន។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 5.2:</b> បន្ថែម Method <code>sayHello(): string</code> ទៅក្នុង Class <code>Student</code> ដើម្បី echo សារស្វាគមន៍ឈ្មោះនិស្សិត។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li><b>Lab 5.3:</b> បង្កើត Objects ២ ដាច់ដោយឡែកពីគ្នា រួចប្រៀបធៀបតម្លៃ Properties របស់វត្ថុទាំងពីរ។ <span class="bloom-tag bloom-c3">C3</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--warning); margin:3px 0 1px 0;">[កម្រិតមធ្យម - Medium Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="4">
+            <li><b>Lab 5.4:</b> បង្កើត Class <code>Circle</code> មាន Property <code>$radius</code> និង Method <code>calculateArea(): float</code> (រូបមន្ត៖ $\pi \times r^2$)។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 5.5:</b> ប្រើប្រាស់ Pseudo-variable <code>$this</code> ដើម្បីបង្កើត Method <code>getSummary()</code> ហៅ Method គណនាផ្សេងទៀតខាងក្នុង Class។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li><b>Lab 5.6:</b> បង្កើត Class <code>BankAccount</code> ជាមួយ Method <code>deposit($amt)</code> និង <code>withdraw($amt)</code> មានការ Check សល់ប្រាក់។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9.5pt; color:var(--danger); margin:3px 0 1px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ លំហាត់]</div>
+        <ol class="q-list" start="7">
+            <li><b>Lab 5.7:</b> សរសេរ Class <code>Employee</code> ដោយប្រើប្រាស់ PHP 8 Constructor Property Promotion ជាមួយ Typed Properties។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 5.8:</b> ប្រើប្រាស់ PHP 8 <code>readonly</code> Properties លើ Property <code>$id</code> រួចធ្វើការតេស្តកែប្រើតម្លៃដើម្បីមើល Error។ <span class="bloom-tag bloom-c6">C6</span></li>
+            <li><b>Lab 5.9:</b> អភិវឌ្ឍប្រព័ន្ធ Student Management Domain Model មាន Class <code>Student</code> និង <code>Course</code> ដោយប្រើប្រាស់ PHP 8 OOP ស្តង់ដារ។ <span class="bloom-tag bloom-c6">C6</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 11: ANSWERS KEY PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:6px; border:none; margin: 0; padding: 5px 0;"><i class="fa-solid fa-key" style="color:white; background:transparent;"></i> ៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys & Solutions)</div>
+            
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ក. ចម្លើយ សំណួរ ខុស/ត្រូវ (True/False Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.ខ. ចម្លើយ សំណួរ ពហុជ្រើសរើស (MCQ Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td><td>C</td><td>B</td><td>B</td><td>B</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 6px; font-size:10pt; color:var(--success);">៧.គ. ចម្លើយ សំណួរ ផ្គូផ្គង (Matching Answers 1-10)</div>
+        <table class="ans-table" style="margin-bottom: 6px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>A</td><td>B</td><td>I</td><td>H</td><td>J</td></tr>
+        </table>
+
+        <!-- SECTION 7.ឃ ANSWERS TO EXPLANATORY QUESTIONS -->
+        <div class="sub-heading" style="margin-top: 6px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Answers to Explanatory Questions Q5.1 - Q5.5)</div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--success); margin:2px 0;">[កម្រិតស្រាល - Light/Easy Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q5.1 (Class vs Object Definition)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Class គឺជា **ប្លង់មេ/Blueprint** (ដូចជាប្លង់សង់ផ្ទះ)។ ឯ Object គឺជា **វត្ថុពិត/Instance** (ដូចជាផ្ទះពិតប្រាកដដែលសាងសង់រួច) ដែលមានលំហទិន្នន័យជាក់ស្តែងក្នុង Memory។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q5.2 (Properties & Methods Role)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                • Properties: រក្សាទុកស្ថានភាព (State/Data) របស់ Object (ឧ. <code>$name</code>, <code>$price</code>)។<br>
+                • Methods: ជា Functions សម្រាប់អនុវត្តសកម្មភាព (Behavior/Logic) របស់ Object (ឧ. <code>calculateTotal()</code>)។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q5.3 (Object Property Access Operator `->`)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                យើងប្រើ Single Arrow <code>$object->propertyName</code> ដើម្បីអាន ឬកំណត់តម្លៃ Property ដោយ **មិនបាច់ដាក់សញ្ញា <code>$</code>** ពីមុខឈ្មោះ Property ឡើយ (ឧ. <code>$user->name = "Sok";</code>)។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--warning); margin:4px 0 2px 0;">[កម្រិតមធ្យម - Medium Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q5.4 (The `$this` Pseudo-variable)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                <code>$this</code> យោងទៅកាន់ Instance បច្ចុប្បន្ន។ ពេលហៅ Method ផ្សេងទៀតក្នុង Class ជាមួយគ្នា យើងប្រើ <code>$this->otherMethod()</code> ដើម្បីប្រតិបត្តិតក្កវិទ្យាផ្ទៃក្នុង។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q5.5 (PHP 8 Constructor Promotion Benefits)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                PHP 8 Promotion ជួយកាត់បន្ថយកូដស្ទួន ដោយប្រកាស Property ផង និង Assign តម្លៃផងក្នុង Parameter list នៃ <code>__construct(public string $name)</code> តែមួយជួរ មិនបាច់សរសេរ Body ឡើយ។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 12: EXPLANATORY ANSWERS PART 2 & LAB SOLUTIONS PART 1 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q5.6 (Readonly Properties Benefits)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                <code>readonly</code> ការពារមិនឱ្យតម្លៃ Property (ដូចជា Primary Key <code>$id</code>) ត្រូវគេកែប្រែ Mutation បន្ទាប់ពី Instantiation រួចឡើយ បង្កើន Immutability និង Data Integrity។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q5.7 (Procedural Risks vs OOP Solutions)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                Procedural Code មានអថេរ Global ច្រើន និងកូដស្ទួន (Spaghetti)។ OOP ដោះស្រាយវាដោយ Encapsulate Data ក្នុង Classes ធ្វើឱ្យកូដមាន Module ច្បាស់លាស់ និងរៀបរយ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q5.8 (Object Memory Isolation)៖</h5>
+            <div class="text-block" style="font-size:9.5pt; margin:0;">
+                រាល់ពេលប្រើប្រាស់ <code>new ClassName()</code>, PHP នឹងបែងចែក Memory Location ថ្មីមួយដាច់ដោយឡែក។ ដូច្នេះការប្រែប្រួលតម្លៃ Property លើ <code>$st1</code> មិនប៉ះពាល់ដល់ <code>$st2</code> ឡើយ។
+            </div>
+        </div>
+
+        <!-- SECTION 7.ង LAB SOLUTIONS PART 1 -->
+        <div class="sub-heading" style="margin-top: 8px; font-size:10.5pt; color:var(--success);"><i class="fa-solid fa-code"></i> ៧.ង. ដំណោះស្រាយលំហាត់អនុវត្តន៍ (Practical Lab Solutions 5.1 - 5.4)</div>
+        
+        <!-- LAB 5.1 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:2px;">• ដំណោះស្រាយ Lab 5.1 (Basic Class & Object) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab5_1.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Student</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$name</span>;
+    <span class="cv-kw">public</span> <span class="cv-tag">int</span> <span class="cv-var">$age</span>;
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$major</span>;
+}
+<span class="cv-var">$s1</span> = <span class="cv-kw">new</span> <span class="cv-tag">Student</span>();
+<span class="cv-var">$s1</span>-&gt;<span class="cv-var">name</span> = <span class="cv-str">"សុខ ជា"</span>; <span class="cv-var">$s1</span>-&gt;<span class="cv-var">age</span> = <span class="cv-num">20</span>; <span class="cv-var">$s1</span>-&gt;<span class="cv-var">major</span> = <span class="cv-str">"CS"</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"ឈ្មោះ៖ {$s1-&gt;name} | ជំនាញ៖ {$s1-&gt;major}"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 5.2 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 5.2 (Class Method) <span class="bloom-tag bloom-c3">C3</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab5_2.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Student</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$name</span>;
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">sayHello</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-kw">return</span> <span class="cv-str">"ជំរាបសួរ! ខ្ញុំបាទ/នាងខ្ញុំឈ្មោះ "</span> . <span class="cv-var">$this</span>-&gt;<span class="cv-var">name</span>;
+    }
+}
+<span class="cv-var">$st</span> = <span class="cv-kw">new</span> <span class="cv-tag">Student</span>(); <span class="cv-var">$st</span>-&gt;<span class="cv-var">name</span> = <span class="cv-str">"កែវ ណារ៉ា"</span>;
+<span class="cv-fn">echo</span> <span class="cv-var">$st</span>-&gt;<span class="cv-fn">sayHello</span>();
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 5.4 SOLUTION -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 5.4 (Circle Area Calculation) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab5_4.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">Circle</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$radius</span>;
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">calculateArea</span>(): <span class="cv-tag">float</span> {
+        <span class="cv-kw">return</span> M_PI * <span class="cv-fn">pow</span>(<span class="cv-var">$this</span>-&gt;<span class="cv-var">radius</span>, <span class="cv-num">2</span>);
+    }
+}
+<span class="cv-var">$c</span> = <span class="cv-kw">new</span> <span class="cv-tag">Circle</span>(); <span class="cv-var">$c</span>-&gt;<span class="cv-var">radius</span> = <span class="cv-num">7.0</span>;
+<span class="cv-fn">echo</span> <span class="cv-str">"ផ្ទៃក្រឡារង្វង់៖ "</span> . <span class="cv-fn">round</span>(<span class="cv-var">$c</span>-&gt;<span class="cv-fn">calculateArea</span>(), <span class="cv-num">2</span>);
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 13: PRACTICAL LAB SOLUTIONS PART 2 -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 5.6 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 5.6 (Bank Account Operations) <span class="bloom-tag bloom-c4">C4</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab5_6.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">BankAccount</span> {
+    <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$balance</span> = <span class="cv-num">0.0</span>;
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">deposit</span>(<span class="cv-tag">float</span> <span class="cv-var">$amt</span>): <span class="cv-tag">void</span> { <span class="cv-var">$this</span>-&gt;<span class="cv-var">balance</span> += <span class="cv-var">$amt</span>; }
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">withdraw</span>(<span class="cv-tag">float</span> <span class="cv-var">$amt</span>): <span class="cv-tag">bool</span> {
+        <span class="cv-kw">if</span> (<span class="cv-var">$amt</span> &lt;= <span class="cv-var">$this</span>-&gt;<span class="cv-var">balance</span>) { <span class="cv-var">$this</span>-&gt;<span class="cv-var">balance</span> -= <span class="cv-var">$amt</span>; <span class="cv-kw">return</span> <span class="cv-kw">true</span>; }
+        <span class="cv-kw">return</span> <span class="cv-kw">false</span>;
+    }
+}
+<span class="cv-var">$acc</span> = <span class="cv-kw">new</span> <span class="cv-tag">BankAccount</span>(); <span class="cv-var">$acc</span>-&gt;<span class="cv-fn">deposit</span>(<span class="cv-num">100</span>); <span class="cv-var">$acc</span>-&gt;<span class="cv-fn">withdraw</span>(<span class="cv-num">30</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"តុល្យភាពប្រាក់៖ {$acc-&gt;balance} $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 5.7 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 5.7 (PHP 8 Constructor Property Promotion) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab5_7.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+<span class="cv-kw">class</span> <span class="cv-tag">Employee</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$name</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$position</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$salary</span>
+    ) {}
+}
+<span class="cv-var">$emp</span> = <span class="cv-kw">new</span> <span class="cv-tag">Employee</span>(<span class="cv-str">"លី ហួរ"</span>, <span class="cv-str">"Web Developer"</span>, <span class="cv-num">1200.00</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"បុគ្គលិក៖ {$emp-&gt;name} | តួនាទី៖ {$emp-&gt;position} | ប្រាក់ខែ៖ {$emp-&gt;salary} $"</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <!-- LAB 5.8 SOLUTION -->
+        <div style="font-weight:bold; font-size:9pt; color:var(--primary); margin-top:4px;">• ដំណោះស្រាយ Lab 5.8 (PHP 8.1 Readonly Properties Test) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">lab5_8.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">class</span> <span class="cv-tag">User</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-kw">public</span> <span class="cv-kw">readonly</span> <span class="cv-tag">int</span> <span class="cv-var">$id</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$username</span>
+    ) {}
+}
+<span class="cv-var">$u</span> = <span class="cv-kw">new</span> <span class="cv-tag">User</span>(<span class="cv-num">1001</span>, <span class="cv-str">"lim_admin"</span>);
+<span class="cv-fn">echo</span> <span class="cv-str">"User ID: "</span> . <span class="cv-var">$u</span>-&gt;<span class="cv-var">id</span>;
+<span class="cv-cm">// $u->id = 2000; // Error: Cannot modify readonly property User::$id</span>
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ១៤</div>
+    </div>
+</div>
+
+<!-- PAGE 14: LAB 5.9 & FINAL CONCLUSION -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៥</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-brands fa-php" style="font-size: 28px; color: #4F46E5;"></i><span>PHP & MySQL</span></div>
+    </div>
+    <div class="page-content">
+        <!-- LAB 5.9 SOLUTION (FULL DOMAIN MODEL APPLICATION) -->
+        <div style="font-weight:bold; font-size:9.5pt; color:var(--primary); margin-top:0;">• ដំណោះស្រាយ Lab 5.9 (Full Student Domain Model with PHP 8 OOP) <span class="bloom-tag bloom-c6">C6</span>៖</div>
+        
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">student_domain_app.php</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-kw">class</span> <span class="cv-tag">Student</span> {
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">__construct</span>(
+        <span class="cv-kw">public</span> <span class="cv-kw">readonly</span> <span class="cv-tag">string</span> <span class="cv-var">$studentId</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">string</span> <span class="cv-var">$fullName</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$midtermScore</span>,
+        <span class="cv-kw">public</span> <span class="cv-tag">float</span> <span class="cv-var">$finalScore</span>
+    ) {}
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">calculateTotalScore</span>(): <span class="cv-tag">float</span> {
+        <span class="cv-kw">return</span> (<span class="cv-var">$this</span>-&gt;<span class="cv-var">midtermScore</span> * <span class="cv-num">0.40</span>) + (<span class="cv-var">$this</span>-&gt;<span class="cv-var">finalScore</span> * <span class="cv-num">0.60</span>);
+    }
+
+    <span class="cv-kw">public</span> <span class="cv-kw">function</span> <span class="cv-fn">getGrade</span>(): <span class="cv-tag">string</span> {
+        <span class="cv-var">$total</span> = <span class="cv-var">$this</span>-&gt;<span class="cv-fn">calculateTotalScore</span>();
+        <span class="cv-kw">if</span> (<span class="cv-var">$total</span> &gt;= <span class="cv-num">85.0</span>) <span class="cv-kw">return</span> <span class="cv-str">"A"</span>;
+        <span class="cv-kw">if</span> (<span class="cv-var">$total</span> &gt;= <span class="cv-num">75.0</span>) <span class="cv-kw">return</span> <span class="cv-str">"B"</span>;
+        <span class="cv-kw">if</span> (<span class="cv-var">$total</span> &gt;= <span class="cv-num">65.0</span>) <span class="cv-kw">return</span> <span class="cv-str">"C"</span>;
+        <span class="cv-kw">return</span> <span class="cv-str">"F"</span>;
+    }
+}
+
+<span class="cv-cm">// Instantiate Objects using PHP 8 Named Arguments</span>
+<span class="cv-var">$students</span> = [
+    <span class="cv-kw">new</span> <span class="cv-tag">Student</span>(studentId: <span class="cv-str">"AU-CS-001"</span>, fullName: <span class="cv-str">"សុខ ជា"</span>, midtermScore: <span class="cv-num">88.0</span>, finalScore: <span class="cv-num">92.0</span>),
+    <span class="cv-kw">new</span> <span class="cv-tag">Student</span>(studentId: <span class="cv-str">"AU-CS-002"</span>, fullName: <span class="cv-str">"កែវ ណារ៉ា"</span>, midtermScore: <span class="cv-num">70.0</span>, finalScore: <span class="cv-num">78.0</span>)
+];
+<span class="cv-tag">?&gt;</span>
+&lt;table border="1" style="border-collapse:collapse; width:100%;"&gt;
+    &lt;tr style="background:#EEF2FF;"&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;ឈ្មោះ&lt;/th&gt;&lt;th&gt;ពិន្ទុសរុប&lt;/th&gt;&lt;th&gt;និទ្ទេស&lt;/th&gt;&lt;/tr&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">foreach</span> (<span class="cv-var">$students</span> <span class="cv-kw">as</span> <span class="cv-var">$st</span>): <span class="cv-tag">?&gt;</span>
+    &lt;tr style="text-align:center;"&gt;
+        &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$st</span>-&gt;<span class="cv-var">studentId</span> <span class="cv-tag">?&gt;</span>&lt;/td&gt;
+        &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$st</span>-&gt;<span class="cv-var">fullName</span> <span class="cv-tag">?&gt;</span>&lt;/td&gt;
+        &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$st</span>-&gt;<span class="cv-fn">calculateTotalScore</span>() <span class="cv-tag">?&gt;</span>&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$st</span>-&gt;<span class="cv-fn">getGrade</span>() <span class="cv-tag">?&gt;</span>&lt;/b&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">endforeach</span>; <span class="cv-tag">?&gt;</span>
+&lt;/table&gt;</pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-desktop"></i> Execution Output</div>
+            <div class="output-body">AU-CS-001 | សុខ ជា | ពិន្ទុសរុប៖ 90.4 | និទ្ទេស៖ A
+AU-CS-002 | កែវ ណារ៉ា | ពិន្ទុសរុប៖ 74.8 | និទ្ទេស៖ C</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 12px; padding: 15px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 10px;">
+            <h3 style="font-family: var(--font-kh-heading); font-size: 11.5pt; color: var(--text-heading); margin-bottom: 3px;">អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ៥ យ៉ាងបរិបូរណ៍។</h3>
+            <p style="font-size: 8.5pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 5 HANDOUT (TOTAL 14 PAGES) ***</p>
+        </div>
+
+        <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
+            <div style="text-align: center; width: 220px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">បានឃើញ និងពិនិត្យត្រឹមត្រូវ</p>
+                <p style="font-size: 9.5pt; margin-top: 45px; font-family: var(--font-kh-body);">..........................................</p>
+                <p style="font-size: 10pt; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">ប្រធានដេប៉ាតឺម៉ង់</p>
+            </div>
+            <div style="text-align: center; width: 260px;">
+                <p style="font-size: 9.5pt; font-family: var(--font-kh-body);">ធ្វើនៅសៀមរាប, ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 10pt; margin-top: 45px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar">
+            <span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span>
+        </div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ១៤</div>
+    </div>
+</div>
+
+</body>
+</html>
