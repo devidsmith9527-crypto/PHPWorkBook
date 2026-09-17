@@ -8,7 +8,7 @@
 <body>
     <?php
         /**         
-            $score = 100;
+            $score = 100;#-5 0 60 100 101
             if ($score >= 0 && $score <= 100) {
                 echo "Valid score: $score";
             } else {
@@ -17,7 +17,7 @@
          */
         $userName = "admin";
         $password = "1234";
-        if ($userName == "admin" && $password == "1234") {
+        if ($userName == "admin" && $password == "12345") {
             echo "Login successful!";
         } else {
             echo "Try again.";

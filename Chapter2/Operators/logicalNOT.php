@@ -14,10 +14,10 @@
             } else {
                 //echo "Valid score: $score";
                 //Using NoT logical operator
-                if(!($score >= 50)){
-                    echo "You have failed the exam";
-                }else{
+                if(!($score < 50)){
                     echo "You have passed the exam";
+                }else{
+                    echo "You have failed the exam";
                 }
             }  
         */   

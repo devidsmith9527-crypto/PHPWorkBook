@@ -15,9 +15,9 @@
                 echo "Valid score: $score";
             }              
          */
-        $backII = "Yes";
-        $equilalent = "No";
-        if ($backII == "Yes" || $equilalent == "Yes") {
+        $backII = false;
+        $equilalent = false;
+        if ($backII == true || $equilalent == true) {
             echo "You are eligible for the scholarship";
         } else {
             echo "You are not eligible for the scholarship";
