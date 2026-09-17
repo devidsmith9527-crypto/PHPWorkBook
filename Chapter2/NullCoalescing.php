@@ -8,8 +8,9 @@
 <body>
     <?php 
         //http://localhost/Chapter2/NullCoalescing.php
-        //http://localhost/Chapter2/NullCoalescing.php?id=AU007
-        $variableId = $_GET['id'] ?? 'AU001';
+        //http://localhost/Chapter2/NullCoalescing.php?gender=Male
+        //$variableName = $value ?? DefaultValue;
+        $variableId = $_GET['gender'] ?? 'Female';
         echo "Hello, $variableId";
     ?>
 </body>
