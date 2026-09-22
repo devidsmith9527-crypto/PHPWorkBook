@@ -1,0 +1,2344 @@
+
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>មេរៀនទី ៩ ៖ គម្រោង CRUD ពេញលេញជាមួយ PDO & MySQL (PHP 8 Slides)</title>
+
+    <!-- Google Web Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --font-muol: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en: 'Inter', sans-serif;
+            --font-code: 'Fira Code', 'Consolas', monospace;
+
+            --primary: #4f46e5;
+            --primary-dark: #0f172a;
+            --secondary: #0078d4;
+            --accent: #7c3aed;
+            --accent-light: #eef2ff;
+            --gold: #b45309;
+            --emerald: #059669;
+            --danger: #dc2626;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
+
+            /* Code syntax colors */
+            --code-bg: #0f172a;
+            --code-kw: #c084fc;       /* Purple: prepare, execute, try, catch, if, foreach */
+            --code-tag: #38bdf8;      /* Light Blue: PDO, PDOException, htmlspecialchars */
+            --code-str: #fde047;      /* Yellow/Amber: SQL strings, URLs */
+            --code-num: #4ade80;      /* Emerald Green: numbers, ports */
+            --code-fn: #60a5fa;       /* Blue: methods, fetch, fetchAll */
+            --code-cm: #94a3b8;       /* Muted Gray: comments */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #020617;
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        /* Auto-hiding Bottom Control Bar */
+        .controls-trigger-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55px;
+            z-index: 999;
+            user-select: none;
+        }
+
+        .controls-bar {
+            position: fixed;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%) translateY(130%);
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(14px);
+            padding: 10px 24px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.65);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+            opacity: 0;
+            user-select: none;
+        }
+
+        .controls-trigger-area:hover .controls-bar,
+        .controls-bar:hover,
+        .controls-bar.show-controls {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .ctrl-btn {
+            background: #1e293b;
+            color: #ffffff;
+            border: 1px solid #64748b;
+            padding: 7px 16px;
+            border-radius: 25px;
+            font-family: var(--font-body);
+            font-size: 10.5pt;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ctrl-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .slide-counter {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #818cf8;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        /* Slide Layout Container */
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #090d16;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            display: none;
+            flex-direction: column;
+            padding: 16px 44px 12px 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.25s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.99); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Slide Header */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
+            height: 56px;
+            flex-shrink: 0;
+        }
+
+        .header-title-group h2 {
+            font-family: var(--font-muol);
+            font-size: 13pt;
+            color: var(--primary);
+            font-weight: normal;
+            line-height: 1.3;
+        }
+
+        .header-title-group p {
+            font-size: 9.5pt;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .header-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: right;
+        }
+
+        .header-logo-img {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header-univ-text {
+            line-height: 1.25;
+        }
+
+        .header-univ-text .kh {
+            font-family: var(--font-muol);
+            font-size: 10pt;
+            color: var(--primary);
+            display: block;
+        }
+
+        .header-univ-text .en {
+            font-size: 7.5pt;
+            font-weight: bold;
+            color: #64748b;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        /* Objective Banners */
+        .objective-banner {
+            background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%);
+            border: 1px solid #bfdbfe;
+            border-left: 5px solid var(--primary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .objective-banner.purple-theme {
+            background: linear-gradient(90deg, #faf5ff 0%, #f8fafc 100%);
+            border: 1px solid #e9d5ff;
+            border-left: 5px solid var(--accent);
+        }
+
+        .objective-banner.emerald-theme {
+            background: linear-gradient(90deg, #f0fdf4 0%, #f8fafc 100%);
+            border: 1px solid #bbf7d0;
+            border-left: 5px solid var(--emerald);
+        }
+
+        .objective-banner.danger-theme {
+            background: linear-gradient(90deg, #fef2f2 0%, #f8fafc 100%);
+            border: 1px solid #fecaca;
+            border-left: 5px solid var(--danger);
+        }
+
+        .obj-badge {
+            font-family: var(--font-muol);
+            font-size: 9.5pt;
+            color: var(--primary);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .objective-banner.purple-theme .obj-badge { color: var(--accent); }
+        .objective-banner.emerald-theme .obj-badge { color: var(--emerald); }
+        .objective-banner.danger-theme .obj-badge { color: var(--danger); }
+
+        .obj-text {
+            font-size: 9.8pt;
+            color: #1e293b;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        /* Slide Content Area */
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        /* Slide Footer */
+        .slide-footer {
+            height: 24px;
+            border-top: 1.5px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8.8pt;
+            color: #64748b;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        /* Grids & Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+            align-items: stretch;
+            min-height: 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+            flex: 1;
+            align-items: stretch;
+            min-height: 0;
+        }
+
+        .card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+
+        .card.primary-accent {
+            border-left: 6px solid var(--primary);
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.05);
+        }
+
+        .card.emerald-accent {
+            border-left: 6px solid var(--emerald);
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.05);
+        }
+
+        .card.purple-accent {
+            border-left: 6px solid var(--accent);
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.05);
+        }
+
+        .card.danger-accent {
+            border-left: 6px solid var(--danger);
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.05);
+        }
+
+        .card.gold-accent {
+            border-left: 6px solid var(--gold);
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(180, 83, 9, 0.05);
+        }
+
+        .card-title {
+            font-family: var(--font-muol);
+            font-size: 10.5pt;
+            color: var(--primary);
+            margin-bottom: 6px;
+            font-weight: normal;
+            line-height: 1.35;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-title.emerald { color: var(--emerald); }
+        .card-title.purple { color: var(--accent); }
+        .card-title.gold { color: var(--gold); }
+        .card-title.danger { color: var(--danger); }
+
+        ul, ol {
+            padding-left: 18px;
+        }
+
+        li {
+            margin-bottom: 4px;
+            font-size: 9.8pt;
+            line-height: 1.45;
+            color: var(--text-dark);
+        }
+
+        p {
+            font-size: 9.8pt;
+            line-height: 1.45;
+            color: var(--text-dark);
+        }
+
+        /* Bloom Badges */
+        .pill {
+            display: inline-block;
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-size: 7.5pt;
+            font-weight: bold;
+            font-family: var(--font-en);
+            margin-right: 4px;
+        }
+        .pill-c1 { background: #e0f2fe; color: #0369a1; }
+        .pill-c2 { background: #fef3c7; color: #b45309; }
+        .pill-c3 { background: #dcfce7; color: #15803d; }
+        .pill-c4 { background: #f3e8ff; color: #6b21a8; }
+        .pill-c5 { background: #ffe4e6; color: #be123c; }
+        .pill-c6 { background: #e0e7ff; color: #3730a3; }
+
+        /* Tables */
+        table.slide-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9.5pt;
+        }
+        table.slide-table th {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 6px 8px;
+            text-align: left;
+            font-weight: bold;
+        }
+        table.slide-table td {
+            border-bottom: 1px solid #cbd5e1;
+            padding: 5px 8px;
+            vertical-align: middle;
+            line-height: 1.35;
+        }
+        table.slide-table tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        /* Syntax & Code Boxes */
+        .syntax-box {
+            background: #eef2ff;
+            border-left: 4px solid var(--primary);
+            font-family: var(--font-code);
+            font-size: 8.6pt;
+            padding: 5px 9px;
+            margin: 4px 0;
+            border-radius: 0 4px 4px 0;
+            color: #1e1b4b;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .code-box {
+            background: var(--code-bg);
+            color: #f8fafc;
+            padding: 7px 11px;
+            border-radius: 6px;
+            font-family: var(--font-code);
+            font-size: 8.2pt;
+            line-height: 1.4;
+            border: 1px solid #334155;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .code-box .kw { color: var(--code-kw); font-weight: bold; }
+        .code-box .tag { color: var(--code-tag); font-weight: bold; }
+        .code-box .str { color: var(--code-str); }
+        .code-box .num { color: var(--code-num); }
+        .code-box .fn { color: var(--code-fn); font-weight: bold; }
+        .code-box .cm { color: var(--code-cm); font-style: italic; }
+
+        .output-box {
+            background: #f1f5f9;
+            color: #0078d4;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 5px 9px;
+            font-family: var(--font-code);
+            font-size: 8pt;
+            line-height: 1.3;
+            white-space: pre-wrap;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .tech-pill {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            color: var(--primary);
+            padding: 3px 9px;
+            border-radius: 16px;
+            font-size: 8.2pt;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        @media print {
+            body { background: none; overflow: visible; }
+            .controls-trigger-area, .controls-bar { display: none !important; }
+            .slide { display: flex !important; page-break-after: always; width: 100vw; height: 100vh; }
+            @page { size: landscape; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hidden Trigger Area: Hover mouse near bottom to reveal controls -->
+<div class="controls-trigger-area">
+    <div class="controls-bar" id="controlsBar">
+        <button class="ctrl-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i> ថយក្រោយ (Previous)</button>
+        <div class="slide-counter" id="slideNumber">ស្លាយទី 1 / 32</div>
+        <button class="ctrl-btn" onclick="nextSlide()">បន្ទាប់ (Next) <i class="fa-solid fa-chevron-right"></i></button>
+        <button class="ctrl-btn" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i> ពេញអេក្រង់</button>
+        <button class="ctrl-btn" onclick="toggleControlsSticky()"><i class="fa-solid fa-thumbtack"></i> ទប់របារ</button>
+        <button class="ctrl-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពជា PDF</button>
+    </div>
+</div>
+
+<div class="slide-container">
+
+    <!-- ============================================================
+         SLIDE 1: COVER SLIDE
+         ============================================================ -->
+    <div class="slide active">
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 10px;">
+                <img src="Logo.png" alt="Angkor University Logo" style="height: 80px; width: auto;" onerror="this.outerHTML='<div style=\'height:70px;width:70px;border-radius:50%;background:#4f46e5;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:16pt;\'>AU</div>'">
+                <div style="text-align: left;">
+                    <h1 style="font-family: var(--font-muol); color: var(--primary); font-size: 19pt; line-height: 1.35;">សាកលវិទ្យាល័យអង្គរ</h1>
+                    <h2 style="font-size: 12pt; font-weight: bold; color: #475569; letter-spacing: 2px;">ANGKOR UNIVERSITY</h2>
+                </div>
+            </div>
+            
+            <p style="font-size: 11pt; color: #334155; margin-bottom: 2px;">មហាវិទ្យាល័យវិទ្យាសាស្ត្រ និងបច្ចេកវិទ្យា (Faculty of Science and Technology)</p>
+            <p style="font-size: 10pt; color: #64748b; margin-bottom: 12px;">ដេប៉ាតឺម៉ង់វិទ្យាសាស្ត្រកុំព្យូទ័រ និងព័ត៌មានវិទ្យា (Computer Science and Information Technology)</p>
+
+            <div style="border: 2px solid var(--primary); background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%); padding: 14px 34px; border-radius: 12px; width: 88%; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.08);">
+                <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 6px;">
+                    <span class="tech-pill"><i class="fa-solid fa-book-open"></i> មេរៀនទី ៩ (Lesson 9)</span>
+                    <span class="tech-pill"><i class="fa-solid fa-calendar-days"></i> សប្តាហ៍ទី ១០ &amp; ១១</span>
+                    <span class="tech-pill"><i class="fa-solid fa-graduation-cap"></i> បរិញ្ញាបត្រ CS / IT</span>
+                </div>
+                <h1 style="font-family: var(--font-muol); color: var(--primary); font-size: 17pt; margin-bottom: 4px; font-weight: normal;">គម្រោង CRUD ពេញលេញជាមួយ PDO &amp; MySQL</h1>
+                <h3 style="font-size: 11.5pt; color: #475569; font-weight: 700; letter-spacing: 1px;">COMPLETE WEB CRUD PROJECT WITH PHP &amp; MYSQL</h3>
+                <p style="font-size: 9.5pt; color: var(--accent); margin-top: 4px; font-weight: 600;">
+                    Part 1 (Week 10): Create &amp; Read • Part 2 (Week 11): Update &amp; Delete • Dual Entities: `tbl_products` &amp; `tbl_students`
+                </p>
+            </div>
+
+            <div style="margin-top: 12px; line-height: 1.45; font-size: 10.5pt; display: flex; align-items: center; gap: 14px;">
+                <img src="Lim.jpg" onerror="this.style.display='none'" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover;">
+                <div style="text-align: left;">
+                    <p><b>សាស្ត្រាចារ្យបង្រៀន ៖</b> <span style="font-family: var(--font-muol); color: var(--primary);">សឿង លីម</span> (Lecturer: Soeurng LIM)</p>
+                    <p style="color: #475569; font-size: 9.5pt;">អនុបណ្ឌិតវិទ្យាសាស្ត្រព័ត៌មានវិទ្យា (M.Sc. in Information Technology)</p>
+                    <p style="color: #64748b; font-weight: bold; font-size: 9.5pt;">ឆ្នាំសិក្សា ២០២៥ - ២០២៦ (Academic Year 2025 - 2026)</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Web App Development with PHP & MySQL</span>
+            <span>សាកលវិទ្យាល័យអង្គរ (Angkor University)</span>
+            <span>ស្លាយទី ១ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 2: LESSON LEARNING OUTCOMES (LLOs)
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLOs)</h2>
+                <p>Curriculum Competencies Aligned with Bloom's Taxonomy</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 14%;">កូដ LLO</th>
+                        <th style="width: 68%;">ការពិពណ៌នាលទ្ធផលសិក្សារំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes)</th>
+                        <th style="width: 18%;">កម្រិត Bloom's</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">LLO 9.1</td>
+                        <td><b>វិភាគយន្តការនៃការវាយប្រហារ SQL Injection</b> ដោយពន្យល់ពីរបៀបដែល PDO Prepared Statements បំបែក Data ចេញពី SQL Skeleton ដើម្បីការពារសុវត្ថិភាព។</td>
+                        <td><span class="pill pill-c1">C1: ចងចាំ</span> <span class="pill pill-c4">C4: វិភាគ</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">LLO 9.2</td>
+                        <td><b>អនុវត្តប្រតិបត្តិការ Read (SELECT)</b> តាមរយៈ <code>fetchAll(PDO::FETCH_ASSOC)</code> និងការពារ Stored XSS ដោយប្រើ <code>htmlspecialchars()</code>។</td>
+                        <td><span class="pill pill-c2">C2: យល់</span> <span class="pill pill-c3">C3: អនុវត្ត</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">LLO 9.3</td>
+                        <td><b>បង្កើតប្រតិបត្តិការ Create (INSERT)</b> តាមរយៈ HTML Form, Server-Side Validation, ពិនិត្យទិន្នន័យស្ទួន និងអនុវត្ត <b>PRG Pattern (Post-Redirect-Get)</b>។</td>
+                        <td><span class="pill pill-c3">C3: អនុវត្ត</span> <span class="pill pill-c6">C6: បង្កើត</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">LLO 9.4</td>
+                        <td><b>អភិវឌ្ឍប្រតិបត្តិការ Update (UPDATE)</b> ដោយចាប់យក ID តាម URL (<code>$_GET['id']</code>) ទាញទិន្នន័យចាស់មក Pre-fill និងធ្វើបច្ចុប្បន្នភាពទិន្នន័យ។</td>
+                        <td><span class="pill pill-c3">C3: អនុវត្ត</span> <span class="pill pill-c4">C4: វិភាគ</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">LLO 9.5</td>
+                        <td><b>រៀបចំប្រតិបត្តិការ Delete (DELETE)</b> តាមរយៈ ID ដោយភ្ជាប់ជាមួយ JavaScript <code>confirm()</code> Alert ដើម្បីទប់ស្កាត់ការច្រឡំលុបទិន្នន័យ។</td>
+                        <td><span class="pill pill-c3">C3: អនុវត្ត</span> <span class="pill pill-c5">C5: វាយតម្លៃ</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Lesson Learning Outcomes (LLOs)</span>
+            <span>ស្លាយទី ២ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 3: LESSON OUTLINE / TABLE OF CONTENTS
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>២. មាតិកានៃមេរៀនស្របតាម Syllabus (Syllabus Structure 1:1 Mapping)</h2>
+                <p>Structured Roadmap for Two Consecutive Teaching Weeks (Weeks 10 & 11)</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-calendar-check"></i> សប្តាហ៍ទី ១០ ៖ Create &amp; Read (Part 1)</h3>
+                    <ul>
+                        <li><b>៩.១ សុវត្ថិភាពទិន្នន័យ &amp; SQL Injection ៖</b>
+                            <br>• ៩.១.១ ការវាយប្រហារ SQL Injection (Theory &amp; Flaws)
+                            <br>• ៩.១.២ ដំណោះស្រាយ៖ PDO Prepared Statements
+                        </li>
+                        <li><b>៩.២ ប្រតិបត្តិការ Create &amp; Read ៖</b>
+                            <br>• ៩.២.១ Read (SELECT) &amp; XSS Defense (<code>htmlspecialchars</code>)
+                            <br>• ៩.២.២ Create (INSERT), Form Validation &amp; <b>PRG Pattern</b>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card purple-accent">
+                    <h3 class="card-title purple"><i class="fa-solid fa-calendar-check"></i> សប្តាហ៍ទី ១១ ៖ Update &amp; Delete (Part 2)</h3>
+                    <ul>
+                        <li><b>៩.៣ ប្រតិបត្តិការ Update &amp; URL Query String ៖</b>
+                            <br>• ៩.៣.១ ការចាប់យក ID តាម URL Query (<code>$_GET['id']</code>)
+                            <br>• ៩.៣.២ ការទាញទិន្នន័យចាស់មក Pre-fill &amp; UPDATE Operation
+                        </li>
+                        <li><b>៩.៤ ប្រតិបត្តិការ Delete &amp; User Confirmation ៖</b>
+                            <br>• ៩.៤.១ ការលុបទិន្នន័យតាម ID (DELETE Operation)
+                            <br>• ៩.៤.២ JavaScript <code>confirm()</code> &amp; Flash Feedback Messages
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Lesson Outline</span>
+            <span>ស្លាយទី ៣ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 4: 9.1.1 WHAT IS SQL INJECTION?
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩.១.១ ការវាយប្រហារ SQL Injection (Concatenation Vulnerability)</h2>
+                <p>Security Vulnerabilities: Direct String Concatenation and OWASP Top 10 Threats</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="objective-banner danger-theme">
+                <span class="obj-badge">⚠️ និយមន័យ ៖</span>
+                <span class="obj-text"><b>SQL Injection (SQLi)</b> កើតឡើងនៅពេល Developer យកទិន្នន័យពី User (<code>$_POST</code>, <code>$_GET</code>) ទៅតភ្ជាប់ String ផ្ទាល់ (<code>.</code>) ជាមួយ SQL Command ដោយពុំបានបន្សាប ឬ Filter។</span>
+            </div>
+            <div class="grid-2">
+                <div class="card danger-accent">
+                    <h3 class="card-title danger"><span class="pill pill-c4">C4</span> កាយវិភាគវិទ្យានៃ Payload ព្យាបាទ</h3>
+                    <ul>
+                        <li><b>Single Quote (<code>'</code>) ៖</b> ប្រើសម្រាប់បំបែកចេញពីតម្លៃ String ដើមក្នុងសំណួរ SQL ដើម្បីចាប់ផ្តើមបញ្ជាកូដថ្មី។</li>
+                        <li><b>Tautology (<code>OR '1'='1'</code>) ៖</b> បង្កើតលក្ខខណ្ឌដែលតែងតែពិត (Always True) ធ្វើឱ្យសំណួរទាញយកគ្រប់ទិន្នន័យ។</li>
+                        <li><b>SQL Comment (<code>-- </code> ឬ <code>#</code>) ៖</b> លុបចោលលក្ខខណ្ឌផ្ទៀងផ្ទាត់ខាងក្រោយ (ដូចជា Password Check)។</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="card-title danger"><i class="fa-solid fa-skull-crossbones"></i> កូដគ្រោះថ្នាក់ (Vulnerable Anti-Pattern)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="cm">// DANGEROUS: Direct String Concatenation!</span>
+<span class="kw">$userInput</span> = <span class="str">"P-101' OR '1'='1"</span>;
+<span class="kw">$sql</span> = <span class="str">"SELECT * FROM tbl_products WHERE pcode = '"</span> . <span class="kw">$userInput</span> . <span class="str">"'"</span>;
+
+<span class="cm">// SQL ក្លាយជា៖ SELECT * FROM tbl_products WHERE pcode = 'P-101' OR '1'='1'</span>
+<span class="kw">$stmt</span> = <span class="kw">$pdo</span>-&gt;<span class="fn">query</span>(<span class="kw">$sql</span>); <span class="cm">// ទិន្នន័យទាំងអស់ត្រូវលេចធ្លាយ!</span>
+<span class="tag">?&gt;</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>9.1.1 • SQL Injection Anatomy</span>
+            <span>ស្លាយទី ៤ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 5: 9.1.1 IMPACT MATRIX OF SQL INJECTION
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>តារាងប្រៀបធៀបផលប៉ះពាល់នៃការវាយប្រហារ SQL Injection</h2>
+                <p>Attack Vectors, Technical Mechanisms, and Business System Impacts</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">ទម្រង់វាយប្រហារ (Attack Type)</th>
+                        <th style="width: 35%;">យន្តការបច្ចេកទេស (Mechanism)</th>
+                        <th style="width: 40%;">ផលវិបាកលើប្រព័ន្ធ (System Impact)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--danger);">Authentication Bypass</td>
+                        <td>បញ្ចូល <code>admin' -- </code> ក្នុងប្រអប់ Username</td>
+                        <td>Login ចូលគណនី Admin ដោយមិនបាច់ស្គាល់ Password។</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--danger);">Data Exfiltration</td>
+                        <td>ប្រើប្រាស់ <code>UNION SELECT</code> Command</td>
+                        <td>លួចទាញយកទិន្នន័យសម្ងាត់ពីគ្រប់តារាងក្នុង Database ទាំងមូល។</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--danger);">Data Destruction</td>
+                        <td>បញ្ចូល Stacked Queries (<code>; DROP TABLE...</code>)</td>
+                        <td>លុបបំបាត់រចនាសម្ព័ន្ធតារាង និងទិន្នន័យអាជីវកម្មជាស្ថាពរ។</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="card gold-accent" style="margin-top: 6px;">
+                <p style="font-size: 9.8pt;">
+                    <b>💡 ការសន្និដ្ឋាន ៖</b> ការវាយប្រហារ SQLi មិនត្រឹមតែបំផ្លាញទិន្នន័យប៉ុណ្ណោះទេ ថែមទាំងអាចផ្តល់សិទ្ធិឱ្យ Hacker បញ្ជា Server ទាំងមូលតាមរយៈ Database Administrative Functions ទៀតផង!
+                </p>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>SQL Injection Impact Matrix</span>
+            <span>ស្លាយទី ៥ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 6: 9.1.2 PREPARED STATEMENTS ARCHITECTURE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩.១.២ ដំណោះស្រាយ ៖ PDO Prepared Statements Architecture</h2>
+                <p>Two-Phase Execution Model: Compile Time Preparation vs Execution Time Binding</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="objective-banner emerald-theme">
+                <span class="obj-badge">🛡️ Prepared Statements ៖</span>
+                <span class="obj-text">បំបែកដាច់ស្រឡះរវាង <b>គ្រោងឆ្អឹងកូដ SQL (Query Skeleton)</b> និង <b>ទិន្នន័យរបស់ User (Data Value)</b> ជា ២ ដំណាក់កាល។</span>
+            </div>
+            <div class="grid-2">
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><span class="pill pill-c2">C2</span> យន្តការពីរកំណាត់ (2-Phase Model)</h3>
+                    <ol>
+                        <li><b>ដំណាក់កាល ១ (Prepare Phase) ៖</b> បញ្ជូនតែប្រយោគ SQL Skeleton ជាមួយ Placeholder (<code>:code</code>) ឱ្យ MySQL Pre-compile ជាមុន។</li>
+                        <li><b>ដំណាក់កាល ២ (Execute Phase) ៖</b> បញ្ជូន Data ទៅតាមក្រោយ។ Database នឹងចាត់ទុក Data ជា <b>Literal String ធម្មតា</b> មិនយកមក Compile ជាកូដបញ្ជា SQL ឡើយ!</li>
+                    </ol>
+                </div>
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-shield-halved"></i> ឧទាហរណ៍កូដការពារសុវត្ថិភាព</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="cm">// ១. Prepare: Compile គ្រោងឆ្អឹង SQL ទុកជាមុន</span>
+<span class="kw">$stmt</span> = <span class="kw">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"SELECT * FROM tbl_products WHERE pcode = :code"</span>);
+
+<span class="cm">// ២. Execute: បញ្ជូន Data Value ទៅចងភ្ជាប់</span>
+<span class="kw">$stmt</span>-&gt;<span class="fn">execute</span>([<span class="str">':code'</span> =&gt; <span class="kw">$userInput</span>]);
+<span class="kw">$product</span> = <span class="kw">$stmt</span>-&gt;<span class="fn">fetch</span>();
+<span class="tag">?&gt;</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>9.1.2 • Prepared Statements Architecture</span>
+            <span>ស្លាយទី ៦ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 7: 9.1.2 COMPARISON: DIRECT VS PREPARED
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>ការប្រៀបធៀប ៖ Direct Concatenation vs Prepared Statements</h2>
+                <p>Technical Comparison: Code/Data Separation, Immunity, and Performance</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">លក្ខណៈប្រៀបធៀប</th>
+                        <th style="width: 37%;">Direct Concatenation (កូដគ្រោះថ្នាក់)</th>
+                        <th style="width: 38%;">PDO Prepared Statements (កូដសុវត្ថិភាព)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>ការបំបែក Code &amp; Data</b></td>
+                        <td>ច្របូកច្របល់គ្នាជា String តែមួយ</td>
+                        <td><span style="color: var(--emerald); font-weight: bold;">✓ បំបែកដាច់ដោយឡែកជា ២ ដំណាក់កាល</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>សុវត្ថិភាពពី SQLi</b></td>
+                        <td>ងាយរងគ្រោះធ្ងន់ធ្ងរ (Vulnerable)</td>
+                        <td><span style="color: var(--emerald); font-weight: bold;">✓ ការពារបាន ១០០% (Fully Immune)</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>ប្រសិទ្ធភាពរត់ដដែលៗ</b></td>
+                        <td>Database ត្រូវ Compile ថ្មីរាល់ពេល</td>
+                        <td><span style="color: var(--primary); font-weight: bold;">✓ Compile ម្តង Execute បានច្រើនដង</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>ប្រភេទ Placeholder</b></td>
+                        <td>គ្មាន (ប្រើសញ្ញាភ្ជាប់ String <code>.</code>)</td>
+                        <td>គាំទ្រ Named (<code>:name</code>) និង Positional (<code>?</code>)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Direct Concatenation vs Prepared Statements</span>
+            <span>ស្លាយទី ៧ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 8: 9.2.1 READ OPERATION & STORED XSS DEFENSE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩.២.១ ប្រតិបត្តិការ Read (SELECT) និងការការពារ Stored XSS</h2>
+                <p>Data Fetching with fetchAll() and HTML Output Escaping with htmlspecialchars()</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><span class="pill pill-c2">C2</span> ការទាញយកទិន្នន័យ (Read Flow)</h3>
+                    <ul>
+                        <li>ប្រើប្រាស់ <code>fetchAll(PDO::FETCH_ASSOC)</code> ដើម្បីទាញយកទិន្នន័យជា 2D Associative Array។</li>
+                        <li>រត់រង្វិលជុំ <code>foreach ($results as $row)</code> ដើម្បីបញ្ចេញទិន្នន័យក្នុង HTML <code>&lt;tr&gt;...&lt;/tr&gt;</code>។</li>
+                    </ul>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><span class="pill pill-c3">C3</span> ការពារ Stored XSS Attack</h3>
+                    <p style="text-align: justify; margin-bottom: 6px;">
+                        បើទិន្នន័យក្នុង DB មានកូដ JS (ឧ. <code>&lt;script&gt;alert(1)&lt;/script&gt;</code>) ត្រូវប្រើ <code>htmlspecialchars()</code> ជានិច្ច ៖
+                    </p>
+                    <div class="syntax-box">&lt;td&gt;&lt;?= htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') ?&gt;&lt;/td&gt;</div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>9.2.1 • Read Operation & XSS Defense</span>
+            <span>ស្លាយទី ៨ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 9: 9.2.1 HTML ENTITY ENCODING TABLE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>តារាងបំប្លែងតួអក្សរពិសេសដោយ `htmlspecialchars()`</h2>
+                <p>Character Encoding Matrix: Neutralizing Malicious HTML/JS Injection Characters</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">តួអក្សរគ្រោះថ្នាក់ (Raw Character)</th>
+                        <th style="width: 35%;">បំប្លែងទៅជា HTML Entity</th>
+                        <th style="width: 40%;">របៀបដែល Browser បង្ហាញលើអេក្រង់</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>&lt;</code> (Less Than)</td><td><code>&amp;lt;</code></td><td>បង្ហាញជាសញ្ញាតូចជាង មិនមែនជា Tag បើក</td></tr>
+                    <tr><td><code>&gt;</code> (Greater Than)</td><td><code>&amp;gt;</code></td><td>បង្ហាញជាសញ្ញាធំជាង មិនមែនជា Tag បិទ</td></tr>
+                    <tr><td><code>&quot;</code> (Double Quote)</td><td><code>&amp;quot;</code></td><td>បង្ហាញជាសញ្ញាសម្រង់ទ្វេ មិនបែក Attribute</td></tr>
+                    <tr><td><code>&#39;</code> (Single Quote)</td><td><code>&amp;#039;</code> (ជាមួយ ENT_QUOTES)</td><td>បង្ហាញជាសញ្ញាសម្រង់ទោល ការពារ JS Injection</td></tr>
+                    <tr><td><code>&amp;</code> (Ampersand)</td><td><code>&amp;amp;</code></td><td>បង្ហាញជាសញ្ញា &amp; ធម្មតា</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>HTML Entity Encoding Table</span>
+            <span>ស្លាយទី ៩ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 10: 9.2.2 CREATE OPERATION PIPELINE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩.២.២ ដំណាក់កាលស្នូលនៃប្រតិបត្តិការ Create (INSERT)</h2>
+                <p>The 4-Stage Creation Pipeline: Request Checking, Validation, Insertion & PRG</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><span class="pill pill-c3">C3</span> ជំហានទី ១ &amp; ២ ៖ Verification &amp; Validation</h3>
+                    <ul>
+                        <li><b>Stage 1 ៖</b> ពិនិត្យ <code>$_SERVER['REQUEST_METHOD'] === 'POST'</code>។</li>
+                        <li><b>Stage 2 ៖</b> ធ្វើ Server-Side Validation ៖
+                            <br>• <code>trim()</code> កាត់ចន្លោះទំនេរ
+                            <br>• <code>empty()</code> ពិនិត្យភាពមិនទទេរ
+                            <br>• <code>filter_var()</code> ពិនិត្យប្រភេទ Email ឬ Float
+                            <br>• Query ពិនិត្យ Unique Constraint (កុំឱ្យស្ទួន)
+                        </li>
+                    </ul>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><span class="pill pill-c6">C6</span> ជំហានទី ៣ &amp; ៤ ៖ Insertion &amp; PRG</h3>
+                    <ul>
+                        <li><b>Stage 3 ៖</b> INSERT តាមរយៈ PDO Prepared Statement ៖
+                            <div class="syntax-box">$ins = $pdo->prepare("INSERT INTO table (col) VALUES (:v)");
+$ins->execute([':v' => $val]);</div>
+                        </li>
+                        <li><b>Stage 4 ៖</b> បញ្ជូន HTTP 302 Redirect តាម <b>PRG Pattern</b> ៖
+                            <div class="syntax-box">header("Location: index.php?msg=inserted");
+exit;</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>9.2.2 • Create Operation Pipeline</span>
+            <span>ស្លាយទី ១០ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 11: 9.2.2 THE PRG PATTERN RATIONALE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>ស្ថាបត្យកម្ម PRG Pattern (Post-Redirect-Get Pattern)</h2>
+                <p>Preventing Duplicate Form Submissions and Browser Resubmission Warnings</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="objective-banner purple-theme">
+                <span class="obj-badge">🎯 គោលបំណង PRG ៖</span>
+                <span class="obj-text">ការពារកុំឱ្យ Browser បង្ហាញផ្ទាំង <b>"Confirm Form Resubmission"</b> និងការពារការបញ្ចូលទិន្នន័យស្ទួនពេល User ចុច <b>Refresh (F5)</b> ឬ <b>Back</b>។</span>
+            </div>
+            <table class="slide-table" style="margin-top: 6px;">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">លក្ខណៈលំហូរ (Flow)</th>
+                        <th style="width: 37%;">Regular POST (គ្មាន PRG)</th>
+                        <th style="width: 38%;">PRG Pattern (ស្តង់ដារវិជ្ជាជីវៈ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>លទ្ធផលក្រោយ Insert</b></td>
+                        <td>Render HTML ក្នុង POST Request ដដែល</td>
+                        <td><span style="color: var(--emerald); font-weight: bold;">✓ បញ្ជូន HTTP 302 Redirect ទៅកាន់ GET URL ថ្មី</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>ពេល User ចុច F5</b></td>
+                        <td>លោត Warning និង Resubmit បញ្ចូលទិន្នន័យស្ទួន!</td>
+                        <td><span style="color: var(--emerald); font-weight: bold;">✓ Reload ត្រឹម GET Request គ្មានការស្ទួនឡើយ</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>ការ Bookmark URL</b></td>
+                        <td>មិនអាច Bookmark បានព្រោះជា POST State</td>
+                        <td><span style="color: var(--primary); font-weight: bold;">✓ អាច Bookmark និងចែករំលែក URL ស្អាត</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>PRG Pattern Architecture</span>
+            <span>ស្លាយទី ១១ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 12: 9.3.1 UPDATE ARCHITECTURE & URL QUERY
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩.៣.១ &amp; ៩.៣.២ ប្រតិបត្តិការ Update &amp; URL Query String</h2>
+                <p>The Two-Phase Update Workflow: Pre-filling Existing Data and Safe Update Execution</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><span class="pill pill-c3">C3</span> Phase 1 ៖ GET Request &amp; Pre-filling</h3>
+                    <ol>
+                        <li>ចាប់យក ID ពី URL ៖ <code>$id = filter_var($_GET['id'], FILTER_VALIDATE_INT);</code></li>
+                        <li>Query ទាញទិន្នន័យចាស់ ៖ <code>SELECT * FROM table WHERE id = :id</code></li>
+                        <li>Pre-fill ចូល Form Input តាមរយៈ <code>value="&lt;?= htmlspecialchars($row['col']) ?&gt;"</code></li>
+                    </ol>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><span class="pill pill-c4">C4</span> Phase 2 ៖ POST Request &amp; UPDATE</h3>
+                    <ol>
+                        <li>ទទួលទិន្នន័យកែប្រែថ្មីតាមរយៈ <code>$_POST</code></li>
+                        <li>ធ្វើ Server-Side Validation ភាពត្រឹមត្រូវ</li>
+                        <li>Execute ប្រយោគ SQL ៖
+                            <div class="syntax-box">UPDATE table SET col1 = :c1, col2 = :c2 WHERE id = :id</div>
+                        </li>
+                        <li>Redirect ត្រឡប់ទៅ <code>index.php?msg=updated</code></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>9.3.1 • Update Operation Architecture</span>
+            <span>ស្លាយទី ១២ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 13: 9.3.1 URL PARAMETER TAMPERING DEFENSE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>ការទប់ស្កាត់ការក្លែងបន្លំ URL Parameter (Tampering Defense)</h2>
+                <p>Handling Missing IDs, Non-Integer Injections, and Non-Existent Records</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">សេណារីយ៉ូ (Scenario)</th>
+                        <th style="width: 35%;">ស្ថានភាពប៉ារ៉ាម៉ែត្រ URL</th>
+                        <th style="width: 40%;">វិធានការដោះស្រាយក្នុងកូដ PHP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Missing ID Parameter</b></td>
+                        <td>User ចូល <code>edit.php</code> (គ្មាន ?id=)</td>
+                        <td>ពិនិត្យ <code>empty($_GET['id'])</code> រួច Redirect ទៅ <code>index.php</code></td>
+                    </tr>
+                    <tr>
+                        <td><b>Non-Integer Attack</b></td>
+                        <td>Hacker បញ្ចូល <code>edit.php?id=abc' OR '1'='1</code></td>
+                        <td><code>filter_var($id, FILTER_VALIDATE_INT)</code> នឹង Return False បញ្ឈប់កូដ</td>
+                    </tr>
+                    <tr>
+                        <td><b>Non-Existent Record</b></td>
+                        <td>User វាយ ID គ្មានក្នុង DB (<code>?id=999999</code>)</td>
+                        <td>ពិនិត្យ <code>if(!$record)</code> រួច Redirect ឬបង្ហាញ Error</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>URL Tampering Defense Matrix</span>
+            <span>ស្លាយទី ១៣ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 14: 9.4.1 DELETE OPERATION & CONFIRMATION
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩.៤.១ &amp; ៩.៤.២ ប្រតិបត្តិការ Delete &amp; User Confirmation</h2>
+                <p>Permanent Deletion Risks and Client-Side Confirmation Handlers</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card danger-accent">
+                    <h3 class="card-title danger"><span class="pill pill-c5">C5</span> ហានិភ័យ និងការការពារ</h3>
+                    <ul>
+                        <li>ប្រតិបត្តិការ <b>DELETE</b> ធ្វើឱ្យបាត់បង់ទិន្នន័យជាអចិន្ត្រៃយ៍ (Permanent Data Loss)។</li>
+                        <li>ការចុចច្រឡំ (Accidental Click) អាចបំផ្លាញទិន្នន័យអាជីវកម្មធ្ងន់ធ្ងរ។</li>
+                        <li><b>ដំណោះស្រាយ ៖</b> ភ្ជាប់ JavaScript <code>confirm()</code> Alert នៅលើប៊ូតុងលុប។</li>
+                    </ul>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-code"></i> ទម្រង់កូដ Delete Link</h3>
+                    <div class="syntax-box">&lt;a href="delete.php?id=&lt;?= $row['id'] ?&gt;" 
+   onclick="return confirm('តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?');"&gt;
+   លុប
+&lt;/a&gt;</div>
+                    <ul style="font-size: 9.2pt; margin-top: 6px;">
+                        <li>ចុច <b>Cancel</b> ៖ JS Return <code>false</code> បញ្ឈប់ Request។</li>
+                        <li>ចុច <b>OK</b> ៖ JS Return <code>true</code> អនុញ្ញាតឱ្យបើក Link លុប។</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>9.4.1 • Delete Operation & Confirmation</span>
+            <span>ស្លាយទី ១៤ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 15: 9.4.1 HARD DELETE VS SOFT DELETE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>ការប្រៀបធៀប ៖ Hard Delete vs Soft Delete Pattern</h2>
+                <p>Physical Destruction vs Logical Archiving in Enterprise Applications</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">លក្ខណៈប្រៀបធៀប</th>
+                        <th style="width: 37%;">Hard Delete (រូបវន្ត - មេរៀននេះ)</th>
+                        <th style="width: 38%;">Soft Delete (តក្កវិជ្ជា - Enterprise)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>ប្រយោគ SQL</b></td>
+                        <td><code>DELETE FROM table WHERE id = :id</code></td>
+                        <td><code>UPDATE table SET is_deleted = 1 WHERE id = :id</code></td>
+                    </tr>
+                    <tr>
+                        <td><b>ស្ថានភាពទិន្នន័យ</b></td>
+                        <td>បាត់បង់ទាំងស្រុងពី Database Row</td>
+                        <td>នៅតែមានក្នុង DB គ្រាន់តែលាក់មិនឱ្យបង្ហាញ</td>
+                    </tr>
+                    <tr>
+                        <td><b>លទ្ធភាព Restore</b></td>
+                        <td>មិនអាចយកមកវិញបានឡើយ (No Recovery)</td>
+                        <td><span style="color: var(--emerald); font-weight: bold;">✓ អាច Restore ទិន្នន័យមកវិញបាន ១០០%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Hard Delete vs Soft Delete</span>
+            <span>ស្លាយទី ១៥ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 16: GLOSSARY OF KEY TERMS
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Glossary Table)</h2>
+                <p>Core Technical Terminology and Professional Definitions in Lesson 9</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                        <th style="width: 28%;">ឈ្មោះពេញ / ប្រភពពាក្យ</th>
+                        <th style="width: 38%;">ការពន្យល់ន័យជាភាសាខ្មែរ</th>
+                        <th style="width: 12%; text-align: center;">Bloom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>CRUD</b></td>
+                        <td>Create, Read, Update, Delete</td>
+                        <td>ប្រតិបត្តិការគោលទាំង ៤ ក្នុងការគ្រប់គ្រងទិន្នន័យ Web App។</td>
+                        <td style="text-align: center;"><span class="pill pill-c1">C1</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>SQL Injection</b></td>
+                        <td>SQL Query Injection Flaw</td>
+                        <td>ការវាយប្រហារបន្លំកូដ SQL តាមរយៈ User Input ដែលមិនបាន Filter។</td>
+                        <td style="text-align: center;"><span class="pill pill-c4">C4</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Prepared Statement</b></td>
+                        <td>Parameterized Query</td>
+                        <td>យន្តការបំបែករចនាសម្ព័ន្ធ SQL ចេញពីទិន្នន័យការពារ SQLi ១០០%។</td>
+                        <td style="text-align: center;"><span class="pill pill-c2">C2</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>PRG Pattern</b></td>
+                        <td>Post-Redirect-Get Pattern</td>
+                        <td>ទម្រង់ការពារការ Resubmit Form ស្ទួនពេល User ចុច Refresh (F5)។</td>
+                        <td style="text-align: center;"><span class="pill pill-c4">C4</span></td>
+                    </tr>
+                    <tr>
+                        <td><b><code>htmlspecialchars()</code></b></td>
+                        <td>HTML Entity Encoder</td>
+                        <td>បន្សាបតួអក្សរពិសេស (<code>&lt;, &gt;, &quot;</code>) ការពារ Stored XSS Attack។</td>
+                        <td style="text-align: center;"><span class="pill pill-c3">C3</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Glossary of Key Terms</span>
+            <span>ស្លាយទី ១៦ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 17: LESSON SUMMARY
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៥. សង្ខេបមេរៀនទី ៩ (Comprehensive Lesson Summary)</h2>
+                <p>Synthesis of Prepared Statements, Validation, PRG Pattern, and Full CRUD Architecture</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title">១. សុវត្ថិភាពទិន្នន័យដាច់ខាត (Data Security)</h3>
+                    <p style="text-align: justify; margin-bottom: 8px;">
+                        ហាមដាច់ខាតមិនឱ្យយក User Input ទៅតភ្ជាប់ String ផ្ទាល់ក្នុង SQL។ ត្រូវតែប្រើ <b>PDO Prepared Statements</b> (<code>prepare()</code> និង <code>execute()</code>) ជានិច្ច ដើម្បីការពារ SQL Injection ១០០%។
+                    </p>
+                    <h3 class="card-title" style="margin-top: 8px;">២. Create &amp; Read Operations (Week 10)</h3>
+                    <p style="text-align: justify;">
+                        បង្កើត Form បញ្ចូលទិន្នន័យដោយអនុវត្ត Server-Side Validation និងទាញទិន្នន័យមកបង្ហាញក្នុង Table ដោយប្រើ <code>htmlspecialchars()</code> ការពារ Cross-Site Scripting (XSS)។
+                    </p>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald">៣. Update &amp; Delete Operations (Week 11)</h3>
+                    <p style="text-align: justify; margin-bottom: 8px;">
+                        ចាប់យក ID តាម URL (<code>$_GET['id']</code>) ទាញទិន្នន័យចាស់មក Pre-fill ក្នុង Form និងបង្កើតមុខងារលុបដោយភ្ជាប់ JavaScript <code>confirm()</code> ការពារការច្រឡំ។
+                    </p>
+                    <h3 class="card-title emerald" style="margin-top: 8px;">៤. ស្ថាបត្យកម្ម PRG Pattern (Post-Redirect-Get)</h3>
+                    <p style="text-align: justify;">
+                        ប្រើប្រាស់ <code>header("Location: ...")</code> និង <code>exit;</code> ក្រោយរាល់ប្រតិបត្តិការ C-U-D ដើម្បីកម្ចាត់ Duplicate Form Resubmission។
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Lesson 9 Summary</span>
+            <span>ស្លាយទី ១៧ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 18: REVIEW QUESTIONS - TRUE / FALSE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៦.ក. សំណួរ ខុស/ត្រូវ (True/False Questions - ១០ សំណួរ)</h2>
+                <p>Knowledge Verification: Ten Conceptual True/False Statements</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="card" style="padding: 10px 16px;">
+                <ol style="font-size: 9.8pt; line-height: 1.5;">
+                    <li>អក្សរ U និង D ក្នុងពាក្យ CRUD តំណាងឱ្យ Upload និង Download។ <span class="pill pill-c1">C1</span></li>
+                    <li>ការប្រើ PDO Prepared Statements អាចការពារការវាយប្រហារ SQL Injection បាន ១០០%។ <span class="pill pill-c4">C4</span></li>
+                    <li>Method <code>fetchAll()</code> ត្រូវបានប្រើប្រាស់សម្រាប់ប្រតិបត្តិការ Delete ទិន្នន័យ។ <span class="pill pill-c1">C1</span></li>
+                    <li>Named Placeholders ក្នុង PDO ត្រូវបានសម្គាល់ដោយសញ្ញាចុចពីរ (ឧ. <code>:name</code>)។ <span class="pill pill-c1">C1</span></li>
+                    <li><code>htmlspecialchars()</code> ត្រូវបានប្រើសម្រាប់ការពារការវាយប្រហារ XSS ពេលបង្ហាញទិន្នន័យលើ Browser។ <span class="pill pill-c3">C3</span></li>
+                    <li>ដើម្បីកែប្រែទិន្នន័យសិស្សម្នាក់ យើងត្រូវបញ្ជូន ID តាមរយៈ URL Query String ដូចជា <code>edit.php?id=1</code>។ <span class="pill pill-c2">C2</span></li>
+                    <li>ក្រោយពេលប្រើ <code>header("Location: ...")</code> មិនចាំបាច់សរសេរ <code>exit;</code> ឡើយ។ <span class="pill pill-c4">C4</span></li>
+                    <li>PRG Pattern ជួយការពារកុំឱ្យ Browser សួរសារ "Confirm Form Resubmission" ពេល Refresh។ <span class="pill pill-c4">C4</span></li>
+                    <li>ការប្រើ JavaScript <code>confirm()</code> មុនពេល Delete ជួយការពារការច្រឡំលុបទិន្នន័យដោយអចេតនា។ <span class="pill pill-c3">C3</span></li>
+                    <li>Validation នៅលើ Browser (HTML5) គឺគ្រប់គ្រាន់ហើយ មិនចាំបាច់ Validate ក្នុង PHP ទៀតទេ។ <span class="pill pill-c4">C4</span></li>
+                </ol>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Review Questions • True/False</span>
+            <span>ស្លាយទី ១៨ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 19: REVIEW QUESTIONS - MCQS PART 1
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ភាគ១: Q1-Q5)</h2>
+                <p>Multiple Choice Conceptual Questions: Questions 1 to 5</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <p><b>១. តើ SQL Statement ណាត្រូវគ្នានឹងអក្សរ "U" ក្នុង CRUD?</b> <span class="pill pill-c1">C1</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. SELECT</li>
+                        <li>B. UPDATE</li>
+                        <li>C. ALTER</li>
+                        <li>D. MODIFY</li>
+                    </ul>
+                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <p><b>២. តើ Method ណាបញ្ជាឱ្យ MySQL ដំណើរការ Prepared Query?</b> <span class="pill pill-c2">C2</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. $stmt-&gt;run()</li>
+                        <li>B. $stmt-&gt;execute()</li>
+                        <li>C. $stmt-&gt;save()</li>
+                        <li>D. $stmt-&gt;query()</li>
+                    </ul>
+                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <p><b>៣. តើអថេរណាប្រើសម្រាប់ចាប់យក id ពី URL edit.php?id=5?</b> <span class="pill pill-c2">C2</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. $_POST['id']</li>
+                        <li>B. $_GET['id']</li>
+                        <li>C. $_SESSION['id']</li>
+                        <li>D. $_REQUEST_URI</li>
+                    </ul>
+                </div>
+                <div class="card emerald-accent">
+                    <p><b>៤. តើ Method ណាប្រើទាញយកតែមួយ Record ក្នុងទំព័រ Edit?</b> <span class="pill pill-c2">C2</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. fetch()</li>
+                        <li>B. fetchAll()</li>
+                        <li>C. fetchColumn()</li>
+                        <li>D. getOne()</li>
+                    </ul>
+                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <p><b>៥. តើអនុគមន៍ណាការពារ Stored XSS ពេល Echo ក្នុង HTML?</b> <span class="pill pill-c3">C3</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. strip_tags()</li>
+                        <li>B. htmlspecialchars()</li>
+                        <li>C. urlencode()</li>
+                        <li>D. md5()</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Multiple Choice Questions • Part 1</span>
+            <span>ស្លាយទី ១៩ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 20: REVIEW QUESTIONS - MCQS PART 2
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - ភាគ២: Q6-Q10)</h2>
+                <p>Multiple Choice Conceptual Questions: Questions 6 to 10</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <p><b>៦. តើគោលបំណងចម្បងនៃ PRG Pattern គឺអ្វី?</b> <span class="pill pill-c4">C4</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. លុប Form ចោល</li>
+                        <li>B. ការពារការ Re-submit ទិន្នន័យស្ទួនពេល Refresh</li>
+                        <li>C. បង្កើនល្បឿន Server</li>
+                        <li>D. តុបតែងទំព័រ Web</li>
+                    </ul>
+                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <p><b>៧. តើកូដ PHP ណាប្រើសម្រាប់ Redirect ទៅ index.php?</b> <span class="pill pill-c2">C2</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. redirect("index.php")</li>
+                        <li>B. header("Location: index.php")</li>
+                        <li>C. move_to("index.php")</li>
+                        <li>D. goto("index.php")</li>
+                    </ul>
+                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <p><b>៨. តើព្រឹត្តិការណ៍ JS ណាប្រើបង្ហាញ Alert Confirm មុន Delete?</b> <span class="pill pill-c3">C3</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. onclick="return confirm('...')"</li>
+                        <li>B. ondelete="check()"</li>
+                        <li>C. onalert="verify()"</li>
+                        <li>D. onsubmit="stop()"</li>
+                    </ul>
+                </div>
+                <div class="card emerald-accent">
+                    <p><b>៩. តើកំហុស "Headers already sent" កើតដោយសារអ្វី?</b> <span class="pill pill-c4">C4</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. ភ្លេចបើក MySQL</li>
+                        <li>B. មាន output/echo មុនពេលហៅ header()</li>
+                        <li>C. ខុស Password DB</li>
+                        <li>D. មិនបានសរសេរ HTML</li>
+                    </ul>
+                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <p><b>១០. តើអនុគមន៍ណាផ្ទៀងផ្ទាត់ទម្រង់អ៊ីមែលឱ្យត្រឹមត្រូវ?</b> <span class="pill pill-c2">C2</span></p>
+                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                        <li>A. is_email()</li>
+                        <li>B. filter_var($e, FILTER_VALIDATE_EMAIL)</li>
+                        <li>C. check_email()</li>
+                        <li>D. validate_mail()</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Multiple Choice Questions • Part 2</span>
+            <span>ស្លាយទី ២០ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 21: REVIEW QUESTIONS - MATCHING
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ គូ)</h2>
+                <p>Matching Exercise: CRUD Methods, Placeholders, Functions, and Security Concepts</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table" style="font-size: 9.2pt;">
+                <thead>
+                    <tr>
+                        <th style="width: 45%;">ជួរ A (CRUD Concept / Syntax)</th>
+                        <th style="width: 55%;">ជួរ B (ការពិពណ៌នា / មុខងារ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>១. <code>prepare()</code></td><td>A. មុខងារបញ្ជូនអ្នកប្រើប្រាស់ទៅកាន់ទំព័រថ្មី (HTTP Redirect)</td></tr>
+                    <tr><td>២. <code>execute()</code></td><td>B. Method រៀបចំគ្រោង SQL ទុកឱ្យ MySQL Pre-compile ជាមុន</td></tr>
+                    <tr><td>៣. <code>fetchAll()</code></td><td>C. បញ្ជូន Parameters ចូលក្នុង Query និងដំណើរការវាលើ DB</td></tr>
+                    <tr><td>៤. <code>$_GET['id']</code></td><td>D. ទាញយកគ្រប់កំណត់ត្រាដែល Select បានមកទុកជា Array</td></tr>
+                    <tr><td>៥. <code>htmlspecialchars()</code></td><td>E. ចាប់យក ID ពី URL Query String សម្រាប់ Update ឬ Delete</td></tr>
+                    <tr><td>៦. <code>header("Location: ...")</code></td><td>F. បន្សាបកូដគ្រោះថ្នាក់ការពារ Cross-Site Scripting (XSS)</td></tr>
+                    <tr><td>៧. <code>PRG Pattern</code></td><td>G. បញ្ឈប់ដំណើរការ Script ភ្លាមៗការពារកូដខាងក្រោមពីការរត់</td></tr>
+                    <tr><td>៨. <code>exit;</code></td><td>H. ស្ថាបត្យកម្មការពារការ Resubmit ទិន្នន័យស្ទួនក្នុង Form</td></tr>
+                    <tr><td>៩. <code>SQL Injection</code></td><td>I. ការវាយប្រហារបន្លំកូដ SQL តាមរយៈទិន្នន័យ User Input</td></tr>
+                    <tr><td>១០. <code>confirm()</code></td><td>J. JavaScript Alert សួរបញ្ជាក់អ្នកប្រើមុនដំណើរការលុបទិន្នន័យ</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Review Questions • Matching Exercise</span>
+            <span>ស្លាយទី ២១ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 22: EXPLANATORY QUESTIONS - EASY & MEDIUM
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៦.ឃ. សំណួរបកស្រាយ (Explanatory: Easy &amp; Medium)</h2>
+                <p>Analytical and Conceptual Questions: Easy (Q9.1-Q9.3) and Medium (Q9.4-Q9.6)</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald">[កម្រិតស្រាល - Easy Level]</h3>
+                    <ul style="font-size: 9.8pt;">
+                        <li><b>Q9.1:</b> ពន្យល់ពីអត្ថន័យនៃអក្សរកាត់ទាំង ៤ នៃ CRUD (Create, Read, Update, Delete)។ <span class="pill pill-c1">C1</span></li>
+                        <li><b>Q9.2:</b> រៀបរាប់ពីភាពខុសគ្នារវាង Positional Placeholder (<code>?</code>) និង Named Placeholder (<code>:name</code>)។ <span class="pill pill-c2">C2</span></li>
+                        <li><b>Q9.3:</b> ហេតុអ្វីបានជាយើងត្រូវប្រើ <code>htmlspecialchars()</code> រាល់ពេល Render ទិន្នន័យពី DB លើ HTML? <span class="pill pill-c2">C2</span></li>
+                    </ul>
+                </div>
+                <div class="card gold-accent">
+                    <h3 class="card-title gold">[កម្រិតមធ្យម - Medium Level]</h3>
+                    <ul style="font-size: 9.8pt;">
+                        <li><b>Q9.4:</b> វិភាគពីយន្តការការពាររបស់ Prepared Statements ថាហេតុអ្វីបានជាវាទប់ស្កាត់ SQL Injection បាន? <span class="pill pill-c4">C4</span></li>
+                        <li><b>Q9.5:</b> ពន្យល់ពីលំហូរការងាររបស់ PRG (Post-Redirect-Get) Pattern និងបញ្ហាដែលវាជួយដោះស្រាយ។ <span class="pill pill-c4">C4</span></li>
+                        <li><b>Q9.6:</b> បកស្រាយពីរបៀបដែលទំព័រ <code>edit.php</code> ចាប់យក ID ពី URL ដើម្បីទាញទិន្នន័យចាស់មកបង្ហាញក្នុង Form។ <span class="pill pill-c3">C3</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Explanatory Questions • Easy &amp; Medium</span>
+            <span>ស្លាយទី ២២ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 23: EXPLANATORY QUESTIONS - HARD / ADVANCED
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៦.ឃ. សំណួរបកស្រាយ (Explanatory: Advanced / Hard)</h2>
+                <p>Advanced Architectural Evaluation: Headers Sent Errors, Memory Optimization & Deletion Safety</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="card primary-accent" style="flex: 1;">
+                <h3 class="card-title"><i class="fa-solid fa-brain"></i> [កម្រិតធ្ងន់ - Advanced Architecture Questions]</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 10pt;">
+                    <div>
+                        <p><b>Q9.7 ៖ ការវិភាគ និងដោះស្រាយកំហុស "Headers already sent"</b> <span class="pill pill-c5">C5</span></p>
+                        <p style="text-align: justify; color: #334155;">
+                            វិភាគមូលហេតុបច្ចេកទេស និងវិធីដោះស្រាយចំពោះ Error <i>"Cannot modify header information - headers already sent"</i> នៅពេលប្រើប្រាស់ <code>header("Location: ...")</code> ក្នុងស្គ្រីប PHP។
+                        </p>
+                    </div>
+                    <div>
+                        <p><b>Q9.8 ៖ ការប្រៀបធៀប Memory រវាង `fetchAll()` និង `fetch()`</b> <span class="pill pill-c5">C5</span></p>
+                        <p style="text-align: justify; color: #334155;">
+                            ធ្វើការប្រៀបធៀបប្រសិទ្ធភាពប្រើប្រាស់ Memory រវាង <code>fetchAll()</code> និង <code>fetch()</code> ក្នុងរង្វិលជុំ <code>while</code> នៅពេលទាញទិន្នន័យខ្នាតធំ (Large-Scale Dataset) ពី Database។
+                        </p>
+                    </div>
+                    <div>
+                        <p><b>Q9.9 ៖ ស្ថាបត្យកម្មលុបទិន្នន័យប្រកបដោយសុវត្ថិភាពខ្ពស់</b> <span class="pill pill-c6">C6</span></p>
+                        <p style="text-align: justify; color: #334155;">
+                            ហេតុអ្វីបានជាប្រតិបត្តិការ Delete ទាមទារឱ្យមាន JavaScript Confirmation? តើធ្វើដូចម្តេចដើម្បីរៀបចំរចនាសម្ព័ន្ធ Delete ដោយរួមបញ្ចូលការត្រួតពិនិត្យ CSRF Token និង Validation លើ Parameter ID?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Explanatory Questions • Advanced Level</span>
+            <span>ស្លាយទី ២៣ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 24: ANSWER KEYS: T/F, MCQ & MATCHING
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys)</h2>
+                <p>Verified Solutions for True/False, Multiple Choice, and Matching Questions</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-3">
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-check-double"></i> ចម្លើយ ខុស/ត្រូវ (T/F)</h3>
+                    <table class="slide-table" style="text-align: center;">
+                        <thead><tr><th>ល.រ</th><th>ចម្លើយ</th></tr></thead>
+                        <tbody>
+                            <tr><td>១</td><td><b>ខុស (False)</b></td></tr>
+                            <tr><td>២</td><td><b>ត្រូវ (True)</b></td></tr>
+                            <tr><td>៣</td><td><b>ខុស (False)</b></td></tr>
+                            <tr><td>៤</td><td><b>ត្រូវ (True)</b></td></tr>
+                            <tr><td>៥</td><td><b>ត្រូវ (True)</b></td></tr>
+                            <tr><td>៦</td><td><b>ត្រូវ (True)</b></td></tr>
+                            <tr><td>៧</td><td><b>ខុស (False)</b></td></tr>
+                            <tr><td>៨</td><td><b>ត្រូវ (True)</b></td></tr>
+                            <tr><td>៩</td><td><b>ត្រូវ (True)</b></td></tr>
+                            <tr><td>១០</td><td><b>ខុស (False)</b></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-list-check"></i> ចម្លើយ ពហុជ្រើសរើស (MCQ)</h3>
+                    <table class="slide-table" style="text-align: center;">
+                        <thead><tr><th>ល.រ</th><th>ចម្លើយ</th></tr></thead>
+                        <tbody>
+                            <tr><td>១</td><td><b>B (UPDATE)</b></td></tr>
+                            <tr><td>២</td><td><b>B ($stmt-&gt;execute())</b></td></tr>
+                            <tr><td>៣</td><td><b>B ($_GET['id'])</b></td></tr>
+                            <tr><td>៤</td><td><b>A (fetch())</b></td></tr>
+                            <tr><td>៥</td><td><b>B (htmlspecialchars)</b></td></tr>
+                            <tr><td>៦</td><td><b>B (ការពារ Resubmit)</b></td></tr>
+                            <tr><td>៧</td><td><b>B (header Location)</b></td></tr>
+                            <tr><td>៨</td><td><b>A (onclick confirm)</b></td></tr>
+                            <tr><td>៩</td><td><b>B (Output before header)</b></td></tr>
+                            <tr><td>១០</td><td><b>B (FILTER_VALIDATE_EMAIL)</b></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card gold-accent">
+                    <h3 class="card-title gold"><i class="fa-solid fa-shuffle"></i> ចម្លើយ ផ្គូផ្គង (Matching)</h3>
+                    <table class="slide-table" style="text-align: center;">
+                        <thead><tr><th>សំណួរ</th><th>ផ្គូផ្គង</th></tr></thead>
+                        <tbody>
+                            <tr><td>១</td><td><b>B</b> (prepare)</td></tr>
+                            <tr><td>២</td><td><b>C</b> (execute)</td></tr>
+                            <tr><td>៣</td><td><b>D</b> (fetchAll)</td></tr>
+                            <tr><td>៤</td><td><b>E</b> ($_GET['id'])</td></tr>
+                            <tr><td>៥</td><td><b>F</b> (htmlspecialchars)</td></tr>
+                            <tr><td>៦</td><td><b>A</b> (header Location)</td></tr>
+                            <tr><td>៧</td><td><b>H</b> (PRG Pattern)</td></tr>
+                            <tr><td>៨</td><td><b>G</b> (exit;)</td></tr>
+                            <tr><td>៩</td><td><b>I</b> (SQL Injection)</td></tr>
+                            <tr><td>១០</td><td><b>J</b> (confirm())</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Answer Keys: T/F, MCQ, and Matching</span>
+            <span>ស្លាយទី ២៤ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 25: EXPLANATORY SOLUTIONS (Q9.1 - Q9.5)
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Q9.1 ដល់ Q9.5)</h2>
+                <p>Detailed Conceptual Explanations: CRUD Meaning, Placeholders, XSS, and PRG Pattern</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald">• ចម្លើយ Q9.1, Q9.2 &amp; Q9.3</h3>
+                    <p style="font-size: 9.3pt; margin-bottom: 6px;">
+                        <b>• Q9.1 (CRUD Meaning) ៖</b> Create (INSERT), Read (SELECT), Update (UPDATE), និង Delete (DELETE)។
+                    </p>
+                    <p style="font-size: 9.3pt; margin-bottom: 6px;">
+                        <b>• Q9.2 (Placeholders) ៖</b> Positional (<code>?</code>) ផ្គូផ្គងតាមលំដាប់ Index។ Named (<code>:name</code>) ផ្គូផ្គងតាម Key នៃ Associative Array ដែលងាយស្រួលអាន និងមិនច្រឡំលំដាប់។
+                    </p>
+                    <p style="font-size: 9.3pt;">
+                        <b>• Q9.3 (`htmlspecialchars` Role) ៖</b> បំប្លែង <code>&lt;script&gt;</code> ទៅជា <code>&amp;lt;script&amp;gt;</code> ការពារកុំឱ្យ Browser Execute កូដ JavaScript ព្យាបាទ (Stored XSS)។
+                    </p>
+                </div>
+                <div class="card gold-accent">
+                    <h3 class="card-title gold">• ចម្លើយ Q9.4 &amp; Q9.5</h3>
+                    <p style="font-size: 9.3pt; margin-bottom: 6px;">
+                        <b>• Q9.4 (Prepared Statement Defense) ៖</b> បញ្ជូនរចនាសម្ព័ន្ធ SQL ទៅឱ្យ MySQL Compile ទុកជាមុន។ នៅពេល User Data បញ្ជូនតាមក្រោយ Database ចាត់ទុកវាជា <b>Literal Value សុទ្ធសាធ</b> មិនយកទៅ Parse ជាកូដឡើយ។
+                    </p>
+                    <p style="font-size: 9.3pt;">
+                        <b>• Q9.5 (PRG Workflow) ៖</b> បញ្ជូន User ចេញតាម HTTP 302 Redirect ទៅកាន់ទំព័រ GET ភ្លាមៗក្រោយ POST Insert/Update ជោគជ័យ កម្ចាត់បញ្ហា <b>Duplicate Form Submission</b> ពេល User ចុច Refresh (F5)។
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Explanatory Solutions • Part 1</span>
+            <span>ស្លាយទី ២៥ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 26: EXPLANATORY SOLUTIONS (Q9.6 - Q9.9)
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Q9.6 ដល់ Q9.9)</h2>
+                <p>Advanced Solutions: URL Update Passing, Headers Sent Debugging & Deletion Confirmation</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title">• ចម្លើយ Q9.6 &amp; Q9.7</h3>
+                    <p style="font-size: 9.3pt; margin-bottom: 8px;">
+                        <b>• Q9.6 (Update Pre-filling) ៖</b> ប្រើ <code>$_GET['id']</code> រត់ Query <code>SELECT * FROM tbl_students WHERE id = :id</code> រួចយកទិន្នន័យមក Pre-fill ក្នុង Form Input តាម <code>value="..."</code>។
+                    </p>
+                    <p style="font-size: 9.3pt;">
+                        <b>• Q9.7 (Headers Already Sent) ៖</b> កើតឡើងដោយសារមាន Output (echo, HTML, space) បញ្ជូនទៅ Browser មុនពេលហៅ <code>header()</code>។ ដំណោះស្រាយ៖ ផ្លាស់ប្តូរ Logic Redirect ទៅដាក់នៅផ្នែកខាងលើបង្អស់នៃឯកសារ។
+                    </p>
+                </div>
+                <div class="card purple-accent">
+                    <h3 class="card-title purple">• ចម្លើយ Q9.8 &amp; Q9.9</h3>
+                    <p style="font-size: 9.3pt; margin-bottom: 8px;">
+                        <b>• Q9.8 (Memory: fetchAll vs fetch) ៖</b> <code>fetchAll()</code> ផ្ទុកគ្រប់ Rows ក្នុង RAM ក្នុងពេលតែមួយ (ងាយ Out of Memory)។ <code>fetch()</code> ក្នុង <code>while</code> loop ទាញម្តងមួយ Row ប្រើ RAM តិចបំផុត។
+                    </p>
+                    <p style="font-size: 9.3pt;">
+                        <b>• Q9.9 (JS Confirmation) ៖</b> ការលុបធ្វើឱ្យបាត់បង់ទិន្នន័យជាអចិន្ត្រៃយ៍។ ការប្រើ <code>onclick="return confirm('...')"</code> ជួយឱ្យ User អាចចុច Cancel ដើម្បីបញ្ឈប់ Request មិនឱ្យច្រឡំលុបទិន្នន័យ។
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Explanatory Solutions • Part 2</span>
+            <span>ស្លាយទី ២៦ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 27: FULL CRUD PROJECT - DATABASE SETUP
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៨. គ្រោងមូលដ្ឋានទិន្នន័យគម្រោង (Database Setup: `schema.sql`)</h2>
+                <p>Database and Table Initialization for Student Directory Management System</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-database"></i> schema.sql (Database &amp; Table)</h3>
+                    <div class="code-box"><span class="cm">-- 1. បង្កើត Database db_university_app</span>
+<span class="kw">CREATE DATABASE IF NOT EXISTS</span> <span class="tag">db_university_app</span>
+<span class="kw">CHARACTER SET</span> utf8mb4 <span class="kw">COLLATE</span> utf8mb4_unicode_ci;
+<span class="kw">USE</span> <span class="tag">db_university_app</span>;
+
+<span class="cm">-- 2. បង្កើតតារាង Entity: tbl_students</span>
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> <span class="tag">tbl_students</span> (
+    <span class="var">id</span> <span class="tag">INT</span> <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="var">student_code</span> <span class="tag">VARCHAR(20)</span> <span class="kw">NOT NULL UNIQUE</span>,
+    <span class="var">fullname</span> <span class="tag">VARCHAR(100)</span> <span class="kw">NOT NULL</span>,
+    <span class="var">gender</span> <span class="tag">ENUM('ប្រុស', 'ស្រី')</span> <span class="kw">DEFAULT 'ប្រុស'</span>,
+    <span class="var">email</span> <span class="tag">VARCHAR(100)</span> <span class="kw">NOT NULL UNIQUE</span>,
+    <span class="var">phone</span> <span class="tag">VARCHAR(20)</span> <span class="kw">NULL</span>,
+    <span class="var">major</span> <span class="tag">VARCHAR(80)</span> <span class="kw">NOT NULL</span>,
+    <span class="var">created_at</span> <span class="tag">DATETIME DEFAULT CURRENT_TIMESTAMP</span>
+) <span class="kw">ENGINE</span>=InnoDB;</div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-table-list"></i> ទិន្នន័យគំរូសាកល្បង (Initial Seed Data)</h3>
+                    <div class="code-box"><span class="kw">INSERT INTO</span> <span class="tag">tbl_students</span> 
+(<span class="var">student_code</span>, <span class="var">fullname</span>, <span class="var">gender</span>, <span class="var">email</span>, <span class="var">phone</span>, <span class="var">major</span>) <span class="kw">VALUES</span>
+(<span class="str">'AU-2024-001'</span>, <span class="str">'សឿង លីម'</span>, <span class="str">'ប្រុស'</span>, <span class="str">'soeurng.lim@au.edu.kh'</span>, <span class="str">'012345678'</span>, <span class="str">'Computer Science'</span>),
+(<span class="str">'AU-2024-002'</span>, <span class="str">'ចាន់ ដារ៉ា'</span>, <span class="str">'ប្រុស'</span>, <span class="str">'dara.chan@gmail.com'</span>, <span class="str">'098765432'</span>, <span class="str">'Information Technology'</span>),
+(<span class="str">'AU-2024-003'</span>, <span class="str">'សុខ ស្រីនី'</span>, <span class="str">'ស្រី'</span>, <span class="str">'sreyny.sok@au.edu.kh'</span>, <span class="str">'088997766'</span>, <span class="str">'Software Engineering'</span>);</div>
+                    <div class="output-box">Database `db_university_app` & Table `tbl_students` ត្រូវបានបង្កើត និង Seed ទិន្នន័យជោគជ័យ!</div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Database Setup (schema.sql)</span>
+            <span>ស្លាយទី ២៧ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 28: FULL CRUD PROJECT - FILE 1 & 2 (db.php & index.php)
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩. គម្រោង CRUD ៖ `db.php` &amp; `index.php` (Read Display)</h2>
+                <p>Central Connection Module and Read UI View with XSS Escaping and Flash Alerts</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-plug"></i> db.php (Modular Connection)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">declare</span>(strict_types=<span class="num">1</span>);
+<span class="var">$dsn</span> = <span class="str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>;
+<span class="var">$options</span> = [
+    <span class="tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="tag">PDO</span>::ERRMODE_EXCEPTION,
+    <span class="tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="tag">PDO</span>::FETCH_ASSOC,
+    <span class="tag">PDO</span>::ATTR_EMULATE_PREPARES   =&gt; <span class="kw">false</span>,
+];
+<span class="kw">try</span> {
+    <span class="var">$pdo</span> = <span class="kw">new</span> <span class="tag">PDO</span>(<span class="var">$dsn</span>, <span class="str">"root"</span>, <span class="str">""</span>, <span class="var">$options</span>);
+} <span class="kw">catch</span> (<span class="tag">PDOException</span> <span class="var">$e</span>) {
+    <span class="fn">error_log</span>(<span class="var">$e</span>-&gt;<span class="fn">getMessage</span>());
+    <span class="fn">die</span>(<span class="str">"Database connection error."</span>);
+}
+<span class="tag">?&gt;</span></div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-table"></i> index.php (Read Operation)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">require_once</span> <span class="str">'db.php'</span>;
+<span class="var">$stmt</span> = <span class="var">$pdo</span>-&gt;<span class="fn">query</span>(<span class="str">"SELECT * FROM tbl_students ORDER BY id DESC"</span>);
+<span class="var">$students</span> = <span class="var">$stmt</span>-&gt;<span class="fn">fetchAll</span>();
+<span class="tag">?&gt;</span>
+&lt;table border="1"&gt;
+  &lt;tr&gt;&lt;th&gt;Code&lt;/th&gt;&lt;th&gt;ឈ្មោះ&lt;/th&gt;&lt;th&gt;អ៊ីមែល&lt;/th&gt;&lt;th&gt;សកម្មភាព&lt;/th&gt;&lt;/tr&gt;
+  <span class="tag">&lt;?php</span> <span class="kw">foreach</span> (<span class="var">$students</span> <span class="kw">as</span> <span class="var">$s</span>): <span class="tag">?&gt;</span>
+  &lt;tr&gt;
+    &lt;td&gt;<span class="tag">&lt;?=</span> <span class="fn">htmlspecialchars</span>(<span class="var">$s</span>[<span class="str">'student_code'</span>]) <span class="tag">?&gt;</span>&lt;/td&gt;
+    &lt;td&gt;<span class="tag">&lt;?=</span> <span class="fn">htmlspecialchars</span>(<span class="var">$s</span>[<span class="str">'fullname'</span>]) <span class="tag">?&gt;</span>&lt;/td&gt;
+    &lt;td&gt;<span class="tag">&lt;?=</span> <span class="fn">htmlspecialchars</span>(<span class="var">$s</span>[<span class="str">'email'</span>]) <span class="tag">?&gt;</span>&lt;/td&gt;
+    &lt;td&gt;
+      &lt;a href="edit.php?id=<span class="tag">&lt;?=</span> <span class="var">$s</span>[<span class="str">'id'</span>] <span class="tag">?&gt;</span>"&gt;កែប្រែ&lt;/a&gt;
+      &lt;a href="delete.php?id=<span class="tag">&lt;?=</span> <span class="var">$s</span>[<span class="str">'id'</span>] <span class="tag">?&gt;</span>" onclick="return confirm('លុប?');"&gt;លុប&lt;/a&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  <span class="tag">&lt;?php</span> <span class="kw">endforeach</span>; <span class="tag">?&gt;</span>
+&lt;/table&gt;</div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>db.php & index.php Implementation</span>
+            <span>ស្លាយទី ២៨ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 29: FULL CRUD PROJECT - FILE 3 (add.php)
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩. គម្រោង CRUD ៖ `add.php` (Create Operation &amp; PRG)</h2>
+                <p>Server-Side Validation, Duplicate Checking, Prepared INSERT and PRG Redirect</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-square-plus"></i> add.php (Processing Logic)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">require_once</span> <span class="str">'db.php'</span>;
+<span class="var">$errors</span> = [];
+<span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">'REQUEST_METHOD'</span>] === <span class="str">'POST'</span>) {
+    <span class="var">$code</span>  = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'student_code'</span>] ?? <span class="str">''</span>);
+    <span class="var">$name</span>  = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'fullname'</span>] ?? <span class="str">''</span>);
+    <span class="var">$email</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'email'</span>] ?? <span class="str">''</span>);
+
+    <span class="kw">if</span> (<span class="fn">empty</span>(<span class="var">$code</span>) || <span class="fn">empty</span>(<span class="var">$name</span>)) { <span class="var">$errors</span>[] = <span class="str">"សូមបំពេញគ្រប់ប្រអប់!"</span>; }
+    <span class="kw">if</span> (!<span class="fn">filter_var</span>(<span class="var">$email</span>, FILTER_VALIDATE_EMAIL)) { <span class="var">$errors</span>[] = <span class="str">"អ៊ីមែលមិនត្រឹមត្រូវ!"</span>; }
+
+    <span class="kw">if</span> (<span class="fn">empty</span>(<span class="var">$errors</span>)) {
+        <span class="var">$ins</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"INSERT INTO tbl_students (student_code, fullname, email, major) VALUES (:c, :n, :e, 'IT')"</span>);
+        <span class="var">$ins</span>-&gt;<span class="fn">execute</span>([<span class="str">':c'</span> =&gt; <span class="var">$code</span>, <span class="str">':n'</span> =&gt; <span class="var">$name</span>, <span class="str">':e'</span> =&gt; <span class="var">$email</span>]);
+        <span class="fn">header</span>(<span class="str">"Location: index.php?msg=inserted"</span>);
+        <span class="kw">exit</span>;
+    }
+}
+<span class="tag">?&gt;</span></div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-desktop"></i> Form UI &amp; Error Handling</h3>
+                    <div class="code-box">&lt;form method="POST"&gt;
+  <span class="tag">&lt;?php</span> <span class="kw">foreach</span> (<span class="var">$errors</span> <span class="kw">as</span> <span class="var">$e</span>): <span class="tag">?&gt;</span>
+    &lt;p style="color:red;"&gt;<span class="tag">&lt;?=</span> <span class="var">$e</span> <span class="tag">?&gt;</span>&lt;/p&gt;
+  <span class="tag">&lt;?php</span> <span class="kw">endforeach</span>; <span class="tag">?&gt;</span>
+  កូដ៖ &lt;input type="text" name="student_code" required&gt;&lt;br&gt;&lt;br&gt;
+  ឈ្មោះ៖ &lt;input type="text" name="fullname" required&gt;&lt;br&gt;&lt;br&gt;
+  អ៊ីមែល៖ &lt;input type="email" name="email" required&gt;&lt;br&gt;&lt;br&gt;
+  &lt;button type="submit"&gt;+ រក្សាទុកនិស្សិត (POST)&lt;/button&gt;
+&lt;/form&gt;</div>
+                    <div class="output-box">Validation Passed -> INSERT Executed -> HTTP 302 Redirect -> index.php (PRG Pattern Verified)</div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>add.php Implementation</span>
+            <span>ស្លាយទី ២៩ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 30: FULL CRUD PROJECT - FILE 4 & 5 (edit.php & delete.php)
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩. គម្រោង CRUD ៖ `edit.php` &amp; `delete.php` (Update &amp; Delete)</h2>
+                <p>Complete Update and Delete Operations via URL Query Strings and Prepared Statements</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-pen-to-square"></i> edit.php (Update Operation)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">require_once</span> <span class="str">'db.php'</span>;
+<span class="var">$id</span> = <span class="fn">filter_var</span>(<span class="var">$_GET</span>[<span class="str">'id'</span>] ?? <span class="kw">null</span>, FILTER_VALIDATE_INT);
+<span class="kw">if</span> (!<span class="var">$id</span>) { <span class="fn">header</span>(<span class="str">"Location: index.php"</span>); <span class="kw">exit</span>; }
+
+<span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">'REQUEST_METHOD'</span>] === <span class="str">'POST'</span>) {
+    <span class="var">$name</span>  = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'fullname'</span>]);
+    <span class="var">$email</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'email'</span>]);
+    <span class="var">$upd</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"UPDATE tbl_students SET fullname = :n, email = :e WHERE id = :id"</span>);
+    <span class="var">$upd</span>-&gt;<span class="fn">execute</span>([<span class="str">':n'</span> =&gt; <span class="var">$name</span>, <span class="str">':e'</span> =&gt; <span class="var">$email</span>, <span class="str">':id'</span> =&gt; <span class="var">$id</span>]);
+    <span class="fn">header</span>(<span class="str">"Location: index.php?msg=updated"</span>);
+    <span class="kw">exit</span>;
+}
+
+<span class="var">$stmt</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"SELECT * FROM tbl_students WHERE id = :id"</span>);
+<span class="var">$stmt</span>-&gt;<span class="fn">execute</span>([<span class="str">':id'</span> =&gt; <span class="var">$id</span>]);
+<span class="var">$student</span> = <span class="var">$stmt</span>-&gt;<span class="fn">fetch</span>();
+<span class="tag">?&gt;</span></div>
+                </div>
+                <div class="card danger-accent">
+                    <h3 class="card-title danger"><i class="fa-solid fa-trash-can"></i> delete.php (Delete Operation)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">require_once</span> <span class="str">'db.php'</span>;
+
+<span class="var">$id</span> = <span class="fn">filter_var</span>(<span class="var">$_GET</span>[<span class="str">'id'</span>] ?? <span class="kw">null</span>, FILTER_VALIDATE_INT);
+
+<span class="kw">if</span> (<span class="var">$id</span>) {
+    <span class="kw">try</span> {
+        <span class="var">$stmt</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"DELETE FROM tbl_students WHERE id = :id"</span>);
+        <span class="var">$stmt</span>-&gt;<span class="fn">execute</span>([<span class="str">':id'</span> =&gt; <span class="var">$id</span>]);
+    } <span class="kw">catch</span> (<span class="tag">PDOException</span> <span class="var">$e</span>) {
+        <span class="fn">error_log</span>(<span class="var">$e</span>-&gt;<span class="fn">getMessage</span>());
+    }
+}
+
+<span class="fn">header</span>(<span class="str">"Location: index.php?msg=deleted"</span>);
+<span class="kw">exit</span>;
+<span class="tag">?&gt;</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>edit.php & delete.php Implementation</span>
+            <span>ស្លាយទី ៣០ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 31: COMPLETE CRUD VERIFICATION TABLE
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>១០. ការត្រួតពិនិត្យដំណើរការគម្រោងសរុប (Project Verification)</h2>
+                <p>File-by-File Technical Verification and Expected Browser Behaviors</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">ឈ្មោះឯកសារ (File)</th>
+                        <th style="width: 33%;">មុខងារបច្ចេកទេស (Function)</th>
+                        <th style="width: 45%;">លទ្ធផលរំពឹងទុកលើ Browser (Expected Result)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b><code>schema.sql</code></b></td>
+                        <td>បង្កើត Database &amp; Table</td>
+                        <td>បង្កើតតារាង <code>tbl_students</code> លើ MySQL phpMyAdmin</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>db.php</code></b></td>
+                        <td>Modular PDO Connection</td>
+                        <td>បង្កើត PDO Handle សម្រាប់ Include តាមគ្រប់ទំព័រ</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>index.php</code></b></td>
+                        <td>Read Operation &amp; UI</td>
+                        <td>បង្ហាញតារាងបញ្ជីនិស្សិត និងប៊ូតុង Add, Edit, Delete</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>add.php</code></b></td>
+                        <td>Create Operation (INSERT)</td>
+                        <td>Form ចុះឈ្មោះនិស្សិតថ្មីជាមួយ Validation &amp; PRG Pattern</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>edit.php</code></b></td>
+                        <td>Update Operation (UPDATE)</td>
+                        <td>Form ទាញទិន្នន័យចាស់មក Pre-fill និងកែប្រែទិន្នន័យថ្មី</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>delete.php</code></b></td>
+                        <td>Delete Operation (DELETE)</td>
+                        <td>លុបទិន្នន័យតាម ID រួច Redirect ត្រឡប់មក <code>index.php</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 9: Full CRUD Project with PDO & MySQL</span>
+            <span>Complete CRUD Verification</span>
+            <span>ស្លាយទី ៣១ នៃ ៣២</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         SLIDE 32: OFFICIAL APPROVALS & CLOSING
+         ============================================================ -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>ការអនុម័ត និងសេចក្តីបញ្ចប់មេរៀនទី ៩</h2>
+                <p>Lesson 9 Completion, Institutional Endorsements, and Faculty Contacts</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text">
+                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
+                    <span class="en">ANGKOR UNIVERSITY</span>
+                </div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div style="text-align: center; margin-bottom: 12px;">
+                <h3 style="font-family: var(--font-muol); color: var(--primary); font-size: 15pt; margin-bottom: 4px; font-weight: normal;">
+                    អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ៩ ដោយជោគជ័យ
+                </h3>
+                <p style="font-size: 10.5pt; color: #475569;">
+                    "Mastering Resilient PDO Prepared Statements, XSS Protection &amp; Full Modular Web CRUD Projects"
+                </p>
+            </div>
+
+            <div class="grid-3" style="text-align: center;">
+                <div class="card" style="padding: 12px 10px;">
+                    <p style="font-size: 9.5pt; color: #64748b;">បានឃើញ និងឯកភាព</p>
+                    <p style="font-family: var(--font-muol); font-size: 10pt; margin-top: 4px; color: #0f172a;">ព្រឹទ្ធបុរសមហាវិទ្យាល័យ</p>
+                    <div style="height: 35px;"></div>
+                    <p style="font-size: 9pt; font-weight: bold; color: #94a3b8;">..........................................</p>
+                </div>
+                <div class="card" style="padding: 12px 10px;">
+                    <p style="font-size: 9.5pt; color: #64748b;">បានពិនិត្យ និងត្រួតពិនិត្យ</p>
+                    <p style="font-family: var(--font-muol); font-size: 10pt; margin-top: 4px; color: #0f172a;">ប្រធានដេប៉ាតឺម៉ង់ CS &amp; IT</p>
+                    <div style="height: 35px;"></div>
+                    <p style="font-size: 9pt; font-weight: bold; color: #94a3b8;">..........................................</p>
+                </div>
+                <div class="card primary-accent" style="padding: 12px 10px;">
+                    <p style="font-size: 9.5pt; color: #64748b;">សាស្ត្រាចារ្យទទួលបន្ទុក</p>
+                    <p style="font-family: var(--font-muol); font-size: 10pt; margin-top: 4px; color: var(--primary);">សាស្ត្រាចារ្យ សឿង លីម</p>
+                    <div style="height: 20px;"></div>
+                    <p style="font-size: 9.5pt; font-weight: bold; color: var(--primary);">M.Sc. in Information Technology</p>
+                    <p style="font-size: 8.5pt; color: #64748b;">សាកលវិទ្យាល័យអង្គរ (Siem Reap)</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Web App Development with PHP & MySQL</span>
+            <span>សាកលវិទ្យាល័យអង្គរ • មេរៀនទី ៩ ចប់បរិបូរណ៍</span>
+            <span>ស្លាយទី ៣២ នៃ ៣២</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- JavaScript for Presentation Control -->
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counterDisplay = document.getElementById('slideNumber');
+    const controlsBar = document.getElementById('controlsBar');
+
+    function updateSlide() {
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === currentSlide);
+        });
+        counterDisplay.textContent = `ស្លាយទី ${currentSlide + 1} / ${totalSlides}`;
+    }
+
+    function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            updateSlide();
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlide();
+        }
+    }
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                alert(`Error: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    function toggleControlsSticky() {
+        controlsBar.classList.toggle('show-controls');
+    }
+
+    // Keyboard Shortcuts (Arrow Keys, Space, PageUp/Down, Home, End, F, H)
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey || e.metaKey) return;
+
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            prevSlide();
+        } else if (e.key === 'Home') {
+            currentSlide = 0;
+            updateSlide();
+        } else if (e.key === 'End') {
+            currentSlide = totalSlides - 1;
+            updateSlide();
+        } else if (e.key.toLowerCase() === 'f') {
+            toggleFullScreen();
+        } else if (e.key.toLowerCase() === 'h') {
+            toggleControlsSticky();
+        }
+    });
+
+    // Initialize first slide
+    updateSlide();
+</script>
+
+</body>
+</html>

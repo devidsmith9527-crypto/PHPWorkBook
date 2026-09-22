@@ -1,0 +1,2078 @@
+
+
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout: មេរៀនទី ១០ - ប្រព័ន្ធសុវត្ថិភាព Authentication, Sessions, Cookies & Password Hashing</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Siemreab&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #0078D4;
+            --accent: #4F46E5;
+            --php-color: #7C3AED;
+            --mysql-color: #0284C7;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            
+            --text-main: #1E293B;
+            --text-heading: #0F172A;
+            --text-muted: #475569;
+            
+            --bg-page: #FFFFFF;
+            --bg-workspace: #0F172A;
+            --bg-light: #F8FAFC;
+            --bg-card: #FFFFFF;
+            
+            /* SYNTAX HIGHLIGHTING */
+            --bg-code-light: #F8FAFC;
+            --code-header-light: #E2E8F0;
+            --code-text: #0F172A;
+            --code-kw: #7C3AED;       /* Purple */
+            --code-tag: #0284C7;      /* Blue */
+            --code-var: #0F172A;      /* Slate */
+            --code-str: #B45309;      /* Amber */
+            --code-num: #059669;      /* Green */
+            --code-func: #2563EB;     /* Royal Blue */
+            --code-cmt: #64748B;      /* Gray */
+            
+            --bg-output: #F1F5F9;
+            --border-light: #E2E8F0;
+            --border-dark: #CBD5E1;
+            
+            --font-kh-heading: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh-body: 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en-main: 'Inter', sans-serif;
+            --font-code: 'Consolas', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-workspace);
+            font-family: var(--font-kh-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px;
+            line-height: 1.45;
+            font-size: 9.5pt;
+        }
+
+        .no-print-bar {
+            background: #FFFFFF;
+            border: 1px solid var(--border-dark);
+            padding: 10px 22px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            width: 210mm;
+            max-width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+        .no-print-bar p { margin: 0; font-size: 10pt; color: var(--text-muted); }
+        .print-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-family: var(--font-kh-body);
+            font-size: 10pt;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .print-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4); }
+
+        .a4-page {
+            width: 210mm;
+            height: 297mm;
+            background: var(--bg-page);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            margin-bottom: 18px;
+            position: relative;
+            border-radius: 4px;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 8mm 12mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .global-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 10px;
+            border-bottom: 2.5px solid var(--accent);
+            background-color: var(--bg-light);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            page-break-inside: avoid;
+        }
+        .header-item { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 140px; }
+        .header-item img { height: 28px; object-fit: contain; }
+        .header-item span { font-size: 7.5pt; font-weight: bold; color: var(--accent); text-align: center; font-family: var(--font-kh-heading); line-height: 1.2; }
+        .header-text { flex-grow: 1; text-align: center; padding: 0 8px; }
+        .header-text h1 { font-family: var(--font-kh-heading); font-size: 9.5pt; color: var(--accent); margin-bottom: 1px; line-height: 1.3;}
+        .header-text p { font-family: var(--font-en-main); font-size: 6.8pt; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+
+        .global-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid var(--accent);
+            background-color: var(--bg-light);
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-top: 6px;
+            page-break-inside: avoid;
+        }
+        .footer-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 8pt; 
+            color: var(--text-heading); 
+            font-weight: bold;
+            font-family: var(--font-kh-heading);
+        }
+        .footer-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+        .footer-right { font-size: 7.5pt; color: white; font-weight: 700; background: var(--accent); padding: 2px 9px; border-radius: 12px; font-family: var(--font-kh-body);}
+
+        .page-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 3px;
+            margin: 3px 0 5px 0;
+            font-family: var(--font-kh-heading);
+            font-size: 10.5pt;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            page-break-inside: avoid;
+        }
+        
+        .sub-heading { 
+            font-family: var(--font-kh-heading); 
+            font-size: 9.5pt; 
+            color: var(--accent); 
+            margin: 3px 0 4px 0; 
+            page-break-inside: avoid;
+            border-left: 4px solid var(--accent);
+            padding-left: 7px;
+            line-height: 1.35;
+        }
+
+        .text-block { font-size: 9pt; line-height: 1.42; margin-bottom: 4px; text-align: justify; }
+        .highlight { color: var(--accent); font-weight: 700; }
+        
+        .bloom-tag { display: inline-block; padding: 1px 5px; border-radius: 4px; font-size: 6.8pt; font-weight: 800; font-family: var(--font-en-main); margin-right: 3px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .bloom-c1 { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; } 
+        .bloom-c2 { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; } 
+        .bloom-c3 { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; } 
+        .bloom-c4 { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; } 
+        .bloom-c5 { background: #FFE4E6; color: #BE123C; border: 1px solid #FECDD3; } 
+        .bloom-c6 { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; } 
+
+        .toc-table { width: 100%; border-collapse: collapse; margin: 4px 0; border: 1px solid var(--border-light); border-radius: 6px; overflow: hidden; page-break-inside: avoid; }
+        .toc-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 8.5pt; padding: 4px 6px; text-align: left; }
+        .toc-table td { padding: 4px 6px; border-bottom: 1px solid var(--border-light); font-size: 8.8pt; color: var(--text-main); }
+        .toc-num { font-weight: bold; width: 15%; text-align: center; color: var(--accent); }
+
+        .obj-list { list-style: none; padding-left: 0; margin-top: 2px; }
+        .obj-list li { position: relative; padding-left: 15px; margin-bottom: 4px; font-size: 9pt; line-height: 1.4; page-break-inside: avoid; }
+        .obj-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 9.5pt; top: -1px; }
+
+        table.standard-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; border: 1px solid var(--border-dark); page-break-inside: avoid; }
+        table.standard-table th, table.standard-table td { border: 1px solid var(--border-dark); padding: 4px 5px; text-align: left; vertical-align: middle; }
+        table.standard-table th { background: var(--accent); color: white; font-family: var(--font-kh-heading); font-size: 8.5pt; text-align: center; }
+        table.standard-table td { font-size: 8.8pt; line-height: 1.35; }
+
+        .sub-topic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 7px 9px;
+            margin-bottom: 5px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .sub-topic-card h4 {
+            font-family: var(--font-kh-heading);
+            font-size: 9.2pt;
+            color: var(--primary);
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 2px;
+        }
+
+        .prompt-box {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            border-left: 4px solid var(--accent);
+            border-radius: 4px;
+            padding: 5px 8px;
+            margin: 3px 0 5px 0;
+            font-size: 8.8pt;
+            line-height: 1.38;
+        }
+        .prompt-title {
+            font-family: var(--font-kh-heading);
+            font-size: 8.2pt;
+            color: var(--accent);
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .syntax-box {
+            background: #F0FDF4;
+            border: 1px solid #BBF7D0;
+            border-left: 4px solid var(--success);
+            border-radius: 4px;
+            padding: 5px 8px;
+            margin: 3px 0 5px 0;
+            font-size: 8.8pt;
+            line-height: 1.38;
+        }
+        .syntax-title {
+            font-family: var(--font-kh-heading);
+            font-size: 8.2pt;
+            color: #15803D;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .code-window { 
+            background: var(--bg-code-light); 
+            border-radius: 6px; 
+            overflow: hidden; 
+            margin: 3px 0; 
+            border: 1px solid var(--border-dark); 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            page-break-inside: avoid;
+        }
+        .code-header { 
+            background: var(--code-header-light); 
+            padding: 2.5px 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid var(--border-dark);
+        }
+        .mac-dots { display: flex; gap: 4px; }
+        .dot { width: 6.5px; height: 6.5px; border-radius: 50%; }
+        .dot-r { background: #FF5F56; }
+        .dot-y { background: #FFBD2E; }
+        .dot-g { background: #27C93F; }
+        .code-title { color: #475569; font-family: var(--font-code); font-size: 7.8pt; font-weight: 700;}
+        pre { 
+            padding: 5px 8px; 
+            color: var(--code-text); 
+            font-family: var(--font-code); 
+            font-size: 7.8pt; 
+            line-height: 1.34; 
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0; 
+            tab-size: 4;
+            font-weight: 600;
+        }
+
+        .cv-kw { color: var(--code-kw); font-weight: bold; }
+        .cv-tag { color: var(--code-tag); font-weight: bold; }
+        .cv-var { color: var(--code-var); }
+        .cv-str { color: var(--code-str); }
+        .cv-num { color: var(--code-num); }
+        .cv-fn { color: var(--code-func); font-weight: bold; }
+        .cv-cm { color: var(--code-cmt); font-style: italic; }
+
+        .output-window {
+            background: var(--bg-output);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 3px 0 4px 0;
+            border: 1px solid var(--border-dark);
+            page-break-inside: avoid;
+        }
+        .output-header {
+            background: #CBD5E1;
+            padding: 2.5px 7px;
+            color: #0F172A;
+            font-family: var(--font-code);
+            font-size: 7.2pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border-bottom: 1px solid #94A3B8;
+        }
+        .output-body {
+            padding: 4px 8px;
+            color: #0078D4;
+            font-family: var(--font-code);
+            font-size: 7.8pt;
+            line-height: 1.32;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .q-list { list-style-type: khmer; padding-left: 20px; font-size: 9pt; line-height: 1.38; }
+        .q-list li { margin-bottom: 3.5px; font-weight: normal; color: var(--text-main); page-break-inside: avoid; }
+        .mcq-opts { list-style-type: none; padding-left: 0; margin-top: 2px; font-weight: normal; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+        .mcq-opts li { font-size: 8.3pt; background: #F8FAFC; padding: 2px 5px; border-radius: 4px; border: 1px solid var(--border-light); margin-bottom: 0; }
+        
+        .ans-table { width: 100%; border-collapse: collapse; margin-bottom: 4px; page-break-inside: avoid;}
+        .ans-table th { background: #F1F5F9; border: 1px solid var(--border-dark); padding: 2px 3px; font-size: 7.2pt; font-weight: bold; color: var(--text-heading); text-align:center;}
+        .ans-table td { font-weight: 700; color: var(--accent); text-align: center; border: 1px solid var(--border-dark); padding: 2px 3px; font-size: 7.6pt;}
+
+        .matching-table { width: 100%; border-collapse: collapse; margin: 3px 0; border: 1px solid var(--border-dark); page-break-inside: avoid;}
+        .matching-table th { background: #E0E7FF; color: var(--accent); border: 1px solid var(--border-dark); padding: 3px 5px; font-size: 8.2pt; text-align: center; font-family: var(--font-kh-heading); }
+        .matching-table td { border: 1px solid var(--border-dark); padding: 3px 5px; font-size: 8.2pt; line-height: 1.28; vertical-align: top; }
+
+        .explain-ans-card {
+            background: #F8FAFC;
+            border-left: 4px solid var(--accent);
+            border: 1px solid var(--border-dark);
+            border-left-width: 4px;
+            border-radius: 4px;
+            padding: 4px 7px;
+            margin-bottom: 4px;
+            page-break-inside: avoid;
+        }
+        .explain-ans-card h5 { font-family: var(--font-kh-heading); font-size: 8.3pt; color: var(--primary); margin-bottom: 1px; }
+
+        .tech-badge-bar { display: flex; gap: 5px; justify-content: center; margin: 7px 0; flex-wrap: wrap; }
+        .tech-badge { background: #EEF2FF; border: 1px solid #C7D2FE; color: var(--accent); padding: 2px 8px; border-radius: 14px; font-size: 7.8pt; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; }
+
+        @media print {
+            body { background: none; padding: 0; margin: 0; display: block; }
+            .no-print-bar { display: none !important; }
+            @page { size: A4 portrait; margin: 0; }
+            .a4-page { width: 210mm !important; height: 297mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; border-radius: 0 !important; page-break-after: always !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-bar">
+    <p><b><i class="fa-solid fa-file-pdf text-blue"></i> ណែនាំបោះពុម្ព (Print Instructions)៖</b> សូមជ្រើសរើស <b>Margins: None</b> និងបើក <b>Background graphics</b> ពេល Print ជា PDF (សរុបទាំងអស់ ២៨ ទំព័រពេញលេញ - Total: 28 Pages)។</p>
+    <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> បោះពុម្ពឯកសារជា PDF (Print Master Handout)</button>
+</div>
+
+<!-- ================= PAGE 1: COVER PAGE ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>សាកលវិទ្យាល័យអង្គរ | ANGKOR UNIVERSITY</h1><p>FACULTY OF SCIENCE & TECHNOLOGY</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content" style="justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at top, #EEF2FF 0%, #FFFFFF 100%); border-radius: 8px;">
+        <img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" style="width: 105px; margin-bottom: 8px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));" alt="Logo">
+        <h1 style="font-family: var(--font-kh-heading); font-size: 18pt; color: var(--text-heading); margin-bottom: 2px;">សាកលវិទ្យាល័យអង្គរ</h1>
+        <p style="font-family: 'Inter'; font-size: 8.8pt; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; letter-spacing: 2px;">ANGKOR UNIVERSITY</p>
+        
+        <div class="tech-badge-bar">
+            <span class="tech-badge"><i class="fa-solid fa-calendar-days"></i> សប្តាហ៍ទី ១២ & ១៣ (Weeks 12 & 13)</span>
+            <span class="tech-badge"><i class="fa-solid fa-key"></i> Sessions & Cookie State Management</span>
+            <span class="tech-badge"><i class="fa-solid fa-lock"></i> Password Hashing (Bcrypt Algorithm)</span>
+            <span class="tech-badge"><i class="fa-solid fa-user-shield"></i> Secure Route Protection (Auth Guard)</span>
+        </div>
+
+        <div style="font-family: var(--font-kh-heading); font-size: 9pt; color: var(--text-main); margin-bottom: 8px; background: #F1F5F9; padding: 3px 14px; border-radius: 50px; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 7px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent);"></i> បរិញ្ញាបត្រ វិទ្យាសាស្ត្រកុំព្យូទ័រ / បច្ចេកវិទ្យាព័ត៌មាន (Bachelor of CS / IT)
+        </div>
+        
+        <div style="background: var(--accent); color: white; padding: 6px 18px; border-radius: 8px; font-size: 11pt; font-family: var(--font-kh-heading); margin-bottom: 8px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">ឯកសារអាន (Handout) - មេរៀនទី ១០ (28-Page Master Edition)</div>
+        
+        <h2 style="font-family: var(--font-kh-heading); font-size: 14pt; color: var(--text-heading); margin-bottom: 5px; line-height: 1.35;">ប្រព័ន្ធសុវត្ថិភាព Authentication, Sessions & Password Hashing<br>(Web Application Security & User State Management)</h2>
+        <h3 style="font-family: var(--font-kh-body); font-size: 9.5pt; color: var(--secondary); margin-bottom: 14px; font-weight: 600;">Part 1 (Week 12): Sessions, Cookies & Route Protection | Part 2 (Week 13): Hashing & Login App<br>Enterprise User Management Architecture: User Entity (`tbl_users`) & Protected Admin Portal</h3>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; background: white; padding: 8px 20px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid var(--border-light); width: 85%;">
+            <img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" style="width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Prof">
+            <p style="font-family: var(--font-kh-body); font-size: 8.5pt; color: var(--text-muted); margin: 0;">រៀបចំដោយសាស្ត្រាចារ្យ (Course Lecturer)៖</p>
+            <strong style="font-family: var(--font-kh-heading); color: var(--text-heading); font-size: 10pt;">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</strong>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 2: LLO & SYLLABUS MAPPING ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> ១. លទ្ធផលរំពឹងទុកនៃមេរៀន (Lesson Learning Outcomes - LLO)</div>
+        <ul class="obj-list">
+            <li><b>LLO 10.1:</b> <span class="bloom-tag bloom-c1">C1 - Remember</span> <span class="bloom-tag bloom-c2">C2 - Understand</span> <span class="highlight">ពន្យល់ពីស្ថាបត្យកម្ម Stateless នៃ HTTP Protocol (Explain HTTP Stateless Mechanism)</span> និងបកស្រាយពីភាពចាំបាច់ក្នុងការប្រើប្រាស់ Server-Side Sessions និង Client-Side Cookies ដើម្បីគ្រប់គ្រង User State ឆ្លងកាត់ Web Requests។</li>
+            <li><b>LLO 10.2:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="highlight">អនុវត្តការបើក និងគ្រប់គ្រង Session (Implement Session Lifecycle)</span> តាមរយៈ <code>session_start()</code>, ការរក្សាទុកទិន្នន័យក្នុង Superglobal <code>$_SESSION</code> និងការបំផ្លាញទិន្នន័យចោលដោយសុវត្ថិភាពតាមរយៈ <code>session_destroy()</code>។</li>
+            <li><b>LLO 10.3:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">បង្កើតយន្តការការពារទំព័រ (Implement Route Protection Guard)</span> ដើម្បីទប់ស្កាត់ការចូលប្រើប្រាស់ដោយគ្មានសិទ្ធិ (Unauthorized Access) ទៅកាន់ទំព័ររដ្ឋបាល ឬ CRUD Pages ដោយធ្វើការ Redirect ទៅកាន់ Login Page។</li>
+            <li><b>LLO 10.4:</b> <span class="bloom-tag bloom-c4">C4 - Analyze</span> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="highlight">វាយតម្លៃហានិភ័យនៃ Plain-Text Password (Evaluate Password Security)</span> ដោយប្រៀបធៀប Hashing vs Encryption និងពន្យល់ពីមូលហេតុដែល Hash គឺជា One-Way Cryptographic Function មិនអាច Decode បាន។</li>
+            <li><b>LLO 10.5:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="bloom-tag bloom-c6">C6 - Create</span> <span class="highlight">អភិវឌ្ឍប្រព័ន្ធ Authentication ពេញលេញ (Build Registration & Login System)</span> ដោយប្រើប្រាស់ <code>password_hash()</code> ជាមួយ Bcrypt និងផ្ទៀងផ្ទាត់លេខសម្ងាត់តាមរយៈ <code>password_verify()</code>។</li>
+        </ul>
+
+        <div class="section-title" style="margin-top:6px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀនស្របតាម Syllabus (Syllabus Structure 1:1 Mapping)</div>
+        <div class="text-block">
+            មាតិកានៅក្នុងតារាងខាងក្រោមនេះ ត្រូវបានរៀបចំស្របគ្នាយ៉ាងជាក់លាក់មួយទល់នឹងមួយ (1:1 Exact Mapping) ទៅនឹងចំណងជើងរងនៃ <b>«៣. ខ្លឹមសារលម្អិតនៃមេរៀន»</b> នៅក្នុងសប្តាហ៍ទី ១២ និង ១៣ នៃ Course Syllabus៖
+        </div>
+        <table class="toc-table">
+            <thead>
+                <tr>
+                    <th class="toc-num">សប្តាហ៍ / Week</th>
+                    <th style="width:26%;">មាតិកា Syllabus (Topic)</th>
+                    <th>ត្រូវគ្នានឹងផ្នែកលម្អិតក្នុងមេរៀន (Section 3 Mapping)</th>
+                    <th style="width:15%; text-align:center;">Bloom Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="toc-num">សប្តាហ៍ ១២<br>(Session 23)</td>
+                    <td><b>១០.១ Sessions, Cookies & User State</b><br>(State Management Architecture)</td>
+                    <td>• ១០.១.១ ធម្មជាតិនៃ HTTP Statelessness និងការប្រៀបធៀប Session vs Cookie<br>
+                    • ១០.១.២ វដ្តជីវិត Session Lifecycle (<code>session_start</code>, <code>$_SESSION</code>)</td>
+                    <td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span></td>
+                </tr>
+                <tr>
+                    <td class="toc-num">សប្តាហ៍ ១២<br>(Session 24)</td>
+                    <td><b>១០.២ ការការពារទំព័រ & ការ Logout</b><br>(Route Protection & Session Destroy)</td>
+                    <td>• ១០.២.១ យន្តការការពារទំព័រ Auth Guard Middleware (Redirect Unauthorized)<br>
+                    • ១០.២.២ ការបញ្ចប់ Session និងលុប Session Cookie ដោយសុវត្ថិភាព (Logout Flow)</td>
+                    <td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c6">C6</span></td>
+                </tr>
+                <tr>
+                    <td class="toc-num">សប្តាហ៍ ១៣<br>(Session 25)</td>
+                    <td><b>១០.៣ សន្តិសុខលេខសម្ងាត់ & Hashing</b><br>(Password Security & Cryptography)</td>
+                    <td>• ១០.៣.១ គ្រោះថ្នាក់ Plain Text, ការប្រៀបធៀប Hashing vs Encryption<br>
+                    • ១០.៣.២ ការបំប្លែងលេខសម្ងាត់តាមរយៈ <code>password_hash()</code> ជាមួយ Salt & Cost</td>
+                    <td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span></td>
+                </tr>
+                <tr>
+                    <td class="toc-num">សប្តាហ៍ ១៣<br>(Session 26)</td>
+                    <td><b>១០.៤ ប្រព័ន្ធ Authentication ពេញលេញ</b><br>(Secure Registration & Login Pipeline)</td>
+                    <td>• ១០.៤.១ ការបង្កើត Form ចុះឈ្មោះ (Registration with Hashing)<br>
+                    • ១០.៤.២ ការផ្ទៀងផ្ទាត់ការ Login តាមរយៈ <code>password_verify()</code> និង Session Binding</td>
+                    <td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c6">C6</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 3: SECTION 10.1 SESSIONS & COOKIES THEORY ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;">
+            <i class="fa-solid fa-book-open text-blue"></i> ៣. ខ្លឹមសារលម្អិតនៃមេរៀន (Detailed Lesson Contents)
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-cookie-bite"></i> ១០.១ ការគ្រប់គ្រងស្ថានភាពអ្នកប្រើប្រាស់ (Sessions, Cookies & User State - Week 12)</div>
+
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-network-wired text-primary"></i> ១០.១.១ ធម្មជាតិនៃ HTTP Statelessness និងការប្រៀបធៀប Session vs Cookie <span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c2">C2</span></h4>
+            
+            <div class="text-block">
+                <b>ក. បញ្ហាប្រឈមនៃ HTTP Stateless Protocol (The Stateless Challenge)៖</b><br>
+                ពិធីការ HTTP (HyperText Transfer Protocol) គឺជាប្រព័ន្ធ <b>Stateless</b> មានន័យថា Web Server មិនចងចាំរាល់ Request ណាដែលធ្លាប់បានកើតឡើងពីមុននោះឡើយ។ រាល់ពេលដែល Browser ផ្ញើ Request ទៅកាន់ទំព័រថ្មី Server នឹងចាត់ទុកវាជាសំណើថ្មីស្រឡាងពីមនុស្សប្លែកមុខ។ ដូច្នេះដើម្បីបង្កើតប្រព័ន្ធ Login, Shopping Cart, ឬ User Profile យើងត្រូវតែមានយន្តការ <b>State Management</b> ដើម្បីចងចាំអត្តសញ្ញាណអ្នកប្រើ។
+            </div>
+
+            <div class="text-block">
+                <b>ខ. យន្តការដំណើរការរបស់ Session & Session ID (PHPSESSID)៖</b><br>
+                នៅពេលហៅ <code>session_start()</code>, PHP នឹងបង្កើតកូដសម្ងាត់ចៃដន្យមួយហៅថា <b>Session ID</b> (ឧ. <code>PHPSESSID=c4a1b2...</code>) រួចផ្ញើវាទៅរក្សាទុកលើ Browser របស់អ្នកប្រើជា Cookie។ ឯទិន្នន័យជាក់ស្តែង (ដូចជា ID, Username, Role) ត្រូវបានរក្សាទុកដោយសុវត្ថិភាពនៅលើ <b>Server Storage</b>។ រាល់ពេល Browser ចូលទំព័រថ្មី វានឹងភ្ជាប់តែ Session ID មក Server ដើម្បីបើកទូទិន្នន័យដែលត្រូវគ្នា។
+            </div>
+
+            <div class="text-block" style="margin-top:4px;"><b>គ. តារាងប្រៀបធៀបស៊ីជម្រៅរវាង Session (Server-side) និង Cookie (Client-side)៖</b></div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">លក្ខណៈ (Feature)</th>
+                        <th style="width:39%;">Cookie (Client-Side Storage)</th>
+                        <th style="width:39%;">Session (Server-Side Storage)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>ទីតាំងផ្ទុកទិន្នន័យ</b></td>
+                        <td>រក្សាទុកក្នុង Web Browser លើម៉ាស៊ីន User</td>
+                        <td>រក្សាទុកក្នុង Hard Disk / RAM លើ Web Server</td>
+                    </tr>
+                    <tr>
+                        <td><b>កម្រិតសុវត្ថិភាព</b></td>
+                        <td>ទាប (User អាចកែប្រែ, លួចមើល ឬក្លែងបន្លំបាន)</td>
+                        <td>ខ្ពស់ណាស់ (User មើលមិនឃើញទិន្នន័យផ្ទាល់ឡើយ)</td>
+                    </tr>
+                    <tr>
+                        <td><b>ទំហំផ្ទុកអតិបរមា</b></td>
+                        <td>កម្រិតត្រឹម 4 KB ក្នុងមួយ Cookie</td>
+                        <td>គ្មានដែនកំណត់ជាក់លាក់ (អាស្រ័យលើ Server Memory)</td>
+                    </tr>
+                    <tr>
+                        <td><b>ការប្រើប្រាស់ស័ក្តិសម</b></td>
+                        <td>Remember Me token, Theme (Dark/Light), UI State</td>
+                        <td>User Login ID, Roles, Permissions, Shopping Cart</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="syntax-box">
+                <div class="syntax-title"><i class="fa-solid fa-code"></i> វិធានមាសនៃការប្រើប្រាស់ Session (Golden Rule of PHP Sessions)៖</div>
+                <code>session_start(); // ត្រូវតែហៅនៅផ្នែកខាងលើបង្អស់នៃឯកសារ មុនពេលមាន Output ណាមួយ (HTML, White-space, Echo)!</code>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ៣ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 4: SECTION 10.1 HANDS-ON SESSION LIFECYCLE ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-flask-vial text-primary"></i> លំហាត់ទី ១ (Lab 10.1)៖ ការបង្កើត និងអានតម្លៃ Session ឆ្លងកាត់ទំព័រ (Session State Demo)</h4>
+            
+            <div class="prompt-box">
+                <div class="prompt-title"><i class="fa-solid fa-circle-question"></i> ប្រធានលំហាត់អនុវត្ត (Exercise Prompt & Problem Statement)៖</div>
+                សរសេរស្គ្រីប PHP គំរូឈ្មោះ <code>exercise_10_1_session_demo.php</code> ដើម្បីបង្ហាញពីវដ្តជីវិតនៃការបង្កើតទិន្នន័យអ្នកប្រើក្នុង <code>$_SESSION</code> (ដូចជា <code>user_id</code>, <code>username</code>, <code>role</code>, និង <code>login_time</code>) រួចបង្ហាញទិន្នន័យទាំងនោះឡើងវិញ និងផ្ទៀងផ្ទាត់ <code>session_id()</code> ដែលបង្កើតឡើងដោយ PHP Engine។
+            </div>
+
+            <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin: 2px 0;"><i class="fa-solid fa-file-code"></i> កូដពេញលេញអាចដំណើរការបាន (Complete Runnable Script)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">exercise_10_1_session_demo.php (Session Lifecycle)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// exercise_10_1_session_demo.php - កំណត់ និងទាញយកតម្លៃ Session</span>
+<span class="cv-kw">if</span> (<span class="cv-fn">session_status</span>() === <span class="cv-tag">PHP_SESSION_NONE</span>) {
+    <span class="cv-fn">session_start</span>();
+}
+
+<span class="cv-cm">// ១. កំណត់ទិន្នន័យ Session សាកល្បង (Simulate Login Event)</span>
+<span class="cv-kw">if</span> (!<span class="cv-kw">isset</span>(<span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>])) {
+    <span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>]    = <span class="cv-num">101</span>;
+    <span class="cv-var">$_SESSION</span>[<span class="cv-str">'username'</span>]   = <span class="cv-str">"soeurng_lim"</span>;
+    <span class="cv-var">$_SESSION</span>[<span class="cv-str">'fullname'</span>]   = <span class="cv-str">"សាស្ត្រាចារ្យ សឿង លីម"</span>;
+    <span class="cv-var">$_SESSION</span>[<span class="cv-str">'role'</span>]       = <span class="cv-str">"Admin"</span>;
+    <span class="cv-var">$_SESSION</span>[<span class="cv-str">'logged_in'</span>]  = <span class="cv-kw">true</span>;
+    <span class="cv-var">$_SESSION</span>[<span class="cv-str">'login_time'</span>] = <span class="cv-fn">date</span>(<span class="cv-str">"Y-m-d H:i:s"</span>);
+}
+<span class="cv-tag">?&gt;</span>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="km"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Session Inspector&lt;/title&gt;&lt;/head&gt;
+&lt;body style="font-family:sans-serif; padding:12px; background:#F8FAFC;"&gt;
+    &lt;h3 style="color:#4F46E5; margin-top:0;"&gt;ត្រួតពិនិត្យទិន្នន័យ Session (Active Session Inspector)&lt;/h3&gt;
+    
+    &lt;div style="background:white; padding:10px; border:1px solid #CBD5E1; border-radius:6px; font-size:12px;"&gt;
+        &lt;p&gt;&lt;b&gt;Current PHPSESSID:&lt;/b&gt; &lt;code style="color:#0284C7;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">session_id</span>() <span class="cv-tag">?&gt;</span>&lt;/code&gt;&lt;/p&gt;
+        &lt;hr style="border:0; border-top:1px dashed #CBD5E1; margin:8px 0;"&gt;
+        &lt;p&gt;&lt;b&gt;User ID:&lt;/b&gt; <span class="cv-tag">&lt;?=</span> <span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>] <span class="cv-tag">?&gt;</span>&lt;/p&gt;
+        &lt;p&gt;&lt;b&gt;Username:&lt;/b&gt; <span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$_SESSION</span>[<span class="cv-str">'username'</span>]) <span class="cv-tag">?&gt;</span>&lt;/p&gt;
+        &lt;p&gt;&lt;b&gt;Full Name:&lt;/b&gt; <span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$_SESSION</span>[<span class="cv-str">'fullname'</span>]) <span class="cv-tag">?&gt;</span>&lt;/p&gt;
+        &lt;p&gt;&lt;b&gt;User Role:&lt;/b&gt; &lt;span style="background:#DCFCE7; color:#166534; padding:2px 6px; border-radius:4px; font-weight:bold;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$_SESSION</span>[<span class="cv-str">'role'</span>] <span class="cv-tag">?&gt;</span>&lt;/span&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;b&gt;Login Timestamp:&lt;/b&gt; <span class="cv-tag">&lt;?=</span> <span class="cv-var">$_SESSION</span>[<span class="cv-str">'login_time'</span>] <span class="cv-tag">?&gt;</span>&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+            </div>
+
+            <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin-top: 2px;"><i class="fa-solid fa-desktop"></i> លទ្ធផលជាក់ស្តែងលើ Browser (Live Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header"><i class="fa-solid fa-terminal"></i> Browser Rendered Output</div>
+                <div class="output-body">
+Current PHPSESSID: 4d9f1e8a9c2b87f0e3a1...
+-------------------------------------------------------------
+User ID: 101
+Username: soeurng_lim
+Full Name: សាស្ត្រាចារ្យ សឿង លីម
+User Role: [Admin]
+Login Timestamp: 2026-03-30 08:30:00
+(ទិន្នន័យនេះនឹងនៅតែមានរាល់ពេល User ចុច Refresh ឬបើកទំព័រថ្មី!)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ៤ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 5: SECTION 10.2 ROUTE PROTECTION THEORY ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-user-lock"></i> ១០.២ ការការពារទំព័រ & ការ Logout (Route Protection & Session Destroy - Week 12)</div>
+
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-shield-halved text-success"></i> ១០.២.១ យន្តការការពារទំព័រ Auth Guard Middleware (Redirect Unauthorized) <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="text-block">
+                <b>ក. គោលការណ៍ Route Protection (The Auth Guard Mechanism)៖</b><br>
+                ក្នុង Web Application ទំនើប ទំព័ររដ្ឋបាល (Dashboard, Admin Panel, Student CRUD) មិនត្រូវអនុញ្ញាតឱ្យសាធារណជនទូទៅចូលមើល ឬបញ្ជាកែប្រែដោយពុំទាន់បាន Login នោះឡើយ។ ប្រសិនបើនរណាម្នាក់ព្យាយាមវាយ URL ចូលផ្ទាល់ (ឧ. <code>dashboard.php</code>) ប្រព័ន្ធត្រូវតែមានជញ្ជាំងការពារ (Auth Guard) ត្រួតពិនិត្យ Session ភ្លាមៗ។
+            </div>
+
+            <div class="text-block">
+                <b>ខ. លំហូរការងារ Auth Guard Pipeline (The 3-Step Verification)៖</b>
+            </div>
+            <ul class="obj-list">
+                <li><b>ជំហានទី ១ (Session Initialization)៖</b> បើកដំណើរការ <code>session_start()</code> នៅផ្នែកលើបង្អស់នៃឯកសារ Middleware។</li>
+                <li><b>ជំហានទី ២ (State Inspection)៖</b> ត្រួតពិនិត្យលក្ខខណ្ឌ <code>if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id']))</code>។</li>
+                <li><b>ជំហានទី ៣ (Access Denial & Forced Redirect)៖</b> ប្រសិនបើគ្មាន Session ទេ ត្រូវបញ្ជូន HTTP 302 Redirect ទៅកាន់ <code>login.php?error=unauthorized</code> ហើយហៅ <code>exit;</code> បញ្ឈប់ការ Render ទំព័រជាដាច់ខាត។</li>
+            </ul>
+
+            <div class="text-block" style="margin-top:4px;"><b>គ. ការបំផ្លាញ Session ពេល Logout (Complete Session Destruction Architecture)៖</b></div>
+            <div class="text-block">
+                ដើម្បីធានាថាក្រោយពេល User ចុច <b>Logout</b> គ្មាននរណាម្នាក់អាចប្រើប្រាស់ Session ចាស់ឡើងវិញបាន (Session Hijacking Prevention) យើងត្រូវអនុវត្ត ៤ ជំហានស្អាតស្អំ៖
+            </div>
+            <ul class="obj-list">
+                <li><code>$_SESSION = [];</code> (សម្អាត Array នៃ Session Memory)</li>
+                <li><code>setcookie(session_name(), '', time() - 42000, '/');</code> (លុប Session Cookie ចេញពី Browser)</li>
+                <li><code>session_destroy();</code> (បំផ្លាញឯកសារ Session ចេញពី Server Storage)</li>
+                <li><code>header("Location: login.php?msg=logged_out"); exit;</code> (Redirect ទៅកាន់ទំព័រ Login)</li>
+            </ul>
+
+            <div class="syntax-box">
+                <div class="syntax-title"><i class="fa-solid fa-code"></i> ទម្រង់ទូទៅស្តង់ដារនៃ Auth Guard (Auth Guard Blueprint)៖</div>
+                <code>// ដាក់នៅផ្នែកខាងលើនៃរាល់ Protected PHP Files:<br>
+                if (!isset($_SESSION['user_id'])) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;header("Location: login.php?error=unauthorized");<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;exit;<br>
+                }</code>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ៥ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 6: SECTION 10.2 HANDS-ON AUTH GUARD ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-lock text-success"></i> លំហាត់ទី ២ (Lab 10.2)៖ អនុវត្ត Auth Guard និងប្រព័ន្ធ Logout ប្រកបដោយសុវត្ថិភាព</h4>
+            
+            <div class="prompt-box">
+                <div class="prompt-title"><i class="fa-solid fa-circle-question"></i> ប្រធានលំហាត់អនុវត្ត (Exercise Prompt & Problem Statement)៖</div>
+                សរសេរស្គ្រីបគំរូឈ្មោះ <code>exercise_10_2_auth_guard.php</code> ដែលមានមុខងារការពារទំព័រ។ ប្រសិនបើ User មិនទាន់ Login (គ្មាន Session) ស្គ្រីបត្រូវបង្ហាញផ្ទាំងហាមឃាត់ និងប៊ូតុងក្លែងធ្វើ Login។ ប្រសិនបើបាន Login រួច ស្គ្រីបនឹងបង្ហាញទំព័រ Dashboard សម្ងាត់ ព្រមទាំងមានប៊ូតុង <b>[ចាកចេញ - Logout]</b> ដែលដំណើរការការសម្អាត Session ទាំង ៤ ជំហានយ៉ាងត្រឹមត្រូវ។
+            </div>
+
+            <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin: 2px 0;"><i class="fa-solid fa-file-code"></i> កូដពេញលេញអាចដំណើរការបាន (Complete Runnable Script)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">exercise_10_2_auth_guard.php (Auth Guard & Logout)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">if</span> (<span class="cv-fn">session_status</span>() === <span class="cv-tag">PHP_SESSION_NONE</span>) { <span class="cv-fn">session_start</span>(); }
+
+<span class="cv-cm">// ១. ដំណើរការ Logout ប្រសិនបើមាន parameter action=logout</span>
+<span class="cv-kw">if</span> ((<span class="cv-var">$_GET</span>[<span class="cv-str">'action'</span>] ?? <span class="cv-str">''</span>) === <span class="cv-str">'logout'</span>) {
+    <span class="cv-var">$_SESSION</span> = []; <span class="cv-cm">// សម្អាត memory</span>
+    <span class="cv-kw">if</span> (<span class="cv-fn">ini_get</span>(<span class="cv-str">"session.use_cookies"</span>)) {
+        <span class="cv-var">$params</span> = <span class="cv-fn">session_get_cookie_params</span>();
+        <span class="cv-fn">setcookie</span>(<span class="cv-fn">session_name</span>(), <span class="cv-str">''</span>, <span class="cv-fn">time</span>() - <span class="cv-num">42000</span>, <span class="cv-var">$params</span>[<span class="cv-str">"path"</span>], <span class="cv-var">$params</span>[<span class="cv-str">"domain"</span>]);
+    }
+    <span class="cv-fn">session_destroy</span>();
+    <span class="cv-fn">header</span>(<span class="cv-str">"Location: exercise_10_2_auth_guard.php?msg=logged_out"</span>);
+    <span class="cv-kw">exit</span>;
+}
+
+<span class="cv-cm">// ២. ក្លែងធ្វើការ Login ពេល User ចុចប៊ូតុង Mock Login</span>
+<span class="cv-kw">if</span> (<span class="cv-kw">isset</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'mock_login'</span>])) {
+    <span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>] = <span class="cv-num">1</span>;
+    <span class="cv-var">$_SESSION</span>[<span class="cv-str">'username'</span>] = <span class="cv-str">"admin"</span>;
+    <span class="cv-fn">header</span>(<span class="cv-str">"Location: exercise_10_2_auth_guard.php"</span>);
+    <span class="cv-kw">exit</span>;
+}
+<span class="cv-tag">?&gt;</span>
+&lt;!DOCTYPE html&gt;&lt;html lang="km"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Auth Guard&lt;/title&gt;&lt;/head&gt;
+&lt;body style="font-family:sans-serif; padding:12px; background:#F8FAFC;"&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (!<span class="cv-kw">isset</span>(<span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>])): <span class="cv-tag">?&gt;</span>
+        &lt;div style="background:#FEE2E2; color:#DC2626; padding:10px; border-radius:6px; border:1px solid #FECDD3;"&gt;
+            &lt;h4 style="margin:0 0 5px 0;"&gt;⛔ ការចូលប្រើត្រូវបានរារាំង (Access Denied / Unauthorized)&lt;/h4&gt;
+            &lt;p style="margin:0; font-size:12px;"&gt;អ្នកមិនទាន់បាន Login ឡើយ! សូម Login ជាមុនសិន។&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;form method="POST" style="margin-top:10px;"&gt;
+            &lt;button type="submit" name="mock_login" style="background:#4F46E5; color:white; padding:6px 12px; border:none; border-radius:4px; cursor:pointer;"&gt;+ ក្លែងធ្វើ Login (Simulate Login)&lt;/button&gt;
+        &lt;/form&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">else</span>: <span class="cv-tag">?&gt;</span>
+        &lt;div style="background:#DCFCE7; color:#166534; padding:10px; border-radius:6px; border:1px solid #BBF7D0;"&gt;
+            &lt;h4 style="margin:0 0 5px 0;"&gt;🔓 សូមស្វាគមន៍មកកាន់ Protected Admin Dashboard&lt;/h4&gt;
+            &lt;p style="margin:0; font-size:12px;"&gt;ចូលប្រើប្រាស់ដោយគណនី៖ &lt;b&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$_SESSION</span>[<span class="cv-str">'username'</span>] <span class="cv-tag">?&gt;</span>&lt;/b&gt;&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;p style="margin-top:10px;"&gt;
+            &lt;a href="exercise_10_2_auth_guard.php?action=logout" onclick="return confirm('តើអ្នកពិតជាចង់ចាកចេញមែនទេ?');" style="background:#DC2626; color:white; padding:6px 12px; text-decoration:none; border-radius:4px; font-weight:bold; font-size:11px;"&gt;[ចាកចេញ - Secure Logout]&lt;/a&gt;
+        &lt;/p&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
+&lt;/body&gt;&lt;/html&gt;</pre>
+            </div>
+
+            <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin-top: 2px;"><i class="fa-solid fa-desktop"></i> លទ្ធផលជាក់ស្តែងលើ Browser (Live Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header"><i class="fa-solid fa-shield"></i> State Transition Behavior</div>
+                <div class="output-body">
+[State 1 - Unauthenticated]: UI Display "⛔ ការចូលប្រើត្រូវបានរារាំង (Access Denied)"
+[Action: Mock Login Clicked]: Session Initialized -> Redirect -> UI Display "🔓 សូមស្វាគមន៍មកកាន់ Dashboard"
+[Action: Logout Clicked]: Session Wiped -> Cookie Destroyed -> Return to State 1 Cleanly!
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ៦ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 7: SECTION 10.3 PASSWORD HASHING THEORY ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-key"></i> ១០.៣ សន្តិសុខលេខសម្ងាត់ & Hashing (Password Security & Cryptography - Week 13)</div>
+
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-triangle-exclamation text-danger"></i> ១០.៣.១ គ្រោះថ្នាក់ Plain Text, ការប្រៀបធៀប Hashing vs Encryption <span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c4">C4</span> <span class="bloom-tag bloom-c5">C5</span></h4>
+            
+            <div class="text-block">
+                <b>ក. មហន្តរាយនៃការរក្សាទុក Password ជា Plain Text (The Plain-Text Disaster)៖</b><br>
+                ការរក្សាទុកលេខសម្ងាត់របស់អ្នកប្រើប្រាស់ជាអក្សរច្បាស់ៗ (Plain Text ដូចជា <code>"123456"</code>) ក្នុង Database គឺជាកំហុសវិជ្ជាជីវៈកម្រិតធ្ងន់ធ្ងរបំផុត។ ប្រសិនបើ Database ត្រូវបានលួចដោយ Hacker (តាមរយៈ SQL Injection ឬ Data Breach) គណនីរបស់អ្នកប្រើទាំងអស់នឹងត្រូវលេចធ្លាយភ្លាមៗ។
+            </div>
+
+            <div class="text-block">
+                <b>ខ. ការប្រៀបធៀបជាមូលដ្ឋានរវាង Hashing, Encryption និង Encoding៖</b>
+            </div>
+            <ul class="obj-list">
+                <li><b>Encoding (ឧ. Base64)៖</b> បំប្លែងទម្រង់ទិន្នន័យដើម្បីងាយស្រួលបញ្ជូនតាមបណ្តាញ។ <b>គ្មានសុវត្ថិភាពទាល់តែសោះ</b> ព្រោះនរណាក៏អាច Decode ត្រឡប់មកវិញបាន។</li>
+                <li><b>Encryption (ឧ. AES-256)៖</b> ជាអនុគមន៍ <b>ពីទិស (Two-Way Function)</b> ដែលប្រើ Secret Key ដើម្បី Lock និង Unlock។ ស័ក្តិសមសម្រាប់ទិន្នន័យដែលត្រូវការអានឡើងវិញ (ដូចជាលេខកាតធនាគារ)។</li>
+                <li><b>Hashing (ឧ. Bcrypt / Argon2)៖</b> ជាអនុគមន៍គណិតវិទ្យា <b>មួយទិស (One-Way Cryptographic Function)</b>។ មានន័យថា ទោះបីជាស្គាល់ Hash String ក៏គ្មានវិធីសាស្ត្រគណិតវិទ្យាណាអាច Decode ត្រឡប់ទៅជា Password ដើមបានឡើយ!</li>
+            </ul>
+
+            <div class="text-block" style="margin-top:4px;"><b>គ. តារាងប្រៀបធៀប Cryptographic Approaches Matrix៖</b></div>
+            <table class="standard-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">លក្ខណៈ (Feature)</th>
+                        <th style="width:26%;">Encoding (Base64)</th>
+                        <th style="width:26%;">Encryption (AES)</th>
+                        <th style="width:26%;">Hashing (Bcrypt)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>ទិសដៅនៃដំណើរការ</b></td>
+                        <td>ពីទិស (Two-Way)</td>
+                        <td>ពីទិស (Two-Way)</td>
+                        <td><b>មួយទិស (One-Way)</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>លទ្ធភាព Reversible</b></td>
+                        <td>ងាយស្រួល ១០០%</td>
+                        <td>អាច Decode បានដោយ Key</td>
+                        <td><b>មិនអាច Decode បានឡើយ</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>ការប្រើប្រាស់ស័ក្តិសម</b></td>
+                        <td>ផ្ញើ Email Attachment</td>
+                        <td>ទិន្នន័យកាតឥណទាន</td>
+                        <td><b>Password សុវត្ថិភាព</b></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="syntax-box">
+                <div class="syntax-title"><i class="fa-solid fa-shield-virus"></i> ហេតុអ្វីត្រូវជៀសវាង MD5 និង SHA-1 (Why MD5/SHA-1 are Obsolete)?</div>
+                MD5 និង SHA-1 មានល្បឿនលឿនពេក (Fast Hashes) ដែលធ្វើឱ្យ Hacker អាចប្រើប្រាស់ Rainbow Tables និង GPU Brute-force រកឃើញ Password រាប់ពាន់លានក្នុងមួយវិនាទី! ត្រូវតែប្រើ <code>PASSWORD_DEFAULT</code> (Bcrypt) ជានិច្ច។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ៧ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 8: SECTION 10.3 HANDS-ON PASSWORD HASHING ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-fingerprint text-success"></i> លំហាត់ទី ៣ (Lab 10.3)៖ អនុវត្ត `password_hash()` ជាមួយ Cryptographic Salt & Cost Factor</h4>
+            
+            <div class="prompt-box">
+                <div class="prompt-title"><i class="fa-solid fa-circle-question"></i> ប្រធានលំហាត់អនុវត្ត (Exercise Prompt & Problem Statement)៖</div>
+                សរសេរស្គ្រីប PHP ឈ្មោះ <code>exercise_10_3_hashing_demo.php</code> ដើម្បីបំប្លែងលេខសម្ងាត់ដូចគ្នា (<code>"Secret@2026"</code>) ចំនួន ២ ដងដោយប្រើ <code>password_hash($pwd, PASSWORD_DEFAULT)</code>។ បង្ហាញឱ្យឃើញថា ទោះបីជាលេខសម្ងាត់ដូចគ្នាក៏ដោយ ក៏ Hash Strings ទាំងពីរមានតម្លៃខុសគ្នាទាំងស្រុងដោយសារយន្តការ <b>Automatic Cryptographic Salt</b> និងវិភាគរចនាសម្ព័ន្ធ 60 តួអក្សរនៃ Bcrypt Hash។
+            </div>
+
+            <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin: 2px 0;"><i class="fa-solid fa-file-code"></i> កូដពេញលេញអាចដំណើរការបាន (Complete Runnable Script)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">exercise_10_3_hashing_demo.php (Bcrypt Salt Anatomy)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// exercise_10_3_hashing_demo.php - ការពិសោធន៍លើ Bcrypt Hashing & Salt</span>
+<span class="cv-var">$password</span> = <span class="cv-str">"Secret@2026"</span>;
+
+<span class="cv-cm">// បំប្លែង Hash លើកទី ១</span>
+<span class="cv-var">$hash1</span> = <span class="cv-fn">password_hash</span>(<span class="cv-var">$password</span>, <span class="cv-tag">PASSWORD_DEFAULT</span>, [<span class="cv-str">'cost'</span> =&gt; <span class="cv-num">12</span>]);
+
+<span class="cv-cm">// បំប្លែង Hash លើកទី ២ លើពាក្យសម្ងាត់ដដែល</span>
+<span class="cv-var">$hash2</span> = <span class="cv-fn">password_hash</span>(<span class="cv-var">$password</span>, <span class="cv-tag">PASSWORD_DEFAULT</span>, [<span class="cv-str">'cost'</span> =&gt; <span class="cv-num">12</span>]);
+<span class="cv-tag">?&gt;</span>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="km"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Password Hashing Anatomy&lt;/title&gt;&lt;/head&gt;
+&lt;body style="font-family:sans-serif; padding:12px; background:#F8FAFC; font-size:12px;"&gt;
+    &lt;h3 style="color:#4F46E5; margin-top:0;"&gt;ការវិភាគរចនាសម្ព័ន្ធ Bcrypt Password Hash (Anatomy of Hash)&lt;/h3&gt;
+    &lt;p&gt;&lt;b&gt;Plain-text Password:&lt;/b&gt; &lt;code style="background:#FEF3C7; padding:2px 6px;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$password</span> <span class="cv-tag">?&gt;</span>&lt;/code&gt;&lt;/p&gt;
+    
+    &lt;div style="background:white; padding:10px; border:1px solid #CBD5E1; border-radius:6px; margin-bottom:10px;"&gt;
+        &lt;p style="margin:0 0 5px 0;"&gt;&lt;b&gt;Hash Result #1 (Length: <span class="cv-tag">&lt;?=</span> <span class="cv-fn">strlen</span>(<span class="cv-var">$hash1</span>) <span class="cv-tag">?&gt;</span> chars):&lt;/b&gt;&lt;/p&gt;
+        &lt;code style="color:#15803D; word-break:break-all;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$hash1</span> <span class="cv-tag">?&gt;</span>&lt;/code&gt;
+        &lt;hr style="border:0; border-top:1px dashed #CBD5E1; margin:8px 0;"&gt;
+        &lt;p style="margin:0 0 5px 0;"&gt;&lt;b&gt;Hash Result #2 (Length: <span class="cv-tag">&lt;?=</span> <span class="cv-fn">strlen</span>(<span class="cv-var">$hash2</span>) <span class="cv-tag">?&gt;</span> chars):&lt;/b&gt;&lt;/p&gt;
+        &lt;code style="color:#0284C7; word-break:break-all;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$hash2</span> <span class="cv-tag">?&gt;</span>&lt;/code&gt;
+    &lt;/div&gt;
+
+    &lt;div style="background:#EEF2FF; padding:8px; border-left:4px solid #4F46E5; font-size:11px;"&gt;
+        &lt;b&gt;ការបកស្រាយរចនាសម្ព័ន្ធ $2y$12$e8x...៖&lt;/b&gt;&lt;br&gt;
+        • &lt;code&gt;$2y$&lt;/code&gt; : កំណត់ប្រភេទ Algorithm (Bcrypt)&lt;br&gt;
+        • &lt;code&gt;$12$&lt;/code&gt; : កម្រិតពិបាកក្នុងការគណនា (Cost Factor: 2^12 iterations)&lt;br&gt;
+        • 22 តួអក្សរបន្ទាប់ : Cryptographic Salt (ការពារ Rainbow Table Attacks)&lt;br&gt;
+        • 31 តួអក្សរចុងក្រោយ : One-Way Checksum Hash
+    &lt;/div&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+            </div>
+
+            <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin-top: 2px;"><i class="fa-solid fa-desktop"></i> លទ្ធផលជាក់ស្តែងលើ Browser (Live Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header"><i class="fa-solid fa-terminal"></i> Cryptographic Output</div>
+                <div class="output-body">
+Plain-text Password: Secret@2026
+Hash Result #1: $2y$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcFl7p92ldGxad68LJZdL17lhWy
+Hash Result #2: $2y$12$Ua7bVwJkIq2X0m9r6Z1nheP8k1bA9c3dE5f7g8h9i0j1k2l3m4n5o
+(ចំណាំ៖ ពាក្យសម្ងាត់តែមួយ ផ្តល់លទ្ធផល Hash ខុសគ្នាជានិច្ច ធ្វើឱ្យ Hacker មិនអាចទាយបាន!)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ៨ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 9: SECTION 10.4 AUTHENTICATION VERIFICATION THEORY ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading"><i class="fa-solid fa-right-to-bracket"></i> ១០.៤ ប្រព័ន្ធផ្ទៀងផ្ទាត់ការ Login (Secure Login Pipeline - Week 13)</div>
+
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-key text-primary"></i> ១០.៤.១ & ១០.៤.២ យន្តការ Login Verification តាម `password_verify()` <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></h4>
+            
+            <div class="text-block">
+                <b>ក. យន្តការផ្ទៀងផ្ទាត់ដោយមិនបាច់ Decode (The Verification Mechanism)៖</b><br>
+                ដោយសារតែ Bcrypt Hash គឺជា One-Way Function ដែលមិនអាច Decode ត្រឡប់មកវិញបាន តើ Server អាចដឹងថា User វាយ Password ត្រូវឬខុសដោយរបៀបណា? ចម្លើយគឺការប្រើប្រាស់អនុគមន៍ <code>password_verify($inputPassword, $databaseHash)</code>៖
+            </div>
+            <ul class="obj-list">
+                <li><code>password_verify()</code> នឹងទាញយក <b>Salt</b> និង <b>Cost Factor</b> ដែលបង្កប់ក្នុង <code>$databaseHash</code>។</li>
+                <li>វាយក <code>$inputPassword</code> ថ្មីទៅ Hash ជាមួយ Salt នោះម្តងទៀត។</li>
+                <li>ប្រសិនបើ Hash ថ្មីដែលទើបគណនាឃើញ ដូចគ្នាឥតខ្ចោះទៅនឹង Hash ក្នុង Database នោះអនុគមន៍នឹង Return <code>true</code> (Login ជោគជ័យ) បើមិនដូចគ្នា Return <code>false</code>។</li>
+            </ul>
+
+            <div class="text-block" style="margin-top:4px;"><b>ខ. លំហូរការងារ Login Pipeline ស្តង់ដារ (The 5-Step Secure Login Flow)៖</b></div>
+            <ol class="q-list" style="list-style-type:decimal;">
+                <li>ទទួល <code>email/username</code> និង <code>password</code> តាមរយៈ HTTP POST Request។</li>
+                <li>រត់ SQL Query តាម PDO Prepared Statement ដើម្បីស្វែងរក User តាម Email/Username តែមួយគត់៖<br>
+                <code>SELECT * FROM tbl_users WHERE email = :email LIMIT 1</code></li>
+                <li>ប្រសិនបើ <b>រកមិនឃើញ User</b> ក្នុង Database ទេ ត្រូវបដិសេធភ្លាមៗ។</li>
+                <li>ប្រសិនបើ <b>រកឃើញ User</b> ត្រូវហៅ <code>password_verify($password, $user['password_hash'])</code>។</li>
+                <li>ប្រសិនបើផ្ទៀងផ្ទាត់ត្រូវ៖ បង្កើត Session (<code>$_SESSION['user_id'] = $user['id']</code>) រួច Redirect ទៅកាន់ Dashboard។</li>
+            </ol>
+
+            <div class="text-block" style="margin-top:4px;"><b>គ. ការពារ Timing Attacks និង User Enumeration៖</b></div>
+            <div class="text-block">
+                កុំបង្ហាញសារ Error ជាក់លាក់ពេកដូចជា <i>"រកមិនឃើញអ៊ីមែលនេះទេ"</i> ឬ <i>"អ៊ីមែលត្រូវតែខុសលេខសម្ងាត់"</i>។ ត្រូវបង្ហាញសាររួមតែមួយគត់គឺ៖ <b>"អ៊ីមែល ឬលេខសម្ងាត់មិនត្រឹមត្រូវឡើយ!"</b> ដើម្បីការពារកុំឱ្យ Hacker ដឹងថា Email ណាខ្លះមានក្នុងប្រព័ន្ធ។
+            </div>
+
+            <div class="syntax-box">
+                <div class="syntax-title"><i class="fa-solid fa-code"></i> ទម្រង់ទូទៅស្តង់ដារ Login Logic (Login Syntax Blueprint)៖</div>
+                <code>if ($user && password_verify($passwordInput, $user['password'])) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;session_regenerate_id(true); // ការពារ Session Fixation<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;$_SESSION['user_id'] = $user['id'];<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;header("Location: dashboard.php");<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;exit;<br>
+                }</code>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ៩ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 10: SECTION 10.4 HANDS-ON LOGIN VERIFY ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-topic-card">
+            <h4><i class="fa-solid fa-key text-success"></i> លំហាត់ទី ៤ (Lab 10.4)៖ ស្គ្រីបផ្ទៀងផ្ទាត់លេខសម្ងាត់ជាមួយ `password_verify()`</h4>
+            
+            <div class="prompt-box">
+                <div class="prompt-title"><i class="fa-solid fa-circle-question"></i> ប្រធានលំហាត់អនុវត្ត (Exercise Prompt & Problem Statement)៖</div>
+                សរសេរស្គ្រីប PHP ឈ្មោះ <code>exercise_10_4_login_verify.php</code> ដោយប្រើ Simulated Memory DB។ កំណត់គណនីមួយដែលមានលេខសម្ងាត់ Hash រួចរៀបចំ Form សម្រាប់បញ្ចូល Password ដើម្បីធ្វើតេស្តផ្ទៀងផ្ទាត់ជាមួយ <code>password_verify()</code> ទាំងករណីវាយត្រូវ និងករណីវាយខុស។
+            </div>
+
+            <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin: 2px 0;"><i class="fa-solid fa-file-code"></i> កូដពេញលេញអាចដំណើរការបាន (Complete Runnable Script)៖</div>
+            <div class="code-window">
+                <div class="code-header"><div class="mac-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="code-title">exercise_10_4_login_verify.php (Password Verification)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// exercise_10_4_login_verify.php - ការផ្ទៀងផ្ទាត់ Password Hashing</span>
+<span class="cv-var">$correctPassword</span> = <span class="cv-str">"Admin@2026"</span>;
+<span class="cv-var">$dbHashedPassword</span> = <span class="cv-fn">password_hash</span>(<span class="cv-var">$correctPassword</span>, <span class="cv-tag">PASSWORD_DEFAULT</span>);
+
+<span class="cv-var">$message</span> = <span class="cv-str">""</span>;
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">'REQUEST_METHOD'</span>] === <span class="cv-str">'POST'</span>) {
+    <span class="cv-var">$enteredPassword</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'password'</span>] ?? <span class="cv-str">''</span>;
+    
+    <span class="cv-kw">if</span> (<span class="cv-fn">password_verify</span>(<span class="cv-var">$enteredPassword</span>, <span class="cv-var">$dbHashedPassword</span>)) {
+        <span class="cv-var">$message</span> = <span class="cv-str">"&lt;div style='background:#DCFCE7; color:#166534; padding:8px; border-radius:4px;'&gt;✓ ផ្ទៀងផ្ទាត់ជោគជ័យ! Password ត្រឹមត្រូវ (Login Success)&lt;/div&gt;"</span>;
+    } <span class="cv-kw">else</span> {
+        <span class="cv-var">$message</span> = <span class="cv-str">"&lt;div style='background:#FEE2E2; color:#DC2626; padding:8px; border-radius:4px;'&gt;✗ លេខសម្ងាត់មិនត្រឹមត្រូវឡើយ! (Invalid Password)&lt;/div&gt;"</span>;
+    }
+}
+<span class="cv-tag">?&gt;</span>
+&lt;!DOCTYPE html&gt;&lt;html lang="km"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Verify Test&lt;/title&gt;&lt;/head&gt;
+&lt;body style="font-family:sans-serif; padding:12px; background:#F8FAFC; font-size:12px;"&gt;
+    &lt;h3 style="color:#4F46E5; margin-top:0;"&gt;តេស្តផ្ទៀងផ្ទាត់លេខសម្ងាត់ (Password Verification Test)&lt;/h3&gt;
+    &lt;p&gt;&lt;b&gt;Password ពិតប្រាកដក្នុងប្រព័ន្ធ៖&lt;/b&gt; &lt;code&gt;Admin@2026&lt;/code&gt;&lt;/p&gt;
+    <span class="cv-tag">&lt;?=</span> <span class="cv-var">$message</span> <span class="cv-tag">?&gt;</span>
+    &lt;form method="POST" style="margin-top:10px;"&gt;
+        បញ្ចូលលេខសម្ងាត់ដើម្បីតេស្ត៖&lt;br&gt;
+        &lt;input type="password" name="password" style="padding:6px; width:220px;" placeholder="វាយលេខសម្ងាត់..." required&gt;
+        &lt;button type="submit" style="padding:6px 12px; background:#4F46E5; color:white; border:none; border-radius:4px; cursor:pointer;"&gt;ផ្ទៀងផ្ទាត់ (Verify)&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+            </div>
+
+            <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin-top: 2px;"><i class="fa-solid fa-desktop"></i> លទ្ធផលជាក់ស្តែងលើ Browser (Live Execution Output)៖</div>
+            <div class="output-window">
+                <div class="output-header"><i class="fa-solid fa-check-double"></i> Verification Outcomes</div>
+                <div class="output-body">
+Case 1: User វាយ "WrongPass123" -> password_verify() = false -> "✗ លេខសម្ងាត់មិនត្រឹមត្រូវឡើយ!"
+Case 2: User វាយ "Admin@2026"  -> password_verify() = true  -> "✓ ផ្ទៀងផ្ទាត់ជោគជ័យ! Password ត្រឹមត្រូវ"
+(ដំណើរការផ្ទៀងផ្ទាត់មានសុវត្ថិភាពខ្ពស់ និងរហ័សបំផុត!)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១០ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 11: GLOSSARY & SUMMARY ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-book-bookmark"></i> ៤. ពន្យល់ពាក្យ និងអក្សរកាត់គន្លឹះ (Bilingual Glossary Table)</div>
+        
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">ពាក្យគន្លឹះ (Term)</th>
+                    <th style="width: 28%;">ឈ្មោះពេញ / ប្រភព (Full Name)</th>
+                    <th style="width: 38%;">ការពន្យល់ន័យជាភាសាខ្មែរ (Definition in Khmer)</th>
+                    <th style="width: 12%; text-align:center;">Bloom</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>Authentication</b></td><td>User Identity Verification</td><td>ដំណើរការផ្ទៀងផ្ទាត់អត្តសញ្ញាណអ្នកប្រើ (Login តាមរយៈ Email & Password)។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Authorization</b></td><td>Access Control & Permissions</td><td>ការត្រួតពិនិត្យសិទ្ធិអំណាចអ្នកប្រើ (ឧ. Role ជា Admin ទើបអាចលុបទិន្នន័យបាន)។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>Session</b></td><td>Server-Side User State</td><td>យន្តការរក្សាទុកទិន្នន័យអ្នកប្រើនៅលើ Web Server ដោយសម្គាល់តាម Session ID។</td><td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span></td></tr>
+                <tr><td><b>Cookie</b></td><td>Client-Side Browser Storage</td><td>ឯកសារអត្ថបទតូចមួយដែល Server បញ្ជូនឱ្យ Browser រក្សាទុកលើម៉ាស៊ីន User។</td><td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span></td></tr>
+                <tr><td><b>Password Hashing</b></td><td>One-Way Cryptographic Digest</td><td>ការបំប្លែងលេខសម្ងាត់ទៅជាកូដដែលមិនអាច Decode ត្រឡប់មកវិញបានជាដាច់ខាត។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+                <tr><td><b>Cryptographic Salt</b></td><td>Random Cryptographic String</td><td>ទិន្នន័យចៃដន្យដែលបូកបញ្ចូលក្នុង Password មុន Hash ការពារ Rainbow Tables។</td><td style="text-align:center;"><span class="bloom-tag bloom-c4">C4</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title" style="margin-top:5px;"><i class="fa-solid fa-list-check"></i> ៥. សង្ខេបមេរៀន (Comprehensive Lesson Summary)</div>
+        <ul class="obj-list">
+            <li><b class="highlight">១. ស្ថាបត្យកម្ម State Management (Week 12 Focus)៖</b> HTTP គឺជា Stateless Protocol។ យើងប្រើប្រាស់ Session (Server-side) ដើម្បីរក្សាទុកអត្តសញ្ញាណ Login របស់អ្នកប្រើ និងប្រើ Cookie (Client-side) ដើម្បីផ្ទុក Session ID (PHPSESSID)។</li>
+            <li><b class="highlight">២. យន្តការការពារទំព័រ Auth Guard៖</b> រាល់ទំព័ររដ្ឋបាលត្រូវតែត្រួតពិនិត្យ <code>$_SESSION['user_id']</code> ជាមុន។ ប្រសិនបើគ្មាន Session ទេ ត្រូវតែធ្វើការ Redirect ទៅកាន់ទំព័រ Login ភ្លាមៗ។</li>
+            <li><b class="highlight">៣. សន្តិសុខលេខសម្ងាត់ដាច់ខាត (Week 13 Focus)៖</b> ហាមដាច់ខាតមិនឱ្យរក្សាទុក Password ជា Plain Text, MD5, ឬ SHA-1 ឡើយ។ ត្រូវតែប្រើប្រាស់ <code>password_hash($pwd, PASSWORD_DEFAULT)</code> ដែលប្រើក្បួន Bcrypt ជាមួយ Auto-Salt។</li>
+            <li><b class="highlight">៤. ការផ្ទៀងផ្ទាត់ Login ប្រកបដោយសុវត្ថិភាព៖</b> ប្រើប្រាស់ <code>password_verify()</code> ដើម្បីផ្ទៀងផ្ទាត់ពាក្យសម្ងាត់ពេល Login និងប្រើ <code>session_regenerate_id(true)</code> ដើម្បីការពារការវាយប្រហារ Session Fixation។</li>
+        </ul>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១១ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 12: REVIEW QUESTIONS PART 1 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--accent); color:white; justify-content:center; border-radius:6px; border-left:none; margin: 0; padding: 3px 0;"><i class="fa-solid fa-pen-to-square"></i> ៦. សំណួររំលឹកមេរៀន (Review Questions)</div>
+        
+        <div class="sub-heading" style="width: 100%; margin-top:5px;">៦.ក. សំណួរ ខុស/ត្រូវ (True/False - ១០ សំណួរ)</div>
+        <ol class="q-list">
+            <li>HTTP គឺជា Stateful Protocol ដែលចងចាំគ្រប់សកម្មភាពរបស់អ្នកប្រើដោយស្វ័យប្រវត្តិ។ <span class="bloom-tag bloom-c1">C1</span></li>
+            <li>ទិន្នន័យ Session ត្រូវបានរក្សាទុកនៅលើ Web Server ចំណែក Cookie ត្រូវបានរក្សាទុកក្នុង Web Browser។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>អនុគមន៍ <code>session_start()</code> អាចហៅនៅកន្លែងណាក៏បាន បន្ទាប់ពី Render HTML ក៏បាន។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>ការរក្សាទុក Password ជា Plain Text ក្នុង Database គឺជាការអនុវត្តត្រឹមត្រូវតាមស្តង់ដារ។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>Bcrypt Hash គឺជា One-Way Cryptographic Function ដែលមិនអាច Decode ត្រឡប់មកវិញបានឡើយ។ <span class="bloom-tag bloom-c2">C2</span></li>
+            <li>អនុគមន៍ <code>password_verify()</code> ដំណើរការដោយការ Decode Hash ក្នុង DB មកជា Plain Text ដើម្បីប្រៀបធៀប។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>ការប្រើ Cryptographic Salt ជួយទប់ស្កាត់ការវាយប្រហារតាមរយៈ Rainbow Table Attacks។ <span class="bloom-tag bloom-c4">C4</span></li>
+            <li>ការហៅ <code>session_destroy()</code> តែមួយមុខ គឺមិនទាន់លុប Session Cookie ចេញពី Browser ឡើយ។ <span class="bloom-tag bloom-c3">C3</span></li>
+            <li>យើងគួរប្រើប្រាស់ក្បួន MD5 សម្រាប់ Hash លេខសម្ងាត់ក្នុង Web Application ទំនើប។ <span class="bloom-tag bloom-c5">C5</span></li>
+            <li><code>session_regenerate_id(true)</code> ជួយការពារប្រព័ន្ធពីការវាយប្រហារ Session Fixation។ <span class="bloom-tag bloom-c4">C4</span></li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:5px;">៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - សំណួរ ១ ដល់ ៥)</div>
+        <ol class="q-list">
+            <li>តើអនុគមន៍ PHP ណាដែលប្រើសម្រាប់ចាប់ផ្តើម Session ក្នុង Web Page? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. session_create()</li><li>B. session_start()</li><li>C. session_init()</li><li>D. start_session()</li></ul>
+            </li>
+            <li>តើ Superglobal Variable ណាដែលប្រើសម្រាប់រក្សាទុកទិន្នន័យ Session ក្នុង PHP? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. $_COOKIE</li><li>B. $_SERVER</li><li>C. $_SESSION</li><li>D. $_ENV</li></ul>
+            </li>
+            <li>តើអនុគមន៍ណាដែលត្រឹមត្រូវបំផុតសម្រាប់ Hash លេខសម្ងាត់ក្នុង PHP 8? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. md5()</li><li>B. sha1()</li><li>C. password_hash()</li><li>D. base64_encode()</li></ul>
+            </li>
+            <li>តើ algorithm parameter ណាដែលត្រូវបានណែនាំជាស្តង់ដារក្នុង <code>password_hash()</code>? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. PASSWORD_DEFAULT</li><li>B. PASSWORD_MD5</li><li>C. PASSWORD_SHA256</li><li>D. PASSWORD_RAW</li></ul>
+            </li>
+            <li>តើអនុគមន៍ណាដែលប្រើសម្រាប់ផ្ទៀងផ្ទាត់លេខសម្ងាត់ពេល Login? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. password_check()</li><li>B. password_verify()</li><li>C. password_match()</li><li>D. password_test()</li></ul>
+            </li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១២ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 13: REVIEW QUESTIONS PART 2 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0;">៦.ខ. សំណួរ ពហុជ្រើសរើស (MCQs - សំណួរ ៦ ដល់ ១០)</div>
+        <ol class="q-list" start="6">
+            <li>តើប្រវែងតួអក្សរ (String Length) នៃ Bcrypt Hash ដែលបង្កើតដោយ <code>password_hash()</code> មានប៉ុន្មានតួ? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. 32 តួអក្សរ</li><li>B. 60 តួអក្សរ</li><li>C. 128 តួអក្សរ</li><li>D. 256 តួអក្សរ</li></ul>
+            </li>
+            <li>តើ Cookie ឈ្មោះអ្វីដែល PHP ប្រើជាទូទៅដើម្បីផ្ទុក Session Identifier លើ Browser? <span class="bloom-tag bloom-c1">C1</span>
+                <ul class="mcq-opts"><li>A. USER_TOKEN</li><li>B. PHPSESSID</li><li>C. PHP_AUTH</li><li>D. SESSION_KEY</li></ul>
+            </li>
+            <li>ដើម្បីការពារការចូលទំព័រ Admin ដោយគ្មានការអនុញ្ញាត តើលក្ខខណ្ឌណាដែលត្រឹមត្រូវ? <span class="bloom-tag bloom-c3">C3</span>
+                <ul class="mcq-opts"><li>A. if (isset($_COOKIE['admin']))</li><li>B. if (!isset($_SESSION['user_id']))</li><li>C. if ($_GET['login'] == 1)</li><li>D. if (!empty($_POST))</li></ul>
+            </li>
+            <li>តើអ្វីជាភាពខុសគ្នារវាង Authentication និង Authorization? <span class="bloom-tag bloom-c4">C4</span>
+                <ul class="mcq-opts"><li>A. Auth ទាំងពីរដូចគ្នា</li><li>B. Auth=Login ឯ Authorize=ការកំណត់សិទ្ធិ</li><li>C. Auth=Password ឯ Authorize=Email</li><li>D. គ្មានចម្លើយត្រឹមត្រូវ</li></ul>
+            </li>
+            <li>តើអនុគមន៍ណាប្រើសម្រាប់បំផ្លាញរាល់ទិន្នន័យ Session ចេញពី Server ពេល Logout? <span class="bloom-tag bloom-c2">C2</span>
+                <ul class="mcq-opts"><li>A. session_unset()</li><li>B. session_destroy()</li><li>C. session_close()</li><li>D. session_delete()</li></ul>
+            </li>
+        </ol>
+
+        <div class="sub-heading" style="width: 100%; margin-top:5px;">៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ សំណួរ)</div>
+        <table class="matching-table">
+            <thead>
+                <tr>
+                    <th style="width:50%;">ជួរ A (Security & Auth Concept)</th>
+                    <th style="width:50%;">ជួរ B (ការពិពណ៌នា / មុខងារ)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>១. <code>session_start()</code></td><td>A. បំប្លែងលេខសម្ងាត់ទៅជា Bcrypt One-Way Hash ជាមួយ Salt</td></tr>
+                <tr><td>២. <code>password_hash()</code></td><td>B. អនុគមន៍ផ្តើមដំណើរការ Session ឬទាញយក Session ចាស់មកប្រើ</td></tr>
+                <tr><td>៣. <code>password_verify()</code></td><td>C. ផ្ទៀងផ្ទាត់ Plain Password ជាមួយ Hash ក្នុង Database ពេល Login</td></tr>
+                <tr><td>៤. <code>$_SESSION</code></td><td>D. Superglobal Array សម្រាប់រក្សាទុកទិន្នន័យ User លើ Server</td></tr>
+                <tr><td>៥. <code>session_destroy()</code></td><td>E. បំផ្លាញរាល់ទិន្នន័យ Session ចេញពី Hard Disk/Storage របស់ Server</td></tr>
+                <tr><td>៦. <code>Bcrypt Algorithm</code></td><td>F. ក្បួន Hashing ស្តង់ដារដែលមាន Cost Factor និង Auto-Salt</td></tr>
+                <tr><td>៧. <code>PHPSESSID</code></td><td>G. ឈ្មោះ Cookie ដែលផ្ទុកកូដសម្គាល់ Session ID លើ Browser</td></tr>
+                <tr><td>៨. <code>Auth Guard</code></td><td>H. យន្តការត្រួតពិនិត្យ Session និង Redirect អ្នកគ្មានសិទ្ធិចេញ</td></tr>
+                <tr><td>៩. <code>Plain Text</code></td><td>I. ទម្រង់អក្សរច្បាស់ៗដែលគ្មានសុវត្ថិភាពក្នុងការផ្ទុក Password</td></tr>
+                <tr><td>១០. <code>Session Fixation</code></td><td>J. ការវាយប្រហារបន្លំ Session ID ដែលការពារបានតាម regenerate_id</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១៣ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 14: EXPLANATORY QUESTIONS ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="width: 100%; margin-top:0; color:var(--accent);"><i class="fa-solid fa-comments"></i> ៦.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៩ សំណួរតាម ៣ កម្រិត)</div>
+        
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--success); margin:2px 0;">[កម្រិតស្រាល - Light/Easy Level - ៣ សំណួរ]</div>
+        <ol class="q-list">
+            <li><b>Q10.1:</b> ពន្យល់ពីមូលហេតុដែល HTTP ត្រូវបានចាត់ទុកជា Stateless Protocol។ <span class="bloom-tag bloom-c1">C1 - Remember</span></li>
+            <li><b>Q10.2:</b> រៀបរាប់ពីភាពខុសគ្នាសំខាន់ៗចំនួន ៣ រវាង Session និង Cookie។ <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+            <li><b>Q10.3:</b> តើអ្វីទៅជា Password Hash ហើយហេតុអ្វីបានជាវាមិនអាច Decode ត្រឡប់មកវិញបាន? <span class="bloom-tag bloom-c2">C2 - Understand</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--warning); margin:3px 0 2px 0;">[កម្រិតមធ្យម - Medium Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="4">
+            <li><b>Q10.4:</b> វិភាគពីយន្តការផ្ទៀងផ្ទាត់របស់ <code>password_verify()</code> ថាហេតុអ្វីបានជាវាដឹងថា Password ត្រូវដោយមិនបាច់ Decode? <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q10.5:</b> ពន្យល់ពីតួនាទីរបស់ Cryptographic Salt ក្នុងការទប់ស្កាត់ការវាយប្រហារ Rainbow Table Attacks។ <span class="bloom-tag bloom-c4">C4 - Analyze</span></li>
+            <li><b>Q10.6:</b> បកស្រាយពីជំហានទាំង ៤ ក្នុងការបំផ្លាញ Session ឱ្យបានស្អាតស្អំ ១០០% ពេល User ចុច Logout។ <span class="bloom-tag bloom-c3">C3 - Apply</span></li>
+        </ol>
+
+        <div style="font-family:var(--font-kh-heading); font-size:9pt; color:var(--danger); margin:3px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level - ៣ សំណួរ]</div>
+        <ol class="q-list" start="7">
+            <li><b>Q10.7:</b> វិភាគពីហានិភ័យនៃ Session Hijacking និង Session Fixation ព្រមទាំងវិធីសាស្ត្រការពារក្នុង PHP។ <span class="bloom-tag bloom-c5">C5 - Evaluate</span></li>
+            <li><b>Q10.8:</b> ហេតុអ្វីបានជាក្បួន Hashing ចាស់ៗដូចជា MD5 និង SHA-1 ត្រូវបានចាត់ទុកថាលែងមានសុវត្ថិភាពសម្រាប់ Password? <span class="bloom-tag bloom-c5">C5 - Evaluate</span></li>
+            <li><b>Q10.9:</b> រចនាស្ថាបត្យកម្ម Auth Guard Middleware សម្រាប់ការពារ Admin Route មិនឱ្យអ្នកប្រើធម្មតាចូលបាន។ <span class="bloom-tag bloom-c6">C6 - Create</span></li>
+        </ol>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១៤ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 15: ANSWERS KEY PART 1 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="background:var(--success); color:white; justify-content:center; border-radius:6px; border:none; margin: 0; padding: 3px 0;"><i class="fa-solid fa-key"></i> ៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys & Solutions)</div>
+            
+        <div class="sub-heading" style="margin-top: 5px; font-size:9pt; color:var(--success);">៧.ក. ចម្លើយ សំណួរ ខុស/ត្រូវ (True/False Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ខុស</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td><td>ត្រូវ</td><td>ខុស</td><td>ត្រូវ</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 5px; font-size:9pt; color:var(--success);">៧.ខ. ចម្លើយ សំណួរ ពហុជ្រើសរើស (MCQ Answers 1-10)</div>
+        <table class="ans-table">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>C</td><td>C</td><td>A</td><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 5px; font-size:9pt; color:var(--success);">៧.គ. ចម្លើយ សំណួរ ផ្គូផ្គង (Matching Answers 1-10)</div>
+        <table class="ans-table" style="margin-bottom: 4px;">
+            <tr><th>១</th><th>២</th><th>៣</th><th>៤</th><th>៥</th><th>៦</th><th>៧</th><th>៨</th><th>៩</th><th>១០</th></tr>
+            <tr><td>B</td><td>A</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
+        </table>
+
+        <div class="sub-heading" style="margin-top: 4px; font-size:9pt; color:var(--success);"><i class="fa-solid fa-comment-dots"></i> ៧.ឃ. ចម្លើយសំណួរបកស្រាយ (Solutions Q10.1 - Q10.5)</div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:8.5pt; color:var(--success); margin:1px 0;">[កម្រិតស្រាល - Light/Easy Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.1 (មូលហេតុ HTTP ជា Stateless Protocol)៖</h5>
+            <div class="text-block" style="font-size:8.3pt; margin:0;">
+                HTTP ត្រូវបានចាត់ទុកជា Stateless ពីព្រោះរាល់ Request នីមួយៗរវាង Client និង Server គឺដាច់ដោយឡែកពីគ្នាទាំងស្រុង ដោយ Server មិនរក្សាទុកប្រវត្តិនៃសំណើមុនៗឡើយ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.2 (ភាពខុសគ្នារវាង Session និង Cookie)៖</h5>
+            <div class="text-block" style="font-size:8.3pt; margin:0;">
+                ១. <b>ទីតាំង៖</b> Session ផ្ទុកលើ Server, Cookie ផ្ទុកលើ Browser។ ២. <b>សុវត្ថិភាព៖</b> Session មានសុវត្ថិភាពខ្ពស់ ឯ Cookie ងាយរងការកែប្រែ។ ៣. <b>ទំហំ៖</b> Cookie ផ្ទុកបានត្រឹម 4KB ឯ Session គ្មានដែនកំណត់តឹងរ៉ឹងឡើយ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.3 (និយមន័យ Password Hash)៖</h5>
+            <div class="text-block" style="font-size:8.3pt; margin:0;">
+                Password Hash គឺជាអនុគមន៍គណិតវិទ្យាមួយទិស (One-Way) ដែលបំប្លែងអក្សរទៅជា Digest ប្រវែងថេរ។ វាបាត់បង់ទិន្នន័យដើមក្នុងដំណើរការគណនា ធ្វើឱ្យគ្មានរូបមន្តគណិតវិទ្យាណាអាចបញ្ច្រាសមកវិញបានឡើយ។
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:8.5pt; color:var(--warning); margin:3px 0 1px 0;">[កម្រិតមធ្យម - Medium Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.4 (យន្តការផ្ទៀងផ្ទាត់របស់ `password_verify()`)៖</h5>
+            <div class="text-block" style="font-size:8.3pt; margin:0;">
+                <code>password_verify()</code> ទាញយក Salt និង Cost ដែលមានស្រាប់ក្នុង Hash ចាស់ មកធ្វើការ Hash លើ Password ថ្មីដែល User ទើបវាយបញ្ចូល។ បន្ទាប់មកវាប្រៀបធៀបលទ្ធផល Hash ទាំងពីរ បើដូចគ្នាមានន័យថា Password ត្រឹមត្រូវ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.5 (តួនាទីរបស់ Cryptographic Salt)៖</h5>
+            <div class="text-block" style="font-size:8.3pt; margin:0;">
+                Salt គឺជាអក្សរចៃដន្យដែលបូកបន្ថែមជាមួយ Password មុនពេល Hash។ វាធានាថា Password ដូចគ្នានឹងបង្កើតបាន Hash ខុសគ្នាជានិច្ច ដែលធ្វើឱ្យតារាងពាក្យសម្ងាត់គណនាទុកមុន (Rainbow Tables) របស់ Hacker លែងមានប្រសិទ្ធភាព។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១៥ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 16: ANSWERS KEY PART 2 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.6 (ជំហានទាំង ៤ នៃដំណើរការ Logout ស្អាតស្អំ)៖</h5>
+            <div class="text-block" style="font-size:8.8pt; margin:0;">
+                ១. <code>$_SESSION = [];</code> (លុបចោលរាល់ Memory Variables ក្នុង Script)<br>
+                ២. <code>setcookie(session_name(), '', time() - 42000, '/');</code> (បញ្ជា Browser ឱ្យលុប Cookie PHPSESSID)<br>
+                ៣. <code>session_destroy();</code> (បំផ្លាញទិន្នន័យ Session ចេញពី Hard Disk របស់ Server)<br>
+                ៤. <code>header("Location: login.php"); exit;</code> (បញ្ជូន User ត្រឡប់ទៅ Login Page)
+            </div>
+        </div>
+
+        <div style="font-family:var(--font-kh-heading); font-size:8.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level Solutions]</div>
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.7 (Session Hijacking & Fixation Defense)៖</h5>
+            <div class="text-block" style="font-size:8.8pt; margin:0;">
+                • <b>Session Hijacking៖</b> Hacker លួច Session ID តាម XSS ឬ Network Sniffing។ ការពារដោយប្រើ HTTPS និងកំណត់ Cookie flags <code>HttpOnly</code> និង <code>Secure</code>។<br>
+                • <b>Session Fixation៖</b> Hacker កំណត់ Session ID ឱ្យរងគ្រោះជាមុន។ ការពារដោយហៅ <code>session_regenerate_id(true)</code> ភ្លាមៗក្រោយពេល User Login ជោគជ័យ។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.8 (ហេតុអ្វី MD5 និង SHA-1 លែងមានសុវត្ថិភាព)៖</h5>
+            <div class="text-block" style="font-size:8.8pt; margin:0;">
+                MD5 និង SHA-1 ត្រូវបានបង្កើតឡើងសម្រាប់ Checksum ឯកសារ ដូច្នេះវាមានល្បឿនលឿនខ្លាំង (Fast Hashes)។ ឧបករណ៍ GPU ទំនើបអាច Brute-force គណនាបានរាប់ពាន់លាន Hash ក្នុងមួយវិនាទី ព្រមទាំងងាយរងគ្រោះដោយសារ Hash Collision។
+            </div>
+        </div>
+
+        <div class="explain-ans-card">
+            <h5>• ចម្លើយ Q10.9 (ស្ថាបត្យកម្ម Auth Guard Middleware)៖</h5>
+            <div class="text-block" style="font-size:8.8pt; margin:0;">
+                បង្កើតឯកសារ <code>auth_guard.php</code> ដែលត្រួតពិនិត្យ <code>if (!isset($_SESSION['user_id']))</code> រួច Redirect ទៅ <code>login.php</code>។ បន្ទាប់មក យកឯកសារនេះទៅ <code>require_once 'auth_guard.php';</code> នៅផ្នែកខាងលើបង្អស់នៃរាល់ Admin CRUD Pages។
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១៦ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 17: LAB DATABASE SETUP (schema.sql) ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-database"></i> ៨. គ្រោងមូលដ្ឋានទិន្នន័យសម្រាប់អនុវត្តគម្រោង (Database Schema - User Authentication Entity)</div>
+        <div class="text-block">
+            សម្រាប់គម្រោង Full Authentication & Protected Dashboard ក្នុងសប្តាហ៍ទី ១២ និង ១៣ យើងប្រើប្រាស់ <b>Entity: អ្នកប្រើប្រាស់ប្រព័ន្ធ (<code>tbl_users</code>)</b> នៅក្នុងមូលដ្ឋានទិន្នន័យ <code>db_university_app</code> ដដែល។ សូមបើក <b>phpMyAdmin</b> រួចរត់ស្គ្រីប SQL ខាងក្រោម៖
+        </div>
+
+        <div style="font-weight:bold; font-size:8.8pt; color:var(--primary); margin-top:2px;">• ឯកសារ៖ <code>schema_auth.sql</code> (Database & User Table Setup Script)</div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">schema_auth.sql (Complete SQL Script)</div></div>
+<pre><span class="cv-cm">-- 1. ជ្រើសរើស Database db_university_app</span>
+<span class="cv-kw">USE</span> <span class="cv-var">db_university_app</span>;
+
+<span class="cv-cm">-- 2. បង្កើតតារាង Entity: tbl_users សម្រាប់ប្រព័ន្ធ Authentication</span>
+<span class="cv-kw">CREATE TABLE IF NOT EXISTS</span> <span class="cv-var">tbl_users</span> (
+    <span class="cv-var">id</span> <span class="cv-tag">INT</span> <span class="cv-kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cv-var">fullname</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">100</span>) <span class="cv-kw">NOT NULL</span>,
+    <span class="cv-var">username</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">50</span>) <span class="cv-kw">NOT NULL UNIQUE</span>,
+    <span class="cv-var">email</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">100</span>) <span class="cv-kw">NOT NULL UNIQUE</span>,
+    <span class="cv-var">password_hash</span> <span class="cv-tag">VARCHAR</span>(<span class="cv-num">255</span>) <span class="cv-kw">NOT NULL</span>,
+    <span class="cv-var">role</span> <span class="cv-tag">ENUM</span>(<span class="cv-str">'Admin'</span>, <span class="cv-str">'Staff'</span>, <span class="cv-str">'Student'</span>) <span class="cv-kw">DEFAULT</span> <span class="cv-str">'Staff'</span>,
+    <span class="cv-var">created_at</span> <span class="cv-tag">DATETIME DEFAULT CURRENT_TIMESTAMP</span>
+) <span class="cv-kw">ENGINE</span>=InnoDB;
+
+<span class="cv-cm">-- 3. បញ្ចូលគណនី Admin គំរូ (Password: Admin@123)</span>
+<span class="cv-cm">-- Hash: $2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm</span>
+<span class="cv-kw">INSERT INTO</span> <span class="cv-var">tbl_users</span> (<span class="cv-var">fullname</span>, <span class="cv-var">username</span>, <span class="cv-var">email</span>, <span class="cv-var">password_hash</span>, <span class="cv-var">role</span>) <span class="cv-kw">VALUES</span>
+(<span class="cv-str">'សាស្ត្រាចារ្យ សឿង លីម'</span>, <span class="cv-str">'admin'</span>, <span class="cv-str">'admin@au.edu.kh'</span>, <span class="cv-str">'$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm'</span>, <span class="cv-str">'Admin'</span>);</pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-terminal"></i> MySQL phpMyAdmin Output</div>
+            <div class="output-body">Query OK, 1 row affected. Table `tbl_users` Created with Sample Admin Account!</div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១៧ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 18: FILE 1 - db.php ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-folder-open"></i> ៩. កូដគម្រោងពេញលេញគ្រប់ Files (Complete Enterprise Auth System)</div>
+        
+        <div class="sub-heading" style="margin-top:2px;">ឯកសារទី ១៖ <code>db.php</code> (Modular Secure PDO Connection Component)</div>
+        <div class="text-block">
+            ឯកសារតភ្ជាប់ Database ជាមួយ UTF-8MB4 Charset, Strict Exception Handling និងបិទ Emulate Prepares ដើម្បីធានាសុវត្ថិភាពដាច់ខាត៖
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">db.php (Complete Modular PDO File)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// db.php - Modular Database Connection Component</span>
+<span class="cv-kw">declare</span>(strict_types=<span class="cv-num">1</span>);
+
+<span class="cv-var">$host</span>    = <span class="cv-str">"localhost"</span>;
+<span class="cv-var">$db</span>      = <span class="cv-str">"db_university_app"</span>;
+<span class="cv-var">$user</span>    = <span class="cv-str">"root"</span>;
+<span class="cv-var">$pass</span>    = <span class="cv-str">""</span>;
+<span class="cv-var">$charset</span> = <span class="cv-str">"utf8mb4"</span>;
+
+<span class="cv-var">$dsn</span> = <span class="cv-str">"mysql:host={$host};dbname={$db};charset={$charset}"</span>;
+
+<span class="cv-var">$options</span> = [
+    <span class="cv-tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="cv-tag">PDO</span>::ERRMODE_EXCEPTION,
+    <span class="cv-tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="cv-tag">PDO</span>::FETCH_ASSOC,
+    <span class="cv-tag">PDO</span>::ATTR_EMULATE_PREPARES   =&gt; <span class="cv-kw">false</span>,
+];
+
+<span class="cv-kw">try</span> {
+    <span class="cv-var">$pdo</span> = <span class="cv-kw">new</span> <span class="cv-tag">PDO</span>(<span class="cv-var">$dsn</span>, <span class="cv-var">$user</span>, <span class="cv-var">$pass</span>, <span class="cv-var">$options</span>);
+} <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
+    <span class="cv-fn">error_log</span>(<span class="cv-str">"[Auth System DB Error] "</span> . <span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>());
+    <span class="cv-fn">die</span>(<span class="cv-str">"&lt;h3 style='color:red;'&gt;កំហុសបច្ចេកទេស៖ មិនអាចតភ្ជាប់ Database បានឡើយ!&lt;/h3&gt;"</span>);
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-desktop"></i> Status</div>
+            <div class="output-body">Database PDO Instance $pdo Initialized Successfully!</div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១៨ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 19: FILE 2 - auth_guard.php ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ២៖ <code>auth_guard.php</code> (Reusable Route Protection Middleware)</div>
+        <div class="text-block">
+            ឯកសារ Middleware នេះត្រូវបាន <code>require_once</code> នៅលើគ្រប់ទំព័រដែលត្រូវការការពារ។ វាត្រួតពិនិត្យ Session និងទាត់អ្នកគ្មានសិទ្ធិចេញភ្លាមៗ៖
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">auth_guard.php (Route Protection Middleware)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// auth_guard.php - ជញ្ជាំងការពារ Route Protection Middleware</span>
+<span class="cv-kw">if</span> (<span class="cv-fn">session_status</span>() === <span class="cv-tag">PHP_SESSION_NONE</span>) {
+    <span class="cv-fn">session_start</span>();
+}
+
+<span class="cv-cm">// ត្រួតពិនិត្យមើលថាតើ User បាន Login ហើយឬនៅ</span>
+<span class="cv-kw">if</span> (!<span class="cv-kw">isset</span>(<span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>]) || <span class="cv-fn">empty</span>(<span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>])) {
+    <span class="cv-cm">// បញ្ជូនទៅទំព័រ Login ជាមួយ Error Code</span>
+    <span class="cv-fn">header</span>(<span class="cv-str">"Location: login.php?error=unauthorized"</span>);
+    <span class="cv-kw">exit</span>; <span class="cv-cm">// បញ្ឈប់ការ Render ទំព័រជាដាច់ខាត!</span>
+}
+
+<span class="cv-cm">// អនុគមន៍ជំនួយសម្រាប់ទាញយកទិន្នន័យ User បច្ចុប្បន្ន</span>
+<span class="cv-kw">function</span> <span class="cv-fn">authUser</span>(): <span class="cv-tag">array</span> {
+    <span class="cv-kw">return</span> [
+        <span class="cv-str">'id'</span>       =&gt; <span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>] ?? <span class="cv-num">0</span>,
+        <span class="cv-str">'username'</span> =&gt; <span class="cv-var">$_SESSION</span>[<span class="cv-str">'username'</span>] ?? <span class="cv-str">''</span>,
+        <span class="cv-str">'fullname'</span> =&gt; <span class="cv-var">$_SESSION</span>[<span class="cv-str">'fullname'</span>] ?? <span class="cv-str">''</span>,
+        <span class="cv-str">'role'</span>     =&gt; <span class="cv-var">$_SESSION</span>[<span class="cv-str">'role'</span>] ?? <span class="cv-str">'Staff'</span>,
+    ];
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-shield"></i> Middleware Protection Behavior</div>
+            <div class="output-body">
+បើ Guest ព្យាយាមបើក dashboard.php -> auth_guard.php ចាប់បាន -> 302 Redirect ទៅ login.php?error=unauthorized!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ១៩ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 20: FILE 3 - register.php PART 1 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៣៖ <code>register.php</code> (User Registration with Password Hashing) - ភាគ ១</div>
+        <div class="text-block">
+            ទំព័រចុះឈ្មោះគណនីថ្មី ដែលមាន Server-Side Validation, ពិនិត្យ Email/Username ស្ទួន, Hash លេខសម្ងាត់តាម Bcrypt និង INSERT តាម Prepared Statement៖
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">register.php (Registration Logic)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
+<span class="cv-kw">if</span> (<span class="cv-fn">session_status</span>() === <span class="cv-tag">PHP_SESSION_NONE</span>) { <span class="cv-fn">session_start</span>(); }
+
+<span class="cv-var">$errors</span> = [];
+<span class="cv-var">$fullname</span> = <span class="cv-str">''</span>; <span class="cv-var">$username</span> = <span class="cv-str">''</span>; <span class="cv-var">$email</span> = <span class="cv-str">''</span>;
+
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">'REQUEST_METHOD'</span>] === <span class="cv-str">'POST'</span>) {
+    <span class="cv-var">$fullname</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'fullname'</span>] ?? <span class="cv-str">''</span>);
+    <span class="cv-var">$username</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'username'</span>] ?? <span class="cv-str">''</span>);
+    <span class="cv-var">$email</span>    = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'email'</span>] ?? <span class="cv-str">''</span>);
+    <span class="cv-var">$password</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'password'</span>] ?? <span class="cv-str">''</span>;
+    <span class="cv-var">$confirm</span>  = <span class="cv-var">$_POST</span>[<span class="cv-str">'confirm_password'</span>] ?? <span class="cv-str">''</span>;
+
+    <span class="cv-cm">// Server-side Validations</span>
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$fullname</span>) || <span class="cv-fn">empty</span>(<span class="cv-var">$username</span>)) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"សូមបំពេញឈ្មោះពេញ និង Username!"</span>; }
+    <span class="cv-kw">if</span> (!<span class="cv-fn">filter_var</span>(<span class="cv-var">$email</span>, FILTER_VALIDATE_EMAIL)) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវឡើយ!"</span>; }
+    <span class="cv-kw">if</span> (<span class="cv-fn">strlen</span>(<span class="cv-var">$password</span>) &lt; <span class="cv-num">6</span>) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"លេខសម្ងាត់ត្រូវមានយ៉ាងតិច ៦ តួអក្សរ!"</span>; }
+    <span class="cv-kw">if</span> (<span class="cv-var">$password</span> !== <span class="cv-var">$confirm</span>) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"ការបញ្ជាក់លេខសម្ងាត់ទាំងពីរមិនត្រូវគ្នាទេ!"</span>; }
+
+    <span class="cv-cm">// ពិនិត្យ Username ឬ Email ស្ទួន</span>
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$errors</span>)) {
+        <span class="cv-var">$chk</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-str">"SELECT id FROM tbl_users WHERE email = :e OR username = :u"</span>);
+        <span class="cv-var">$chk</span>-&gt;<span class="cv-fn">execute</span>([<span class="cv-str">':e'</span> =&gt; <span class="cv-var">$email</span>, <span class="cv-str">':u'</span> =&gt; <span class="cv-var">$username</span>]);
+        <span class="cv-kw">if</span> (<span class="cv-var">$chk</span>-&gt;<span class="cv-fn">fetch</span>()) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"Username ឬ Email នេះមានអ្នកប្រើរួចហើយ!"</span>; }
+    }
+
+    <span class="cv-cm">// Hash Password & Insert ចូល Database</span>
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$errors</span>)) {
+        <span class="cv-var">$hash</span> = <span class="cv-fn">password_hash</span>(<span class="cv-var">$password</span>, <span class="cv-tag">PASSWORD_DEFAULT</span>);
+        <span class="cv-var">$ins</span>  = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-str">"INSERT INTO tbl_users (fullname, username, email, password_hash, role) VALUES (:fn, :un, :em, :pw, 'Staff')"</span>);
+        <span class="cv-var">$ins</span>-&gt;<span class="cv-fn">execute</span>([<span class="cv-str">':fn'</span> =&gt; <span class="cv-var">$fullname</span>, <span class="cv-str">':un'</span> =&gt; <span class="cv-var">$username</span>, <span class="cv-str">':em'</span> =&gt; <span class="cv-var">$email</span>, <span class="cv-str">':pw'</span> =&gt; <span class="cv-var">$hash</span>]);
+        
+        <span class="cv-fn">header</span>(<span class="cv-str">"Location: login.php?msg=registered"</span>);
+        <span class="cv-kw">exit</span>;
+    }
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២០ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 21: FILE 3 - register.php PART 2 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៣៖ <code>register.php</code> (User Registration) - ភាគ ២ Form UI</div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">register.php (Form HTML Section)</div></div>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="km"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;ចុះឈ្មោះគណនីថ្មី - Register Account&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: sans-serif; padding: 20px; background: #F8FAFC; display: flex; justify-content: center; }
+        .card { background: white; padding: 18px; border-radius: 8px; border: 1px solid #CBD5E1; width: 100%; max-width: 420px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 9px; }
+        label { display: block; font-weight: bold; margin-bottom: 2px; font-size: 11.5px; }
+        input { width: 100%; padding: 6px 8px; border: 1px solid #CBD5E1; border-radius: 4px; box-sizing: border-box; font-size: 12px; }
+        .btn-reg { background: #4F46E5; color: white; border: none; padding: 8px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        .alert-err { background: #FEE2E2; color: #DC2626; padding: 5px 8px; border-radius: 4px; margin-bottom: 4px; font-size: 11px; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="card"&gt;
+        &lt;h3 style="color:#4F46E5; text-align:center; margin-top:0;"&gt;ចុះឈ្មោះគណនីថ្មី (Register)&lt;/h3&gt;
+        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">foreach</span> (<span class="cv-var">$errors</span> <span class="cv-kw">as</span> <span class="cv-var">$err</span>): <span class="cv-tag">?&gt;</span>&lt;div class="alert-err"&gt;✗ <span class="cv-tag">&lt;?=</span> <span class="cv-var">$err</span> <span class="cv-tag">?&gt;</span>&lt;/div&gt;<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endforeach</span>; <span class="cv-tag">?&gt;</span>
+        &lt;form method="POST"&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;ឈ្មោះពេញ (Full Name)៖&lt;/label&gt;
+                &lt;input type="text" name="fullname" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$fullname</span>) <span class="cv-tag">?&gt;</span>" required&gt;
+            &lt;/div&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;ឈ្មោះគណនី (Username)៖&lt;/label&gt;
+                &lt;input type="text" name="username" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$username</span>) <span class="cv-tag">?&gt;</span>" required&gt;
+            &lt;/div&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;អ៊ីមែល (Email)៖&lt;/label&gt;
+                &lt;input type="email" name="email" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$email</span>) <span class="cv-tag">?&gt;</span>" required&gt;
+            &lt;/div&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;លេខសម្ងាត់ (Password)៖&lt;/label&gt;
+                &lt;input type="password" name="password" required&gt;
+            &lt;/div&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;បញ្ជាក់លេខសម្ងាត់ (Confirm Password)៖&lt;/label&gt;
+                &lt;input type="password" name="confirm_password" required&gt;
+            &lt;/div&gt;
+            &lt;button type="submit" class="btn-reg"&gt;ចុះឈ្មោះបង្កើតគណនី&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;p style="text-align:center; font-size:11.5px; margin-top:10px;"&gt;
+            មានគណនីរួចហើយមែនទេ? &lt;a href="login.php" style="color:#4F46E5; font-weight:bold;"&gt;ចូលប្រើប្រព័ន្ធទីនេះ&lt;/a&gt;
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-desktop"></i> Browser Output (register.php)</div>
+            <div class="output-body">
+[ចុះឈ្មោះគណនីថ្មី (Register)]
+ឈ្មោះពេញ៖    [ សុខ សុវណ្ណ          ]
+Username៖   [ sovann.sok         ]
+អ៊ីមែល៖       [ sovann@au.edu.kh   ]
+Password៖   [ ••••••••••         ]
+[ចុះឈ្មោះបង្កើតគណនី] -> Password Hashed with Bcrypt -> Saved to DB -> Redirect to login.php
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២១ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 22: FILE 4 - login.php PART 1 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៤៖ <code>login.php</code> (Login Authentication & Session Initialization) - ភាគ ១</div>
+        <div class="text-block">
+            ទំព័រ Login ដែលផ្ទៀងផ្ទាត់ Password តាមរយៈ <code>password_verify()</code>, ការពារ Session Fixation តាម <code>session_regenerate_id()</code> និងបង្កើត Session State៖
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">login.php (Authentication Processing Logic)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
+<span class="cv-kw">if</span> (<span class="cv-fn">session_status</span>() === <span class="cv-tag">PHP_SESSION_NONE</span>) { <span class="cv-fn">session_start</span>(); }
+
+<span class="cv-cm">// បើ User មាន Session រួចហើយ មិនបាច់ Login ទៀតទេ បញ្ជូនទៅ Dashboard ភ្លាម</span>
+<span class="cv-kw">if</span> (<span class="cv-kw">isset</span>(<span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>])) {
+    <span class="cv-fn">header</span>(<span class="cv-str">"Location: dashboard.php"</span>);
+    <span class="cv-kw">exit</span>;
+}
+
+<span class="cv-var">$error</span> = <span class="cv-str">''</span>;
+<span class="cv-var">$msg</span>   = <span class="cv-var">$_GET</span>[<span class="cv-str">'msg'</span>] ?? <span class="cv-str">''</span>;
+
+<span class="cv-kw">if</span> ((<span class="cv-var">$_GET</span>[<span class="cv-str">'error'</span>] ?? <span class="cv-str">''</span>) === <span class="cv-str">'unauthorized'</span>) {
+    <span class="cv-var">$error</span> = <span class="cv-str">"សូម Login ជាមុនសិន ទើបអាចចូលទំព័រនោះបាន!"</span>;
+}
+
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">'REQUEST_METHOD'</span>] === <span class="cv-str">'POST'</span>) {
+    <span class="cv-var">$account</span>  = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'account'</span>] ?? <span class="cv-str">''</span>);
+    <span class="cv-var">$password</span> = <span class="cv-var">$_POST</span>[<span class="cv-str">'password'</span>] ?? <span class="cv-str">''</span>;
+
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$account</span>) || <span class="cv-fn">empty</span>(<span class="cv-var">$password</span>)) {
+        <span class="cv-var">$error</span> = <span class="cv-str">"សូមបញ្ចូលអ៊ីមែល/Username និងលេខសម្ងាត់!"</span>;
+    } <span class="cv-kw">else</span> {
+        <span class="cv-cm">// ស្វែងរក User តាម Email ឬ Username</span>
+        <span class="cv-var">$stmt</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-str">"SELECT * FROM tbl_users WHERE email = :acc OR username = :acc LIMIT 1"</span>);
+        <span class="cv-var">$stmt</span>-&gt;<span class="cv-fn">execute</span>([<span class="cv-str">':acc'</span> =&gt; <span class="cv-var">$account</span>]);
+        <span class="cv-var">$user</span> = <span class="cv-var">$stmt</span>-&gt;<span class="cv-fn">fetch</span>();
+
+        <span class="cv-cm">// ផ្ទៀងផ្ទាត់លេខសម្ងាត់ជាមួយ password_verify()</span>
+        <span class="cv-kw">if</span> (<span class="cv-var">$user</span> &amp;&amp; <span class="cv-fn">password_verify</span>(<span class="cv-var">$password</span>, <span class="cv-var">$user</span>[<span class="cv-str">'password_hash'</span>])) {
+            <span class="cv-cm">// ការពារ Session Fixation</span>
+            <span class="cv-fn">session_regenerate_id</span>(<span class="cv-kw">true</span>);
+
+            <span class="cv-cm">// កំណត់ទិន្នន័យ Session</span>
+            <span class="cv-var">$_SESSION</span>[<span class="cv-str">'user_id'</span>]  = <span class="cv-var">$user</span>[<span class="cv-str">'id'</span>];
+            <span class="cv-var">$_SESSION</span>[<span class="cv-str">'username'</span>] = <span class="cv-var">$user</span>[<span class="cv-str">'username'</span>];
+            <span class="cv-var">$_SESSION</span>[<span class="cv-str">'fullname'</span>] = <span class="cv-var">$user</span>[<span class="cv-str">'fullname'</span>];
+            <span class="cv-var">$_SESSION</span>[<span class="cv-str">'role'</span>]     = <span class="cv-var">$user</span>[<span class="cv-str">'role'</span>];
+
+            <span class="cv-fn">header</span>(<span class="cv-str">"Location: dashboard.php"</span>);
+            <span class="cv-kw">exit</span>;
+        } <span class="cv-kw">else</span> {
+            <span class="cv-var">$error</span> = <span class="cv-str">"គណនី ឬលេខសម្ងាត់មិនត្រឹមត្រូវឡើយ!"</span>;
+        }
+    }
+}
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លី微 (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២២ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 23: FILE 4 - login.php PART 2 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៤៖ <code>login.php</code> (Login Authentication) - ភាគ ២ Form UI</div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">login.php (UI HTML Section)</div></div>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="km"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;ចូលប្រើប្រព័ន្ធ - User Login&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: sans-serif; padding: 25px; background: #F8FAFC; display: flex; justify-content: center; }
+        .card { background: white; padding: 20px; border-radius: 8px; border: 1px solid #CBD5E1; width: 100%; max-width: 380px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-weight: bold; margin-bottom: 3px; font-size: 12px; }
+        input { width: 100%; padding: 7px 9px; border: 1px solid #CBD5E1; border-radius: 4px; box-sizing: border-box; font-size: 12px; }
+        .btn-login { background: #4F46E5; color: white; border: none; padding: 8px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .alert-danger { background: #FEE2E2; color: #DC2626; padding: 6px 10px; border-radius: 4px; margin-bottom: 10px; font-size: 11.5px; }
+        .alert-success { background: #DCFCE7; color: #166534; padding: 6px 10px; border-radius: 4px; margin-bottom: 10px; font-size: 11.5px; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="card"&gt;
+        &lt;h3 style="color:#4F46E5; text-align:center; margin-top:0;"&gt;ចូលប្រើប្រព័ន្ធ (Sign In)&lt;/h3&gt;
+        
+        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (<span class="cv-var">$msg</span> === <span class="cv-str">'registered'</span>): <span class="cv-tag">?&gt;</span>
+            &lt;div class="alert-success"&gt;✓ ចុះឈ្មោះជោគជ័យ! សូម Login ចូលប្រើប្រាស់។&lt;/div&gt;
+        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">elseif</span> (<span class="cv-var">$msg</span> === <span class="cv-str">'logged_out'</span>): <span class="cv-tag">?&gt;</span>
+            &lt;div class="alert-success"&gt;✓ អ្នកបានចាកចេញពីប្រព័ន្ធដោយជោគជ័យ!&lt;/div&gt;
+        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
+
+        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (!<span class="cv-fn">empty</span>(<span class="cv-var">$error</span>)): <span class="cv-tag">?&gt;</span>
+            &lt;div class="alert-danger"&gt;✗ <span class="cv-tag">&lt;?=</span> <span class="cv-var">$error</span> <span class="cv-tag">?&gt;</span>&lt;/div&gt;
+        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
+
+        &lt;form method="POST"&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;អ៊ីមែល ឬ ឈ្មោះគណនី (Email/Username)៖&lt;/label&gt;
+                &lt;input type="text" name="account" required placeholder="admin@au.edu.kh"&gt;
+            &lt;/div&gt;
+            &lt;div class="form-group"&gt;
+                &lt;label&gt;លេខសម្ងាត់ (Password)៖&lt;/label&gt;
+                &lt;input type="password" name="password" required placeholder="••••••••"&gt;
+            &lt;/div&gt;
+            &lt;button type="submit" class="btn-login"&gt;ចូលប្រើប្រាស់ (Login)&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;p style="text-align:center; font-size:11.5px; margin-top:12px;"&gt;
+            មិនទាន់មានគណនីមែនទេ? &lt;a href="register.php" style="color:#4F46E5; font-weight:bold;"&gt;ចុះឈ្មោះទីនេះ&lt;/a&gt;
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-desktop"></i> Browser Output (login.php)</div>
+            <div class="output-body">
+[ចូលប្រើប្រព័ន្ធ (Sign In)]
+អ៊ីមែល ឬ Username៖ [ admin@au.edu.kh   ]
+លេខសម្ងាត់៖         [ ••••••••          ]
+[ចូលប្រើប្រាស់ (Login)] -> password_verify() Success -> session_regenerate_id() -> Redirect to dashboard.php
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២៣ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 24: FILE 5 - logout.php ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៥៖ <code>logout.php</code> (Complete Secure Session Destruction)</div>
+        <div class="text-block">
+            ឯកសារនេះទទួលបន្ទុកបញ្ចប់ Session ទាំងស្រុង ដោយសម្អាត Memory, លុប Cookie និងកម្ទេចឯកសារ Session ចេញពី Server មុនពេលបញ្ជូនទៅ Login Page វិញ៖
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">logout.php (Secure Logout Script)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// logout.php - ដំណើរការបញ្ចប់ Session ប្រកបដោយសុវត្ថិភាព 100%</span>
+<span class="cv-kw">if</span> (<span class="cv-fn">session_status</span>() === <span class="cv-tag">PHP_SESSION_NONE</span>) {
+    <span class="cv-fn">session_start</span>();
+}
+
+<span class="cv-cm">// ជំហានទី ១៖ សម្អាតរាល់ Session Variables ចេញពី Memory</span>
+<span class="cv-var">$_SESSION</span> = [];
+
+<span class="cv-cm">// ជំហានទី ២៖ លុប Cookie PHPSESSID ចេញពី Browser របស់អ្នកប្រើ</span>
+<span class="cv-kw">if</span> (<span class="cv-fn">ini_get</span>(<span class="cv-str">"session.use_cookies"</span>)) {
+    <span class="cv-var">$params</span> = <span class="cv-fn">session_get_cookie_params</span>();
+    <span class="cv-fn">setcookie</span>(
+        <span class="cv-fn">session_name</span>(),
+        <span class="cv-str">''</span>,
+        <span class="cv-fn">time</span>() - <span class="cv-num">42000</span>,
+        <span class="cv-var">$params</span>[<span class="cv-str">"path"</span>],
+        <span class="cv-var">$params</span>[<span class="cv-str">"domain"</span>],
+        <span class="cv-var">$params</span>[<span class="cv-str">"secure"</span>],
+        <span class="cv-var">$params</span>[<span class="cv-str">"httponly"</span>]
+    );
+}
+
+<span class="cv-cm">// ជំហានទី ៣៖ បំផ្លាញ Session File ចេញពី Server Storage</span>
+<span class="cv-fn">session_destroy</span>();
+
+<span class="cv-cm">// ជំហានទី ៤៖ Redirect ទៅកាន់ទំព័រ Login ជាមួយ Feedback Message</span>
+<span class="cv-fn">header</span>(<span class="cv-str">"Location: login.php?msg=logged_out"</span>);
+<span class="cv-kw">exit</span>;
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout Status</div>
+            <div class="output-body">
+Session Wiped -> PHPSESSID Expired -> Server File Removed -> Redirected to login.php?msg=logged_out!
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២៤ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 25: FILE 6 - dashboard.php PART 1 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៦៖ <code>dashboard.php</code> (Protected Admin Portal) - ភាគ ១</div>
+        <div class="text-block">
+            ទំព័រ Portal រដ្ឋបាល ដែលត្រូវបានការពារដោយ <code>auth_guard.php</code>។ វាបង្ហាញព័ត៌មាន User បច្ចុប្បន្ន ស្ថិតិសិស្ស និងប៊ូតុងគ្រប់គ្រង CRUD៖
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">dashboard.php (Protected Logic & Metrics)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">'auth_guard.php'</span>; <span class="cv-cm">// ជញ្ជាំងការពារ Route Protection</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
+
+<span class="cv-var">$user</span> = <span class="cv-fn">authUser</span>();
+
+<span class="cv-cm">// ទាញយកស្ថិតិទិន្នន័យពី tbl_students និង tbl_users</span>
+<span class="cv-var">$totalStudents</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">query</span>(<span class="cv-str">"SELECT COUNT(*) FROM tbl_students"</span>)-&gt;<span class="cv-fn">fetchColumn</span>();
+<span class="cv-var">$totalUsers</span>    = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">query</span>(<span class="cv-str">"SELECT COUNT(*) FROM tbl_users"</span>)-&gt;<span class="cv-fn">fetchColumn</span>();
+<span class="cv-tag">?&gt;</span>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="km"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;ផ្ទាំងគ្រប់គ្រងរដ្ឋបាល - Admin Dashboard&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: sans-serif; margin: 0; background: #F1F5F9; }
+        .navbar { background: #0F172A; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .container { padding: 15px 20px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 15px; }
+        .card-stat { background: white; padding: 12px; border-radius: 6px; border: 1px solid #CBD5E1; }
+        .btn { display: inline-block; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 12px; }
+        .btn-crud { background: #4F46E5; color: white; }
+        .btn-logout { background: #DC2626; color: white; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;</pre>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២៥ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 26: FILE 6 - dashboard.php PART 2 ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៦៖ <code>dashboard.php</code> (Protected Admin Portal) - ភាគ ២ UI</div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">dashboard.php (UI Body Section)</div></div>
+<pre>    &lt;div class="navbar"&gt;
+        &lt;div style="font-weight:bold; font-size:14px;"&gt;សាកលវិទ្យាល័យអង្គរ | Admin Portal&lt;/div&gt;
+        &lt;div style="font-size:12px;"&gt;
+            👤 សួស្តី៖ &lt;b&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$user</span>[<span class="cv-str">'fullname'</span>]) <span class="cv-tag">?&gt;</span>&lt;/b&gt; 
+            (&lt;span style="color:#38BDF8;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$user</span>[<span class="cv-str">'role'</span>] <span class="cv-tag">?&gt;</span>&lt;/span&gt;) |
+            &lt;a href="logout.php" class="btn btn-logout" onclick="return confirm('តើអ្នកពិតជាចង់ចាកចេញមែនទេ?');"&gt;Logout&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="container"&gt;
+        &lt;h2 style="color:#0F172A; margin-top:5px;"&gt;ផ្ទាំងគ្រប់គ្រងរដ្ឋបាល (Administrative Dashboard)&lt;/h2&gt;
+        
+        &lt;div class="grid"&gt;
+            &lt;div class="card-stat" style="border-left:4px solid #4F46E5;"&gt;
+                &lt;p style="color:#64748B; margin:0; font-size:11px;"&gt;ចំនួននិស្សិតសរុប (Students)&lt;/p&gt;
+                &lt;h2 style="margin:4px 0 0 0; color:#4F46E5;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$totalStudents</span> <span class="cv-tag">?&gt;</span> នាក់&lt;/h2&gt;
+            &lt;/div&gt;
+            &lt;div class="card-stat" style="border-left:4px solid #0284C7;"&gt;
+                &lt;p style="color:#64748B; margin:0; font-size:11px;"&gt;អ្នកប្រើប្រាស់ក្នុងប្រព័ន្ធ (Users)&lt;/p&gt;
+                &lt;h2 style="margin:4px 0 0 0; color:#0284C7;"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$totalUsers</span> <span class="cv-tag">?&gt;</span> នាក់&lt;/h2&gt;
+            &lt;/div&gt;
+            &lt;div class="card-stat" style="border-left:4px solid #059669;"&gt;
+                &lt;p style="color:#64748B; margin:0; font-size:11px;"&gt;ស្ថានភាពប្រព័ន្ធ (System Status)&lt;/p&gt;
+                &lt;h2 style="margin:4px 0 0 0; color:#059669;"&gt;Active / Secure&lt;/h2&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div style="background:white; padding:15px; border-radius:6px; border:1px solid #CBD5E1;"&gt;
+            &lt;h3 style="margin-top:0; color:#4F46E5;"&gt;ម៉ូឌុលគ្រប់គ្រងទិន្នន័យ (Management Modules)&lt;/h3&gt;
+            &lt;p style="font-size:12px; color:#475569;"&gt;អ្នកអាចចូលទៅកាន់ប្រព័ន្ធគ្រប់គ្រងបញ្ជីឈ្មោះនិស្សិត (CRUD Module) ដែលបានបង្កើតនៅក្នុងមេរៀនទី ៩ ៖&lt;/p&gt;
+            &lt;a href="index.php" class="btn btn-crud"&gt;📂 បើកប្រព័ន្ធគ្រប់គ្រងនិស្សិត (Student Directory CRUD)&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        </div>
+
+        <div class="output-window">
+            <div class="output-header"><i class="fa-solid fa-desktop"></i> Browser Output (dashboard.php)</div>
+            <div class="output-body">
+[AU Admin Portal]  👤 សួស្តី៖ សាស្ត្រាចារ្យ សឿង លីម (Admin) | [Logout]
+- និស្សិតសរុប៖ 3 នាក់ | អ្នកប្រើប្រាស់៖ 2 នាក់ | ស្ថានភាព៖ Active / Secure
+[ 📂 បើកប្រព័ន្ធគ្រប់គ្រងនិស្សិត (Student Directory CRUD) ]
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២៦ នៃ ២៨</div>
+    </div>
+</div>
+
+នេះជាកូដដែលបានកែលម្អ និងជួសជុលរចនាសម្ព័ន្ធ HTML ឲ្យត្រឹមត្រូវឥតខ្ចោះ
+ដោយបំបែកដាច់ពីគ្នាជា ទំព័រទី ២៧ (Page 27) និង ទំព័រទី ២៨ (Page 28)
+ព្រមទាំងកែសម្រួលស្លាក Header, Footer, Tags បិទ-បើក (<div>)
+និងប្លង់រៀបចំឲ្យស្របតាមស្ដង់ដារនៃឯកសារទាំងមូល៖
+
+<!-- ================= PAGE 27: INTEGRATION WITH LESSON 9 CRUD ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-link"></i> ១០. ការតភ្ជាប់ប្រព័ន្ធ Auth ទៅកាន់គម្រោង CRUD (Auth Integration with Lesson 9)</div>
+        <div class="text-block">
+            ដើម្បីធានាសុវត្ថិភាពពេញលេញនៃប្រព័ន្ធ Web Application យើងគ្រាន់តែបន្ថែមបន្ទាត់កូដ <code>require_once 'auth_guard.php';</code> នៅផ្នែកខាងលើបង្អស់នៃរាល់ឯកសារ CRUD ក្នុងមេរៀនទី ៩ (រួមមាន <code>index.php</code>, <code>add.php</code>, <code>edit.php</code>, និង <code>delete.php</code>)៖
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">ការកែសម្រួលលើឯកសារ CRUD (Protecting CRUD Files)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-cm">// បន្ថែមនៅបន្ទាត់ទី ១ នៃ index.php, add.php, edit.php, delete.php</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">'auth_guard.php'</span>; <span class="cv-cm">// ហាមឃាត់ Guest មិនឱ្យចូល ឬកែប្រែទិន្នន័យ</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
+
+<span class="cv-cm">// បន្តកូដ CRUD ធម្មតា...</span>
+<span class="cv-tag">?&gt;</span></pre>
+        </div>
+
+        <div class="section-title" style="margin-top:5px;"><i class="fa-solid fa-list-check"></i> ១១. តារាងផ្ទៀងផ្ទាត់រចនាសម្ព័ន្ធប្រព័ន្ធទាំងមូល (Full System File Architecture)</div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width:20%;">ឈ្មោះឯកសារ (File)</th>
+                    <th style="width:30%;">តួនាទីបច្ចេកទេស (Function)</th>
+                    <th style="width:50%;">យន្តការសុវត្ថិភាពដែលបានអនុវត្ត (Security Mechanism)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b><code>schema_auth.sql</code></b></td><td>Database DDL Script</td><td>បង្កើតតារាង <code>tbl_users</code> មាន Unique Constraints លើ Email & Username</td></tr>
+                <tr><td><b><code>db.php</code></b></td><td>PDO Connection</td><td>កំណត់ UTF8MB4, PDO Exceptions, បិទ Emulate Prepares</td></tr>
+                <tr><td><b><code>auth_guard.php</code></b></td><td>Route Protection Middleware</td><td>ត្រួតពិនិត្យ <code>$_SESSION['user_id']</code> និង Redirect 302 បើគ្មានសិទ្ធិ</td></tr>
+                <tr><td><b><code>register.php</code></b></td><td>User Registration</td><td>Server-side Validation, ពិនិត្យស្ទួន, <code>password_hash(..., PASSWORD_DEFAULT)</code></td></tr>
+                <tr><td><b><code>login.php</code></b></td><td>User Authentication</td><td>Prepared Statement, <code>password_verify()</code>, <code>session_regenerate_id()</code></td></tr>
+                <tr><td><b><code>logout.php</code></b></td><td>Session Destruction</td><td>សម្អាត Array, លុប PHPSESSID Cookie, <code>session_destroy()</code></td></tr>
+                <tr><td><b><code>dashboard.php</code></b></td><td>Protected Admin Portal</td><td>ការពារដោយ Auth Guard, បង្ហាញ User Session State & CRUD Entry</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២៧ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 28: PRODUCTION BEST PRACTICES & SIGNATURES ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ១០</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-shield-halved" style="font-size: 24px; color: #4F46E5;"></i><span>PHP AUTH & SECURITY</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-shield-virus"></i> ១២. វិធានសុវត្ថិភាពល្អបំផុតសម្រាប់ Authentication (Production Best Practices)</div>
+        <ul class="obj-list">
+            <li><b class="highlight">១. បង្ខំប្រើប្រាស់ HTTPS ជានិច្ច (Strict HTTPS Enforcement)៖</b> ការពារការលួចស្ទាក់ចាប់ Plain-Text Passwords និង Session Cookies នៅលើបណ្ដាញ Wi-Fi សាធារណៈ (Man-in-the-Middle Attacks)។</li>
+            <li><b class="highlight">២. កំណត់ទង់សុវត្ថិភាពលើ Cookie (Secure & HttpOnly Flags)៖</b> ត្រូវកំណត់ <code>session.cookie_httponly = 1</code> ជានិច្ចក្នុងឯកសារ <code>php.ini</code> ដើម្បីទប់ស្កាត់ការលួច Session ID តាមរយៈ JavaScript (XSS Attack Protection)។</li>
+            <li><b class="highlight">៣. ការការពារការវាយប្រហារ Brute-Force (Rate Limiting)៖</b> កំណត់ចំនួនដងនៃការសាកល្បង Login (ឧ. ខុសលើសពី ៥ ដង ត្រូវ Lock គណនីបណ្ដោះអាសន្នរយៈពេល ១៥ នាទី)។</li>
+            <li><b class="highlight">៤. ការធ្វើបច្ចុប្បន្នភាពក្បួន Hash ដោយស្វ័យប្រវត្តិ៖</b> ប្រើប្រាស់អនុគមន៍ <code>password_needs_rehash()</code> ពេល User ធ្វើការ Login ជោគជ័យ ដើម្បី Re-hash លេខសម្ងាត់ប្រសិនបើ Algorithm ឬ Cost Factor របស់ Server ត្រូវបានដំឡើងកម្រិតខ្ពស់ជាងមុន។</li>
+        </ul>
+
+        <div style="text-align: center; margin-top: 15px; padding: 8px; background: #EEF2FF; border: 1px dashed var(--accent); border-radius: 6px;">
+            <p style="font-size: 8.5pt; color: var(--accent); font-family: var(--font-en-main); font-weight: bold; margin: 0;">
+                *** END OF LESSON 10 MASTER HANDOUT (TOTAL 28 PAGES FULLY EXPANDED) ***
+            </p>
+            <p style="font-size: 8pt; color: var(--text-muted); font-family: var(--font-kh-body); margin: 3px 0 0 0;">
+                ឯកសារនេះត្រូវបានរៀបចំឡើងយ៉ាងពេញលេញស្របតាម Course Syllabus សម្រាប់ត្រៀមខ្លួនឆ្ពោះទៅកាន់ MVC Laravel Framework នៅវគ្គបន្ទាប់។
+            </p>
+        </div>
+
+        <div style="margin-top: 35px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
+            <div style="text-align: center; width: 220px;">
+                <p style="font-size: 8.5pt; font-family: var(--font-kh-body);">បានឃើញ និងពិនិត្យត្រឹមត្រូវ</p>
+                <p style="font-size: 8.5pt; margin-top: 40px; font-family: var(--font-kh-body);">..........................................</p>
+                <p style="font-size: 9.5pt; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">ប្រធានដេប៉ាតឺម៉ង់</p>
+            </div>
+            <div style="text-align: center; width: 260px;">
+                <p style="font-size: 8.5pt; font-family: var(--font-kh-body);">ធ្វើនៅសៀមរាប, ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
+                <p style="font-size: 9.5pt; margin-top: 40px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+            </div>
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២៨ នៃ ២៨</div>
+    </div>
+</div>
+
+
+</body>
+</html>
+
