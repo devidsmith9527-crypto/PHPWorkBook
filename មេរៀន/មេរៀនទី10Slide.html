@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="km">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>មេរៀនទី ១០ ៖ ប្រព័ន្ធសុវត្ថិភាព Authentication, Sessions, Cookies & Password Hashing (PHP 8 Slides)</title>
+    <title>មេរៀនទី ១០ ៖ ប្រព័ន្ធសុវត្ថិភាព Authentication, Sessions, Cookies & Password Hashing (PHP 8 Master Slides)</title>
 
     <!-- Google Web Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,7 +143,7 @@
             background: #ffffff;
             display: none;
             flex-direction: column;
-            padding: 16px 44px 12px 44px;
+            padding: 14px 40px 10px 40px;
             position: relative;
             overflow: hidden;
         }
@@ -163,22 +164,22 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 5px;
-            margin-bottom: 8px;
-            height: 56px;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+            height: 52px;
             flex-shrink: 0;
         }
 
         .header-title-group h2 {
             font-family: var(--font-muol);
-            font-size: 13.5pt;
+            font-size: 12.5pt;
             color: var(--primary);
             font-weight: normal;
             line-height: 1.3;
         }
 
         .header-title-group p {
-            font-size: 9.5pt;
+            font-size: 9pt;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -191,7 +192,7 @@
         }
 
         .header-logo-img {
-            height: 42px;
+            height: 38px;
             width: auto;
             object-fit: contain;
         }
@@ -202,13 +203,13 @@
 
         .header-univ-text .kh {
             font-family: var(--font-muol);
-            font-size: 10pt;
+            font-size: 9.5pt;
             color: var(--primary);
             display: block;
         }
 
         .header-univ-text .en {
-            font-size: 7.5pt;
+            font-size: 7.2pt;
             font-weight: bold;
             color: #64748b;
             letter-spacing: 0.8px;
@@ -220,12 +221,12 @@
             background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%);
             border: 1px solid #bfdbfe;
             border-left: 5px solid var(--primary);
-            padding: 6px 14px;
-            border-radius: 8px;
+            padding: 5px 12px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             flex-shrink: 0;
         }
 
@@ -249,7 +250,7 @@
 
         .obj-badge {
             font-family: var(--font-muol);
-            font-size: 9.5pt;
+            font-size: 9pt;
             color: var(--primary);
             white-space: nowrap;
             display: inline-flex;
@@ -261,7 +262,7 @@
         .objective-banner.danger-theme .obj-badge { color: var(--danger); }
 
         .obj-text {
-            font-size: 10pt;
+            font-size: 9.3pt;
             color: #1e293b;
             line-height: 1.4;
             font-weight: 500;
@@ -274,28 +275,28 @@
             flex-direction: column;
             justify-content: center;
             overflow: hidden;
-            gap: 8px;
+            gap: 6px;
             min-height: 0;
         }
 
         /* Slide Footer */
         .slide-footer {
-            height: 24px;
+            height: 22px;
             border-top: 1.5px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 9pt;
+            font-size: 8.5pt;
             color: #64748b;
             flex-shrink: 0;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         /* Grids & Cards */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
             flex: 1;
             align-items: stretch;
             min-height: 0;
@@ -304,7 +305,7 @@
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 14px;
+            gap: 12px;
             flex: 1;
             align-items: stretch;
             min-height: 0;
@@ -313,8 +314,8 @@
         .card {
             background: #f8fafc;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 16px;
+            border-radius: 8px;
+            padding: 10px 14px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -322,40 +323,40 @@
         }
 
         .card.primary-accent {
-            border-left: 6px solid var(--primary);
+            border-left: 5px solid var(--primary);
             background: #ffffff;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.05);
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.04);
         }
 
         .card.emerald-accent {
-            border-left: 6px solid var(--emerald);
+            border-left: 5px solid var(--emerald);
             background: #ffffff;
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.05);
+            box-shadow: 0 4px 10px rgba(5, 150, 105, 0.04);
         }
 
         .card.purple-accent {
-            border-left: 6px solid var(--accent);
+            border-left: 5px solid var(--accent);
             background: #ffffff;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.05);
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.04);
         }
 
         .card.danger-accent {
-            border-left: 6px solid var(--danger);
+            border-left: 5px solid var(--danger);
             background: #ffffff;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.05);
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.04);
         }
 
         .card.gold-accent {
-            border-left: 6px solid var(--gold);
+            border-left: 5px solid var(--gold);
             background: #ffffff;
-            box-shadow: 0 4px 12px rgba(180, 83, 9, 0.05);
+            box-shadow: 0 4px 10px rgba(180, 83, 9, 0.04);
         }
 
         .card-title {
             font-family: var(--font-muol);
-            font-size: 11pt;
+            font-size: 10pt;
             color: var(--primary);
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-weight: normal;
             line-height: 1.35;
             display: flex;
@@ -368,28 +369,28 @@
         .card-title.danger { color: var(--danger); }
 
         ul, ol {
-            padding-left: 20px;
+            padding-left: 16px;
         }
 
         li {
-            margin-bottom: 5px;
-            font-size: 10pt;
-            line-height: 1.45;
+            margin-bottom: 3.5px;
+            font-size: 9.3pt;
+            line-height: 1.4;
             color: var(--text-dark);
         }
 
         p {
-            font-size: 10pt;
-            line-height: 1.45;
+            font-size: 9.3pt;
+            line-height: 1.4;
             color: var(--text-dark);
         }
 
         /* Bloom Badges */
         .pill {
             display: inline-block;
-            padding: 1px 7px;
+            padding: 1px 6px;
             border-radius: 4px;
-            font-size: 8pt;
+            font-size: 7.2pt;
             font-weight: bold;
             font-family: var(--font-en);
             margin-right: 4px;
@@ -405,20 +406,20 @@
         table.slide-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 9.5pt;
+            font-size: 9.2pt;
         }
         table.slide-table th {
             background: #0f172a;
             color: #ffffff;
-            padding: 6px 8px;
+            padding: 5px 7px;
             text-align: left;
             font-weight: bold;
         }
         table.slide-table td {
             border-bottom: 1px solid #cbd5e1;
-            padding: 5px 8px;
+            padding: 4px 7px;
             vertical-align: middle;
-            line-height: 1.35;
+            line-height: 1.32;
         }
         table.slide-table tr:nth-child(even) td {
             background: #f8fafc;
@@ -429,9 +430,9 @@
             background: #eef2ff;
             border-left: 4px solid var(--primary);
             font-family: var(--font-code);
-            font-size: 8.8pt;
-            padding: 6px 10px;
-            margin: 4px 0;
+            font-size: 8.2pt;
+            padding: 4px 8px;
+            margin: 3px 0;
             border-radius: 0 4px 4px 0;
             color: #1e1b4b;
             white-space: pre-wrap;
@@ -441,11 +442,11 @@
         .code-box {
             background: var(--code-bg);
             color: #f8fafc;
-            padding: 7px 10px;
+            padding: 6px 10px;
             border-radius: 6px;
             font-family: var(--font-code);
-            font-size: 8.4pt;
-            line-height: 1.4;
+            font-size: 7.8pt;
+            line-height: 1.36;
             border: 1px solid #334155;
             overflow-x: auto;
             white-space: pre-wrap;
@@ -463,26 +464,38 @@
             color: #0078d4;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
-            padding: 5px 9px;
+            padding: 4px 8px;
             font-family: var(--font-code);
-            font-size: 8.2pt;
-            line-height: 1.35;
+            font-size: 7.8pt;
+            line-height: 1.28;
             white-space: pre-wrap;
             font-weight: 600;
-            margin-top: 4px;
+            margin-top: 3px;
         }
 
         .tech-pill {
             background: #eef2ff;
             border: 1px solid #c7d2fe;
             color: var(--primary);
-            padding: 3px 10px;
-            border-radius: 16px;
-            font-size: 8.5pt;
+            padding: 2px 8px;
+            border-radius: 14px;
+            font-size: 7.8pt;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
+        }
+
+        .diagram-box {
+            background: #f8fafc;
+            border: 1.5px dashed #94a3b8;
+            border-radius: 6px;
+            padding: 5px 8px;
+            margin: 3px 0;
+            font-family: var(--font-code);
+            font-size: 7.4pt;
+            line-height: 1.32;
+            color: #1e293b;
         }
 
         @media print {
@@ -499,7 +512,7 @@
 <div class="controls-trigger-area">
     <div class="controls-bar" id="controlsBar">
         <button class="ctrl-btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i> ថយក្រោយ (Previous)</button>
-        <div class="slide-counter" id="slideNumber">ស្លាយទី 1 / 32</div>
+        <div class="slide-counter" id="slideNumber">ស្លាយទី 1 / 38</div>
         <button class="ctrl-btn" onclick="nextSlide()">បន្ទាប់ (Next) <i class="fa-solid fa-chevron-right"></i></button>
         <button class="ctrl-btn" onclick="toggleFullScreen()"><i class="fa-solid fa-expand"></i> ពេញអេក្រង់</button>
         <button class="ctrl-btn" onclick="toggleControlsSticky()"><i class="fa-solid fa-thumbtack"></i> ទប់របារ</button>
@@ -509,55 +522,51 @@
 
 <div class="slide-container">
 
-    <!-- ============================================================
-         SLIDE 1: COVER SLIDE
-         ============================================================ -->
+    <!-- ================= SLIDE 1: COVER SLIDE ================= -->
     <div class="slide active">
         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
             <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 8px;">
-                <img src="Logo.png" alt="Angkor University Logo" style="height: 80px; width: auto;" onerror="this.outerHTML='<div style=\'height:70px;width:70px;border-radius:50%;background:#4f46e5;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:16pt;\'>AU</div>'">
+                <img src="Logo.png" alt="AU Logo" style="height: 75px; width: auto;" onerror="this.outerHTML='<div style=\'height:65px;width:65px;border-radius:50%;background:#4f46e5;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:15pt;\'>AU</div>'">
                 <div style="text-align: left;">
-                    <h1 style="font-family: var(--font-muol); color: var(--primary); font-size: 19pt; line-height: 1.3;">សាកលវិទ្យាល័យអង្គរ</h1>
+                    <h1 style="font-family: var(--font-muol); color: var(--primary); font-size: 18pt; line-height: 1.35;">សាកលវិទ្យាល័យអង្គរ</h1>
                     <h2 style="font-size: 11.5pt; font-weight: bold; color: #475569; letter-spacing: 2px;">ANGKOR UNIVERSITY</h2>
                 </div>
             </div>
             
-            <p style="font-size: 11pt; color: #334155; margin-bottom: 2px;">មហាវិទ្យាល័យវិទ្យាសាស្ត្រ និងបច្ចេកវិទ្យា (Faculty of Science and Technology)</p>
-            <p style="font-size: 10pt; color: #64748b; margin-bottom: 12px;">ដេប៉ាតឺម៉ង់វិទ្យាសាស្ត្រកុំព្យូទ័រ និងព័ត៌មានវិទ្យា (Computer Science and Information Technology)</p>
+            <p style="font-size: 10.5pt; color: #334155; margin-bottom: 2px;">មហាវិទ្យាល័យវិទ្យាសាស្ត្រ និងបច្ចេកវិទ្យា (Faculty of Science and Technology)</p>
+            <p style="font-size: 9.5pt; color: #64748b; margin-bottom: 10px;">ដេប៉ាតឺម៉ង់វិទ្យាសាស្ត្រកុំព្យូទ័រ និងព័ត៌មានវិទ្យា (Computer Science and Information Technology)</p>
 
-            <div style="border: 2px solid var(--primary); background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%); padding: 14px 34px; border-radius: 12px; width: 90%; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.08);">
-                <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+            <div style="border: 2px solid var(--primary); background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%); padding: 12px 30px; border-radius: 12px; width: 90%; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.08);">
+                <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap;">
                     <span class="tech-pill"><i class="fa-solid fa-book-open"></i> មេរៀនទី ១០ (Lesson 10)</span>
-                    <span class="tech-pill"><i class="fa-solid fa-calendar-days"></i> សប្តាហ៍ទី ១២ & ១៣ (Weeks 12 & 13)</span>
+                    <span class="tech-pill"><i class="fa-solid fa-calendar-days"></i> សប្តាហ៍ទី ១២ &amp; ១៣</span>
                     <span class="tech-pill"><i class="fa-solid fa-shield-halved"></i> PHP Auth &amp; Web Security</span>
                     <span class="tech-pill"><i class="fa-solid fa-graduation-cap"></i> បរិញ្ញាបត្រ CS / IT</span>
                 </div>
-                <h1 style="font-family: var(--font-muol); color: var(--primary); font-size: 17pt; margin-bottom: 4px; font-weight: normal;">ប្រព័ន្ធសុវត្ថិភាព Authentication, Sessions &amp; Password Hashing</h1>
-                <h3 style="font-size: 11.5pt; color: #475569; font-weight: 700; letter-spacing: 1px;">WEB APPLICATION SECURITY &amp; USER STATE MANAGEMENT</h3>
-                <p style="font-size: 9.5pt; color: var(--accent); margin-top: 4px; font-weight: 600;">
-                    HTTP Statelessness • Session Lifecycle (`$_SESSION`, `session_start`) • Auth Guard Middleware • Password Hashing (Bcrypt) • `password_verify()` • Protected Admin Portal
+                <h1 style="font-family: var(--font-muol); color: var(--primary); font-size: 16pt; margin-bottom: 3px; font-weight: normal;">ប្រព័ន្ធសុវត្ថិភាព Authentication, Sessions &amp; Password Hashing</h1>
+                <h3 style="font-size: 11pt; color: #475569; font-weight: 700; letter-spacing: 1px;">WEB APPLICATION SECURITY &amp; USER STATE MANAGEMENT</h3>
+                <p style="font-size: 9.2pt; color: var(--accent); margin-top: 3px; font-weight: 600;">
+                    Part 1 (Week 12): Sessions, Cookies &amp; Route Protection | Part 2 (Week 13): Bcrypt Hashing &amp; Login App
                 </p>
             </div>
 
-            <div style="margin-top: 12px; line-height: 1.45; font-size: 10.5pt; display: flex; align-items: center; gap: 14px;">
-                <img src="Lim.jpg" onerror="this.style.display='none'" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover;">
+            <div style="margin-top: 10px; line-height: 1.4; font-size: 10pt; display: flex; align-items: center; gap: 14px;">
+                <img src="Lim.jpg" onerror="this.style.display='none'" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover;">
                 <div style="text-align: left;">
                     <p><b>សាស្ត្រាចារ្យបង្រៀន ៖</b> <span style="font-family: var(--font-muol); color: var(--primary);">សឿង លីម</span> (Lecturer: Soeurng LIM)</p>
-                    <p style="color: #475569; font-size: 9.5pt;">អនុបណ្ឌិតវិទ្យាសាស្ត្រព័ត៌មានវិទ្យា (M.Sc. in Information Technology)</p>
-                    <p style="color: #64748b; font-weight: bold; font-size: 9.5pt;">ឆ្នាំសិក្សា ២០២៥ - ២០២៦ (Academic Year 2025 - 2026)</p>
+                    <p style="color: #475569; font-size: 9pt;">អនុបណ្ឌិតវិទ្យាសាស្ត្រព័ត៌មានវិទ្យា (M.Sc. in Information Technology)</p>
+                    <p style="color: #64748b; font-weight: bold; font-size: 9pt;">ឆ្នាំសិក្សា ២០២៥ - ២០២៦ (Academic Year 2025 - 2026)</p>
                 </div>
             </div>
         </div>
         <div class="slide-footer">
             <span>Web App Development with PHP & MySQL</span>
             <span>សាកលវិទ្យាល័យអង្គរ (Angkor University)</span>
-            <span>ស្លាយទី ១ នៃ ៣២</span>
+            <span>ស្លាយទី ១ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 2: LESSON LEARNING OUTCOMES (LLOs)
-         ============================================================ -->
+    <!-- ================= SLIDE 2: LESSON LEARNING OUTCOMES ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -565,10 +574,7 @@
                 <p>Curriculum Competencies Aligned with Bloom's Taxonomy</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -613,31 +619,26 @@
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Lesson Learning Outcomes (LLOs)</span>
-            <span>ស្លាយទី ២ នៃ ៣២</span>
+            <span>ស្លាយទី ២ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 3: LESSON OUTLINE / TABLE OF CONTENTS
-         ============================================================ -->
+    <!-- ================= SLIDE 3: SYLLABUS MAPPING ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
-                <h2>២. មាតិកានៃមេរៀនស្របតាម Syllabus (Syllabus Structure 1:1)</h2>
-                <p>Detailed Structure of Technical Topics across Weeks 12 & 13</p>
+                <h2>២. មាតិកានៃមេរៀនស្របតាម Syllabus (Syllabus Structure 1:1 Mapping)</h2>
+                <p>Structured Roadmap for Two Consecutive Teaching Weeks (Weeks 12 & 13)</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
             <div class="grid-2">
                 <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-calendar-week"></i> សប្តាហ៍ទី ១២ (Week 12: State &amp; Guard)</h3>
+                    <h3 class="card-title"><i class="fa-solid fa-calendar-check"></i> សប្តាហ៍ទី ១២ ៖ State &amp; Guard (Part 1)</h3>
                     <ul>
                         <li><b>១០.១ Sessions, Cookies &amp; User State ៖</b>
                             <br>• HTTP Statelessness &amp; State Management Needs
@@ -651,7 +652,7 @@
                     </ul>
                 </div>
                 <div class="card purple-accent">
-                    <h3 class="card-title purple"><i class="fa-solid fa-lock"></i> សប្តាហ៍ទី ១៣ (Week 13: Cryptography &amp; Pipeline)</h3>
+                    <h3 class="card-title purple"><i class="fa-solid fa-calendar-check"></i> សប្តាហ៍ទី ១៣ ៖ Hashing &amp; Login App (Part 2)</h3>
                     <ul>
                         <li><b>១០.៣ សន្តិសុខលេខសម្ងាត់ &amp; Hashing ៖</b>
                             <br>• គ្រោះថ្នាក់ Plain Text, Hashing vs Encryption vs Encoding
@@ -669,13 +670,55 @@
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Lesson Outline</span>
-            <span>ស្លាយទី ៣ នៃ ៣២</span>
+            <span>ស្លាយទី ៣ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 4: 10.1.1 HTTP STATELESSNESS & STATE NEEDS
-         ============================================================ -->
+    <!-- ================= SLIDE 4: PROJECT DIRECTORY STRUCTURE ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>រចនាសម្ព័ន្ធថត និងស្ថាបត្យកម្មគម្រោង (Project Directory Blueprint)</h2>
+                <p>Standardized File Organization inside XAMPP htdocs Directory</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-folder-tree"></i> ទីតាំង Folder ក្នុង XAMPP</h3>
+                    <div class="diagram-box">
+<b>C:\xampp\htdocs\university_auth\</b>
+├── <b>schema_auth.sql</b> <span style="color:#059669;">[Database Schema]</span> បង្កើត DB &amp; `tbl_users`
+├── <b>db.php</b>           <span style="color:#7C3AED;">[DB Connection]</span> បង្កើត PDO Object `$pdo`
+├── <b>auth_guard.php</b>   <span style="color:#DC2626;">[Route Middleware]</span> ជញ្ជាំងការពារទំព័រ
+├── <b>register.php</b>     <span style="color:#0284C7;">[Registration View]</span> Form ចុះឈ្មោះ + Hashing
+├── <b>login.php</b>        <span style="color:#2563EB;">[Login View]</span> ផ្ទៀងផ្ទាត់ `password_verify()`
+├── <b>logout.php</b>       <span style="color:#D97706;">[Logout Action]</span> សម្អាត Session ៤ ជំហាន
+└── <b>dashboard.php</b>    <span style="color:#059669;">[Protected Portal]</span> ផ្ទាំងរដ្ឋបាល &amp; ច្រក CRUD
+                    </div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-circle-nodes"></i> លំហូរអន្តរកម្មរវាង Files</h3>
+                    <ul>
+                        <li><b><code>db.php</code></b> ត្រូវបាន <code>require_once</code> ចូលក្នុង register, login, និង dashboard។</li>
+                        <li><b><code>auth_guard.php</code></b> ត្រូវបាន <code>require_once</code> នៅលើកំពូលនៃ <code>dashboard.php</code> និងរាល់ឯកសារ CRUD នៃមេរៀនទី ៩។</li>
+                        <li><b><code>logout.php</code></b> សម្អាតរាល់ Session &amp; Cookie រួច Redirect មក <code>login.php?msg=logged_out</code>។</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>Project Directory Architecture</span>
+            <span>ស្លាយទី ៤ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 5: 10.1.1 HTTP STATELESSNESS ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -683,10 +726,7 @@
                 <p>The Stateless Challenge: Why Web Applications Need Server-Side Sessions</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -720,13 +760,11 @@
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>10.1.1 • HTTP Statelessness</span>
-            <span>ស្លាយទី ៤ នៃ ៣២</span>
+            <span>ស្លាយទី ៥ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 5: 10.1.1 SESSION VS COOKIE COMPARISON MATRIX
-         ============================================================ -->
+    <!-- ================= SLIDE 6: 10.1.1 SESSION VS COOKIE MATRIX ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -734,10 +772,7 @@
                 <p>Architectural Comparison: Storage Location, Security Risks, Lifespan, and Ideal Use Cases</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -773,8 +808,8 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="card gold-accent" style="margin-top: 6px;">
-                <p style="font-size: 9.5pt;">
+            <div class="card gold-accent" style="margin-top: 5px;">
+                <p style="font-size: 9.3pt;">
                     <b>💡 វិធានមាសនៃ Session (Golden Rule) ៖</b> អនុគមន៍ <code>session_start()</code> ត្រូវតែហៅនៅផ្នែក <b>ខាងលើបង្អស់នៃឯកសារ PHP</b> ជានិច្ច មុនពេលមាន Output ណាមួយ (HTML Tags, White-space, ឬ Echo)!
                 </p>
             </div>
@@ -782,82 +817,26 @@
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Session vs Cookie Matrix</span>
-            <span>ស្លាយទី ៥ នៃ ៣២</span>
+            <span>ស្លាយទី ៦ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 6: 10.1.2 SESSION LIFECYCLE & $_SESSION USAGE
-         ============================================================ -->
-    <div class="slide">
-        <div class="slide-header">
-            <div class="header-title-group">
-                <h2>១០.១.២ វដ្តជីវិត Session Lifecycle &amp; Superglobal `$_SESSION`</h2>
-                <p>The Complete Session Cycle: Initialization, State Mutation, Inspection & Persistence</p>
-            </div>
-            <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
-                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
-            </div>
-        </div>
-        <div class="slide-body">
-            <div class="grid-2">
-                <div class="card primary-accent">
-                    <h3 class="card-title"><span class="pill pill-c3">C3</span> ជំហានទាំង ៣ នៃ Session Workflow</h3>
-                    <div class="syntax-box">// 1. ចាប់ផ្តើម Session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// 2. កំណត់ទិន្នន័យ Session (Write State)
-$_SESSION['user_id']  = 101;
-$_SESSION['username'] = "soeurng_lim";
-$_SESSION['role']     = "Admin";
-
-// 3. អានទិន្នន័យ Session (Read State)
-echo "ស្វាគមន៍៖ " . $_SESSION['username'];</div>
-                </div>
-                <div class="card emerald-accent">
-                    <h3 class="card-title emerald"><i class="fa-solid fa-diagram-project"></i> របៀបដែល PHP គ្រប់គ្រង Session</h3>
-                    <ul>
-                        <li><b>Auto File Creation ៖</b> PHP បង្កើតឯកសារសម្ងាត់ <code>sess_4d9f1e8a9c...</code> ក្នុង Server Directory (ដូចជា <code>xampp/tmp</code>)។</li>
-                        <li><b>Data Persistence ៖</b> រាល់ពេល User ចុច Refresh ឬប្តូរទំព័រ <code>$_SESSION</code> នៅតែរក្សាតម្លៃដដែលរហូតដល់ Browser បិទ ឬ User ចុច Logout។</li>
-                        <li><b>Type Flexibility ៖</b> <code>$_SESSION</code> អាចផ្ទុកបានទាំង String, Integer, Array និង Object!</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="slide-footer">
-            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
-            <span>10.1.2 • Session Lifecycle</span>
-            <span>ស្លាយទី ៦ នៃ ៣២</span>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         SLIDE 7: LAB 10.1 - SESSION STATE INSPECTOR
-         ============================================================ -->
+    <!-- ================= SLIDE 7: LAB 10.1 SESSION STATE DEMO ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
                 <h2>លំហាត់អនុវត្តទី ១ (Lab 10.1) ៖ Session State Demo &amp; Inspector</h2>
-                <p>Hands-on Demonstration: Storing User Identity, Tracking Login Time & Inspecting PHPSESSID</p>
+                <p>Hands-on Demonstration: Storing User Identity, Tracking Login Time &amp; Inspecting PHPSESSID</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
             <div class="grid-2">
                 <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-code"></i> session_demo.php</h3>
+                    <h3 class="card-title"><i class="fa-solid fa-code"></i> exercise_10_1_session_demo.php</h3>
                     <div class="code-box"><span class="tag">&lt;?php</span>
 <span class="kw">if</span> (<span class="fn">session_status</span>() === <span class="tag">PHP_SESSION_NONE</span>) {
     <span class="fn">session_start</span>();
@@ -874,8 +853,7 @@ echo "ស្វាគមន៍៖ " . $_SESSION['username'];</div>
 <span class="tag">?&gt;</span>
 &lt;h3&gt;PHPSESSID: <span class="tag">&lt;?=</span> <span class="fn">session_id</span>() <span class="tag">?&gt;</span>&lt;/h3&gt;
 &lt;p&gt;User: <span class="tag">&lt;?=</span> <span class="var">$_SESSION</span>[<span class="str">'fullname'</span>] <span class="tag">?&gt;</span>&lt;/p&gt;
-&lt;p&gt;Role: <span class="tag">&lt;?=</span> <span class="var">$_SESSION</span>[<span class="str">'role'</span>] <span class="tag">?&gt;</span>&lt;/p&gt;
-&lt;p&gt;Time: <span class="tag">&lt;?=</span> <span class="var">$_SESSION</span>[<span class="str">'login_time'</span>] <span class="tag">?&gt;</span>&lt;/p&gt;</div>
+&lt;p&gt;Role: <span class="tag">&lt;?=</span> <span class="var">$_SESSION</span>[<span class="str">'role'</span>] <span class="tag">?&gt;</span>&lt;/p&gt;</div>
                 </div>
                 <div class="card emerald-accent">
                     <h3 class="card-title emerald"><i class="fa-solid fa-play"></i> លទ្ធផលនៃការប្រតិបត្តិ (Output)</h3>
@@ -885,7 +863,7 @@ User: សាស្ត្រាចារ្យ សឿង លីម
 Role: Admin
 Time: 2026-03-30 08:30:00
                     </div>
-                    <p style="margin-top: 10px; font-size: 9.5pt; line-height: 1.5;">
+                    <p style="margin-top: 8px; font-size: 9.2pt; line-height: 1.45;">
                         <b>ការពន្យល់បច្ចេកទេស ៖</b><br>
                         • <code>session_id()</code> បង្ហាញលេខសម្គាល់ Token ដែលត្រូវគ្នានឹង Cookie ក្នុង Browser។<br>
                         • ទិន្នន័យទាំងអស់នេះនឹងនៅរក្សាដដែល ទោះបី User ចុច Refresh ឬបើក Tab ថ្មីក៏ដោយ។
@@ -896,13 +874,11 @@ Time: 2026-03-30 08:30:00
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Lab 10.1 • Session State Demo</span>
-            <span>ស្លាយទី ៧ នៃ ៣២</span>
+            <span>ស្លាយទី ៧ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 8: 10.2.1 ROUTE PROTECTION & AUTH GUARD
-         ============================================================ -->
+    <!-- ================= SLIDE 8: 10.2.1 ROUTE PROTECTION ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -910,10 +886,7 @@ Time: 2026-03-30 08:30:00
                 <p>Route Protection: Preventing Unauthorized Access to Administrative and CRUD Pages</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -925,7 +898,7 @@ Time: 2026-03-30 08:30:00
             <div class="grid-2">
                 <div class="card primary-accent">
                     <h3 class="card-title"><span class="pill pill-c4">C4</span> លំហូរការងារ ៣ ជំហាន (Auth Pipeline)</h3>
-                    <ol style="font-size: 10pt;">
+                    <ol style="font-size: 9.5pt;">
                         <li><b>Session Initialization ៖</b> បើក <code>session_start()</code> នៅបន្ទាត់លើបង្អស់។</li>
                         <li><b>State Inspection ៖</b> ត្រួតពិនិត្យ <code>if (!isset($_SESSION['user_id']))</code>។</li>
                         <li><b>Forced Redirection ៖</b> បញ្ជូនទៅ <code>login.php?error=unauthorized</code> រួចហៅ <code>exit;</code> ជាដាច់ខាត!</li>
@@ -950,13 +923,11 @@ Time: 2026-03-30 08:30:00
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>10.2.1 • Auth Guard Middleware</span>
-            <span>ស្លាយទី ៨ នៃ ៣២</span>
+            <span>ស្លាយទី ៨ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 9: 10.2.2 COMPLETE SESSION DESTRUCTION (LOGOUT)
-         ============================================================ -->
+    <!-- ================= SLIDE 9: 10.2.2 LOGOUT 4-STEP DESTRUCTION ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -964,10 +935,7 @@ Time: 2026-03-30 08:30:00
                 <p>Complete Session Teardown: Clearing Memory, Invalidating Cookies, and Destroying Storage</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -975,7 +943,7 @@ Time: 2026-03-30 08:30:00
             <div class="grid-2">
                 <div class="card danger-accent">
                     <h3 class="card-title danger"><span class="pill pill-c3">C3</span> ជំហានទាំង ៤ នៃ Secure Logout</h3>
-                    <ul style="font-size: 9.5pt;">
+                    <ul style="font-size: 9.3pt;">
                         <li><b>ជំហានទី ១ (Memory Wipe) ៖</b> <code>$_SESSION = [];</code> (សម្អាតរាល់អថេរក្នុង RAM)។</li>
                         <li><b>ជំហានទី ២ (Cookie Expire) ៖</b> <code>setcookie(session_name(), '', time() - 42000, '/');</code> (បញ្ជា Browser ឱ្យលុប PHPSESSID ចោល)។</li>
                         <li><b>ជំហានទី ៣ (Server File Purge) ៖</b> <code>session_destroy();</code> (បំផ្លាញឯកសារ Session ចេញពី Storage)។</li>
@@ -1007,13 +975,11 @@ Time: 2026-03-30 08:30:00
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>10.2.2 • Complete Logout Flow</span>
-            <span>ស្លាយទី ៩ នៃ ៣២</span>
+            <span>ស្លាយទី ៩ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 10: LAB 10.2 - AUTH GUARD & LOGOUT TEST
-         ============================================================ -->
+    <!-- ================= SLIDE 10: LAB 10.2 AUTH GUARD & LOGOUT ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1021,17 +987,14 @@ Time: 2026-03-30 08:30:00
                 <p>Interactive State Machine: Simulating Login, Enforcing Protection, and Secure Logout Teardown</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
             <div class="grid-2">
                 <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-code"></i> auth_guard_demo.php</h3>
+                    <h3 class="card-title"><i class="fa-solid fa-code"></i> exercise_10_2_auth_guard.php</h3>
                     <div class="code-box"><span class="tag">&lt;?php</span>
 <span class="kw">if</span> (<span class="fn">session_status</span>() === <span class="tag">PHP_SESSION_NONE</span>) { <span class="fn">session_start</span>(); }
 
@@ -1039,7 +1002,7 @@ Time: 2026-03-30 08:30:00
 <span class="kw">if</span> ((<span class="var">$_GET</span>[<span class="str">'action'</span>] ?? <span class="str">''</span>) === <span class="str">'logout'</span>) {
     <span class="var">$_SESSION</span> = [];
     <span class="fn">session_destroy</span>();
-    <span class="fn">header</span>(<span class="str">"Location: auth_guard_demo.php"</span>);
+    <span class="fn">header</span>(<span class="str">"Location: exercise_10_2_auth_guard.php"</span>);
     <span class="kw">exit</span>;
 }
 
@@ -1069,13 +1032,11 @@ Time: 2026-03-30 08:30:00
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Lab 10.2 • Auth Guard Demo</span>
-            <span>ស្លាយទី ១០ នៃ ៣២</span>
+            <span>ស្លាយទី ១០ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 11: 10.3.1 PLAIN TEXT RISKS & CRYPTO PARADIGMS
-         ============================================================ -->
+    <!-- ================= SLIDE 11: 10.3.1 PLAIN TEXT RISKS & CRYPTO ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1083,10 +1044,7 @@ Time: 2026-03-30 08:30:00
                 <p>Password Security: Encoding vs. Two-Way Encryption vs. One-Way Cryptographic Hashing</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -1129,13 +1087,11 @@ Time: 2026-03-30 08:30:00
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>10.3.1 • Cryptographic Paradigms</span>
-            <span>ស្លាយទី ១១ នៃ ៣២</span>
+            <span>ស្លាយទី ១១ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 12: 10.3.1 WHY MD5 & SHA-1 ARE OBSOLETE
-         ============================================================ -->
+    <!-- ================= SLIDE 12: 10.3.1 WHY MD5 & SHA-1 ARE OBSOLETE ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1143,10 +1099,7 @@ Time: 2026-03-30 08:30:00
                 <p>The Threat of Fast Hashes: Rainbow Tables, Hash Collisions, and GPU Brute-Force Attacks</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -1173,13 +1126,11 @@ Time: 2026-03-30 08:30:00
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Why MD5/SHA-1 are Obsolete</span>
-            <span>ស្លាយទី ១២ នៃ ៣២</span>
+            <span>ស្លាយទី ១២ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 13: 10.3.2 BCRYPT ALGORITHM, SALT & COST FACTOR
-         ============================================================ -->
+    <!-- ================= SLIDE 13: 10.3.2 BCRYPT ANATOMY ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1187,18 +1138,15 @@ Time: 2026-03-30 08:30:00
                 <p>Bcrypt Internals: 60-Character Hash String Anatomy and Adaptive Work Factors</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
             <div class="card primary-accent">
                 <h3 class="card-title"><span class="pill pill-c4">C4</span> រចនាសម្ព័ន្ធ ៦០ តួអក្សរនៃ Bcrypt Hash String (Anatomy of Hash)</h3>
-                <div class="syntax-box" style="font-size: 10pt; color: #15803d; background: #f0fdf4;">$2y$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcFl7p92ldGxad68LJZdL17lhWy</div>
-                <div class="grid-2" style="margin-top: 8px;">
+                <div class="syntax-box" style="font-size: 9.5pt; color: #15803d; background: #f0fdf4;">$2y$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcFl7p92ldGxad68LJZdL17lhWy</div>
+                <div class="grid-2" style="margin-top: 6px;">
                     <div>
                         <p>• <code>$2y$</code> ៖ <b>Algorithm Identifier</b> សម្គាល់ប្រភេទក្បួន Bcrypt Cryptographic Hash។</p>
                         <p>• <code>$12$</code> ៖ <b>Cost Factor (2^12 = 4,096 rounds)</b> កម្រិតនៃភាពពិបាកក្នុងការគណនាទប់ស្កាត់ Brute-Force។</p>
@@ -1209,8 +1157,8 @@ Time: 2026-03-30 08:30:00
                     </div>
                 </div>
             </div>
-            <div class="card emerald-accent" style="margin-top: 6px;">
-                <p style="font-size: 9.5pt;">
+            <div class="card emerald-accent" style="margin-top: 5px;">
+                <p style="font-size: 9.3pt;">
                     <b>💡 ចំណាំសំខាន់សម្រាប់ Database Schema ៖</b> ដោយសារតែ Bcrypt Hash តែងតែមានប្រវែង <b>60 Characters</b> ជានិច្ច ដូច្នេះ Field <code>password_hash</code> ក្នុង MySQL ត្រូវកំណត់ប្រភេទយ៉ាងតិច <b><code>VARCHAR(255)</code></b> ដើម្បីត្រៀមសម្រាប់ Argon2 ទៅថ្ងៃមុខ!
                 </p>
             </div>
@@ -1218,13 +1166,11 @@ Time: 2026-03-30 08:30:00
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>10.3.2 • Bcrypt Anatomy</span>
-            <span>ស្លាយទី ១៣ នៃ ៣២</span>
+            <span>ស្លាយទី ១៣ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 14: LAB 10.3 - PASSWORD HASHING EXPERIMENT
-         ============================================================ -->
+    <!-- ================= SLIDE 14: LAB 10.3 HASHING EXPERIMENT ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1232,17 +1178,14 @@ Time: 2026-03-30 08:30:00
                 <p>Hands-on Experiment: Observing Unique Salt Generation on Identical Passwords</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
             <div class="grid-2">
                 <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-code"></i> hash_demo.php</h3>
+                    <h3 class="card-title"><i class="fa-solid fa-code"></i> exercise_10_3_hashing_demo.php</h3>
                     <div class="code-box"><span class="tag">&lt;?php</span>
 <span class="var">$password</span> = <span class="str">"Secret@2026"</span>;
 
@@ -1262,7 +1205,7 @@ Plain-text Password: Secret@2026
 Hash #1: $2y$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcFl7p92ldGxad68LJZdL17lhWy
 Hash #2: $2y$12$Ua7bVwJkIq2X0m9r6Z1nheP8k1bA9c3dE5f7g8h9i0j1k2l3m4n5o
                     </div>
-                    <p style="margin-top: 8px; font-size: 9.5pt; line-height: 1.45;">
+                    <p style="margin-top: 8px; font-size: 9.2pt; line-height: 1.45;">
                         <b>ការសង្កេត ៖</b> ទោះបីជា Password ដូចគ្នា <code>"Secret@2026"</code> ក៏ដោយ ក៏ Hash ទាំងពីរខុសគ្នាទាំងស្រុង! នេះដោយសារយន្តការ <b>Automatic Cryptographic Salt</b> ដែលបង្កើតឡើងដោយចៃដន្យរាល់ពេលហៅអនុគមន៍។
                     </p>
                 </div>
@@ -1271,13 +1214,11 @@ Hash #2: $2y$12$Ua7bVwJkIq2X0m9r6Z1nheP8k1bA9c3dE5f7g8h9i0j1k2l3m4n5o
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Lab 10.3 • Hashing Experiment</span>
-            <span>ស្លាយទី ១៤ នៃ ៣២</span>
+            <span>ស្លាយទី ១៤ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 15: 10.4.1 LOGIN VERIFICATION WITH PASSWORD_VERIFY
-         ============================================================ -->
+    <!-- ================= SLIDE 15: 10.4.1 PASSWORD_VERIFY LOGIC ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1285,10 +1226,7 @@ Hash #2: $2y$12$Ua7bVwJkIq2X0m9r6Z1nheP8k1bA9c3dE5f7g8h9i0j1k2l3m4n5o
                 <p>Secure Verification: Validating Hashes Without Decryption via Salt Extraction</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -1300,7 +1238,7 @@ Hash #2: $2y$12$Ua7bVwJkIq2X0m9r6Z1nheP8k1bA9c3dE5f7g8h9i0j1k2l3m4n5o
             <div class="grid-2">
                 <div class="card primary-accent">
                     <h3 class="card-title"><span class="pill pill-c4">C4</span> របៀបដំណើរការរបស់ `password_verify()`</h3>
-                    <ol style="font-size: 9.5pt;">
+                    <ol style="font-size: 9.3pt;">
                         <li><code>password_verify()</code> ទាញយក <b>Salt</b> និង <b>Cost</b> ដែលបង្កប់ក្នុង <code>$databaseHash</code>។</li>
                         <li>វាយក <code>$inputPassword</code> ថ្មីទៅ Hash ជាមួយ Salt នោះម្តងទៀត។</li>
                         <li>ប្រសិនបើ Hash ថ្មីដូចគ្នាឥតខ្ចោះនឹង Hash ចាស់ -> Return <code>true</code> (ជោគជ័យ) បើមិនដូចគ្នា -> Return <code>false</code>។</li>
@@ -1324,13 +1262,11 @@ Hash #2: $2y$12$Ua7bVwJkIq2X0m9r6Z1nheP8k1bA9c3dE5f7g8h9i0j1k2l3m4n5o
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>10.4.1 • password_verify() Logic</span>
-            <span>ស្លាយទី ១៥ នៃ ៣២</span>
+            <span>ស្លាយទី ១៥ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 16: 10.4.2 5-STEP SECURE LOGIN PIPELINE
-         ============================================================ -->
+    <!-- ================= SLIDE 16: 10.4.2 5-STEP LOGIN PIPELINE ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1338,10 +1274,7 @@ Hash #2: $2y$12$Ua7bVwJkIq2X0m9r6Z1nheP8k1bA9c3dE5f7g8h9i0j1k2l3m4n5o
                 <p>Production Pipeline: User Lookup, Verification, Session Binding & Timing Attack Defense</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -1349,7 +1282,7 @@ Hash #2: $2y$12$Ua7bVwJkIq2X0m9r6Z1nheP8k1bA9c3dE5f7g8h9i0j1k2l3m4n5o
             <div class="grid-2">
                 <div class="card primary-accent">
                     <h3 class="card-title"><span class="pill pill-c3">C3</span> លំហូរការងារទាំង ៥ ជំហាន</h3>
-                    <ol style="font-size: 9.5pt;">
+                    <ol style="font-size: 9.3pt;">
                         <li><b>ជំហានទី ១ ៖</b> ទទួល <code>email/username</code> និង <code>password</code> តាម POST។</li>
                         <li><b>ជំហានទី ២ ៖</b> ស្វែងរក User តាម Email តែមួយគត់តាម PDO Prepared Statement។</li>
                         <li><b>ជំហានទី ៣ ៖</b> បើ <b>រកមិនឃើញ User</b> ក្នុង DB -> បដិសេធភ្លាម។</li>
@@ -1372,13 +1305,11 @@ $error = "គណនី ឬលេខសម្ងាត់មិនត្រឹម
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>10.4.2 • 5-Step Login Pipeline</span>
-            <span>ស្លាយទី ១៦ នៃ ៣២</span>
+            <span>ស្លាយទី ១៦ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 17: LAB 10.4 - PASSWORD VERIFICATION SCRIPT
-         ============================================================ -->
+    <!-- ================= SLIDE 17: LAB 10.4 LOGIN VERIFICATION ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1386,17 +1317,14 @@ $error = "គណនី ឬលេខសម្ងាត់មិនត្រឹម
                 <p>Hands-on Lab: Simulating Database Password Lookup & Live Form Verification</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
             <div class="grid-2">
                 <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-code"></i> verify_test.php</h3>
+                    <h3 class="card-title"><i class="fa-solid fa-code"></i> exercise_10_4_login_verify.php</h3>
                     <div class="code-box"><span class="tag">&lt;?php</span>
 <span class="var">$correctPassword</span> = <span class="str">"Admin@2026"</span>;
 <span class="var">$dbHash</span> = <span class="fn">password_hash</span>(<span class="var">$correctPassword</span>, <span class="tag">PASSWORD_DEFAULT</span>);
@@ -1432,357 +1360,11 @@ Case 2: User វាយ "Admin@2026"
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Lab 10.4 • Verification Script</span>
-            <span>ស្លាយទី ១៧ នៃ ៣២</span>
+            <span>ស្លាយទី ១៧ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 18: DATABASE SCHEMA: TBL_USERS
-         ============================================================ -->
-    <div class="slide">
-        <div class="slide-header">
-            <div class="header-title-group">
-                <h2>៨. គ្រោងមូលដ្ឋានទិន្នន័យ (Database Schema: `tbl_users`)</h2>
-                <p>Data Definition Language: User Entity Table with Unique Constraints and Enums</p>
-            </div>
-            <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
-                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
-            </div>
-        </div>
-        <div class="slide-body">
-            <div class="grid-2">
-                <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-database"></i> schema_auth.sql</h3>
-                    <div class="code-box"><span class="cm">-- ជ្រើសរើស Database db_university_app</span>
-<span class="kw">USE</span> <span class="var">db_university_app</span>;
-
-<span class="kw">CREATE TABLE IF NOT EXISTS</span> <span class="var">tbl_users</span> (
-    <span class="var">id</span> <span class="tag">INT</span> <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
-    <span class="var">fullname</span> <span class="tag">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span>,
-    <span class="var">username</span> <span class="tag">VARCHAR</span>(<span class="num">50</span>) <span class="kw">NOT NULL UNIQUE</span>,
-    <span class="var">email</span> <span class="tag">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL UNIQUE</span>,
-    <span class="var">password_hash</span> <span class="tag">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
-    <span class="var">role</span> <span class="tag">ENUM</span>(<span class="str">'Admin'</span>, <span class="str">'Staff'</span>, <span class="str">'Student'</span>) <span class="kw">DEFAULT</span> <span class="str">'Staff'</span>,
-    <span class="var">created_at</span> <span class="tag">DATETIME DEFAULT CURRENT_TIMESTAMP</span>
-) <span class="kw">ENGINE</span>=InnoDB;
-
-<span class="cm">-- គណនី Admin គំរូ (Password: Admin@123)</span>
-<span class="kw">INSERT INTO</span> <span class="var">tbl_users</span> (<span class="var">fullname</span>, <span class="var">username</span>, <span class="var">email</span>, <span class="var">password_hash</span>, <span class="var">role</span>) 
-<span class="kw">VALUES</span> (<span class="str">'សាស្ត្រាចារ្យ សឿង លីម'</span>, <span class="str">'admin'</span>, <span class="str">'admin@au.edu.kh'</span>, 
-<span class="str">'$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm'</span>, <span class="str">'Admin'</span>);</div>
-                </div>
-                <div class="card emerald-accent">
-                    <h3 class="card-title emerald"><i class="fa-solid fa-list-check"></i> លក្ខណៈពិសេសនៃ Schema</h3>
-                    <ul>
-                        <li><code>UNIQUE</code> Constraints លើ <code>username</code> និង <code>email</code> ការពារគណនីស្ទួន។</li>
-                        <li><code>password_hash VARCHAR(255)</code> ធានាផ្ទុក Bcrypt (60 chars) ឬ Argon2 (96+ chars) បានពេញលេញ។</li>
-                        <li><code>ENUM('Admin', 'Staff', 'Student')</code> សម្រាប់ Role-based Authorization។</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="slide-footer">
-            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
-            <span>Database Schema • tbl_users</span>
-            <span>ស្លាយទី ១៨ នៃ ៣២</span>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         SLIDE 19: ARCHITECTURE: DB.PHP & AUTH_GUARD.PHP
-         ============================================================ -->
-    <div class="slide">
-        <div class="slide-header">
-            <div class="header-title-group">
-                <h2>៩. ឯកសារគ្រឹះប្រព័ន្ធ ៖ `db.php` &amp; `auth_guard.php`</h2>
-                <p>Foundation Components: Modular PDO Connection and Route Protection Middleware</p>
-            </div>
-            <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
-                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
-            </div>
-        </div>
-        <div class="slide-body">
-            <div class="grid-2">
-                <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-plug-circle-bolt"></i> ១. db.php (PDO Connection)</h3>
-                    <div class="code-box"><span class="tag">&lt;?php</span>
-<span class="var">$dsn</span> = <span class="str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>;
-<span class="var">$options</span> = [
-    <span class="tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="tag">PDO</span>::ERRMODE_EXCEPTION,
-    <span class="tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="tag">PDO</span>::FETCH_ASSOC,
-    <span class="tag">PDO</span>::ATTR_EMULATE_PREPARES   =&gt; <span class="kw">false</span>,
-];
-<span class="kw">try</span> {
-    <span class="var">$pdo</span> = <span class="kw">new</span> <span class="tag">PDO</span>(<span class="var">$dsn</span>, <span class="str">"root"</span>, <span class="str">""</span>, <span class="var">$options</span>);
-} <span class="kw">catch</span> (<span class="tag">PDOException</span> <span class="var">$e</span>) {
-    <span class="fn">error_log</span>(<span class="var">$e</span>-&gt;<span class="fn">getMessage</span>());
-    <span class="fn">die</span>(<span class="str">"កំហុសបច្ចេកទេសតភ្ជាប់ DB!"</span>);
-}
-<span class="tag">?&gt;</span></div>
-                </div>
-                <div class="card emerald-accent">
-                    <h3 class="card-title emerald"><i class="fa-solid fa-shield-halved"></i> ២. auth_guard.php (Middleware)</h3>
-                    <div class="code-box"><span class="tag">&lt;?php</span>
-<span class="kw">if</span> (<span class="fn">session_status</span>() === <span class="tag">PHP_SESSION_NONE</span>) { <span class="fn">session_start</span>(); }
-
-<span class="kw">if</span> (!<span class="kw">isset</span>(<span class="var">$_SESSION</span>[<span class="str">'user_id'</span>]) || <span class="fn">empty</span>(<span class="var">$_SESSION</span>[<span class="str">'user_id'</span>])) {
-    <span class="fn">header</span>(<span class="str">"Location: login.php?error=unauthorized"</span>);
-    <span class="kw">exit</span>;
-}
-
-<span class="kw">function</span> <span class="fn">authUser</span>(): <span class="tag">array</span> {
-    <span class="kw">return</span> [
-        <span class="str">'id'</span>       =&gt; <span class="var">$_SESSION</span>[<span class="str">'user_id'</span>],
-        <span class="str">'username'</span> =&gt; <span class="var">$_SESSION</span>[<span class="str">'username'</span>],
-        <span class="str">'fullname'</span> =&gt; <span class="var">$_SESSION</span>[<span class="str">'fullname'</span>],
-        <span class="str">'role'</span>     =&gt; <span class="var">$_SESSION</span>[<span class="str">'role'</span>]
-    ];
-}
-<span class="tag">?&gt;</span></div>
-                </div>
-            </div>
-        </div>
-        <div class="slide-footer">
-            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
-            <span>db.php & auth_guard.php</span>
-            <span>ស្លាយទី ១៩ នៃ ៣២</span>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         SLIDE 20: ARCHITECTURE: REGISTER.PHP
-         ============================================================ -->
-    <div class="slide">
-        <div class="slide-header">
-            <div class="header-title-group">
-                <h2>៩. ឯកសារទី ៣ ៖ `register.php` (User Registration with Hashing)</h2>
-                <p>Registration Processing: Validations, Duplicate Checks, Bcrypt Hashing & Secure Insertion</p>
-            </div>
-            <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
-                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
-            </div>
-        </div>
-        <div class="slide-body">
-            <div class="grid-2">
-                <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-user-plus"></i> register.php (PHP Logic)</h3>
-                    <div class="code-box"><span class="tag">&lt;?php</span>
-<span class="kw">require_once</span> <span class="str">'db.php'</span>;
-
-<span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">'REQUEST_METHOD'</span>] === <span class="str">'POST'</span>) {
-    <span class="var">$fn</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'fullname'</span>]);
-    <span class="var">$un</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'username'</span>]);
-    <span class="var">$em</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'email'</span>]);
-    <span class="var">$pw</span> = <span class="var">$_POST</span>[<span class="str">'password'</span>];
-
-    <span class="cm">// 1. ពិនិត្យស្ទួន Username ឬ Email</span>
-    <span class="var">$chk</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"SELECT id FROM tbl_users WHERE email = :e OR username = :u"</span>);
-    <span class="var">$chk</span>-&gt;<span class="fn">execute</span>([<span class="str">':e'</span> =&gt; <span class="var">$em</span>, <span class="str">':u'</span> =&gt; <span class="var">$un</span>]);
-
-    <span class="kw">if</span> (!<span class="var">$chk</span>-&gt;<span class="fn">fetch</span>()) {
-        <span class="cm">// 2. Hash Password ជាមួយ Bcrypt</span>
-        <span class="var">$hash</span> = <span class="fn">password_hash</span>(<span class="var">$pw</span>, <span class="tag">PASSWORD_DEFAULT</span>);
-
-        <span class="cm">// 3. Insert ចូល Database</span>
-        <span class="var">$ins</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"INSERT INTO tbl_users (fullname, username, email, password_hash) VALUES (:f, :u, :e, :p)"</span>);
-        <span class="var">$ins</span>-&gt;<span class="fn">execute</span>([<span class="str">':f'</span> =&gt; <span class="var">$fn</span>, <span class="str">':u'</span> =&gt; <span class="var">$un</span>, <span class="str">':e'</span> =&gt; <span class="var">$em</span>, <span class="str">':p'</span> =&gt; <span class="var">$hash</span>]);
-        <span class="fn">header</span>(<span class="str">"Location: login.php?msg=registered"</span>);
-        <span class="kw">exit</span>;
-    }
-}
-<span class="tag">?&gt;</span></div>
-                </div>
-                <div class="card emerald-accent">
-                    <h3 class="card-title emerald"><i class="fa-solid fa-list-check"></i> សុវត្ថិភាពក្នុងការចុះឈ្មោះ</h3>
-                    <ul>
-                        <li><b>No Plain Text ៖</b> លេខសម្ងាត់ត្រូវបានបំប្លែងតាម <code>password_hash()</code> មុនពេលរុញចូល DB។</li>
-                        <li><b>Unique Check ៖</b> ទប់ស្កាត់ការបង្កើតគណនីជាន់ Email ឬ Username គ្នា។</li>
-                        <li><b>Prepared Statements ៖</b> ការពារ SQL Injection ១០០% តាមរយៈ Named Parameters (<code>:f, :u, :e, :p</code>)។</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="slide-footer">
-            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
-            <span>register.php Architecture</span>
-            <span>ស្លាយទី ២០ នៃ ៣២</span>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         SLIDE 21: ARCHITECTURE: LOGIN.PHP
-         ============================================================ -->
-    <div class="slide">
-        <div class="slide-header">
-            <div class="header-title-group">
-                <h2>៩. ឯកសារទី ៤ ៖ `login.php` (Authentication Processing)</h2>
-                <p>Login Controller: Verification, Session Fixation Defense & State Binding</p>
-            </div>
-            <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
-                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
-            </div>
-        </div>
-        <div class="slide-body">
-            <div class="grid-2">
-                <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-right-to-bracket"></i> login.php (PHP Logic)</h3>
-                    <div class="code-box"><span class="tag">&lt;?php</span>
-<span class="kw">require_once</span> <span class="str">'db.php'</span>;
-<span class="kw">if</span> (<span class="fn">session_status</span>() === <span class="tag">PHP_SESSION_NONE</span>) { <span class="fn">session_start</span>(); }
-
-<span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">'REQUEST_METHOD'</span>] === <span class="str">'POST'</span>) {
-    <span class="var">$acc</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'account'</span>]);
-    <span class="var">$pw</span>  = <span class="var">$_POST</span>[<span class="str">'password'</span>];
-
-    <span class="var">$stmt</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"SELECT * FROM tbl_users WHERE email = :a OR username = :a LIMIT 1"</span>);
-    <span class="var">$stmt</span>-&gt;<span class="fn">execute</span>([<span class="str">':a'</span> =&gt; <span class="var">$acc</span>]);
-    <span class="var">$user</span> = <span class="var">$stmt</span>-&gt;<span class="fn">fetch</span>();
-
-    <span class="kw">if</span> (<span class="var">$user</span> &amp;&amp; <span class="fn">password_verify</span>(<span class="var">$pw</span>, <span class="var">$user</span>[<span class="str">'password_hash'</span>])) {
-        <span class="fn">session_regenerate_id</span>(<span class="kw">true</span>); <span class="cm">// Fixation Defense</span>
-        <span class="var">$_SESSION</span>[<span class="str">'user_id'</span>]  = <span class="var">$user</span>[<span class="str">'id'</span>];
-        <span class="var">$_SESSION</span>[<span class="str">'username'</span>] = <span class="var">$user</span>[<span class="str">'username'</span>];
-        <span class="var">$_SESSION</span>[<span class="str">'fullname'</span>] = <span class="var">$user</span>[<span class="str">'fullname'</span>];
-        <span class="var">$_SESSION</span>[<span class="str">'role'</span>]     = <span class="var">$user</span>[<span class="str">'role'</span>];
-        <span class="fn">header</span>(<span class="str">"Location: dashboard.php"</span>);
-        <span class="kw">exit</span>;
-    } <span class="kw">else</span> {
-        <span class="var">$error</span> = <span class="str">"គណនី ឬលេខសម្ងាត់មិនត្រឹមត្រូវឡើយ!"</span>;
-    }
-}
-<span class="tag">?&gt;</span></div>
-                </div>
-                <div class="card emerald-accent">
-                    <h3 class="card-title emerald"><i class="fa-solid fa-shield-halved"></i> សន្តិសុខពេល Login</h3>
-                    <ul>
-                        <li><b>Session Fixation Defense ៖</b> <code>session_regenerate_id(true)</code> បង្កើត Session Token ថ្មីភ្លាមៗក្រោយ Login។</li>
-                        <li><b>Generic Error ៖</b> មិនបញ្ជាក់ថាខុស Email ឬខុស Password ឡើយ ដើម្បីការពារ User Enumeration។</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="slide-footer">
-            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
-            <span>login.php Architecture</span>
-            <span>ស្លាយទី ២១ នៃ ៣២</span>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         SLIDE 22: ARCHITECTURE: DASHBOARD.PHP & LOGOUT.PHP
-         ============================================================ -->
-    <div class="slide">
-        <div class="slide-header">
-            <div class="header-title-group">
-                <h2>៩. ឯកសារទី ៥ &amp; ៦ ៖ `dashboard.php` &amp; `logout.php`</h2>
-                <p>Protected Admin Portal: Rendering Session State, Displaying Metrics & Linking CRUD</p>
-            </div>
-            <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
-                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
-            </div>
-        </div>
-        <div class="slide-body">
-            <div class="grid-2">
-                <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-gauge-high"></i> dashboard.php (Protected Portal)</h3>
-                    <div class="code-box"><span class="tag">&lt;?php</span>
-<span class="kw">require_once</span> <span class="str">'auth_guard.php'</span>; <span class="cm">// ការពារទំព័រ</span>
-<span class="kw">require_once</span> <span class="str">'db.php'</span>;
-
-<span class="var">$user</span> = <span class="fn">authUser</span>();
-<span class="var">$totalStudents</span> = <span class="var">$pdo</span>-&gt;<span class="fn">query</span>(<span class="str">"SELECT COUNT(*) FROM tbl_students"</span>)-&gt;<span class="fn">fetchColumn</span>();
-<span class="tag">?&gt;</span>
-&lt;div class="navbar"&gt;
-    &lt;span&gt;👤 សួស្តី៖ <span class="tag">&lt;?=</span> <span class="fn">htmlspecialchars</span>(<span class="var">$user</span>[<span class="str">'fullname'</span>]) <span class="tag">?&gt;</span>&lt;/span&gt;
-    &lt;a href="logout.php"&gt;Logout&lt;/a&gt;
-&lt;/div&gt;
-&lt;h3&gt;និស្សិតសរុប៖ <span class="tag">&lt;?=</span> <span class="var">$totalStudents</span> <span class="tag">?&gt;</span> នាក់&lt;/h3&gt;
-&lt;a href="index.php"&gt;📂 បើកប្រព័ន្ធគ្រប់គ្រងនិស្សិត (CRUD)&lt;/a&gt;</div>
-                </div>
-                <div class="card emerald-accent">
-                    <h3 class="card-title emerald"><i class="fa-solid fa-link"></i> ការតភ្ជាប់ជាមួយ Lesson 9 CRUD</h3>
-                    <p style="text-align: justify; margin-bottom: 8px;">
-                        ដើម្បីការពារទំព័រ CRUD ទាំងមូល (<code>index.php</code>, <code>add.php</code>, <code>edit.php</code>, <code>delete.php</code>) យើងគ្រាន់តែបន្ថែមបន្ទាត់ខាងលើបង្អស់ ៖
-                    </p>
-                    <div class="syntax-box">&lt;?php
-require_once 'auth_guard.php'; // ការពារ Guest មិនឱ្យចូល
-require_once 'db.php';
-// បន្តកូដ CRUD ធម្មតា...</div>
-                </div>
-            </div>
-        </div>
-        <div class="slide-footer">
-            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
-            <span>dashboard.php & CRUD Integration</span>
-            <span>ស្លាយទី ២២ នៃ ៣២</span>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         SLIDE 23: PRODUCTION BEST PRACTICES
-         ============================================================ -->
-    <div class="slide">
-        <div class="slide-header">
-            <div class="header-title-group">
-                <h2>១២. វិធានសុវត្ថិភាពល្អបំផុត (Production Security Best Practices)</h2>
-                <p>Enterprise Guidelines: HTTPS Enforcement, Cookie Flags, Rate Limiting & Re-hashing</p>
-            </div>
-            <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
-                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
-            </div>
-        </div>
-        <div class="slide-body">
-            <div class="grid-2">
-                <div class="card primary-accent">
-                    <h3 class="card-title"><i class="fa-solid fa-shield-virus"></i> វិធានការពារបណ្តាញ និង Cookie</h3>
-                    <ul>
-                        <li><b>Strict HTTPS Enforcement ៖</b> ការពារការលួចស្ទាក់ចាប់ Plain Passwords និង Session Cookies លើ Public Wi-Fi (MitM Attacks)។</li>
-                        <li><b>HttpOnly &amp; Secure Flags ៖</b> កំណត់ <code>session.cookie_httponly = 1</code> ក្នុង <code>php.ini</code> ការពារការលួច Session តាមរយៈ JavaScript XSS Attacks។</li>
-                    </ul>
-                </div>
-                <div class="card emerald-accent">
-                    <h3 class="card-title emerald"><i class="fa-solid fa-gauge-simple-high"></i> ការពារ Brute-Force &amp; Re-hash</h3>
-                    <ul>
-                        <li><b>Rate Limiting ៖</b> កំណត់ការ Login ខុសមិនឱ្យលើសពី ៥ ដង (បើលើសត្រូវ Lock គណនី ១៥ នាទី)។</li>
-                        <li><b>Automatic Re-hash ៖</b> ប្រើ <code>password_needs_rehash()</code> ពេល Login ដើម្បី Re-hash Password ស្វ័យប្រវត្តិនៅពេល Server ដំឡើងកម្រិត Cost Factor ខ្ពស់ជាងមុន!</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="slide-footer">
-            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
-            <span>Production Best Practices</span>
-            <span>ស្លាយទី ២៣ នៃ ៣២</span>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         SLIDE 24: GLOSSARY OF KEY TERMS
-         ============================================================ -->
+    <!-- ================= SLIDE 18: GLOSSARY OF TERMS ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1790,10 +1372,7 @@ require_once 'db.php';
                 <p>Core Technical Terminology and Professional Nomenclature in Lesson 10</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -1850,13 +1429,11 @@ require_once 'db.php';
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Glossary Table</span>
-            <span>ស្លាយទី ២៤ នៃ ៣២</span>
+            <span>ស្លាយទី ១៨ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 25: LESSON SUMMARY
-         ============================================================ -->
+    <!-- ================= SLIDE 19: LESSON SUMMARY ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1864,10 +1441,7 @@ require_once 'db.php';
                 <p>Comprehensive Synthesis of State Management, Route Protection, and Bcrypt Cryptography</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -1875,20 +1449,20 @@ require_once 'db.php';
             <div class="grid-2">
                 <div class="card primary-accent">
                     <h3 class="card-title">១. State Management (Week 12)</h3>
-                    <p style="text-align: justify; margin-bottom: 8px;">
+                    <p style="text-align: justify; margin-bottom: 6px;">
                         HTTP ជា Stateless Protocol។ យើងប្រើប្រាស់ Session (Server-side) រក្សាទុក Login State និង Cookie (Client-side) ផ្ទុកតែ <code>PHPSESSID</code>។
                     </p>
-                    <h3 class="card-title" style="margin-top: 8px;">២. យន្តការ Auth Guard</h3>
+                    <h3 class="card-title" style="margin-top: 6px;">២. យន្តការ Auth Guard</h3>
                     <p style="text-align: justify;">
                         រាល់ទំព័ររដ្ឋបាលត្រូវតែត្រួតពិនិត្យ <code>$_SESSION['user_id']</code>។ បើគ្មាន Session ត្រូវ Redirect 302 ទៅ <code>login.php</code> ភ្លាមៗ។
                     </p>
                 </div>
                 <div class="card emerald-accent">
                     <h3 class="card-title emerald">៣. សន្តិសុខ Password (Week 13)</h3>
-                    <p style="text-align: justify; margin-bottom: 8px;">
+                    <p style="text-align: justify; margin-bottom: 6px;">
                         ហាមដាច់ខាត Plain Text, MD5, SHA-1! ត្រូវតែប្រើ <code>password_hash($pwd, PASSWORD_DEFAULT)</code> ដែលប្រើក្បួន Bcrypt ជាមួយ Auto-Salt។
                     </p>
-                    <h3 class="card-title emerald" style="margin-top: 8px;">៤. ការផ្ទៀងផ្ទាត់ Login</h3>
+                    <h3 class="card-title emerald" style="margin-top: 6px;">៤. ការផ្ទៀងផ្ទាត់ Login</h3>
                     <p style="text-align: justify;">
                         ប្រើប្រាស់ <code>password_verify()</code> ផ្ទៀងផ្ទាត់ពាក្យសម្ងាត់ពេល Login និងប្រើ <code>session_regenerate_id(true)</code> ការពារ Session Fixation។
                     </p>
@@ -1898,13 +1472,11 @@ require_once 'db.php';
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Lesson Summary</span>
-            <span>ស្លាយទី ២៥ នៃ ៣២</span>
+            <span>ស្លាយទី ១៩ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 26: REVIEW QUESTIONS - TRUE / FALSE
-         ============================================================ -->
+    <!-- ================= SLIDE 20: REVIEW QUESTIONS - TRUE/FALSE ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1912,16 +1484,13 @@ require_once 'db.php';
                 <p>Knowledge Verification: Ten Conceptual True/False Statements</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
-            <div class="card" style="padding: 10px 16px;">
-                <ol style="font-size: 9.5pt; line-height: 1.45;">
+            <div class="card" style="padding: 8px 14px;">
+                <ol style="font-size: 9.2pt; line-height: 1.45;">
                     <li>HTTP គឺជា Stateful Protocol ដែលចងចាំគ្រប់សកម្មភាពរបស់អ្នកប្រើដោយស្វ័យប្រវត្តិ។ <span class="pill pill-c1">C1</span></li>
                     <li>ទិន្នន័យ Session ត្រូវបានរក្សាទុកនៅលើ Web Server ចំណែក Cookie ត្រូវបានរក្សាទុកក្នុង Web Browser។ <span class="pill pill-c2">C2</span></li>
                     <li>អនុគមន៍ <code>session_start()</code> អាចហៅនៅកន្លែងណាក៏បាន បន្ទាប់ពី Render HTML ក៏បាន។ <span class="pill pill-c4">C4</span></li>
@@ -1938,13 +1507,11 @@ require_once 'db.php';
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Review Questions • True/False</span>
-            <span>ស្លាយទី ២៦ នៃ ៣២</span>
+            <span>ស្លាយទី ២០ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 27: REVIEW QUESTIONS - MCQS PART 1
-         ============================================================ -->
+    <!-- ================= SLIDE 21: REVIEW QUESTIONS - MCQS PART 1 ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -1952,10 +1519,7 @@ require_once 'db.php';
                 <p>Multiple Choice Conceptual Questions: Questions 1 to 5</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -1963,23 +1527,23 @@ require_once 'db.php';
             <div class="grid-2">
                 <div class="card primary-accent">
                     <p><b>១. តើអនុគមន៍ណាប្រើសម្រាប់ចាប់ផ្តើម Session?</b> <span class="pill pill-c1">C1</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. session_create()</li>
                         <li>B. session_start()</li>
                         <li>C. session_init()</li>
                         <li>D. start_session()</li>
                     </ul>
-                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <hr style="margin: 5px 0; border: none; border-top: 1px solid #e2e8f0;">
                     <p><b>២. តើ Superglobal ណាផ្ទុកទិន្នន័យ Session?</b> <span class="pill pill-c1">C1</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. $_COOKIE</li>
                         <li>B. $_SERVER</li>
                         <li>C. $_SESSION</li>
                         <li>D. $_ENV</li>
                     </ul>
-                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <hr style="margin: 5px 0; border: none; border-top: 1px solid #e2e8f0;">
                     <p><b>៣. តើអនុគមន៍ណាត្រឹមត្រូវសម្រាប់ Hash Password?</b> <span class="pill pill-c2">C2</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. md5()</li>
                         <li>B. sha1()</li>
                         <li>C. password_hash()</li>
@@ -1988,15 +1552,15 @@ require_once 'db.php';
                 </div>
                 <div class="card emerald-accent">
                     <p><b>៤. តើ algorithm parameter ណាត្រូវបានណែនាំជាស្តង់ដារ?</b> <span class="pill pill-c2">C2</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. PASSWORD_DEFAULT</li>
                         <li>B. PASSWORD_MD5</li>
                         <li>C. PASSWORD_SHA256</li>
                         <li>D. PASSWORD_RAW</li>
                     </ul>
-                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <hr style="margin: 5px 0; border: none; border-top: 1px solid #e2e8f0;">
                     <p><b>៥. តើអនុគមន៍ណាប្រើសម្រាប់ផ្ទៀងផ្ទាត់ Password ពេល Login?</b> <span class="pill pill-c2">C2</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. password_check()</li>
                         <li>B. password_verify()</li>
                         <li>C. password_match()</li>
@@ -2008,13 +1572,11 @@ require_once 'db.php';
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Multiple Choice Questions • Part 1</span>
-            <span>ស្លាយទី ២៧ នៃ ៣២</span>
+            <span>ស្លាយទី ២១ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 28: REVIEW QUESTIONS - MCQS PART 2
-         ============================================================ -->
+    <!-- ================= SLIDE 22: REVIEW QUESTIONS - MCQS PART 2 ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
@@ -2022,10 +1584,7 @@ require_once 'db.php';
                 <p>Multiple Choice Conceptual Questions: Questions 6 to 10</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -2033,23 +1592,23 @@ require_once 'db.php';
             <div class="grid-2">
                 <div class="card primary-accent">
                     <p><b>៦. តើប្រវែងតួអក្សរនៃ Bcrypt Hash មានប៉ុន្មានតួ?</b> <span class="pill pill-c1">C1</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. 32 តួអក្សរ</li>
                         <li>B. 60 តួអក្សរ</li>
                         <li>C. 128 តួអក្សរ</li>
                         <li>D. 256 តួអក្សរ</li>
                     </ul>
-                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <hr style="margin: 5px 0; border: none; border-top: 1px solid #e2e8f0;">
                     <p><b>៧. តើ Cookie ណាផ្ទុក Session ID លើ Browser?</b> <span class="pill pill-c1">C1</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. USER_TOKEN</li>
                         <li>B. PHPSESSID</li>
                         <li>C. PHP_AUTH</li>
                         <li>D. SESSION_KEY</li>
                     </ul>
-                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <hr style="margin: 5px 0; border: none; border-top: 1px solid #e2e8f0;">
                     <p><b>៨. តើលក្ខខណ្ឌណាការពារទំព័រ Admin បានត្រឹមត្រូវ?</b> <span class="pill pill-c3">C3</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. if (isset($_COOKIE['admin']))</li>
                         <li>B. if (!isset($_SESSION['user_id']))</li>
                         <li>C. if ($_GET['login'] == 1)</li>
@@ -2058,15 +1617,15 @@ require_once 'db.php';
                 </div>
                 <div class="card emerald-accent">
                     <p><b>៩. ភាពខុសគ្នារវាង Authentication &amp; Authorization?</b> <span class="pill pill-c4">C4</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. Auth ទាំងពីរដូចគ្នា</li>
                         <li>B. Auth=Login ឯ Authorize=ការកំណត់សិទ្ធិ</li>
                         <li>C. Auth=Password ឯ Authorize=Email</li>
                         <li>D. គ្មានចម្លើយត្រឹមត្រូវ</li>
                     </ul>
-                    <hr style="margin: 6px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    <hr style="margin: 5px 0; border: none; border-top: 1px solid #e2e8f0;">
                     <p><b>១០. តើអនុគមន៍ណាបំផ្លាញទិន្នន័យ Session ពេល Logout?</b> <span class="pill pill-c2">C2</span></p>
-                    <ul style="list-style: none; padding-left: 0; margin-top: 4px;">
+                    <ul style="list-style: none; padding-left: 0; margin-top: 3px;">
                         <li>A. session_unset()</li>
                         <li>B. session_destroy()</li>
                         <li>C. session_close()</li>
@@ -2078,29 +1637,24 @@ require_once 'db.php';
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Multiple Choice Questions • Part 2</span>
-            <span>ស្លាយទី ២៨ នៃ ៣២</span>
+            <span>ស្លាយទី ២២ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 29: REVIEW QUESTIONS - MATCHING
-         ============================================================ -->
+    <!-- ================= SLIDE 23: REVIEW QUESTIONS - MATCHING ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
                 <h2>៦.គ. សំណួរ ផ្គូផ្គង (Matching Questions - ១០ គូ)</h2>
-                <p>Matching Exercise: Connecting Security Concepts, Cryptographic Syntaxes & Session Functions</p>
+                <p>Matching Exercise: Connecting Security Concepts, Cryptographic Syntaxes &amp; Session Functions</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
-            <table class="slide-table" style="font-size: 9pt;">
+            <table class="slide-table" style="font-size: 8.8pt;">
                 <thead>
                     <tr>
                         <th style="width: 45%;">ជួរ A (Security &amp; Auth Concept)</th>
@@ -2124,24 +1678,19 @@ require_once 'db.php';
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Review Questions • Matching Exercise</span>
-            <span>ស្លាយទី ២៩ នៃ ៣២</span>
+            <span>ស្លាយទី ២៣ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 30: EXPLANATORY QUESTIONS - 3 TIERS
-         ============================================================ -->
+    <!-- ================= SLIDE 24: EXPLANATORY QUESTIONS ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
-                <h2>៦.ឃ. សំណួរបកស្រាយ (Explanatory Questions - ៣ កម្រិត)</h2>
-                <p>Conceptual and Analytical Questions across Easy, Medium and Advanced Difficulty Tiers</p>
+                <h2>៦.ឃ. សំណួរបកស្រាយតាមកម្រិត (Explanatory Questions Q10.1 - Q10.9)</h2>
+                <p>Categorized Inquiry: Light (Q1-3), Medium (Q4-6), and Advanced Architecture (Q7-9)</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -2149,23 +1698,23 @@ require_once 'db.php';
             <div class="grid-3">
                 <div class="card emerald-accent">
                     <h3 class="card-title emerald">[កម្រិតស្រាល - Easy]</h3>
-                    <ul style="font-size: 9pt;">
-                        <li><b>Q10.1 ៖</b> ហេតុអ្វី HTTP ជា Stateless Protocol? <span class="pill pill-c1">C1</span></li>
-                        <li><b>Q10.2 ៖</b> ភាពខុសគ្នាសំខាន់ ៣ រវាង Session និង Cookie? <span class="pill pill-c2">C2</span></li>
-                        <li><b>Q10.3 ៖</b> អ្វីទៅជា Password Hash ហើយហេតុអ្វីមិនអាច Decode? <span class="pill pill-c2">C2</span></li>
+                    <ul style="font-size: 8.8pt;">
+                        <li><b>Q10.1 ៖</b> ហេតុអ្វី HTTP ជា Stateless? <span class="pill pill-c1">C1</span></li>
+                        <li><b>Q10.2 ៖</b> ភាពខុសគ្នា ៣ រវាង Session &amp; Cookie? <span class="pill pill-c2">C2</span></li>
+                        <li><b>Q10.3 ៖</b> អ្វីជា Password Hash ហេតុអ្វីមិនអាច Decode? <span class="pill pill-c2">C2</span></li>
                     </ul>
                 </div>
                 <div class="card gold-accent">
                     <h3 class="card-title gold">[កម្រិតមធ្យម - Medium]</h3>
-                    <ul style="font-size: 9pt;">
-                        <li><b>Q10.4 ៖</b> យន្តការផ្ទៀងផ្ទាត់របស់ <code>password_verify()</code>? <span class="pill pill-c4">C4</span></li>
-                        <li><b>Q10.5 ៖</b> តួនាទី Cryptographic Salt ទប់ស្កាត់ Rainbow Tables? <span class="pill pill-c4">C4</span></li>
-                        <li><b>Q10.6 ៖</b> ជំហានទាំង ៤ នៃ Logout ស្អាតស្អំ ១០០%? <span class="pill pill-c3">C3</span></li>
+                    <ul style="font-size: 8.8pt;">
+                        <li><b>Q10.4 ៖</b> យន្តការផ្ទៀងផ្ទាត់ `password_verify()`? <span class="pill pill-c4">C4</span></li>
+                        <li><b>Q10.5 ៖</b> តួនាទី Cryptographic Salt? <span class="pill pill-c4">C4</span></li>
+                        <li><b>Q10.6 ៖</b> ជំហានទាំង ៤ នៃ Logout ស្អាតស្អំ? <span class="pill pill-c3">C3</span></li>
                     </ul>
                 </div>
                 <div class="card danger-accent">
                     <h3 class="card-title danger">[កម្រិតធ្ងន់ - Advanced]</h3>
-                    <ul style="font-size: 9pt;">
+                    <ul style="font-size: 8.8pt;">
                         <li><b>Q10.7 ៖</b> ហានិភ័យ Session Hijacking &amp; Fixation? <span class="pill pill-c5">C5</span></li>
                         <li><b>Q10.8 ៖</b> ហេតុអ្វី MD5 &amp; SHA-1 លែងមានសុវត្ថិភាព? <span class="pill pill-c5">C5</span></li>
                         <li><b>Q10.9 ៖</b> រចនាស្ថាបត្យកម្ម Auth Guard Middleware? <span class="pill pill-c6">C6</span></li>
@@ -2175,25 +1724,20 @@ require_once 'db.php';
         </div>
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
-            <span>Explanatory Questions • 3 Tiers</span>
-            <span>ស្លាយទី ៣០ នៃ ៣២</span>
+            <span>Explanatory Questions Overview</span>
+            <span>ស្លាយទី ២៤ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 31: ANSWER KEYS: T/F, MCQ & MATCHING
-         ============================================================ -->
+    <!-- ================= SLIDE 25: ANSWER KEYS ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
-                <h2>៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys)</h2>
+                <h2>៧. ចម្លើយ និងដំណោះស្រាយ (Answer Keys: T/F, MCQ &amp; Matching)</h2>
                 <p>Verified Solutions for True/False, Multiple Choice, and Matching Questions</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
@@ -2201,7 +1745,7 @@ require_once 'db.php';
             <div class="grid-3">
                 <div class="card emerald-accent">
                     <h3 class="card-title emerald"><i class="fa-solid fa-check-double"></i> ចម្លើយ ខុស/ត្រូវ (T/F)</h3>
-                    <table class="slide-table" style="text-align: center;">
+                    <table class="slide-table" style="text-align: center; font-size: 8.5pt;">
                         <thead><tr><th>ល.រ</th><th>ចម្លើយ</th></tr></thead>
                         <tbody>
                             <tr><td>១</td><td><b>ខុស (False)</b></td></tr>
@@ -2219,7 +1763,7 @@ require_once 'db.php';
                 </div>
                 <div class="card primary-accent">
                     <h3 class="card-title"><i class="fa-solid fa-list-check"></i> ចម្លើយ ពហុជ្រើសរើស (MCQ)</h3>
-                    <table class="slide-table" style="text-align: center;">
+                    <table class="slide-table" style="text-align: center; font-size: 8.5pt;">
                         <thead><tr><th>ល.រ</th><th>ចម្លើយ</th></tr></thead>
                         <tbody>
                             <tr><td>១</td><td><b>B (session_start)</b></td></tr>
@@ -2237,7 +1781,7 @@ require_once 'db.php';
                 </div>
                 <div class="card gold-accent">
                     <h3 class="card-title gold"><i class="fa-solid fa-shuffle"></i> ចម្លើយ ផ្គូផ្គង (Matching)</h3>
-                    <table class="slide-table" style="text-align: center;">
+                    <table class="slide-table" style="text-align: center; font-size: 8.5pt;">
                         <thead><tr><th>សំណួរ</th><th>ផ្គូផ្គង</th></tr></thead>
                         <tbody>
                             <tr><td>១</td><td><b>B</b> (session_start)</td></tr>
@@ -2258,63 +1802,673 @@ require_once 'db.php';
         <div class="slide-footer">
             <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
             <span>Answer Keys: T/F, MCQ, and Matching</span>
-            <span>ស្លាយទី ៣១ នៃ ៣២</span>
+            <span>ស្លាយទី ២៥ នៃ ៣៨</span>
         </div>
     </div>
 
-    <!-- ============================================================
-         SLIDE 32: OFFICIAL APPROVALS & CLOSING
-         ============================================================ -->
+    <!-- ================= SLIDE 26: EXPLANATORY SOLUTIONS HIGHLIGHTS ================= -->
     <div class="slide">
         <div class="slide-header">
             <div class="header-title-group">
-                <h2>ការអនុម័ត និងសេចក្តីបញ្ចប់មេរៀនទី ១០</h2>
-                <p>Lesson 10 Completion, Institutional Endorsements, and Faculty Contacts</p>
+                <h2>៧.ឃ. ចម្លើយសំណួរបកស្រាយគន្លឹះ (Explanatory Solutions Highlights)</h2>
+                <p>Key Explanations: Verification Logic, Rainbow Tables, 4-Step Destruction & Fixation Defense</p>
             </div>
             <div class="header-logo-group">
-                <div class="header-univ-text">
-                    <span class="kh">សាកលវិទ្យាល័យអង្គរ</span>
-                    <span class="en">ANGKOR UNIVERSITY</span>
-                </div>
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
                 <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
             </div>
         </div>
         <div class="slide-body">
-            <div style="text-align: center; margin-bottom: 12px;">
-                <h3 style="font-family: var(--font-muol); color: var(--primary); font-size: 14.5pt; margin-bottom: 4px; font-weight: normal;">
-                    អបអរសាទរ! លោកអ្នកបានបញ្ចប់មេរៀនទី ១០ ដោយជោគជ័យ
-                </h3>
-                <p style="font-size: 10.5pt; color: #475569;">
-                    "Mastering Resilient Session Management, Route Protection Middleware &amp; Modern Bcrypt Cryptography"
+            <div class="grid-2">
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald">• Verification &amp; Salt Defense</h3>
+                    <p style="font-size: 9.1pt; margin-bottom: 6px;">
+                        <b>• Q10.4 (password_verify) ៖</b> ទាញយក Salt និង Cost ពី Hash ចាស់ យកទៅ Hash លើ Password ថ្មី រួចប្រៀបធៀប Hash ទាំងពីរ បើដូចគ្នាមានន័យថា Password ត្រឹមត្រូវ។
+                    </p>
+                    <p style="font-size: 9.1pt;">
+                        <b>• Q10.5 (Cryptographic Salt) ៖</b> បូកបន្ថែមអក្សរចៃដន្យ ធានាថា Password ដូចគ្នានឹងផ្តល់ Hash ខុសគ្នាជានិច្ច ធ្វើឱ្យ Rainbow Tables របស់ Hacker លែងមានប្រសិទ្ធភាព។
+                    </p>
+                </div>
+                <div class="card primary-accent">
+                    <h3 class="card-title">• Logout &amp; Fixation Defense</h3>
+                    <p style="font-size: 9.1pt; margin-bottom: 6px;">
+                        <b>• Q10.6 (4-Step Logout) ៖</b> ១. សម្អាត Array ២. លុប Cookie ៣. បំផ្លាញ Session File លើ Server ៤. Redirect ទៅ Login។
+                    </p>
+                    <p style="font-size: 9.1pt;">
+                        <b>• Q10.7 (Session Fixation Defense) ៖</b> ហៅ <code>session_regenerate_id(true)</code> ភ្លាមៗពេល Login ជោគជ័យ ដើម្បីផ្លាស់ប្តូរលេខ Session ID ថ្មី។
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>Explanatory Solutions Highlights</span>
+            <span>ស្លាយទី ២៦ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 27: TROUBLESHOOTING MATRIX ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>តារាងដោះស្រាយបញ្ហាបច្ចេកទេសញឹកញាប់ (Common Pitfalls &amp; Debugging)</h2>
+                <p>Troubleshooting Top Developer Errors: Headers Sent, Password Mismatch &amp; Session Loss</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">សារកំហុស (Error Message)</th>
+                        <th style="width: 35%;">មូលហេតុចម្បង (Root Cause)</th>
+                        <th style="width: 35%;">ដំណោះស្រាយរហ័ស (Quick Fix)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--danger);">Headers already sent</td>
+                        <td>មានកូដ HTML ឬ White-space មុន <code>session_start()</code> ឬ <code>header()</code></td>
+                        <td>រើកូដ <code>session_start()</code> ទៅបន្ទាត់លើគេបង្អស់នៃឯកសារ</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--danger);">Password verify always false</td>
+                        <td>Field ក្នុង Database មានទំហំខ្លីពេក (ឧ. VARCHAR(32) កាត់ផ្តាច់ Hash)</td>
+                        <td>ប្តូរ Field <code>password_hash</code> ជា <code>VARCHAR(255)</code> ជានិច្ច</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--danger);">Session lost on redirect</td>
+                        <td>ភ្លេចសរសេរ <code>session_start()</code> នៅទំព័រទទួល Redirect</td>
+                        <td>ត្រូវហៅ <code>session_start()</code> នៅគ្រប់ទំព័រដែលចង់អាន Session</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="card gold-accent" style="margin-top: 5px;">
+                <p style="font-size: 9.3pt;">
+                    <b>💡 Pro-Tip ៖</b> ប្រើប្រាស់ <code>if (session_status() === PHP_SESSION_NONE) { session_start(); }</code> ដើម្បីជៀសវាង Warning "A session had already been started"!
                 </p>
             </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>Common Pitfalls &amp; Debugging Matrix</span>
+            <span>ស្លាយទី ២៧ នៃ ៣៨</span>
+        </div>
+    </div>
 
-            <div class="grid-3" style="text-align: center;">
-                <div class="card" style="padding: 12px 10px;">
-                    <p style="font-size: 10pt; color: #64748b;">បានឃើញ និងឯកភាព</p>
-                    <p style="font-family: var(--font-muol); font-size: 10.5pt; margin-top: 4px; color: #0f172a;">ព្រឹទ្ធបុរសមហាវិទ្យាល័យ</p>
-                    <div style="height: 35px;"></div>
-                    <p style="font-size: 9.5pt; font-weight: bold; color: #94a3b8;">..........................................</p>
+    <!-- ================= SLIDE 28: DATABASE SCHEMA TBL_USERS ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៨. គ្រោងមូលដ្ឋានទិន្នន័យ (Database Schema: `tbl_users`)</h2>
+                <p>Data Definition Language: User Entity Table with Unique Constraints and Enums</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-database"></i> schema_auth.sql</h3>
+                    <div class="code-box"><span class="cm">-- ជ្រើសរើស Database db_university_app</span>
+<span class="kw">USE</span> <span class="var">db_university_app</span>;
+
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> <span class="var">tbl_users</span> (
+    <span class="var">id</span> <span class="tag">INT</span> <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="var">fullname</span> <span class="tag">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span>,
+    <span class="var">username</span> <span class="tag">VARCHAR</span>(<span class="num">50</span>) <span class="kw">NOT NULL UNIQUE</span>,
+    <span class="var">email</span> <span class="tag">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL UNIQUE</span>,
+    <span class="var">password_hash</span> <span class="tag">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
+    <span class="var">role</span> <span class="tag">ENUM</span>(<span class="str">'Admin'</span>, <span class="str">'Staff'</span>, <span class="str">'Student'</span>) <span class="kw">DEFAULT</span> <span class="str">'Staff'</span>,
+    <span class="var">created_at</span> <span class="tag">DATETIME DEFAULT CURRENT_TIMESTAMP</span>
+) <span class="kw">ENGINE</span>=InnoDB;
+
+<span class="cm">-- គណនី Admin គំរូ (Password: Admin@123)</span>
+<span class="kw">INSERT INTO</span> <span class="var">tbl_users</span> (<span class="var">fullname</span>, <span class="var">username</span>, <span class="var">email</span>, <span class="var">password_hash</span>, <span class="var">role</span>) 
+<span class="kw">VALUES</span> (<span class="str">'សាស្ត្រាចារ្យ សឿង លីម'</span>, <span class="str">'admin'</span>, <span class="str">'admin@au.edu.kh'</span>, 
+<span class="str">'$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm'</span>, <span class="str">'Admin'</span>);</div>
                 </div>
-                <div class="card" style="padding: 12px 10px;">
-                    <p style="font-size: 10pt; color: #64748b;">បានពិនិត្យ និងត្រួតពិនិត្យ</p>
-                    <p style="font-family: var(--font-muol); font-size: 10.5pt; margin-top: 4px; color: #0f172a;">ប្រធានដេប៉ាតឺម៉ង់ CS &amp; IT</p>
-                    <div style="height: 35px;"></div>
-                    <p style="font-size: 9.5pt; font-weight: bold; color: #94a3b8;">..........................................</p>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-list-check"></i> លក្ខណៈពិសេសនៃ Schema</h3>
+                    <ul>
+                        <li><code>UNIQUE</code> Constraints លើ <code>username</code> និង <code>email</code> ការពារគណនីស្ទួន។</li>
+                        <li><code>password_hash VARCHAR(255)</code> ធានាផ្ទុក Bcrypt (60 chars) ឬ Argon2 (96+ chars) បានពេញលេញ។</li>
+                        <li><code>ENUM('Admin', 'Staff', 'Student')</code> សម្រាប់ Role-based Authorization។</li>
+                    </ul>
                 </div>
-                <div class="card primary-accent" style="padding: 12px 10px;">
-                    <p style="font-size: 10pt; color: #64748b;">សាស្ត្រាចារ្យទទួលបន្ទុក</p>
-                    <p style="font-family: var(--font-muol); font-size: 10.5pt; margin-top: 4px; color: var(--primary);">សាស្ត្រាចារ្យ សឿង លីម</p>
-                    <div style="height: 20px;"></div>
-                    <p style="font-size: 10pt; font-weight: bold; color: var(--primary);">M.Sc. in Information Technology</p>
-                    <p style="font-size: 9pt; color: #64748b;">សាកលវិទ្យាល័យអង្គរ (Siem Reap)</p>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>Database Schema • tbl_users</span>
+            <span>ស្លាយទី ២៨ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 29: CODE - DB.PHP & AUTH_GUARD.PHP ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩. ឯកសារគ្រឹះប្រព័ន្ធ ៖ `db.php` &amp; `auth_guard.php`</h2>
+                <p>Foundation Components: Modular PDO Connection and Route Protection Middleware</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-plug-circle-bolt"></i> ១. db.php (PDO Connection)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="var">$dsn</span> = <span class="str">"mysql:host=localhost;dbname=db_university_app;charset=utf8mb4"</span>;
+<span class="var">$options</span> = [
+    <span class="tag">PDO</span>::ATTR_ERRMODE            =&gt; <span class="tag">PDO</span>::ERRMODE_EXCEPTION,
+    <span class="tag">PDO</span>::ATTR_DEFAULT_FETCH_MODE =&gt; <span class="tag">PDO</span>::FETCH_ASSOC,
+    <span class="tag">PDO</span>::ATTR_EMULATE_PREPARES   =&gt; <span class="kw">false</span>,
+];
+<span class="kw">try</span> {
+    <span class="var">$pdo</span> = <span class="kw">new</span> <span class="tag">PDO</span>(<span class="var">$dsn</span>, <span class="str">"root"</span>, <span class="str">""</span>, <span class="var">$options</span>);
+} <span class="kw">catch</span> (<span class="tag">PDOException</span> <span class="var">$e</span>) {
+    <span class="fn">error_log</span>(<span class="var">$e</span>-&gt;<span class="fn">getMessage</span>());
+    <span class="fn">die</span>(<span class="str">"កំហុសបច្ចេកទេសតភ្ជាប់ DB!"</span>);
+}
+<span class="tag">?&gt;</span></div>
                 </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-shield-halved"></i> ២. auth_guard.php (Middleware)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">if</span> (<span class="fn">session_status</span>() === <span class="tag">PHP_SESSION_NONE</span>) { <span class="fn">session_start</span>(); }
+
+<span class="kw">if</span> (!<span class="kw">isset</span>(<span class="var">$_SESSION</span>[<span class="str">'user_id'</span>]) || <span class="fn">empty</span>(<span class="var">$_SESSION</span>[<span class="str">'user_id'</span>])) {
+    <span class="fn">header</span>(<span class="str">"Location: login.php?error=unauthorized"</span>);
+    <span class="kw">exit</span>;
+}
+
+<span class="kw">function</span> <span class="fn">authUser</span>(): <span class="tag">array</span> {
+    <span class="kw">return</span> [
+        <span class="str">'id'</span>       =&gt; <span class="var">$_SESSION</span>[<span class="str">'user_id'</span>],
+        <span class="str">'username'</span> =&gt; <span class="var">$_SESSION</span>[<span class="str">'username'</span>],
+        <span class="str">'fullname'</span> =&gt; <span class="var">$_SESSION</span>[<span class="str">'fullname'</span>],
+        <span class="str">'role'</span>     =&gt; <span class="var">$_SESSION</span>[<span class="str">'role'</span>]
+    ];
+}
+<span class="tag">?&gt;</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>db.php & auth_guard.php</span>
+            <span>ស្លាយទី ២៩ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 30: CODE - REGISTER.PHP ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩. ឯកសារទី ៣ ៖ `register.php` (User Registration with Hashing)</h2>
+                <p>Registration Processing: Validations, Duplicate Checks, Bcrypt Hashing & Secure Insertion</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-user-plus"></i> register.php (PHP Logic)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">require_once</span> <span class="str">'db.php'</span>;
+
+<span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">'REQUEST_METHOD'</span>] === <span class="str">'POST'</span>) {
+    <span class="var">$fn</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'fullname'</span>]);
+    <span class="var">$un</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'username'</span>]);
+    <span class="var">$em</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'email'</span>]);
+    <span class="var">$pw</span> = <span class="var">$_POST</span>[<span class="str">'password'</span>];
+
+    <span class="cm">// 1. ពិនិត្យស្ទួន Username ឬ Email</span>
+    <span class="var">$chk</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"SELECT id FROM tbl_users WHERE email = :e OR username = :u"</span>);
+    <span class="var">$chk</span>-&gt;<span class="fn">execute</span>([<span class="str">':e'</span> =&gt; <span class="var">$em</span>, <span class="str">':u'</span> =&gt; <span class="var">$un</span>]);
+
+    <span class="kw">if</span> (!<span class="var">$chk</span>-&gt;<span class="fn">fetch</span>()) {
+        <span class="cm">// 2. Hash Password ជាមួយ Bcrypt</span>
+        <span class="var">$hash</span> = <span class="fn">password_hash</span>(<span class="var">$pw</span>, <span class="tag">PASSWORD_DEFAULT</span>);
+
+        <span class="cm">// 3. Insert ចូល Database</span>
+        <span class="var">$ins</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"INSERT INTO tbl_users (fullname, username, email, password_hash) VALUES (:f, :u, :e, :p)"</span>);
+        <span class="var">$ins</span>-&gt;<span class="fn">execute</span>([<span class="str">':f'</span> =&gt; <span class="var">$fn</span>, <span class="str">':u'</span> =&gt; <span class="var">$un</span>, <span class="str">':e'</span> =&gt; <span class="var">$em</span>, <span class="str">':p'</span> =&gt; <span class="var">$hash</span>]);
+        <span class="fn">header</span>(<span class="str">"Location: login.php?msg=registered"</span>);
+        <span class="kw">exit</span>;
+    }
+}
+<span class="tag">?&gt;</span></div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-list-check"></i> សុវត្ថិភាពក្នុងការចុះឈ្មោះ</h3>
+                    <ul>
+                        <li><b>No Plain Text ៖</b> លេខសម្ងាត់ត្រូវបានបំប្លែងតាម <code>password_hash()</code> មុនពេលរុញចូល DB។</li>
+                        <li><b>Unique Check ៖</b> ទប់ស្កាត់ការបង្កើតគណនីជាន់ Email ឬ Username គ្នា។</li>
+                        <li><b>Prepared Statements ៖</b> ការពារ SQL Injection ១០០% តាមរយៈ Named Parameters (<code>:f, :u, :e, :p</code>)។</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>register.php Architecture</span>
+            <span>ស្លាយទី ៣០ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 31: CODE - LOGIN.PHP ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩. ឯកសារទី ៤ ៖ `login.php` (Authentication Processing)</h2>
+                <p>Login Controller: Verification, Session Fixation Defense & State Binding</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-right-to-bracket"></i> login.php (PHP Logic)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">require_once</span> <span class="str">'db.php'</span>;
+<span class="kw">if</span> (<span class="fn">session_status</span>() === <span class="tag">PHP_SESSION_NONE</span>) { <span class="fn">session_start</span>(); }
+
+<span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">'REQUEST_METHOD'</span>] === <span class="str">'POST'</span>) {
+    <span class="var">$acc</span> = <span class="fn">trim</span>(<span class="var">$_POST</span>[<span class="str">'account'</span>]);
+    <span class="var">$pw</span>  = <span class="var">$_POST</span>[<span class="str">'password'</span>];
+
+    <span class="var">$stmt</span> = <span class="var">$pdo</span>-&gt;<span class="fn">prepare</span>(<span class="str">"SELECT * FROM tbl_users WHERE email = :a OR username = :a LIMIT 1"</span>);
+    <span class="var">$stmt</span>-&gt;<span class="fn">execute</span>([<span class="str">':a'</span> =&gt; <span class="var">$acc</span>]);
+    <span class="var">$user</span> = <span class="var">$stmt</span>-&gt;<span class="fn">fetch</span>();
+
+    <span class="kw">if</span> (<span class="var">$user</span> &amp;&amp; <span class="fn">password_verify</span>(<span class="var">$pw</span>, <span class="var">$user</span>[<span class="str">'password_hash'</span>])) {
+        <span class="fn">session_regenerate_id</span>(<span class="kw">true</span>); <span class="cm">// Fixation Defense</span>
+        <span class="var">$_SESSION</span>[<span class="str">'user_id'</span>]  = <span class="var">$user</span>[<span class="str">'id'</span>];
+        <span class="var">$_SESSION</span>[<span class="str">'username'</span>] = <span class="var">$user</span>[<span class="str">'username'</span>];
+        <span class="var">$_SESSION</span>[<span class="str">'fullname'</span>] = <span class="var">$user</span>[<span class="str">'fullname'</span>];
+        <span class="var">$_SESSION</span>[<span class="str">'role'</span>]     = <span class="var">$user</span>[<span class="str">'role'</span>];
+        <span class="fn">header</span>(<span class="str">"Location: dashboard.php"</span>);
+        <span class="kw">exit</span>;
+    } <span class="kw">else</span> {
+        <span class="var">$error</span> = <span class="str">"គណនី ឬលេខសម្ងាត់មិនត្រឹមត្រូវឡើយ!"</span>;
+    }
+}
+<span class="tag">?&gt;</span></div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-shield-halved"></i> សន្តិសុខពេល Login</h3>
+                    <ul>
+                        <li><b>Session Fixation Defense ៖</b> <code>session_regenerate_id(true)</code> បង្កើត Session Token ថ្មីភ្លាមៗក្រោយ Login។</li>
+                        <li><b>Generic Error ៖</b> មិនបញ្ជាក់ថាខុស Email ឬខុស Password ឡើយ ដើម្បីការពារ User Enumeration។</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>login.php Architecture</span>
+            <span>ស្លាយទី ៣១ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 32: CODE - DASHBOARD.PHP & LOGOUT.PHP ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>៩. ឯកសារទី ៥ &amp; ៦ ៖ `dashboard.php` &amp; `logout.php`</h2>
+                <p>Protected Admin Portal: Rendering Session State, Displaying Metrics &amp; Linking CRUD</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-gauge-high"></i> dashboard.php (Protected Portal)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">require_once</span> <span class="str">'auth_guard.php'</span>; <span class="cm">// ការពារទំព័រ</span>
+<span class="kw">require_once</span> <span class="str">'db.php'</span>;
+
+<span class="var">$user</span> = <span class="fn">authUser</span>();
+<span class="var">$totalStudents</span> = <span class="var">$pdo</span>-&gt;<span class="fn">query</span>(<span class="str">"SELECT COUNT(*) FROM tbl_students"</span>)-&gt;<span class="fn">fetchColumn</span>();
+<span class="tag">?&gt;</span>
+&lt;div class="navbar"&gt;
+    &lt;span&gt;👤 សួស្តី៖ <span class="tag">&lt;?=</span> <span class="fn">htmlspecialchars</span>(<span class="var">$user</span>[<span class="str">'fullname'</span>]) <span class="tag">?&gt;</span>&lt;/span&gt;
+    &lt;a href="logout.php"&gt;Logout&lt;/a&gt;
+&lt;/div&gt;
+&lt;h3&gt;និស្សិតសរុប៖ <span class="tag">&lt;?=</span> <span class="var">$totalStudents</span> <span class="tag">?&gt;</span> នាក់&lt;/h3&gt;
+&lt;a href="index.php"&gt;📂 បើកប្រព័ន្ធគ្រប់គ្រងនិស្សិត (CRUD)&lt;/a&gt;</div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-arrow-right-from-bracket"></i> logout.php (Teardown)</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">if</span> (<span class="fn">session_status</span>() === <span class="tag">PHP_SESSION_NONE</span>) { <span class="fn">session_start</span>(); }
+<span class="var">$_SESSION</span> = [];
+<span class="kw">if</span> (<span class="fn">ini_get</span>(<span class="str">"session.use_cookies"</span>)) {
+    <span class="var">$p</span> = <span class="fn">session_get_cookie_params</span>();
+    <span class="fn">setcookie</span>(<span class="fn">session_name</span>(), <span class="str">''</span>, <span class="fn">time</span>()-<span class="num">42000</span>, <span class="var">$p</span>[<span class="str">"path"</span>], <span class="var">$p</span>[<span class="str">"domain"</span>]);
+}
+<span class="fn">session_destroy</span>();
+<span class="fn">header</span>(<span class="str">"Location: login.php?msg=logged_out"</span>);
+<span class="kw">exit</span>;
+<span class="tag">?&gt;</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>dashboard.php & logout.php</span>
+            <span>ស្លាយទី ៣២ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 33: RBAC ARCHITECTURE ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>១០. ការគ្រប់គ្រងសិទ្ធិ Role-Based Access Control (RBAC)</h2>
+                <p>Enterprise Authorization: Differentiating Admin, Staff, and Student Permissions</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">User Role</th>
+                        <th style="width: 25%;">Create (INSERT)</th>
+                        <th style="width: 25%;">Read (SELECT)</th>
+                        <th style="width: 30%;">Update &amp; Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Admin</b></td>
+                        <td style="color: green; font-weight: bold;">✓ អនុញ្ញាត</td>
+                        <td style="color: green; font-weight: bold;">✓ អនុញ្ញាត</td>
+                        <td style="color: green; font-weight: bold;">✓ អនុញ្ញាតពេញលេញ</td>
+                    </tr>
+                    <tr>
+                        <td><b>Staff</b></td>
+                        <td style="color: green; font-weight: bold;">✓ អនុញ្ញាត</td>
+                        <td style="color: green; font-weight: bold;">✓ អនុញ្ញាត</td>
+                        <td style="color: red; font-weight: bold;">✗ គ្មានសិទ្ធិ</td>
+                    </tr>
+                    <tr>
+                        <td><b>Student</b></td>
+                        <td style="color: red; font-weight: bold;">✗ គ្មានសិទ្ធិ</td>
+                        <td style="color: green; font-weight: bold;">✓ អនុញ្ញាត</td>
+                        <td style="color: red; font-weight: bold;">✗ គ្មានសិទ្ធិ</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="card emerald-accent" style="margin-top: 5px;">
+                <div class="syntax-box">function authorizeRole(array $allowedRoles): void {
+    if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], $allowedRoles)) {
+        die("&lt;h3 style='color:red;'&gt;403 Forbidden: អ្នកគ្មានសិទ្ធិចូលទំព័រនេះឡើយ!&lt;/h3&gt;");
+    }
+}</div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>Role-Based Access Control (RBAC)</span>
+            <span>ស្លាយទី ៣៣ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 34: CRUD INTEGRATION MATRIX ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>១១. ការតភ្ជាប់ប្រព័ន្ធ Auth ជាមួយ CRUD &amp; File Verification Matrix</h2>
+                <p>Securing Lesson 9 CRUD Operations and Full System Verification</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <table class="slide-table">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">ឈ្មោះឯកសារ</th>
+                        <th style="width: 33%;">តួនាទីបច្ចេកទេស</th>
+                        <th style="width: 45%;">យន្តការសុវត្ថិភាពដែលបានអនុវត្ត</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b><code>schema_auth.sql</code></b></td>
+                        <td>Database DDL Script</td>
+                        <td>Unique Constraints លើ Email &amp; Username</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>auth_guard.php</code></b></td>
+                        <td>Route Middleware</td>
+                        <td>ត្រួតពិនិត្យ <code>$_SESSION['user_id']</code> &amp; Redirect 302</td>
+                    </tr>
+                    <tr>
+                        <td><b><code>register.php</code></b></td>
+                        <td>User Registration</td>
+                        <td>Validation, ពិនិត្យស្ទួន, <code>password_hash()</code></td>
+                    </tr>
+                    <tr>
+                        <td><b><code>login.php</code></b></td>
+                        <td>User Authentication</td>
+                        <td><code>password_verify()</code>, <code>session_regenerate_id()</code></td>
+                    </tr>
+                    <tr>
+                        <td><b><code>dashboard.php</code></b></td>
+                        <td>Protected Portal</td>
+                        <td>ការពារដោយ Auth Guard, បង្ហាញ Session State</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>CRUD Integration & System Verification</span>
+            <span>ស្លាយទី ៣៤ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 35: ADVANCED SECURITY - CSRF DEFENSE ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>១៣. យន្តការសុវត្ថិភាពកម្រិតខ្ពស់ ៖ ការការពារ CSRF Attacks</h2>
+                <p>Cross-Site Request Forgery Defense: Cryptographic Token Generation & Validation</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-shield-cat"></i> ១. បង្កើត CSRF Token ក្នុង Form</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">if</span> (<span class="fn">empty</span>(<span class="var">$_SESSION</span>[<span class="str">'csrf_token'</span>])) {
+    <span class="var">$_SESSION</span>[<span class="str">'csrf_token'</span>] = <span class="fn">bin2hex</span>(<span class="fn">random_bytes</span>(<span class="num">32</span>));
+}
+<span class="tag">?&gt;</span>
+&lt;!-- បង្កប់ Token ក្នុង Form --&gt;
+&lt;input type="hidden" name="csrf_token" 
+       value="<span class="tag">&lt;?=</span> <span class="var">$_SESSION</span>[<span class="str">'csrf_token'</span>] <span class="tag">?&gt;</span>"&gt;</div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-check-double"></i> ២. ផ្ទៀងផ្ទាត់ពេល Submit POST</h3>
+                    <div class="code-box"><span class="tag">&lt;?php</span>
+<span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">'REQUEST_METHOD'</span>] === <span class="str">'POST'</span>) {
+    <span class="kw">if</span> (!<span class="fn">hash_equals</span>(<span class="var">$_SESSION</span>[<span class="str">'csrf_token'</span>] ?? <span class="str">''</span>, <span class="var">$_POST</span>[<span class="str">'csrf_token'</span>] ?? <span class="str">''</span>)) {
+        <span class="fn">die</span>(<span class="str">"CSRF Attack Detected! Request Blocked."</span>);
+    }
+}
+<span class="tag">?&gt;</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>CSRF Defense Pattern</span>
+            <span>ស្លាយទី ៣៥ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 36: REHASH & PRODUCTION BEST PRACTICES ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>១៣ &amp; ១៤. Password Rehashing &amp; Production Best Practices</h2>
+                <p>Automatic Work Factor Upgrades via password_needs_rehash() &amp; Security Hardening</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-arrows-rotate"></i> Automatic Rehashing</h3>
+                    <div class="syntax-box">// ពេល User Login ត្រូវ៖
+if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT, ['cost' => 12])) {
+    $newHash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
+    $stmt = $pdo->prepare("UPDATE tbl_users SET password_hash = :p WHERE id = :id");
+    $stmt->execute([':p' => $newHash, ':id' => $user['id']]);
+}</div>
+                </div>
+                <div class="card emerald-accent">
+                    <h3 class="card-title emerald"><i class="fa-solid fa-shield-virus"></i> Production Hardening</h3>
+                    <ul>
+                        <li><b>HTTPS Only ៖</b> ការពារការស្ទាក់ចាប់ Plain Password &amp; Session Cookie។</li>
+                        <li><b>HttpOnly Cookie Flag ៖</b> កំណត់ <code>session.cookie_httponly = 1</code> ទប់ស្កាត់ការលួច Session ID តាម XSS។</li>
+                        <li><b>Rate Limiting ៖</b> កំណត់ការ Login ខុសមិនឱ្យលើសពី ៥ ដង។</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>Rehashing & Production Hardening</span>
+            <span>ស្លាយទី ៣៦ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 37: ASSIGNMENT & RUBRIC ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>១៥. កិច្ចការអនុវត្តស្វ័យសិក្សា និងតារាងពិន្ទុ (Mini-Project &amp; Rubric)</h2>
+                <p>Independent Lab Project Rubric, Institutional Endorsements, and Faculty Contacts</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="grid-2">
+                <div class="card primary-accent">
+                    <h3 class="card-title"><i class="fa-solid fa-laptop-code"></i> កិច្ចការផ្ទះ៖ RBAC Auth System</h3>
+                    <p style="font-size: 8.8pt; margin-bottom: 4px;">
+                        បង្កើតប្រព័ន្ធ Authentication ពេញលេញដោយមានតួនាទី Role (Admin, Staff) ជាមួយ Bcrypt Hashing, Route Guard Middleware, និង CSRF Defense។
+                    </p>
+                    <table class="slide-table" style="font-size: 8.2pt; margin-top: 4px;">
+                        <thead><tr><th>លក្ខណៈវិនិច្ឆ័យ (Criteria)</th><th>ពិន្ទុ</th></tr></thead>
+                        <tbody>
+                            <tr><td>Database &amp; Registration (Bcrypt Hash)</td><td>២៥%</td></tr>
+                            <tr><td>Login Verification &amp; Auth Guard</td><td>៣០%</td></tr>
+                            <tr><td>Logout &amp; 4-Step Session Cleanup</td><td>២០%</td></tr>
+                            <tr><td>Security (RBAC &amp; Session Fixation)</td><td>១៥%</td></tr>
+                            <tr><td>UI Quality &amp; Code Formatting</td><td>១០%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card gold-accent" style="text-align: center; justify-content: space-around;">
+                    <div>
+                        <h3 style="font-family: var(--font-muol); color: var(--primary); font-size: 11pt; margin-bottom: 2px;">
+                            អបអរសាទរ! បញ្ចប់មេរៀនទី ១០ ដោយជោគជ័យ
+                        </h3>
+                        <p style="font-size: 8.5pt; color: #475569;">"Mastering State Management, Route Protection & Modern Bcrypt Cryptography"</p>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-around; border-top: 1px solid #cbd5e1; padding-top: 6px;">
+                        <div>
+                            <p style="font-size: 8.2pt; color: #64748b;">បានឃើញ និងឯកភាព</p>
+                            <p style="font-family: var(--font-muol); font-size: 8.8pt; color: #0f172a;">ប្រធានដេប៉ាតឺម៉ង់</p>
+                            <p style="font-size: 8pt; color: #94a3b8; margin-top: 14px;">...................................</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 8.2pt; color: #64748b;">សាស្ត្រាចារ្យបង្រៀន</p>
+                            <p style="font-family: var(--font-muol); font-size: 8.8pt; color: var(--primary);">សឿង លីម (Soeurng LIM)</p>
+                            <p style="font-size: 8pt; color: #94a3b8; margin-top: 14px;">...................................</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <span>Lesson 10: Authentication, Sessions & Password Hashing</span>
+            <span>Mini-Project &amp; Approval</span>
+            <span>ស្លាយទី ៣៧ នៃ ៣៨</span>
+        </div>
+    </div>
+
+    <!-- ================= SLIDE 38: CONCLUSION & TRANSITION TO LARAVEL ================= -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="header-title-group">
+                <h2>១៦. សេចក្តីសន្និដ្ឋាន &amp; ការត្រៀមខ្លួនឆ្ពោះទៅកាន់ MVC Laravel</h2>
+                <p>Bridging Native PHP Security Concepts to Modern Enterprise Frameworks</p>
+            </div>
+            <div class="header-logo-group">
+                <div class="header-univ-text"><span class="kh">សាកលវិទ្យាល័យអង្គរ</span><span class="en">ANGKOR UNIVERSITY</span></div>
+                <img src="Logo.png" class="header-logo-img" alt="AU Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="slide-body">
+            <div class="card emerald-accent" style="flex: 1; justify-content: center; text-align: center; padding: 20px;">
+                <div style="font-size: 32pt; color: #4F46E5; margin-bottom: 10px;">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h3 style="font-family: var(--font-muol); color: var(--primary); font-size: 14pt; margin-bottom: 8px;">
+                    គ្រឹះរឹងមាំសម្រាប់ Laravel Framework
+                </h3>
+                <p style="font-size: 10.5pt; color: #334155; line-height: 1.6; max-width: 800px; margin: auto;">
+                    ការយល់ដឹងស៊ីជម្រៅលើ <b>Sessions, Cookies, Auth Guards, CSRF Tokens, និង Bcrypt Hashing</b> ក្នុង Native PHP គឺជាគ្រឹះដាច់ខាតមិនអាចខ្វះបាន។ គោលគំនិតទាំងអស់នេះ នឹងត្រូវបំប្លែងទៅជា <b>Middleware, Auth Scaffolding (Breeze/Jetstream), និង Eloquent Cryptography</b> នៅក្នុង <b>Laravel Framework</b> នៅវគ្គសិក្សាបន្ត!
+                </p>
             </div>
         </div>
         <div class="slide-footer">
             <span>Web App Development with PHP & MySQL</span>
             <span>សាកលវិទ្យាល័យអង្គរ • មេរៀនទី ១០ ចប់បរិបូរណ៍</span>
-            <span>ស្លាយទី ៣២ នៃ ៣២</span>
+            <span>ស្លាយទី ៣៨ នៃ ៣៨</span>
         </div>
     </div>
 

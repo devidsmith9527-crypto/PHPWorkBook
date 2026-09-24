@@ -35,13 +35,13 @@
             --bg-code-light: #F8FAFC;
             --code-header-light: #E2E8F0;
             --code-text: #0F172A;
-            --code-kw: #7C3AED;       /* Purple */
-            --code-tag: #0284C7;      /* Blue */
-            --code-var: #0F172A;      /* Slate */
-            --code-str: #B45309;      /* Amber */
-            --code-num: #059669;      /* Green */
-            --code-func: #2563EB;     /* Royal Blue */
-            --code-cmt: #64748B;      /* Gray */
+            --code-kw: #7C3AED;
+            --code-tag: #0284C7;
+            --code-var: #0F172A;
+            --code-str: #B45309;
+            --code-num: #059669;
+            --code-func: #2563EB;
+            --code-cmt: #64748B;
             
             --bg-output: #F1F5F9;
             --border-light: #E2E8F0;
@@ -358,9 +358,8 @@
 
         .extra-box {
             background: #FFFBEB;
-            border-left: 4px solid var(--warning);
             border: 1px solid #FDE68A;
-            border-left-width: 4px;
+            border-left: 4px solid var(--warning);
             border-radius: 4px;
             padding: 4px 7px;
             margin-top: 3px;
@@ -394,9 +393,8 @@
 
         .explain-ans-card {
             background: #F8FAFC;
-            border-left: 4px solid var(--accent);
             border: 1px solid var(--border-dark);
-            border-left-width: 4px;
+            border-left: 4px solid var(--accent);
             border-radius: 4px;
             padding: 4px 7px;
             margin-bottom: 4px;
@@ -406,6 +404,18 @@
 
         .tech-badge-bar { display: flex; gap: 5px; justify-content: center; margin: 7px 0; flex-wrap: wrap; }
         .tech-badge { background: #EEF2FF; border: 1px solid #C7D2FE; color: var(--accent); padding: 2px 8px; border-radius: 14px; font-size: 7.8pt; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; }
+
+        .diagram-box {
+            background: #F8FAFC;
+            border: 1.5px dashed #94A3B8;
+            border-radius: 6px;
+            padding: 6px;
+            margin: 4px 0;
+            font-family: var(--font-code);
+            font-size: 7.6pt;
+            line-height: 1.35;
+            color: #1E293B;
+        }
 
         @media print {
             body { background: none; padding: 0; margin: 0; display: block; }
@@ -463,7 +473,7 @@
     </div>
 </div>
 
-<!-- ================= PAGE 2: LLO & SYLLABUS MAPPING ================= -->
+<!-- ================= PAGE 2: LLO & ARCHITECTURE OVERVIEW ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -480,46 +490,53 @@
             <li><b>LLO 9.5:</b> <span class="bloom-tag bloom-c3">C3 - Apply</span> <span class="bloom-tag bloom-c5">C5 - Evaluate</span> <span class="highlight">រៀបចំប្រតិបត្តិការ Delete (Implement DELETE Operations)</span> តាមរយៈ ID ដោយភ្ជាប់ជាមួយ JavaScript <code>confirm()</code> Alert ដើម្បីទប់ស្កាត់ការច្រឡំលុបទិន្នន័យដោយអចេតនា។</li>
         </ul>
 
-        <div class="section-title" style="margin-top:6px;"><i class="fa-solid fa-list-ol"></i> ២. មាតិកានៃមេរៀនស្របតាម Syllabus (Syllabus Structure 1:1 Mapping)</div>
+        <div class="section-title" style="margin-top:4px;"><i class="fa-solid fa-sitemap"></i> ២. រចនាសម្ព័ន្ធថត និងស្ថាបត្យកម្មគម្រោង (Project Structure Blueprint)</div>
         <div class="text-block">
-            មាតិកានៅក្នុងតារាងខាងក្រោមនេះ ត្រូវបានរៀបចំស្របគ្នាយ៉ាងជាក់លាក់មួយទល់នឹងមួយ (1:1 Exact Mapping) ទៅនឹងចំណងជើងរងនៃ <b>«៣. ខ្លឹមសារលម្អិតនៃមេរៀន»</b> នៅក្នុងសប្តាហ៍ទី ១០ និង ១១៖
+            ដើម្បីធានាថាការសរសេរកូដមានរបៀបរៀបរយ និងងាយស្រួលគ្រប់គ្រង និស្សិតត្រូវបង្កើតថតគម្រោងនៅក្នុង <code>htdocs</code> របស់ XAMPP ដូចខាងក្រោម៖
         </div>
+        
+        <div class="diagram-box">
+<b>C:\xampp\htdocs\university_app\</b>
+├── <b>schema.sql</b>         <span style="color:#059669;">[Database Schema]</span> បង្កើត Database & Table `tbl_students`
+├── <b>db.php</b>              <span style="color:#7C3AED;">[DB Connection]</span> កូដភ្ជាប់ PDO Object `$pdo`
+├── <b>index.php</b>           <span style="color:#0284C7;">[Read & UI View]</span> បង្ហាញបញ្ជីឈ្មោះ និងប៊ូតុង Actions
+├── <b>add.php</b>             <span style="color:#2563EB;">[Create View]</span> Form ចុះឈ្មោះនិស្សិត + Validation + PRG
+├── <b>edit.php</b>            <span style="color:#D97706;">[Update View]</span> ចាប់ ID, ទាញទិន្នន័យ Pre-fill & Update
+└── <b>delete.php</b>          <span style="color:#DC2626;">[Delete Action]</span> លុបទិន្នន័យតាម ID រួច Redirect ត្រឡប់ក្រោយ
+        </div>
+
         <table class="toc-table">
             <thead>
                 <tr>
-                    <th class="toc-num">សប្តាហ៍ / Week</th>
-                    <th style="width:26%;">មាតិកា Syllabus (Topic)</th>
-                    <th>ត្រូវគ្នានឹងផ្នែកលម្អិតក្នុងមេរៀន (Section 3 Mapping)</th>
-                    <th style="width:15%; text-align:center;">Bloom Level</th>
+                    <th class="toc-num">សប្តាហ៍</th>
+                    <th style="width:30%;">មាតិកា Syllabus</th>
+                    <th>ផ្នែកលម្អិតក្នុងមេរៀន (Section Mapping)</th>
+                    <th style="width:12%; text-align:center;">Bloom</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="toc-num">សប្តាហ៍ ១០<br>(Session 19)</td>
-                    <td><b>៩.១ សុវត្ថិភាពទិន្នន័យ & SQL Injection</b><br>(Data Security & SQLi)</td>
-                    <td>• ៩.១.១ ការវាយប្រហារ SQL Injection (Theory, Flaws & Demo Script)<br>
-                    • ៩.១.២ ដំណោះស្រាយ៖ PDO Prepared Statements (Prepare & Execute Phase)</td>
+                    <td class="toc-num">សប្តាហ៍ ១០</td>
+                    <td><b>៩.១ សុវត្ថិភាពទិន្នន័យ & SQLi</b></td>
+                    <td>• ៩.១.១ ការវាយប្រហារ SQL Injection (Theory & Demo)<br>• ៩.១.២ ដំណោះស្រាយ៖ PDO Prepared Statements</td>
                     <td style="text-align:center;"><span class="bloom-tag bloom-c1">C1</span> <span class="bloom-tag bloom-c4">C4</span></td>
                 </tr>
                 <tr>
-                    <td class="toc-num">សប្តាហ៍ ១០<br>(Session 20)</td>
-                    <td><b>៩.២ ប្រតិបត្តិការ Create & Read</b><br>(Create & Read Operations)</td>
-                    <td>• ៩.២.១ ប្រតិបត្តិការ Read (SELECT) និងការច្រោះ XSS ជាមួយ <code>htmlspecialchars()</code><br>
-                    • ៩.២.២ ប្រតិបត្តិការ Create (INSERT), Form Validation & PRG Pattern</td>
-                    <td style="text-align:center;"><span class="bloom-tag bloom-c2">C2</span> <span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c6">C6</span></td>
+                    <td class="toc-num">សប្តាហ៍ ១០</td>
+                    <td><b>៩.២ ប្រតិបត្តិការ Create & Read</b></td>
+                    <td>• ៩.២.១ ប្រតិបត្តិការ Read (SELECT) និងការច្រោះ Stored XSS<br>• ៩.២.២ ប្រតិបត្តិការ Create (INSERT) & PRG Pattern</td>
+                    <td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c6">C6</span></td>
                 </tr>
                 <tr>
-                    <td class="toc-num">សប្តាហ៍ ១១<br>(Session 21)</td>
-                    <td><b>៩.៣ ប្រតិបត្តិការ Update & URL Query</b><br>(Update & URL Query String)</td>
-                    <td>• ៩.៣.១ ការចាប់យក ID តាមរយៈ URL Query String (<code>$_GET['id']</code>)<br>
-                    • ៩.៣.២ ការទាញទិន្នន័យចាស់មក Pre-fill និងធ្វើបច្ចុប្បន្នភាព (UPDATE)</td>
+                    <td class="toc-num">សប្តាហ៍ ១១</td>
+                    <td><b>៩.៣ ប្រតិបត្តិការ Update & Query</b></td>
+                    <td>• ៩.៣.១ ចាប់ ID តាម URL Query (<code>$_GET['id']</code>) & Validation<br>• ៩.៣.២ Form Pre-filling និងដំណើរការ UPDATE</td>
                     <td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c4">C4</span></td>
                 </tr>
                 <tr>
-                    <td class="toc-num">សប្តាហ៍ ១១<br>(Session 22)</td>
-                    <td><b>៩.៤ ប្រតិបត្តិការ Delete & Confirmation</b><br>(Delete & User Confirmation)</td>
-                    <td>• ៩.៤.១ ការលុបទិន្នន័យតាម ID (DELETE Operation by ID)<br>
-                    • ៩.៤.២ ការប្រើប្រាស់ JavaScript <code>confirm()</code> និង Feedback Messaging</td>
+                    <td class="toc-num">សប្តាហ៍ ១១</td>
+                    <td><b>៩.៤ ប្រតិបត្តិការ Delete & Alerts</b></td>
+                    <td>• ៩.៤.១ ការលុបទិន្នន័យតាម ID (DELETE Operation)<br>• ៩.៤.២ JavaScript Confirm Modal & Flash Feedback Messages</td>
                     <td style="text-align:center;"><span class="bloom-tag bloom-c3">C3</span> <span class="bloom-tag bloom-c5">C5</span></td>
                 </tr>
             </tbody>
@@ -553,13 +570,19 @@
                 SQL Injection (SQLi) គឺជាចន្លោះប្រហោងសុវត្ថិភាពកម្រិតធ្ងន់ធ្ងរបំផុតមួយក្នុងចំណាត់ថ្នាក់ <b>OWASP Top 10</b>។ វាបានកើតឡើងនៅពេលអ្នកអភិវឌ្ឍន៍យកទិន្នន័យដែលទទួលបានពីអ្នកប្រើប្រាស់ (User Input ដូចជា <code>$_POST</code> ឬ <code>$_GET</code>) ទៅតភ្ជាប់ String ដោយផ្ទាល់ (Direct String Concatenation <code>.</code>) ជាមួយប្រយោគ SQL Command ដោយពុំបានបន្សាប ឬឆ្លងកាត់ការត្រួតពិនិត្យ។
             </div>
 
-            <div class="text-block">
-                <b>ខ. ការវិភាគបច្ចេកទេសលើ Payload ព្យាបាទ (Malicious Payload Analysis)៖</b>
+            <div class="diagram-box" style="background:#FFF5F5; border-color:#FEB2B2;">
+<b>[Vulnerable Concatenation Mechanism - កំហុសឆ្គងធ្ងន់ធ្ងរ]</b>
+PHP SQL String:   "SELECT * FROM tbl_products WHERE pcode = '" . <span style="color:#DC2626;">$_POST['pcode']</span> . "'"
+Hacker Input:     <span style="color:#DC2626;">P-101' OR '1'='1</span>
+Resulting SQL:    SELECT * FROM tbl_products WHERE pcode = 'P-101' <b><span style="color:#DC2626;">OR '1'='1'</span></b>
+==> លក្ខខណ្ឌ '1'='1' តែងតែពិត (Always True) ធ្វើឱ្យ MySQL បញ្ចេញទិន្នន័យទាំងអស់ក្នុងតារាង!
             </div>
+
+            <div class="text-block" style="margin-top:4px;"><b>ខ. ការវិភាគបច្ចេកទេសលើ Payload ព្យាបាទ (Malicious Payload Analysis)៖</b></div>
             <ul class="obj-list">
                 <li><b>Single Quote Injection (<code>'</code>)៖</b> ប្រើសម្រាប់បំបែកចេញពីតម្លៃ String ដើមក្នុងសំណួរ SQL ដើម្បីចាប់ផ្តើមបញ្ចូលពាក្យបញ្ជាថ្មី។</li>
-                <li><b>Tautology / Boolean Manipulation (<code>OR '1'='1'</code>)៖</b> បង្កើតលក្ខខណ្ឌដែលតែងតែពិត (Always True) ធ្វើឱ្យសំណួរទាញយកគ្រប់ទិន្នន័យក្នុងតារាងមកបង្ហាញ។</li>
-                <li><b>SQL Comment Terminator (<code>-- </code> ឬ <code>#</code>)៖</b> ប្រើសម្រាប់កាត់ផ្តាច់ និងលុបចោលលក្ខខណ្ឌផ្ទៀងផ្ទាត់ទាំងអស់ដែលនៅខាងក្រោយ (ដូចជា Password Check)។</li>
+                <li><b>Tautology / Boolean Manipulation (<code>OR '1'='1'</code>)៖</b> បង្កើតលក្ខខណ្ឌដែលតែងតែពិត ធ្វើឱ្យសំណួរទាញយកគ្រប់ទិន្នន័យក្នុងតារាងមកបង្ហាញ។</li>
+                <li><b>SQL Comment Terminator (<code>-- </code> ឬ <code>#</code>)៖</b> ប្រើសម្រាប់កាត់ផ្តាច់ និងលុបចោលលក្ខខណ្ឌផ្ទៀងផ្ទាត់ទាំងអស់ដែលនៅខាងក្រោយ។</li>
             </ul>
 
             <div class="text-block" style="margin-top:4px;"><b>គ. តារាងប្រៀបធៀបផលប៉ះពាល់នៃការវាយប្រហារ SQL Injection (Impact Matrix Table)៖</b></div>
@@ -589,11 +612,6 @@
                     </tr>
                 </tbody>
             </table>
-
-            <div class="syntax-box">
-                <div class="syntax-title"><i class="fa-solid fa-triangle-exclamation"></i> ទម្រង់កូដខុសឆ្គងដែលបង្កើតចន្លោះប្រហោង (Vulnerable Syntax Blueprint - Anti-Pattern)៖</div>
-                <code>$sql = "SELECT * FROM tbl_name WHERE field = '" . $_POST['user_input'] . "'"; // ហាមដាច់ខាត!</code>
-            </div>
         </div>
     </div>
     <div class="global-footer">
@@ -602,7 +620,7 @@
     </div>
 </div>
 
-<!-- ================= PAGE 4: SECTION 9.1.1 HANDS-ON EXERCISE (tbl_products) ================= -->
+<!-- ================= PAGE 4: SECTION 9.1.1 HANDS-ON DEMO ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -686,10 +704,14 @@ Executed Raw SQL: SELECT * FROM tbl_products WHERE pcode = 'P-101' OR '1'='1'
                 <b>ក. គោលការណ៍ដំណោះស្រាយពីរកំណាត់ (Two-Phase Execution Model)៖</b><br>
                 Prepared Statements គឺជាយន្តការការពារ SQL Injection ដែលមានប្រសិទ្ធភាព ១០០% ពីព្រោះវាបានធ្វើការបំបែកដាច់ស្រឡះរវាង <b>គ្រោងឆ្អឹងកូដ SQL (Query Skeleton)</b> និង <b>ទិន្នន័យជាក់ស្តែងរបស់ User (Parameter Data)</b> តាម ២ ជំហាន៖
             </div>
-            <ul class="obj-list">
-                <li><b>ដំណាក់កាលទី ១៖ Prepare Phase (Compile Time)៖</b> កម្មវិធី PHP បញ្ជូនតែប្រយោគ SQL Template ដែលមានបង្កប់ Placeholders (ដូចជា <code>:pcode</code>) ទៅកាន់ Database Engine ឱ្យធ្វើការ Pre-compile, Parse វេយ្យាករណ៍ និងបង្កើត Execution Plan ជាមុន។</li>
-                <li><b>ដំណាក់កាលទី ២៖ Execute Phase (Data Binding)៖</b> ទិន្នន័យ User Input ត្រូវបានបញ្ជូនទៅតាមក្រោយជា Parameter សុទ្ធសាធ។ Database នឹងចាត់ទុកតម្លៃនោះជា <b>Literal String Value (តម្លៃអក្សរធម្មតា)</b> ជានិច្ច ដោយមិនយកវាទៅ Parse ជាកូដបញ្ជា SQL ឡើយ។</li>
-            </ul>
+
+            <div class="diagram-box" style="background:#F0FDF4; border-color:#86EFAC;">
+<b>[Two-Phase Execution Architecture in PDO]</b>
+<b>Step 1 (Compile Phase):</b> PHP -> <code>$pdo->prepare("SELECT * FROM tbl_products WHERE pcode = :code")</code>
+                        ==> Database Server ធ្វើការ Pre-compile និង Parse វេយ្យាករណ៍ជាមុន។
+<b>Step 2 (Execute Phase):</b> PHP -> <code>$stmt->execute([':code' => $userInput])</code>
+                        ==> Database ចាត់ទុក <code>$userInput</code> ជា <b>Literal Value (តម្លៃសុទ្ធ)</b> មិនអាចក្លាយជាកូដ SQL បានឡើយ!
+            </div>
 
             <div class="text-block" style="margin-top:4px;"><b>ខ. តារាងប្រៀបធៀប Direct Concatenation vs Prepared Statements៖</b></div>
             <table class="standard-table">
@@ -741,7 +763,7 @@ Executed Raw SQL: SELECT * FROM tbl_products WHERE pcode = 'P-101' OR '1'='1'
     </div>
 </div>
 
-<!-- ================= PAGE 6: SECTION 9.1.2 HANDS-ON DEFENSE (tbl_products) ================= -->
+<!-- ================= PAGE 6: SECTION 9.1.2 HANDS-ON DEFENSE ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -861,7 +883,7 @@ MySQL/SQLite បានចាត់ទុក Payload ព្យាបាទជា�
     </div>
 </div>
 
-<!-- ================= PAGE 8: SECTION 9.2.1 HANDS-ON READ (tbl_products) ================= -->
+<!-- ================= PAGE 8: SECTION 9.2.1 HANDS-ON READ ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -874,7 +896,7 @@ MySQL/SQLite បានចាត់ទុក Payload ព្យាបាទជា�
             
             <div class="prompt-box">
                 <div class="prompt-title"><i class="fa-solid fa-circle-question"></i> ប្រធានលំហាត់អនុវត្ត (Exercise Prompt & Problem Statement)៖</div>
-                សរសេរស្គ្រីប PHP ពេញលេញឈ្មោះ <code>exercise_9_3_read_products.php</code> សម្រាប់ <b>Entity: ផលិតផលក្នុងស្តុក (<code>tbl_products</code>)</b>។ ស្គ្រីបត្រូវទាញទិន្នន័យទាំងអស់តាម Prepared Statement រួចរៀបចំជាតារាង HTML Table ដែលមានការរចនាស្អាតបាត ដោយត្រូវការពារ Stored XSS ដោយប្រើ <code>htmlspecialchars()</code> លើគ្រប់ទិន្នន័យអក្សរ ព្រមទាំងFormat តម្លៃលុយជាប្រាក់ដុល្លារ <code>number_format()</code>។
+                សរសេរស្គ្រីប PHP ពេញលេញឈ្មោះ <code>exercise_9_3_read_products.php</code> សម្រាប់ <b>Entity: ផលិតផលក្នុងស្តុក (<code>tbl_products</code>)</b>។ ស្គ្រីបត្រូវទាញទិន្នន័យទាំងអស់តាម Prepared Statement រួចរៀបចំជាតារាង HTML Table ដែលមានការរចនាស្អាតបាត ដោយត្រូវការពារ Stored XSS ដោយប្រើ <code>htmlspecialchars()</code> លើគ្រប់ទិន្នន័យអក្សរ ព្រមទាំង Format តម្លៃលុយជាប្រាក់ដុល្លារ <code>number_format()</code>។
             </div>
 
             <div style="font-weight:bold; font-size:8.5pt; color:var(--primary); margin: 2px 0;"><i class="fa-solid fa-file-code"></i> កូដពេញលេញអាចដំណើរការបាន (Complete Runnable Script)៖</div>
@@ -959,12 +981,15 @@ ID | កូដ  | ឈ្មោះផលិតផល                         | �
                 <li><b>Stage 4 (Post-Redirect-Get Pattern)៖</b> បញ្ជូន HTTP 302 Redirect តាមរយៈ <code>header("Location: ...")</code> និងបិទបញ្ចប់ភ្លាមៗដោយ <code>exit;</code>។</li>
             </ul>
 
-            <div class="text-block" style="margin-top:3px;">
-                <b>ខ. ហេតុអ្វីត្រូវអនុវត្ត PRG Pattern (The Post-Redirect-Get Rationale)?</b><br>
-                បើគ្មាន PRG ទេ នៅពេល User បញ្ចូលផលិតផលជោគជ័យ ហើយចៃដន្យចុចប៊ូតុង <b>Refresh (F5)</b> ឬ <b>Back</b> Browser នឹងបង្ហាញផ្ទាំង Alert <i>"Confirm Form Resubmission"</i> ហើយនឹងបញ្ជូនកញ្ចប់ HTTP POST ដដែលម្តងទៀត។ នេះបណ្តាលឱ្យទិន្នន័យស្ទួនត្រូវបានបញ្ចូលទៅក្នុង Database ច្រើនដងដោយអចេតនា!
+            <div class="diagram-box" style="background:#EFF6FF; border-color:#93C5FD;">
+<b>[The PRG (Post-Redirect-Get) Design Pattern Architecture]</b>
+[Client Browser] -------- 1. HTTP POST (Form Data) -------> [PHP Server (Insert to DB)]
+[Client Browser] <------- 2. HTTP 302 Redirect (Location) - [PHP Server]
+[Client Browser] -------- 3. HTTP GET (index.php?msg=ok) -> [PHP Server (Render View)]
+==> នៅពេល User ចុច <b>Refresh (F5)</b> Browser នឹង Reload តែ GET Request ប៉ុណ្ណោះ គ្មានការ Duplicate ទិន្នន័យឡើយ!
             </div>
 
-            <div class="text-block" style="margin-top:3px;"><b>គ. តារាងលំហូរការងាររវាង Regular POST vs PRG Pattern Architecture៖</b></div>
+            <div class="text-block" style="margin-top:3px;"><b>ខ. តារាងលំហូរការងាររវាង Regular POST vs PRG Pattern Architecture៖</b></div>
             <table class="standard-table">
                 <thead>
                     <tr>
@@ -991,13 +1016,6 @@ ID | កូដ  | ឈ្មោះផលិតផល                         | �
                     </tr>
                 </tbody>
             </table>
-
-            <div class="syntax-box">
-                <div class="syntax-title"><i class="fa-solid fa-arrow-right-arrow-left"></i> ទម្រង់ទូទៅស្តង់ដារនៃ PRG Pattern (PRG Blueprint)៖</div>
-                <code>// ក្រោយពេល Execute INSERT ឬ UPDATE ជោគជ័យ៖<br>
-                header("Location: index.php?msg=success");<br>
-                exit; // បង្ការកូដផ្នែកខាងក្រោមពីការរត់បន្ត</code>
-            </div>
         </div>
     </div>
     <div class="global-footer">
@@ -1006,7 +1024,7 @@ ID | កូដ  | ឈ្មោះផលិតផល                         | �
     </div>
 </div>
 
-<!-- ================= PAGE 10: SECTION 9.2.2 HANDS-ON CREATE & PRG (tbl_products) ================= -->
+<!-- ================= PAGE 10: SECTION 9.2.2 HANDS-ON CREATE & PRG ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1140,11 +1158,6 @@ UI Display: "✓ បានបន្ថែមផលិតផលថ្មីជោ
                     </tr>
                 </tbody>
             </table>
-
-            <div class="syntax-box">
-                <div class="syntax-title"><i class="fa-solid fa-code"></i> ទម្រង់ទូទៅស្តង់ដារ Update Query (UPDATE SQL Blueprint)៖</div>
-                <code>UPDATE tbl_name SET field1 = :val1, field2 = :val2 WHERE id = :id;</code>
-            </div>
         </div>
     </div>
     <div class="global-footer">
@@ -1153,7 +1166,7 @@ UI Display: "✓ បានបន្ថែមផលិតផលថ្មីជោ
     </div>
 </div>
 
-<!-- ================= PAGE 12: SECTION 9.3 HANDS-ON UPDATE (tbl_products) ================= -->
+<!-- ================= PAGE 12: SECTION 9.3 HANDS-ON UPDATE ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1287,11 +1300,6 @@ URL: exercise_9_5_product_edit.php?id=1
                     </tr>
                 </tbody>
             </table>
-
-            <div class="syntax-box">
-                <div class="syntax-title"><i class="fa-solid fa-code"></i> ទម្រង់ទូទៅស្តង់ដារ Delete Link ជាមួយ Confirm (Delete Syntax Blueprint)៖</div>
-                <code>&lt;a href="delete.php?id=&lt;?= $row['id'] ?&gt;" onclick="return confirm('តើអ្នកពិតជាចង់លុបមែនទេ?');"&gt;លុប&lt;/a&gt;</code>
-            </div>
         </div>
     </div>
     <div class="global-footer">
@@ -1300,7 +1308,7 @@ URL: exercise_9_5_product_edit.php?id=1
     </div>
 </div>
 
-<!-- ================= PAGE 14: SECTION 9.4 HANDS-ON DELETE (tbl_products) ================= -->
+<!-- ================= PAGE 14: SECTION 9.4 HANDS-ON DELETE ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1641,7 +1649,7 @@ User ចុច "[លុបចោល]" លើផលិតផល ID: 2
     </div>
 </div>
 
-<!-- ================= PAGE 20: ANSWERS KEY PART 2 ================= -->
+<!-- ================= PAGE 20: ANSWERS KEY PART 2 & TROUBLESHOOTING ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1651,33 +1659,61 @@ User ចុច "[លុបចោល]" លើផលិតផល ID: 2
     <div class="page-content">
         <div class="explain-ans-card">
             <h5>• ចម្លើយ Q9.6 (ការចាប់យក ID ដើម្បី Update ទិន្នន័យ)៖</h5>
-            <div class="text-block" style="font-size:8.8pt; margin:0;">
+            <div class="text-block" style="font-size:8.5pt; margin:0;">
                 នៅលើ Link កែប្រែ យើងភ្ជាប់ <code>edit.php?id=&lt;?= $row['id'] ?&gt;</code>។ នៅទំព័រ <code>edit.php</code> កូដនឹងប្រើ <code>$_GET['id']</code> ដើម្បីរត់ Query <code>SELECT * FROM tbl_students WHERE id = :id</code> រួចយកទិន្នន័យនោះមក Pre-fill ក្នុង Form ឱ្យ User កែប្រែ។
             </div>
         </div>
 
-        <div style="font-family:var(--font-kh-heading); font-size:8.5pt; color:var(--danger); margin:4px 0 2px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level Solutions]</div>
+        <div style="font-family:var(--font-kh-heading); font-size:8.5pt; color:var(--danger); margin:3px 0 1px 0;">[កម្រិតធ្ងន់ - Advanced/Hard Level Solutions]</div>
         <div class="explain-ans-card">
             <h5>• ចម្លើយ Q9.7 (ដំណោះស្រាយកំហុស "Headers already sent")៖</h5>
-            <div class="text-block" style="font-size:8.8pt; margin:0;">
+            <div class="text-block" style="font-size:8.5pt; margin:0;">
                 កំហុសនេះកើតឡើងដោយសារមាន Output (ដូចជា echo, HTML, ឬ White-space) ត្រូវបានបញ្ជូនទៅ Browser មុនពេលហៅ <code>header()</code>។ ដំណោះស្រាយ៖ ត្រូវផ្លាស់ប្តូរ Logic ត្រួតពិនិត្យ និង Redirect ទៅដាក់នៅផ្នែកខាងលើបង្អស់នៃឯកសារ PHP មុន Output ណាមួយ។
             </div>
         </div>
 
         <div class="explain-ans-card">
             <h5>• ចម្លើយ Q9.8 (ការប្រៀបធៀប Memory រវាង `fetchAll()` និង `fetch()`)៖</h5>
-            <div class="text-block" style="font-size:8.8pt; margin:0;">
+            <div class="text-block" style="font-size:8.5pt; margin:0;">
                 • <code>fetchAll()</code> ទាញទិន្នន័យទាំងអស់មកផ្ទុកក្នុង RAM ក្នុងពេលតែមួយ បើទិន្នន័យមានរាប់លាន Rows វានឹងបណ្តាលឱ្យ Memory Overflow Crash។<br>
-                • <code>fetch()</code> នៅក្នុង <code>while</code> loop ទាញយកទិន្នន័យម្តងមួយ Row មកដំណើរការ ដែលប្រើប្រាស់ RAM តិចបំផុត និងមានស្ថិរភាពខ្ពស់ចំពោះទិន្នន័យធំៗ។
+                • <code>fetch()</code> នៅក្នុង <code>while</code> loop ទាញយកទិន្នន័យម្តងមួយ Row មកដំណើរការ ដែលប្រើប្រាស់ RAM តិចបំផុត និងមានស្ថិរភាពខ្ពស់។
             </div>
         </div>
 
         <div class="explain-ans-card">
             <h5>• ចម្លើយ Q9.9 (សារៈសំខាន់នៃ JavaScript Confirmation ពេល Delete)៖</h5>
-            <div class="text-block" style="font-size:8.8pt; margin:0;">
+            <div class="text-block" style="font-size:8.5pt; margin:0;">
                 ការ Delete ធ្វើឱ្យបាត់បង់ទិន្នន័យជាអចិន្ត្រៃយ៍។ ការប្រើ <code>onclick="return confirm('...')"</code> ជួយទប់ស្កាត់ការចុចច្រឡំដោយអចេតនា។ បើ User ចុច "Cancel" JavaScript នឹង Cancel Event មិនឱ្យ Browser បើក Link លុបឡើយ។
             </div>
         </div>
+
+        <div class="sub-heading" style="color:var(--danger); margin-top:4px;"><i class="fa-solid fa-wrench"></i> តារាងដោះស្រាយបញ្ហាបច្ចេកទេសញឹកញាប់ (Common Pitfalls & Debugging Matrix)</div>
+        <table class="standard-table">
+            <thead>
+                <tr>
+                    <th style="width:30%;">សារកំហុស (Error Message)</th>
+                    <th style="width:35%;">មូលហេតុចម្បង (Root Cause)</th>
+                    <th style="width:35%;">ដំណោះស្រាយរហ័ស (Quick Fix)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>SQLSTATE[HY000] [1049] Unknown db</b></td>
+                    <td>មិនទាន់បានបង្កើត Database ក្នុង phpMyAdmin</td>
+                    <td>រត់ស្គ្រីប <code>CREATE DATABASE db_university_app;</code></td>
+                </tr>
+                <tr>
+                    <td><b>Cannot modify header info...</b></td>
+                    <td>មានកូដ HTML ឬ White-space មុន <code>header()</code></td>
+                    <td>រើកូដ PHP Logic ទៅលើគេបង្អស់នៃឯកសារ</td>
+                </tr>
+                <tr>
+                    <td><b>Undefined array key "id"</b></td>
+                    <td>ចូល <code>edit.php</code> ដោយគ្មាន <code>?id=...</code> លើ URL</td>
+                    <td>ប្រើ <code>$_GET['id'] ?? null</code> និង Validate មុន Query</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="global-footer">
         <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
@@ -1685,7 +1721,7 @@ User ចុច "[លុបចោល]" លើផលិតផល ID: 2
     </div>
 </div>
 
-<!-- ================= PAGE 21: LAB DATABASE SETUP (schema.sql) ================= -->
+<!-- ================= PAGE 21: LAB DATABASE SETUP ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1793,7 +1829,7 @@ User ចុច "[លុបចោល]" លើផលិតផល ID: 2
     </div>
 </div>
 
-<!-- ================= PAGE 23: FILE 2 - index.php PART 1 ================= -->
+<!-- ================= PAGE 23: FILE 2 - index.php ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1801,13 +1837,13 @@ User ចុច "[លុបចោល]" លើផលិតផល ID: 2
         <div class="header-item"><i class="fa-solid fa-table-list" style="font-size: 24px; color: #4F46E5;"></i><span>PHP PDO CRUD</span></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ២៖ <code>index.php</code> (Read Operation & Table Display) - ភាគ ១</div>
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ២៖ <code>index.php</code> (Read Operation & UI View)</div>
         <div class="text-block">
-            ទំព័រនេះទទួលបន្ទុកទាញទិន្នន័យ (Read) បង្ហាញ Flash Alerts និងផ្តល់ប៊ូតុងសម្រាប់ Edit និង Delete៖
+            ឯកសារនេះរួមបញ្ចូល Logic ទាញទិន្នន័យ (Read), ចាប់ Flash Messages, និង Render តារាង HTML ដែលមានសុវត្ថិភាព XSS ពេញលេញក្នុង File តែមួយ៖
         </div>
 
         <div class="code-window">
-            <div class="code-header"><div class="code-title">index.php (Logic Section)</div></div>
+            <div class="code-header"><div class="code-title">index.php (Complete Unified File)</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
 <span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
 
@@ -1821,28 +1857,41 @@ User ចុច "[លុបចោល]" លើផលិតផល ID: 2
     <span class="cv-fn">die</span>(<span class="cv-str">"កំហុសក្នុងការទាញទិន្នន័យ!"</span>);
 }
 
-<span class="cv-cm">// 2. ចាប់យក Flash Message ពី URL Query String</span>
 <span class="cv-var">$msg</span> = <span class="cv-var">$_GET</span>[<span class="cv-str">'msg'</span>] ?? <span class="cv-str">''</span>;
 <span class="cv-tag">?&gt;</span>
-&lt;!DOCTYPE html&gt;
-&lt;html lang="km"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;បញ្ជីឈ្មោះនិស្សិត - Student Directory&lt;/title&gt;
-    &lt;style&gt;
-        body { font-family: sans-serif; padding: 15px; background: #F8FAFC; }
-        .btn { padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 11px; font-weight: bold; }
-        .btn-add { background: #4F46E5; color: white; padding: 6px 12px; }
-        .btn-edit { background: #0284C7; color: white; }
-        .btn-del { background: #DC2626; color: white; }
-        .alert { padding: 6px 10px; border-radius: 4px; margin-bottom: 10px; font-size: 12px; }
-        .alert-success { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
-        table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; font-size: 11.5px; }
-        th, td { border: 1px solid #CBD5E1; padding: 6px 8px; text-align: left; }
-        th { background: #E2E8F0; }
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;</pre>
+&lt;!DOCTYPE html&gt;&lt;html lang="km"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Student Directory&lt;/title&gt;
+&lt;style&gt;
+    body { font-family: sans-serif; padding: 12px; background: #F8FAFC; }
+    .btn { padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 11px; font-weight: bold; }
+    .btn-add { background: #4F46E5; color: white; padding: 6px 12px; }
+    .alert-ok { background: #DCFCE7; color: #166534; padding: 6px; border-radius: 4px; margin-bottom: 8px; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; background: white; margin-top: 8px; font-size: 11px; }
+    th, td { border: 1px solid #CBD5E1; padding: 5px 7px; text-align: left; }
+    th { background: #E2E8F0; }
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+    &lt;h3&gt;ប្រព័ន្ធគ្រប់គ្រងព័ត៌មាននិស្សិត (Student Directory)&lt;/h3&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (<span class="cv-var">$msg</span> === <span class="cv-str">'inserted'</span>): <span class="cv-tag">?&gt;</span>&lt;div class="alert-ok"&gt;✓ បានបញ្ចូលជោគជ័យ!&lt;/div&gt;<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (<span class="cv-var">$msg</span> === <span class="cv-str">'updated'</span>): <span class="cv-tag">?&gt;</span>&lt;div class="alert-ok"&gt;✓ បានកែប្រែជោគជ័យ!&lt;/div&gt;<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (<span class="cv-var">$msg</span> === <span class="cv-str">'deleted'</span>): <span class="cv-tag">?&gt;</span>&lt;div class="alert-ok" style="color:#DC2626; background:#FEE2E2;"&gt;✓ បានលុបជោគជ័យ!&lt;/div&gt;<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
+    &lt;p&gt;&lt;a href="add.php" class="btn btn-add"&gt;+ ចុះឈ្មោះនិស្សិតថ្មី&lt;/a&gt;&lt;/p&gt;
+    &lt;table&gt;
+        &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;អត្តលេខ&lt;/th&gt;&lt;th&gt;ឈ្មោះពេញ&lt;/th&gt;&lt;th&gt;ភេទ&lt;/th&gt;&lt;th&gt;អ៊ីមែល&lt;/th&gt;&lt;th&gt;ជំនាញ&lt;/th&gt;&lt;th&gt;សកម្មភាព&lt;/th&gt;&lt;/tr&gt;
+        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">foreach</span> (<span class="cv-var">$students</span> <span class="cv-kw">as</span> <span class="cv-var">$s</span>): <span class="cv-tag">?&gt;</span>
+        &lt;tr&gt;
+            &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$s</span>[<span class="cv-str">'id'</span>] <span class="cv-tag">?&gt;</span>&lt;/td&gt;
+            &lt;td&gt;&lt;b&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'student_code'</span>]) <span class="cv-tag">?&gt;</span>&lt;/b&gt;&lt;/td&gt;
+            &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'fullname'</span>], ENT_QUOTES, <span class="cv-str">'UTF-8'</span>) <span class="cv-tag">?&gt;</span>&lt;/td&gt;
+            &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'gender'</span>]) <span class="cv-tag">?&gt;</span>&lt;/td&gt;
+            &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'email'</span>]) <span class="cv-tag">?&gt;</span>&lt;/td&gt;
+            &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'major'</span>]) <span class="cv-tag">?&gt;</span>&lt;/td&gt;
+            &lt;td&gt;
+                &lt;a href="edit.php?id=<span class="cv-tag">&lt;?=</span> <span class="cv-var">$s</span>[<span class="cv-str">'id'</span>] <span class="cv-tag">?&gt;</span>" style="color:#0284C7; font-weight:bold;"&gt;កែប្រែ&lt;/a&gt; | 
+                &lt;a href="delete.php?id=<span class="cv-tag">&lt;?=</span> <span class="cv-var">$s</span>[<span class="cv-str">'id'</span>] <span class="cv-tag">?&gt;</span>" onclick="return confirm('តើអ្នកពិតជាចង់លុប?');" style="color:#DC2626; font-weight:bold;"&gt;លុប&lt;/a&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">endforeach</span>; <span class="cv-tag">?&gt;</span>
+    &lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1851,7 +1900,7 @@ User ចុច "[លុបចោល]" លើផលិតផល ID: 2
     </div>
 </div>
 
-<!-- ================= PAGE 24: FILE 2 - index.php PART 2 ================= -->
+<!-- ================= PAGE 24: FILE 3 - add.php ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -1859,71 +1908,55 @@ User ចុច "[លុបចោល]" លើផលិតផល ID: 2
         <div class="header-item"><i class="fa-solid fa-table-list" style="font-size: 24px; color: #4F46E5;"></i><span>PHP PDO CRUD</span></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ២៖ <code>index.php</code> (Read Operation & Table Display) - ភាគ ២</div>
-
-        <div class="code-window">
-            <div class="code-header"><div class="code-title">index.php (UI & Table Section)</div></div>
-<pre>    &lt;h2&gt;ប្រព័ន្ធគ្រប់គ្រងព័ត៌មាននិស្សិត (Student Directory)&lt;/h2&gt;
-
-    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (<span class="cv-var">$msg</span> === <span class="cv-str">'inserted'</span>): <span class="cv-tag">?&gt;</span>
-        &lt;div class="alert alert-success"&gt;✓ បានបញ្ចូលព័ត៌មាននិស្សិតថ្មីដោយជោគជ័យ!&lt;/div&gt;
-    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">elseif</span> (<span class="cv-var">$msg</span> === <span class="cv-str">'updated'</span>): <span class="cv-tag">?&gt;</span>
-        &lt;div class="alert alert-success"&gt;✓ បានកែប្រែព័ត៌មាននិស្សិតដោយជោគជ័យ!&lt;/div&gt;
-    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">elseif</span> (<span class="cv-var">$msg</span> === <span class="cv-str">'deleted'</span>): <span class="cv-tag">?&gt;</span>
-        &lt;div class="alert alert-success"&gt;✓ បានលុបព័ត៌មាននិស្សិតចេញពីប្រព័ន្ធរួចរាល់!&lt;/div&gt;
-    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
-
-    &lt;p&gt;&lt;a href="add.php" class="btn btn-add"&gt;+ ចុះឈ្មោះនិស្សិតថ្មី&lt;/a&gt;&lt;/p&gt;
-
-    &lt;table&gt;
-        &lt;thead&gt;
-            &lt;tr&gt;
-                &lt;th width="5%"&gt;ID&lt;/th&gt;
-                &lt;th width="15%"&gt;អត្តលេខ (Code)&lt;/th&gt;
-                &lt;th width="22%"&gt;ឈ្មោះពេញ&lt;/th&gt;
-                &lt;th width="8%"&gt;ភេទ&lt;/th&gt;
-                &lt;th width="22%"&gt;អ៊ីមែល&lt;/th&gt;
-                &lt;th width="14%"&gt;ជំនាញ&lt;/th&gt;
-                &lt;th width="14%" style="text-align:center;"&gt;សកម្មភាព&lt;/th&gt;
-            &lt;/tr&gt;
-        &lt;/thead&gt;
-        &lt;tbody&gt;
-            <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span> (!<span class="cv-fn">empty</span>(<span class="cv-var">$students</span>)): <span class="cv-tag">?&gt;</span>
-                <span class="cv-tag">&lt;?php</span> <span class="cv-kw">foreach</span> (<span class="cv-var">$students</span> <span class="cv-kw">as</span> <span class="cv-var">$s</span>): <span class="cv-tag">?&gt;</span>
-                    &lt;tr&gt;
-                        &lt;td align="center"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$s</span>[<span class="cv-str">'id'</span>] <span class="cv-tag">?&gt;</span>&lt;/td&gt;
-                        &lt;td align="center"&gt;&lt;b&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'student_code'</span>]) <span class="cv-tag">?&gt;</span>&lt;/b&gt;&lt;/td&gt;
-                        &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'fullname'</span>], ENT_QUOTES, <span class="cv-str">'UTF-8'</span>) <span class="cv-tag">?&gt;</span>&lt;/td&gt;
-                        &lt;td align="center"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'gender'</span>]) <span class="cv-tag">?&gt;</span>&lt;/td&gt;
-                        &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'email'</span>], ENT_QUOTES, <span class="cv-str">'UTF-8'</span>) <span class="cv-tag">?&gt;</span>&lt;/td&gt;
-                        &lt;td&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$s</span>[<span class="cv-str">'major'</span>]) <span class="cv-tag">?&gt;</span>&lt;/td&gt;
-                        &lt;td align="center"&gt;
-                            &lt;a href="edit.php?id=<span class="cv-tag">&lt;?=</span> <span class="cv-var">$s</span>[<span class="cv-str">'id'</span>] <span class="cv-tag">?&gt;</span>" class="btn btn-edit"&gt;កែប្រែ&lt;/a&gt;
-                            &lt;a href="delete.php?id=<span class="cv-tag">&lt;?=</span> <span class="cv-var">$s</span>[<span class="cv-str">'id'</span>] <span class="cv-tag">?&gt;</span>" class="btn btn-del" onclick="return confirm('តើអ្នកពិតជាចង់លុបនិស្សិតនេះមែនទេ?');"&gt;លុប&lt;/a&gt;
-                        &lt;/td&gt;
-                    &lt;/tr&gt;
-                <span class="cv-tag">&lt;?php</span> <span class="cv-kw">endforeach</span>; <span class="cv-tag">?&gt;</span>
-            <span class="cv-tag">&lt;?php</span> <span class="cv-kw">else</span>: <span class="cv-tag">?&gt;</span>
-                &lt;tr&gt;&lt;td colspan="7" align="center" style="color:gray;"&gt;មិនទាន់មានទិន្នន័យនៅឡើយទេ។&lt;/td&gt;&lt;/tr&gt;
-            <span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
-        &lt;/tbody&gt;
-    &lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</pre>
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៣៖ <code>add.php</code> (Create Operation & Validation)</div>
+        <div class="text-block">
+            ឯកសារនេះគ្រប់គ្រងការទទួលទិន្នន័យ POST, Validation, ពិនិត្យភាពស្ទួន (Unique Constraint), និងអនុវត្ត PRG Redirect៖
         </div>
 
-        <div class="output-window">
-            <div class="output-header"><i class="fa-solid fa-desktop"></i> Browser Output (index.php)</div>
-            <div class="output-body">
-ប្រព័ន្ធគ្រប់គ្រងព័ត៌មាននិស្សិត (Student Directory)
-[+ ចុះឈ្មោះនិស្សិតថ្មី]
---------------------------------------------------------------------------------------------------
-ID | អត្តលេខ    | ឈ្មោះពេញ  | ភេទ  | អ៊ីមែល                  | ជំនាញ              | សកម្មភាព
---------------------------------------------------------------------------------------------------
-3  | AU-2024-003| សុខ ស្រីនី | ស្រី  | sreyny.sok@au.edu.kh  | Software Eng.      | [កែប្រែ] [លុប]
-2  | AU-2024-002| ចាន់ ដារ៉ា | ប្រុស | dara.chan@gmail.com    | Information Tech.  | [កែប្រែ] [លុប]
-1  | AU-2024-001| សឿង លីម   | ប្រុស | soeurng.lim@au.edu.kh  | Computer Science   | [កែប្រែ] [លុប]
-            </div>
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">add.php (Complete Unified File)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
+<span class="cv-var">$errors</span> = [];
+<span class="cv-var">$code</span> = <span class="cv-str">''</span>; <span class="cv-var">$name</span> = <span class="cv-str">''</span>; <span class="cv-var">$gender</span> = <span class="cv-str">'ប្រុស'</span>; <span class="cv-var">$email</span> = <span class="cv-str">''</span>; <span class="cv-var">$major</span> = <span class="cv-str">''</span>;
+
+<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">'REQUEST_METHOD'</span>] === <span class="cv-str">'POST'</span>) {
+    <span class="cv-var">$code</span>   = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'student_code'</span>] ?? <span class="cv-str">''</span>);
+    <span class="cv-var">$name</span>   = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'fullname'</span>] ?? <span class="cv-str">''</span>);
+    <span class="cv-var">$gender</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'gender'</span>] ?? <span class="cv-str">'ប្រុស'</span>);
+    <span class="cv-var">$email</span>  = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'email'</span>] ?? <span class="cv-str">''</span>);
+    <span class="cv-var">$major</span>  = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'major'</span>] ?? <span class="cv-str">''</span>);
+
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$code</span>) || <span class="cv-fn">empty</span>(<span class="cv-var">$name</span>)) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"សូមបញ្ចូលអត្តលេខ និងឈ្មោះពេញ!"</span>; }
+    <span class="cv-kw">if</span> (!<span class="cv-fn">filter_var</span>(<span class="cv-var">$email</span>, FILTER_VALIDATE_EMAIL)) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវឡើយ!"</span>; }
+
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$errors</span>)) {
+        <span class="cv-var">$chk</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-str">"SELECT id FROM tbl_students WHERE email = :e OR student_code = :c"</span>);
+        <span class="cv-var">$chk</span>-&gt;<span class="cv-fn">execute</span>([<span class="cv-str">':e'</span> =&gt; <span class="cv-var">$email</span>, <span class="cv-str">':c'</span> =&gt; <span class="cv-var">$code</span>]);
+        <span class="cv-kw">if</span> (<span class="cv-var">$chk</span>-&gt;<span class="cv-fn">fetch</span>()) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"អត្តលេខ ឬអ៊ីមែលនេះមានរួចហើយក្នុងប្រព័ន្ធ!"</span>; }
+    }
+
+    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$errors</span>)) {
+        <span class="cv-var">$stmt</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-str">"INSERT INTO tbl_students (student_code, fullname, gender, email, major) VALUES (:c, :n, :g, :e, :m)"</span>);
+        <span class="cv-var">$stmt</span>-&gt;<span class="cv-fn">execute</span>([<span class="cv-str">':c'</span> =&gt; <span class="cv-var">$code</span>, <span class="cv-str">':n'</span> =&gt; <span class="cv-var">$name</span>, <span class="cv-str">':g'</span> =&gt; <span class="cv-var">$gender</span>, <span class="cv-str">':e'</span> =&gt; <span class="cv-var">$email</span>, <span class="cv-str">':m'</span> =&gt; <span class="cv-var">$major</span>]);
+        <span class="cv-fn">header</span>(<span class="cv-str">"Location: index.php?msg=inserted"</span>);
+        <span class="cv-kw">exit</span>;
+    }
+}
+<span class="cv-tag">?&gt;</span>
+&lt;!DOCTYPE html&gt;&lt;html lang="km"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Add Student&lt;/title&gt;&lt;/head&gt;
+&lt;body style="font-family:sans-serif; padding:15px;"&gt;
+    &lt;h3&gt;ទម្រង់ចុះឈ្មោះនិស្សិតថ្មី (Add Student)&lt;/h3&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">foreach</span> (<span class="cv-var">$errors</span> <span class="cv-kw">as</span> <span class="cv-var">$err</span>): <span class="cv-tag">?&gt;</span>&lt;p style="color:red;"&gt;✗ <span class="cv-tag">&lt;?=</span> <span class="cv-var">$err</span> <span class="cv-tag">?&gt;</span>&lt;/p&gt;<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endforeach</span>; <span class="cv-tag">?&gt;</span>
+    &lt;form method="POST"&gt;
+        អត្តលេខ៖ &lt;input type="text" name="student_code" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$code</span>) <span class="cv-tag">?&gt;</span>" required&gt;&lt;br&gt;&lt;br&gt;
+        ឈ្មោះពេញ៖ &lt;input type="text" name="fullname" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$name</span>) <span class="cv-tag">?&gt;</span>" required&gt;&lt;br&gt;&lt;br&gt;
+        ភេទ៖ &lt;select name="gender"&gt;&lt;option value="ប្រុស"&gt;ប្រុស&lt;/option&gt;&lt;option value="ស្រី"&gt;ស្រី&lt;/option&gt;&lt;/select&gt;&lt;br&gt;&lt;br&gt;
+        អ៊ីមែល៖ &lt;input type="email" name="email" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$email</span>) <span class="cv-tag">?&gt;</span>" required&gt;&lt;br&gt;&lt;br&gt;
+        ជំនាញ៖ &lt;input type="text" name="major" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$major</span>) <span class="cv-tag">?&gt;</span>" required&gt;&lt;br&gt;&lt;br&gt;
+        &lt;button type="submit"&gt;+ រក្សាទុកទិន្នន័យ (PRG Insert)&lt;/button&gt; &lt;a href="index.php"&gt;ត្រឡប់ក្រោយ&lt;/a&gt;
+    &lt;/form&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
         </div>
     </div>
     <div class="global-footer">
@@ -1932,163 +1965,7 @@ ID | អត្តលេខ    | ឈ្មោះពេញ  | ភេទ  | អ៊�
     </div>
 </div>
 
-<!-- ================= PAGE 25: FILE 3 - add.php PART 1 ================= -->
-<div class="a4-page">
-    <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៩</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
-        <div class="header-item"><i class="fa-solid fa-table-list" style="font-size: 24px; color: #4F46E5;"></i><span>PHP PDO CRUD</span></div>
-    </div>
-    <div class="page-content">
-        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៣៖ <code>add.php</code> (Create Operation with Server-Side Validation) - ភាគ ១</div>
-        <div class="text-block">
-            ទំព័រនេះទទួលបន្ទុកបង្ហាញ Form ត្រួតពិនិត្យភាពត្រឹមត្រូវនៃទិន្នន័យ (Validation) ពិនិត្យ Email ស្ទួន និង INSERT តាម Prepared Statement៖
-        </div>
-
-        <div class="code-window">
-            <div class="code-header"><div class="code-title">add.php (Processing Logic)</div></div>
-<pre><span class="cv-tag">&lt;?php</span>
-<span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
-
-<span class="cv-var">$errors</span> = [];
-<span class="cv-var">$code</span> = <span class="cv-str">''</span>; <span class="cv-var">$name</span> = <span class="cv-str">''</span>; <span class="cv-var">$gender</span> = <span class="cv-str">'ប្រុស'</span>; <span class="cv-var">$email</span> = <span class="cv-str">''</span>; <span class="cv-var">$phone</span> = <span class="cv-str">''</span>; <span class="cv-var">$major</span> = <span class="cv-str">''</span>;
-
-<span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">'REQUEST_METHOD'</span>] === <span class="cv-str">'POST'</span>) {
-    <span class="cv-var">$code</span>   = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'student_code'</span>] ?? <span class="cv-str">''</span>);
-    <span class="cv-var">$name</span>   = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'fullname'</span>] ?? <span class="cv-str">''</span>);
-    <span class="cv-var">$gender</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'gender'</span>] ?? <span class="cv-str">'ប្រុស'</span>);
-    <span class="cv-var">$email</span>  = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'email'</span>] ?? <span class="cv-str">''</span>);
-    <span class="cv-var">$phone</span>  = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'phone'</span>] ?? <span class="cv-str">''</span>);
-    <span class="cv-var">$major</span>  = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'major'</span>] ?? <span class="cv-str">''</span>);
-
-    <span class="cv-cm">// Server-side Validation</span>
-    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$code</span>)) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"សូមបញ្ចូលអត្តលេខនិស្សិត!"</span>; }
-    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$name</span>)) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"សូមបញ្ចូលឈ្មោះពេញរបស់និស្សិត!"</span>; }
-    <span class="cv-kw">if</span> (!<span class="cv-fn">filter_var</span>(<span class="cv-var">$email</span>, FILTER_VALIDATE_EMAIL)) { <span class="cv-var">$errors</span>[] = <span class="cv-str">"ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវឡើយ!"</span>; }
-
-    <span class="cv-cm">// ពិនិត្យមើល Email ឬ Student Code ស្ទួន</span>
-    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$errors</span>)) {
-        <span class="cv-var">$chk</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-str">"SELECT id FROM tbl_students WHERE email = :e OR student_code = :c"</span>);
-        <span class="cv-var">$chk</span>-&gt;<span class="cv-fn">execute</span>([<span class="cv-str">':e'</span> =&gt; <span class="cv-var">$email</span>, <span class="cv-str">':c'</span> =&gt; <span class="cv-var">$code</span>]);
-        <span class="cv-kw">if</span> (<span class="cv-var">$chk</span>-&gt;<span class="cv-fn">fetch</span>()) {
-            <span class="cv-var">$errors</span>[] = <span class="cv-str">"អត្តលេខ ឬអ៊ីមែលនេះមានរួចហើយក្នុងប្រព័ន្ធ!"</span>;
-        }
-    }
-
-    <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$errors</span>)) {
-        <span class="cv-kw">try</span> {
-            <span class="cv-var">$sql</span> = <span class="cv-str">"INSERT INTO tbl_students (student_code, fullname, gender, email, phone, major) 
-                    VALUES (:code, :name, :gender, :email, :phone, :major)"</span>;
-            <span class="cv-var">$stmt</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-var">$sql</span>);
-            <span class="cv-var">$stmt</span>-&gt;<span class="cv-fn">execute</span>([
-                <span class="cv-str">':code'</span>   =&gt; <span class="cv-var">$code</span>, <span class="cv-str">':name'</span>  =&gt; <span class="cv-var">$name</span>, <span class="cv-str">':gender'</span> =&gt; <span class="cv-var">$gender</span>,
-                <span class="cv-str">':email'</span>  =&gt; <span class="cv-var">$email</span>, <span class="cv-str">':phone'</span> =&gt; <span class="cv-var">$phone</span>, <span class="cv-str">':major'</span>  =&gt; <span class="cv-var">$major</span>
-            ]);
-            <span class="cv-fn">header</span>(<span class="cv-str">"Location: index.php?msg=inserted"</span>);
-            <span class="cv-kw">exit</span>;
-        } <span class="cv-kw">catch</span> (<span class="cv-tag">PDOException</span> <span class="cv-var">$e</span>) {
-            <span class="cv-fn">error_log</span>(<span class="cv-var">$e</span>-&gt;<span class="cv-fn">getMessage</span>());
-            <span class="cv-var">$errors</span>[] = <span class="cv-str">"ការបញ្ចូលទិន្នន័យបរាជ័យ!"</span>;
-        }
-    }
-}
-<span class="cv-tag">?&gt;</span></pre>
-        </div>
-    </div>
-    <div class="global-footer">
-        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រទី ២៥ នៃ ២៨</div>
-    </div>
-</div>
-
-<!-- ================= PAGE 26: FILE 3 - add.php PART 2 ================= -->
-<div class="a4-page">
-    <div class="global-header">
-        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
-        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៩</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
-        <div class="header-item"><i class="fa-solid fa-table-list" style="font-size: 24px; color: #4F46E5;"></i><span>PHP PDO CRUD</span></div>
-    </div>
-    <div class="page-content">
-        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៣៖ <code>add.php</code> (Create Operation) - ភាគ ២ Form UI</div>
-
-        <div class="code-window">
-            <div class="code-header"><div class="code-title">add.php (Form HTML Section)</div></div>
-<pre>&lt;!DOCTYPE html&gt;
-&lt;html lang="km"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;ចុះឈ្មោះនិស្សិតថ្មី - Add Student&lt;/title&gt;
-    &lt;style&gt;
-        body { font-family: sans-serif; padding: 15px; background: #F8FAFC; }
-        .form-box { background: white; padding: 15px; border-radius: 6px; border: 1px solid #CBD5E1; max-width: 460px; }
-        .form-group { margin-bottom: 8px; }
-        label { display: block; font-weight: bold; margin-bottom: 3px; font-size: 12px; }
-        input[type="text"], input[type="email"], select { width: 100%; padding: 6px; border: 1px solid #CBD5E1; border-radius: 4px; box-sizing: border-box; }
-        .error-alert { background: #FEE2E2; color: #DC2626; padding: 5px 8px; border-radius: 4px; margin-bottom: 6px; font-size: 11px; }
-        button { background: #4F46E5; color: white; padding: 6px 14px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        a { color: #64748B; text-decoration: none; margin-left: 10px; font-size: 12px; }
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div class="form-box"&gt;
-        &lt;h3 style="margin-top:0;"&gt;ទម្រង់ចុះឈ្មោះនិស្សិតថ្មី&lt;/h3&gt;
-        <span class="cv-tag">&lt;?php</span> <span class="cv-kw">foreach</span> (<span class="cv-var">$errors</span> <span class="cv-kw">as</span> <span class="cv-var">$err</span>): <span class="cv-tag">?&gt;</span>&lt;div class="error-alert"&gt;<span class="cv-tag">&lt;?=</span> <span class="cv-var">$err</span> <span class="cv-tag">?&gt;</span>&lt;/div&gt;<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endforeach</span>; <span class="cv-tag">?&gt;</span>
-        &lt;form action="add.php" method="POST"&gt;
-            &lt;div class="form-group"&gt;
-                &lt;label&gt;អត្តលេខនិស្សិត (Code)៖&lt;/label&gt;
-                &lt;input type="text" name="student_code" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$code</span>) <span class="cv-tag">?&gt;</span>" required&gt;
-            &lt;/div&gt;
-            &lt;div class="form-group"&gt;
-                &lt;label&gt;ឈ្មោះពេញ (Full Name)៖&lt;/label&gt;
-                &lt;input type="text" name="fullname" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$name</span>) <span class="cv-tag">?&gt;</span>" required&gt;
-            &lt;/div&gt;
-            &lt;div class="form-group"&gt;
-                &lt;label&gt;ភេទ (Gender)៖&lt;/label&gt;
-                &lt;select name="gender"&gt;
-                    &lt;option value="ប្រុស" <span class="cv-tag">&lt;?=</span> <span class="cv-var">$gender</span>===<span class="cv-str">'ប្រុស'</span>?<span class="cv-str">'selected'</span>:<span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&gt;ប្រុស (Male)&lt;/option&gt;
-                    &lt;option value="ស្រី" <span class="cv-tag">&lt;?=</span> <span class="cv-var">$gender</span>===<span class="cv-str">'ស្រី'</span>?<span class="cv-str">'selected'</span>:<span class="cv-str">''</span> <span class="cv-tag">?&gt;</span>&gt;ស្រី (Female)&lt;/option&gt;
-                &lt;/select&gt;
-            &lt;/div&gt;
-            &lt;div class="form-group"&gt;
-                &lt;label&gt;អ៊ីមែល (Email)៖&lt;/label&gt;
-                &lt;input type="email" name="email" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$email</span>) <span class="cv-tag">?&gt;</span>" required&gt;
-            &lt;/div&gt;
-            &lt;div class="form-group"&gt;
-                &lt;label&gt;លេខទូរស័ព្ទ (Phone)៖&lt;/label&gt;
-                &lt;input type="text" name="phone" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$phone</span>) <span class="cv-tag">?&gt;</span>"&gt;
-            &lt;/div&gt;
-            &lt;div class="form-group"&gt;
-                &lt;label&gt;ជំនាញសិក្សា (Major)៖&lt;/label&gt;
-                &lt;input type="text" name="major" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$major</span>) <span class="cv-tag">?&gt;</span>" required&gt;
-            &lt;/div&gt;
-            &lt;button type="submit"&gt;រក្សាទុកទិន្នន័យ&lt;/button&gt;
-            &lt;a href="index.php"&gt;ត្រឡប់ក្រោយ&lt;/a&gt;
-        &lt;/form&gt;
-    &lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;</pre>
-        </div>
-
-        <div class="output-window">
-            <div class="output-header"><i class="fa-solid fa-desktop"></i> Browser Output (add.php)</div>
-            <div class="output-body">
-[ទម្រង់ចុះឈ្មោះនិស្សិតថ្មី]
-អត្តលេខនិស្សិត (Code)៖ [ AU-2024-004         ]
-ឈ្មោះពេញ (Full Name)៖   [ កែវ វិបុល            ]
-ភេទ (Gender)៖          [ ប្រុស (Male)        ▼]
-អ៊ីមែល (Email)៖          [ vibol.keo@gmail.com   ]
-ជំនាញសិក្សា (Major)៖    [ Computer Science      ]
-[រក្សាទុកទិន្នន័យ]  ត្រឡប់ក្រោយ
-            </div>
-        </div>
-    </div>
-    <div class="global-footer">
-        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រទី ២៦ នៃ ២៨</div>
-    </div>
-</div>
-
-<!-- ================= PAGE 27: FILE 4 - edit.php ================= -->
+<!-- ================= PAGE 25: FILE 4 - edit.php ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -2098,11 +1975,11 @@ ID | អត្តលេខ    | ឈ្មោះពេញ  | ភេទ  | អ៊�
     <div class="page-content">
         <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៤៖ <code>edit.php</code> (Update Operation with Pre-fill)</div>
         <div class="text-block">
-            ទំព័រនេះចាប់យក <code>$_GET['id']</code> ទាញទិន្នន័យចាស់មកបំពេញក្នុង Form និងធ្វើបច្ចុប្បន្នភាព (UPDATE) តាមរយៈ POST៖
+            ឯកសារនេះចាប់យក <code>$_GET['id']</code> ទាញទិន្នន័យចាស់មក Pre-fill ក្នុង Form និងធ្វើបច្ចុប្បន្នភាព (UPDATE) តាមរយៈ POST៖
         </div>
 
         <div class="code-window">
-            <div class="code-header"><div class="code-title">edit.php (Complete Update Component)</div></div>
+            <div class="code-header"><div class="code-title">edit.php (Complete Unified File)</div></div>
 <pre><span class="cv-tag">&lt;?php</span>
 <span class="cv-kw">require_once</span> <span class="cv-str">'db.php'</span>;
 
@@ -2110,7 +1987,6 @@ ID | អត្តលេខ    | ឈ្មោះពេញ  | ភេទ  | អ៊�
 <span class="cv-kw">if</span> (!<span class="cv-var">$id</span>) { <span class="cv-fn">header</span>(<span class="cv-str">"Location: index.php"</span>); <span class="cv-kw">exit</span>; }
 
 <span class="cv-var">$errors</span> = [];
-
 <span class="cv-kw">if</span> (<span class="cv-var">$_SERVER</span>[<span class="cv-str">'REQUEST_METHOD'</span>] === <span class="cv-str">'POST'</span>) {
     <span class="cv-var">$fullname</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'fullname'</span>] ?? <span class="cv-str">''</span>);
     <span class="cv-var">$email</span>    = <span class="cv-fn">trim</span>(<span class="cv-var">$_POST</span>[<span class="cv-str">'email'</span>] ?? <span class="cv-str">''</span>);
@@ -2121,7 +1997,6 @@ ID | អត្តលេខ    | ឈ្មោះពេញ  | ភេទ  | អ៊�
     }
 
     <span class="cv-kw">if</span> (<span class="cv-fn">empty</span>(<span class="cv-var">$errors</span>)) {
-        <span class="cv-var">$sql</span> = <span class="cv-str">"UPDATE tbl_students SET fullname = :name, email = :email, major = :major WHERE id = :id"</span>;
         <span class="cv-var">$stmt</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-str">"UPDATE tbl_students SET fullname = :name, email = :email, major = :major WHERE id = :id"</span>);
         <span class="cv-var">$stmt</span>-&gt;<span class="cv-fn">execute</span>([<span class="cv-str">':name'</span> =&gt; <span class="cv-var">$fullname</span>, <span class="cv-str">':email'</span> =&gt; <span class="cv-var">$email</span>, <span class="cv-str">':major'</span> =&gt; <span class="cv-var">$major</span>, <span class="cv-str">':id'</span> =&gt; <span class="cv-var">$id</span>]);
         <span class="cv-fn">header</span>(<span class="cv-str">"Location: index.php?msg=updated"</span>);
@@ -2136,37 +2011,24 @@ ID | អត្តលេខ    | ឈ្មោះពេញ  | ភេទ  | អ៊�
 <span class="cv-tag">?&gt;</span>
 &lt;!DOCTYPE html&gt;&lt;html lang="km"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Edit Student&lt;/title&gt;&lt;/head&gt;
 &lt;body style="font-family:sans-serif; padding:15px;"&gt;
-    &lt;div style="background:white; padding:15px; border:1px solid #CBD5E1; max-width:440px;"&gt;
-        &lt;h3&gt;កែប្រែព័ត៌មាននិស្សិត (Code: <span class="cv-tag">&lt;?=</span> <span class="cv-var">$student</span>[<span class="cv-str">'student_code'</span>] <span class="cv-tag">?&gt;</span>)&lt;/h3&gt;
-        &lt;form method="POST"&gt;
-            ឈ្មោះពេញ៖&lt;br&gt;&lt;input type="text" name="fullname" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$student</span>[<span class="cv-str">'fullname'</span>]) <span class="cv-tag">?&gt;</span>" style="width:100%;" required&gt;&lt;br&gt;&lt;br&gt;
-            អ៊ីមែល៖&lt;br&gt;&lt;input type="email" name="email" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$student</span>[<span class="cv-str">'email'</span>]) <span class="cv-tag">?&gt;</span>" style="width:100%;" required&gt;&lt;br&gt;&lt;br&gt;
-            ជំនាញ៖&lt;br&gt;&lt;input type="text" name="major" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$student</span>[<span class="cv-str">'major'</span>]) <span class="cv-tag">?&gt;</span>" style="width:100%;" required&gt;&lt;br&gt;&lt;br&gt;
-            &lt;button type="submit" style="background:#0284C7; color:white; padding:6px 12px; border:none;"&gt;រក្សាទុកការកែប្រែ&lt;/button&gt;
-            &lt;a href="index.php" style="margin-left:10px;"&gt;បោះបង់&lt;/a&gt;
-        &lt;/form&gt;
-    &lt;/div&gt;
+    &lt;h3&gt;កែប្រែព័ត៌មាននិស្សិត (Code: <span class="cv-tag">&lt;?=</span> <span class="cv-var">$student</span>[<span class="cv-str">'student_code'</span>] <span class="cv-tag">?&gt;</span>)&lt;/h3&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">foreach</span> (<span class="cv-var">$errors</span> <span class="cv-kw">as</span> <span class="cv-var">$err</span>): <span class="cv-tag">?&gt;</span>&lt;p style="color:red;"&gt;✗ <span class="cv-tag">&lt;?=</span> <span class="cv-var">$err</span> <span class="cv-tag">?&gt;</span>&lt;/p&gt;<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endforeach</span>; <span class="cv-tag">?&gt;</span>
+    &lt;form method="POST"&gt;
+        ឈ្មោះពេញ៖ &lt;input type="text" name="fullname" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$student</span>[<span class="cv-str">'fullname'</span>]) <span class="cv-tag">?&gt;</span>" required&gt;&lt;br&gt;&lt;br&gt;
+        អ៊ីមែល៖ &lt;input type="email" name="email" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$student</span>[<span class="cv-str">'email'</span>]) <span class="cv-tag">?&gt;</span>" required&gt;&lt;br&gt;&lt;br&gt;
+        ជំនាញ៖ &lt;input type="text" name="major" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$student</span>[<span class="cv-str">'major'</span>]) <span class="cv-tag">?&gt;</span>" required&gt;&lt;br&gt;&lt;br&gt;
+        &lt;button type="submit"&gt;រក្សាទុកការកែប្រែ&lt;/button&gt; &lt;a href="index.php"&gt;បោះបង់&lt;/a&gt;
+    &lt;/form&gt;
 &lt;/body&gt;&lt;/html&gt;</pre>
-        </div>
-
-        <div class="output-window">
-            <div class="output-header"><i class="fa-solid fa-desktop"></i> Browser Output (edit.php?id=1)</div>
-            <div class="output-body">
-[កែប្រែព័ត៌មាននិស្សិត (Code: AU-2024-001)]
-ឈ្មោះពេញ៖ [ សឿង លីម                 ]
-អ៊ីមែល៖    [ soeurng.lim@au.edu.kh    ]
-ជំនាញ៖     [ Computer Science         ]
-[រក្សាទុកការកែប្រែ]  បោះបង់
-            </div>
         </div>
     </div>
     <div class="global-footer">
         <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
-        <div class="footer-right">ទំព័រទី ២៧ នៃ ២៨</div>
+        <div class="footer-right">ទំព័រទី ២៥ នៃ ២៨</div>
     </div>
 </div>
 
-<!-- ================= PAGE 28: FILE 5 - delete.php & SIGNATURES ================= -->
+<!-- ================= PAGE 26: FILE 5 - delete.php ================= -->
 <div class="a4-page">
     <div class="global-header">
         <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
@@ -2174,7 +2036,7 @@ ID | អត្តលេខ    | ឈ្មោះពេញ  | ភេទ  | អ៊�
         <div class="header-item"><i class="fa-solid fa-table-list" style="font-size: 24px; color: #4F46E5;"></i><span>PHP PDO CRUD</span></div>
     </div>
     <div class="page-content">
-        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៥៖ <code>delete.php</code> (Delete Operation Script)</div>
+        <div class="sub-heading" style="margin-top:0;">ឯកសារទី ៥៖ <code>delete.php</code> (Delete Action Component)</div>
         <div class="text-block">
             ឯកសារនេះទទួលបន្ទុកចាប់យក Parameter ID ពី URL Query String ផ្ទៀងផ្ទាត់សុពលភាព រួចអនុវត្ត DELETE Statement តាមរយៈ Prepared Statement និងបញ្ជូនអ្នកប្រើត្រឡប់ទៅកាន់ <code>index.php</code> វិញ៖
         </div>
@@ -2218,20 +2080,122 @@ ID | អត្តលេខ    | ឈ្មោះពេញ  | ភេទ  | អ៊�
                 <tr><td><b><code>delete.php</code></b></td><td>Delete Operation</td><td>លុបទិន្នន័យតាម ID រួច Redirect មក index.php</td></tr>
             </tbody>
         </table>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២៦ នៃ ២៨</div>
+    </div>
+</div>
 
-        <div style="text-align: center; margin-top: 4px; padding: 4px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 6px;">
+<!-- ================= PAGE 27: ADVANCED EXTENSION (SEARCH) ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៩</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-table-list" style="font-size: 24px; color: #4F46E5;"></i><span>PHP PDO CRUD</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-magnifying-glass"></i> ១១. មុខងារបន្ថែម៖ ការស្វែងរកទិន្នន័យសុវត្ថិភាព (Searchable CRUD Feature)</div>
+        <div class="text-block">
+            នៅក្នុងគម្រោងពិតជាក់ស្តែង តារាងបញ្ជីទិន្នន័យតែងតែទាមទារឱ្យមានមុខងារ Search។ កូដខាងក្រោមបង្ហាញពីរបៀបសរសេរ Query ស្វែងរកតាម <code>LIKE</code> ដោយប្រើ PDO Prepared Statement ដោយសុវត្ថិភាព៖
+        </div>
+
+        <div class="code-window">
+            <div class="code-header"><div class="code-title">search_snippet.php (Searchable SQL with PDO)</div></div>
+<pre><span class="cv-tag">&lt;?php</span>
+<span class="cv-var">$keyword</span> = <span class="cv-fn">trim</span>(<span class="cv-var">$_GET</span>[<span class="cv-str">'q'</span>] ?? <span class="cv-str">''</span>);
+
+<span class="cv-kw">if</span> (!<span class="cv-fn">empty</span>(<span class="cv-var">$keyword</span>)) {
+    <span class="cv-var">$sql</span> = <span class="cv-str">"SELECT * FROM tbl_students WHERE fullname LIKE :kw OR student_code LIKE :kw ORDER BY id DESC"</span>;
+    <span class="cv-var">$stmt</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">prepare</span>(<span class="cv-str">$sql</span>);
+    <span class="cv-var">$stmt</span>-&gt;<span class="cv-fn">execute</span>([<span class="cv-str">':kw'</span> =&gt; <span class="cv-str">"%"</span> . <span class="cv-var">$keyword</span> . <span class="cv-str">"%"</span>]);
+} <span class="cv-kw">else</span> {
+    <span class="cv-var">$stmt</span> = <span class="cv-var">$pdo</span>-&gt;<span class="cv-fn">query</span>(<span class="cv-str">"SELECT * FROM tbl_students ORDER BY id DESC"</span>);
+}
+<span class="cv-var">$students</span> = <span class="cv-var">$stmt</span>-&gt;<span class="cv-fn">fetchAll</span>();
+<span class="cv-tag">?&gt;</span>
+&lt;!-- Form ស្វែងរកក្នុង HTML --&gt;
+&lt;form method="GET" action="index.php" style="margin-bottom: 10px;"&gt;
+    &lt;input type="text" name="q" value="<span class="cv-tag">&lt;?=</span> <span class="cv-fn">htmlspecialchars</span>(<span class="cv-var">$keyword</span>) <span class="cv-tag">?&gt;</span>" placeholder="ស្វែងរកតាមឈ្មោះ ឬអត្តលេខ..."&gt;
+    &lt;button type="submit"&gt;ស្វែងរក (Search)&lt;/button&gt;
+    <span class="cv-tag">&lt;?php</span> <span class="cv-kw">if</span>(!<span class="cv-fn">empty</span>(<span class="cv-var">$keyword</span>)): <span class="cv-tag">?&gt;</span>&lt;a href="index.php"&gt;សម្អាត (Clear)&lt;/a&gt;<span class="cv-tag">&lt;?php</span> <span class="cv-kw">endif</span>; <span class="cv-tag">?&gt;</span>
+&lt;/form&gt;</pre>
+        </div>
+
+        <div class="extra-box">
+            <div class="extra-box-title"><i class="fa-solid fa-lightbulb"></i> គន្លឹះវិជ្ជាជីវៈ (Pro-Tip for PDO LIKE Statements)៖</div>
+            ហាមដាក់សញ្ញា <code>%</code> នៅខាងក្នុង Query Template ដូចជា <code>WHERE col LIKE '%:kw%'</code> ពីព្រោះ PDO នឹងចាត់ទុកវាជា String Literal មិនស្គាល់ Placeholder ឡើយ។ វិធីត្រឹមត្រូវ គឺចងសញ្ញា <code>%</code> នៅក្នុង Parameter Array <code>[':kw' => "%$val%"]</code>។
+        </div>
+    </div>
+    <div class="global-footer">
+        <div class="footer-left"><img src="Lim.jpg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" class="footer-avatar" alt="Avatar"><span>សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</span></div>
+        <div class="footer-right">ទំព័រទី ២៧ នៃ ២៨</div>
+    </div>
+</div>
+
+<!-- ================= PAGE 28: ASSIGNMENT & SIGNATURES ================= -->
+<div class="a4-page">
+    <div class="global-header">
+        <div class="header-item"><img src="Logo.png" onerror="this.src='https://au.edu.kh/wp-content/uploads/2021/04/Logo-AU.png'" alt="AU Logo"><span>សាកលវិទ្យាល័យអង្គរ</span></div>
+        <div class="header-text"><h1>ឯកសារអាន (Handout) | មេរៀនទី ៩</h1><p>WEB APP DEVELOPMENT WITH PHP & MYSQL</p></div>
+        <div class="header-item"><i class="fa-solid fa-table-list" style="font-size: 24px; color: #4F46E5;"></i><span>PHP PDO CRUD</span></div>
+    </div>
+    <div class="page-content">
+        <div class="section-title" style="margin-top:0;"><i class="fa-solid fa-laptop-code"></i> ១២. កិច្ចការអនុវត្តស្វ័យសិក្សា និងតារាងពិន្ទុ (Mini-Project Assignment & Rubric)</div>
+        <div class="text-block">
+            <b>ប្រធានបទកិច្ចការ (Assignment Topic)៖</b> និស្សិតម្នាក់ៗត្រូវបង្កើតគម្រោង Web CRUD ថ្មីមួយដោយខ្លួនឯងលើ <b>Entity: បណ្ណាល័យសៀវភៅ (<code>tbl_books</code>)</b> ដែលមាន Fields (<code>id</code>, <code>isbn</code>, <code>title</code>, <code>author</code>, <code>price</code>, <code>published_year</code>) ដោយអនុវត្តតាមស្ថាបត្យកម្ម PDO Prepared Statements, PRG Pattern និង XSS Defense។
+        </div>
+
+        <table class="standard-table" style="margin-top:4px;">
+            <thead>
+                <tr>
+                    <th style="width:25%;">លក្ខណៈវិនិច្ឆ័យ (Criteria)</th>
+                    <th style="width:55%;">ការពិពណ៌នាលម្អិតនៃការវាយតម្លៃ (Evaluation Standard)</th>
+                    <th style="width:20%; text-align:center;">ពិន្ទុអតិបរមា</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Database & PDO</b></td>
+                    <td>បង្កើត Schema ត្រឹមត្រូវ និងភ្ជាប់ PDO ជាមួយ Exception Handling</td>
+                    <td style="text-align:center;">២០%</td>
+                </tr>
+                <tr>
+                    <td><b>Create & Read</b></td>
+                    <td>បង្កើត Form បញ្ចូល និង Table បង្ហាញទិន្នន័យដោយច្រោះ <code>htmlspecialchars()</code></td>
+                    <td style="text-align:center;">២៥%</td>
+                </tr>
+                <tr>
+                    <td><b>Update & Delete</b></td>
+                    <td>ដំណើរការកែប្រែដោយ Pre-fill ទិន្នន័យ និងលុបដោយមាន JavaScript Confirm</td>
+                    <td style="text-align:center;">២៥%</td>
+                </tr>
+                <tr>
+                    <td><b>Security & PRG</b></td>
+                    <td>ប្រើ Prepared Statements ១០០% និងអនុវត្ត PRG Redirect ការពារ Duplicate</td>
+                    <td style="text-align:center;">២០%</td>
+                </tr>
+                <tr>
+                    <td><b>Code Quality & UI</b></td>
+                    <td>កូដមានរបៀបរៀបរយ អក្សរខ្មែរត្រឹមត្រូវ និង UI ស្អាតសមរម្យ</td>
+                    <td style="text-align:center;">១០%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="text-align: center; margin-top: 4px; padding: 3px; background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 6px;">
             <p style="font-size: 7.8pt; color: var(--text-muted); font-family: var(--font-en-main); margin: 0;">*** END OF LESSON 9 MASTER HANDOUT (TOTAL 28 PAGES FULLY EXPANDED) ***</p>
         </div>
 
-        <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
+        <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 10px;">
             <div style="text-align: center; width: 220px;">
                 <p style="font-size: 8.5pt; font-family: var(--font-kh-body);">បានឃើញ និងពិនិត្យត្រឹមត្រូវ</p>
-                <p style="font-size: 8.5pt; margin-top: 30px; font-family: var(--font-kh-body);">..........................................</p>
+                <p style="font-size: 8.5pt; margin-top: 28px; font-family: var(--font-kh-body);">..........................................</p>
                 <p style="font-size: 9pt; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">ប្រធានដេប៉ាតឺម៉ង់</p>
             </div>
             <div style="text-align: center; width: 260px;">
                 <p style="font-size: 8.5pt; font-family: var(--font-kh-body);">ធ្វើនៅសៀមរាប, ថ្ងៃទី.......ខែ.......ឆ្នាំ ២០២៦</p>
-                <p style="font-size: 9pt; margin-top: 30px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
+                <p style="font-size: 9pt; margin-top: 28px; font-weight: bold; font-family: var(--font-kh-heading); color: var(--text-heading);">សាស្ត្រាចារ្យបង្រៀន សឿង លីម (Soeurng LIM)</p>
             </div>
         </div>
     </div>
