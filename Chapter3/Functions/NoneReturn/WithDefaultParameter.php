@@ -13,7 +13,7 @@
                 //Code to be executed
             }
         */
-        function studentInfo($name, $age, $city, $grade = "C"):void{
+        function studentInfo($name, $age, $city="Svay Dangkom", $grade = "C"):void{
             echo "===============================<br>";
             echo "Student Name: {$name} <br>";
             echo "Student Age: {$age} <br>";
@@ -22,9 +22,9 @@
             echo "===============================<br>";
         }
         //Function Call: functionName(parameter1, parameter2,...,parametern);
-        studentInfo("John Doe", 20, "New York", "A");
-        studentInfo("Jane Smith", 25, "Los Angeles", "B");
-        studentInfo("Alice Johnson", 22, "Chicago");
+        studentInfo("John Doe", 20, "New York", "A");        
+        studentInfo("Bob Johnson", 30, "Chrev");
+        studentInfo("Alice Johnson", 22);
     ?>
 </body>
 </html>
