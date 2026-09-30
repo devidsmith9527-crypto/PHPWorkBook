@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Function Return Value - Without Parameter</title>
+    <title>Function Return Value - With Parameter</title>
 </head>
 <body>
     <?php
         //Function Definition
         /*
-            function functionName($arug1, $arg2,..., $argN) {
+            function functionName($arg1, $arg2,..., $argN) {
                 //Code to be executed
                 return value;
             }
@@ -28,7 +28,7 @@
     ?>
     <ul>
         <li>Total Score: <?= totalScore(20, 30, 35);?></li>
-        <li>Result: <?= totalScore(20, 30, 35) < 50 ? 'Failed' : 'Passed'; ?></li>
+        <li>Result: <?= totalScore() < 50 ? 'Failed' : 'Passed'; ?></li>
     </ul>
 </body>
 </html>
