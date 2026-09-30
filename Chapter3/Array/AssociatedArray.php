@@ -16,8 +16,8 @@
         // Accessing Array Elements
         // echo $arrayName["key"];
         echo "The person's name is: " . $person["name"] . "<br>";
-        echo "The student's grade is: " . $student["grade"] . "<br>";
-        echo "The product's price is: " . $product["price"] . "<br>";
+        echo "The student's name is: " . $student["name"] . "<br>";
+        echo "The product's name is: " . $product["in_stock"] . "<br>";
     ?>
 </body>
 </html>

@@ -39,18 +39,18 @@
         */
         
          $products = [
-            ["name" => "Product 1", "price" => 10.99, "quantity" => 5, "qty" => 5],
-            ["name" => "Product 2", "price" => 19.99, "quantity" => 3, "qty" => 3],
-            ["name" => "Product 3", "price" => 5.99, "quantity" => 10, "qty" => 10],
-            ["name" => "Product 4", "price" => 11.99, "quantity" => 5, "qty" => 5],
-            ["name" => "Product 5", "price" => 19.99, "quantity" => 3, "qty" => 3],
-            ["name" => "Product 6", "price" => 5.99, "quantity" => 10, "qty" => 10]
+            ["Product 1", 10.99,  5,  5],
+            ["Product 2", 19.99, 3, 3],
+            ["Product 3", 5.99, 10, 10],
+            ["Product 4", 11.99, 5, 5],
+            ["Product 5", 19.99, 3, 3],
+            ["Product 6", 5.99, 10, 10]
         ];
 
         // Accessing Multidimensional Array Elements
-        echo "The first product's name is: " . $products[0]["name"] . "<br>";
-        echo "The second product's price is: $" . $products[1]["price"] . "<br>";
-        echo "The third product's quantity is: " . $products[2]["quantity"] . "<br>";
+        echo "The first product's name is: " . $products[0][3] . "<br>";
+        echo "The second product's price is: $" . $products[1][2] . "<br>";
+        echo "The third product's quantity is: " . $products[2][2] . "<br>";
     ?>
 </body>
 </html>

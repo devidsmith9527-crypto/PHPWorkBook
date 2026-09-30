@@ -14,7 +14,7 @@
          $students = [
             ["id"=>1, "name" => "John Doe", "age" => 20, "mid" => 35, "final"=>40],
             ["id"=>2, "name" => "Jane Smith", "age" => 22, "mid" => 20, "final"=>25],
-            ["id"=>3, "name" => "Michael Johnson", "age" => 19, "mid" => 25, "final"=>35],
+            ["id"=>3, "name" => "Michael Johnson", "age" => 19, "mid" => 25, "final"=>24],
             ["id"=>4, "name" => "Emily Davis", "age" => 21, "mid" => 40, "final"=>50],
             ["id"=>5, "name" => "William Brown", "age" => 23, "mid" => 20, "final"=>30],
             ["id"=>6, "name" => "Olivia Wilson", "age" => 20, "mid" => 35, "final"=>40],
@@ -25,7 +25,8 @@
         ];        
     ?>
     <table class="table">
-        <thead>            
+        <thead> 
+            <tr>           
                 <th scope="col">Student Id</th>
                 <th scope="col">Student Name</th>
                 <th scope="col">Midterm</th>

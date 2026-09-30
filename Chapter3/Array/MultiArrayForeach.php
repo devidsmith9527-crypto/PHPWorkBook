@@ -43,11 +43,11 @@
         </thead>
         <tbody>
             <?php 
-            foreach ($products as $product) {
-                $productId = $product['id'];
-                $productName = $product['name'];
-                $productPrice = $product['price'];
-                $productQuantity = $product['quantity'];
+            foreach ($products as $item) {
+                $productId = $item['id'];
+                $productName = $item['name'];
+                $productPrice = $item['price'];
+                $productQuantity = $item['quantity'];
                 $productTotal = $productPrice * $productQuantity;
             ?>
                 <tr>

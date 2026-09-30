@@ -7,7 +7,7 @@
 </head>
 <body>
     <?php
-        //Syntax - Function Definition
+        //Syntax - Function Definition / Initialization
         /*
             function functionName():void{
                 //Code to be executed

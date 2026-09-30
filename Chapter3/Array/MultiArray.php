@@ -39,15 +39,15 @@
         */
         
          $students = array(
-            array("name" => "Alice", "age" => 20, "grade" => 85),
-            array("name" => "Bob", "age" => 22, "grade" => 90),
-            array("name" => "Charlie", "age" => 21, "grade" => 88)
+            "student1" => array("name" => "Alice", "age" => 20, "grade" => 85),
+            "student2" => array("name" => "Bob", "age" => 22, "grade" => 90),
+            "student3" => array("name" => "Charlie", "age" => 21, "grade" => 88)
         );
 
         // Accessing Multidimensional Array Elements
-        echo "The first student's name is: " . $students[0]["name"] . "<br>";
-        echo "The second student's age is: " . $students[1]["age"] . "<br>";
-        echo "The third student's grade is: " . $students[2]["grade"] . "<br>";
+        echo "The first student's name is: " . $students["student1"]["name"] . "<br>";
+        echo "The second student's age is: " . $students["student2"]["age"] . "<br>";
+        echo "The third student's grade is: " . $students["student3"]["grade"] . "<br>";
     ?>
 </body>
 </html>

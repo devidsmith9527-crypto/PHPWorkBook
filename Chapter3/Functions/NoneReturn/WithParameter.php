@@ -9,24 +9,24 @@
     <?php
         //Syntax - Function Definition
         /*
-            function functionName($argument1 = defaultValue1, $argument2 = defaultValue2,...,$argumentn = defaultValuen):void{
+            function functionName($argument1, $argument2,...,$argumentn):void{
                 //Code to be executed
             }
         */
-        function studentInfo($name, $age=20, $city="New York", $grade = "C"):void{
+        function studentInfo(string $name, int $age, string $city, float $score):void{
             echo "===============================<br>";
             echo "Student Name: {$name} <br>";
             echo "Student Age: {$age} <br>";
             echo "Student City: {$city} <br>";
-            echo "Student Grade: {$grade} <br>";
+            echo "Student Score: {$score} <br>";
             echo "===============================<br>";
         }
         //Function Call: functionName(parameter1, parameter2,...,parametern);
-        studentInfo("John Doe", 20, "New York", "A");
-        studentInfo("Jane Smith", 25, "Los Angeles", "B");
-        studentInfo("Alice Johnson", 22, "Chicago");
-        studentInfo("Bob Brown", 30);
-        studentInfo("Charlie Davis");
+        studentInfo("John Doe", 20, "New York", 85.5);
+        studentInfo("Jane Smith", 25, "Los Angeles", 78.0);
+        studentInfo("Alice Johnson", 22, "Chicago", 92.0);
+        studentInfo("Bob Brown", 30, "Houston", 88.5);
+        studentInfo("Charlie Davis", 27, "Phoenix", 95.0);
     ?>
 </body>
 </html>
