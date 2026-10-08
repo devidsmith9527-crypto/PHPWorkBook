@@ -9,26 +9,29 @@
     <?php
         //Function Definition
         /*
-            function functionName($arug1, $arg2,..., $argN) {
+            function functionName() {
                 //Code to be executed
                 return value;
             }
         */
         //Function Call
-        //Print: echo functionName($param1, $param2,..., $paramN);
-        //Asssignment: $result = functionName($param1, $param2,..., $paramN);
-        //Arithmetic: $result = functionName($param1, $param2,..., $paramN) + value;
-        //Comparison: if(functionName($param1, $param2,..., $paramN) == value) { //Code to be executed }
+        //Print: echo functionName();
+        //Asssignment: $result = functionName();
+        //Arithmetic: $result = functionName() + value;
+        //Comparison: if(functionName() == value) { //Code to be executed }
         //Create Function totalScore
-        function totalScore($score1, $score2, $score3) {
-            $total = $score1 + $score2 + $score3;
-            return $total;
+        function totalScore() {
+            $score1 = 20;
+            $score2 = 30;
+            $score3 = 35;
+            $total = $score1 + $score2 + $score3;//20+30+35=85
+            return $total;//return 85
         }
         //Call Function totalScore             
     ?>
     <ul>
-        <li>Total Score: <?= totalScore(20, 30, 35);?></li>
-        <li>Result: <?= totalScore(20, 30, 35) < 50 ? 'Failed' : 'Passed'; ?></li>
+        <li>Total Score: <?= totalScore();?></li>
+        <li>Result: <?= totalScore() < 50 ? 'Failed' : 'Passed'; ?></li>
     </ul>
 </body>
 </html>

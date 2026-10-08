@@ -28,7 +28,7 @@
     ?>
     <ul>
         <li>Total Score: <?= totalScore(20, 30, 35);?></li>
-        <li>Result: <?= totalScore() < 50 ? 'Failed' : 'Passed'; ?></li>
+        <li>Result: <?= totalScore(20, 30, 35) < 50 ? 'Failed' : 'Passed'; ?></li>
     </ul>
 </body>
 </html>

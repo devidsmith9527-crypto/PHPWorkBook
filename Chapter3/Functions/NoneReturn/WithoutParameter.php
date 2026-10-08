@@ -12,12 +12,14 @@
             function functionName():void{
                 //Code to be executed
             }
+            Identifier: ឈ្មោះអត្តសញ្ញាណ អថេរ, Function, Class, Method, Variable, Constant, Property, Trait, Interface
         */
         function studentInfo():void{
             echo "===============================<br>";
             echo "Student Name: John Doe <br>";
             echo "Student Age: 20 <br>";
             echo "Student City: New York <br>";
+            echo "Student Country: USA <br>";
             echo "===============================<br>";
         }
         //Function Call: functionName();

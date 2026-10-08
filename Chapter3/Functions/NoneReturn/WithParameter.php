@@ -24,9 +24,6 @@
         //Function Call: functionName(parameter1, parameter2,...,parametern);
         studentInfo("John Doe", 20, "New York", 85.5);
         studentInfo("Jane Smith", 25, "Los Angeles", 78.0);
-        studentInfo("Alice Johnson", 22, "Chicago", 92.0);
-        studentInfo("Bob Brown", 30, "Houston", 88.5);
-        studentInfo("Charlie Davis", 27, "Phoenix", 95.0);
     ?>
 </body>
 </html>
