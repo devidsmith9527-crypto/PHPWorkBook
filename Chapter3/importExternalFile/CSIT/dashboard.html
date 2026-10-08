@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>គំរូ Dashboard</title>
+    <!-- បញ្ចូល Font ខ្មែរ (Battambang) និង CSS Framework Tailwind CSS សម្រាប់ភាពងាយស្រួល និងស្រស់ស្អាត -->
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Battambang', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden">
+
+    <!-- 1. Navigation (Sidebar) -->
+    <aside class="w-64 bg-indigo-900 text-white flex flex-col justify-between hidden md:flex">
+        <div>
+            <!-- Logo -->
+            <div class="flex items-center justify-center h-16 bg-indigo-950 px-4">
+                <span class="text-xl font-bold tracking-wider">🏢 Logo របស់ខ្ញុំ</span>
+            </div>
+            <!-- Navigation Links -->
+            <nav class="mt-6 px-4 space-y-2">
+                <a href="#" class="flex items-center px-4 py-2.5 rounded-lg bg-indigo-800 text-white font-medium">🏠 ទំព័រដើម</a>
+                <a href="#" class="flex items-center px-4 py-2.5 rounded-lg hover:bg-indigo-800 text-indigo-200 transition">📊 ទិន្នន័យ</a>
+                <a href="#" class="flex items-center px-4 py-2.5 rounded-lg hover:bg-indigo-800 text-indigo-200 transition">👥 អ្នកប្រើប្រាស់</a>
+                <a href="#" class="flex items-center px-4 py-2.5 rounded-lg hover:bg-indigo-800 text-indigo-200 transition">⚙️ ការកំណត់</a>
+            </nav>
+        </div>
+        <div class="p-4 bg-indigo-950 text-xs text-center text-indigo-400">
+            © 2026 រក្សាសិទ្ធិគ្រប់យ៉ាង
+        </div>
+    </aside>
+
+    <!-- Main Container -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        
+        <!-- 2. Header -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm">
+            <div class="flex items-center space-x-3">
+                <span class="text-lg font-bold text-gray-800">ផ្ទាំងគ្រប់គ្រង (Dashboard)</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-600">សួស្តី, <strong>អ្នកគ្រប់គ្រង</strong></span>
+                <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">
+                    អ
+                </div>
+            </div>
+        </header>
+
+        <!-- 3. Content -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="border-2 border-dashed border-gray-300 rounded-xl h-full flex flex-col items-center justify-center bg-white shadow-sm p-6">
+                <span class="text-4xl mb-2">📌</span>
+                <h2 class="text-xl font-bold text-gray-700">ទីតាំងសម្រាប់ដាក់ Content</h2>
+                <p class="text-gray-500 text-sm mt-1">កន្លែងនេះអាចដាក់តារាង (Tables) ក្រាហ្វ (Charts) ឬកាតព័ត៌មានផ្សេងៗ។</p>
+            </div>
+        </main>
+
+        <!-- 4. Footer -->
+        <footer class="h-12 bg-white border-t border-gray-200 flex items-center justify-center px-6 text-sm text-gray-500">
+            រចនាដោយ: ក្រុមការងារ IT &nbsp;|&nbsp; កំណែទម្រង់ប្រព័ន្ធ 2026
+        </footer>
+
+    </div>
+
+</body>
+</html>

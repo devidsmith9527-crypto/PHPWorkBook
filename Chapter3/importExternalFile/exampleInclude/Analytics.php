@@ -59,7 +59,7 @@
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transform -translate-x-full md:translate-x-0 md:static md:inset-0 transition-transform duration-300 ease-in-out flex flex-col">
             <!-- Sidebar Header -->
             <div class="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700 px-4">
-                <?php include('import/logo.php');?>                
+                <?php include('import/logos.php');?>                
             </div>
 
             <!-- Sidebar Links -->

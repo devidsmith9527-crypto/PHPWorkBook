@@ -16,7 +16,7 @@
             ៤. require_once(): គឺជាការយក File មួយមកប្រើនៅក្នុង File ផ្សេងទៀត។ ប្រសិនបើ File មិនមានវានឹងបង្ហាញ Fatal Error ហើយ Code នៅក្រោមនឹងមិនដំណើរការ។(ការងារបន្តគ្នាជាសេរី) ហើយវានឹងយក File មួយតែម្ដងប៉ុណ្ណោះ។
         */        
     ?>
-    <?php  require('import/header.php') ?>
+    <?php  require('importing/header.php') ?>
     <p>
         require
     </p>

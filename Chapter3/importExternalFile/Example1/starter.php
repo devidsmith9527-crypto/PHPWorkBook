@@ -17,10 +17,11 @@
         */        
     ?>
     <?php  include('import/header.php') ?>
-    <?php  include('import/header.php') ?>
+    
     <p>
         Starter
     </p>
     <?php include('import/footer.php') ?>
+    <?php  include('import/header.php') ?>
     </body>
 </html>
