@@ -9,7 +9,7 @@
     <form action="loginProcess.php" method="POST">
         <div>
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" id="username" name="username" required>
         </div>
         <div>
             <label for="password">Password:</label>
