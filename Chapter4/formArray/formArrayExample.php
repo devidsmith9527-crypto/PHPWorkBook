@@ -106,8 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- ជួរទី ១ -->
             <div class="grid grid-cols-12 gap-2 items-center">
                 <span class="col-span-1 text-center font-bold text-slate-400">#1</span>
-                <input type="text" name="students[0][name]" placeholder="ឈ្មោះសិស្ស" class="s-name col-span-7 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                <input type="number" step="0.1" name="students[0][score]" placeholder="ពិន្ទុ" class="s-score col-span-4 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                <input type="text" name="students[]" placeholder="ឈ្មោះសិស្ស" class="s-name col-span-7 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                <input type="number" step="0.1" name="students[]" placeholder="ពិន្ទុ" class="s-score col-span-4 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
             </div>
 
             <!-- ជួរទី ២ -->
