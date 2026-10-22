@@ -7,8 +7,9 @@
 </head>
 <body>
     <?php
+        //$variableName = $_GET['inputName'] ?? '';
         $firstName = $_GET['firstname'] ?? '';
-        $lastName = $_GET['lastname'] ?? '';
+        $lastName = $_REQUEST['lastname'] ?? '';
         echo "Welcome, " . $firstName . " " . $lastName . "!";
     ?>
 </body>

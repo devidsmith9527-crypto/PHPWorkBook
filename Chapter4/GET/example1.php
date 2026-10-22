@@ -19,10 +19,10 @@
         <h2>Input:</h2>
         <form action="" method="get">
             <div>
-                First Name: <input type="text" name="firstname" required>
+                First Name: <input type="text" value="<?php echo htmlspecialchars($firstName);?>" name="firstname" required>
             </div>
             <div>
-                Last Name: <input type="text" name="lastname" required>
+                Last Name: <input type="text" name="lastname" value="<?php echo htmlspecialchars($lastName);?>" required>
             </div>                            
             <div>
                 <input type="submit" value="Submit">

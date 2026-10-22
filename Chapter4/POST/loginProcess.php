@@ -9,7 +9,7 @@
     <?php
     //$variableName = $_POST['inputName'] ?? 'defaultValue';
     $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';    
+    $password = $_REQUEST['password'] ?? '';    
 
     // Process the login logic here
     // For example, validate credentials against a database
