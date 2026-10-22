@@ -7,28 +7,28 @@
 </head>
 <body>
     <div>
+        <h2>Output:</h2>
         <?php
-            //$variableName = $_GET['inputName'] ?? '';
+            //$variableName = $_GET['inputFieldName'] ?? 'defaultValue';
             $firstName = $_GET['firstname'] ?? '';
-            $lastName = $_GET['lastname'] ?? '';            
+            $lastName = $_GET['lastname'] ?? '';  
+            echo "First Name: " . $firstName. "<br>";
+            echo "Last Name: " . $lastName . "<br>";   
+            echo "Full Name: " . $firstName . " " . $lastName . "<br>";
         ?>
+        <h2>Input:</h2>
         <form action="" method="get">
             <div>
-                First Name: <input type="text" name="firstname" value="<?php echo $firstName; ?>" required>
+                First Name: <input type="text" name="firstname" required>
             </div>
             <div>
-                Last Name: <input type="text" name="lastname" value="<?php echo $lastName; ?>" required>
-            </div>            
+                Last Name: <input type="text" name="lastname" required>
+            </div>                            
             <div>
                 <input type="submit" value="Submit">
-                <input type="reset" value="Reset">
+                <input type="reset" value="Reset">                
             </div>
         </form>
-    </div>
-    <div>
-        <?php
-            echo "Welcome, " . $firstName . " " . $lastName . "!";
-        ?>
-    </div>
+    </div>    
 </body>
 </html>
