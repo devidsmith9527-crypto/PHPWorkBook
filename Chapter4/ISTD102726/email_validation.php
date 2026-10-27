@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-<form method="post" action="">
+<form method="post" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
     <label for="email">អ៊ីមែល:</label>
     <input type="text" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>">
     <?php if (isset($errors['email'])): ?>

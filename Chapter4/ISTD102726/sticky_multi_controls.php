@@ -5,7 +5,7 @@ $skills = $_POST['skills'] ?? ["PHP","CSS"]; // Array of checkboxes
 $subjects = $_POST['subjects'] ?? []; // Array of checkboxes
 $frameworks = $_POST['frameworks'] ?? []; // Array of checkboxes
 ?>
-<form method="POST">
+<form method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
     <!-- Radio -->
     <input type="radio" name="gender" value="M" <?= ($gender==='M')?'checked':'' ?>> ប្រុស
     <input type="radio" name="gender" value="F" <?= ($gender==='F')?'checked':'' ?>> ស្រី<br>
