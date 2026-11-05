@@ -6,6 +6,6 @@
     <title>Source(Key=value)</title>
 </head>
 <body>
-    <a href="destination.php?keyID=123&keyName=John">Go to Destination</a>
+    <a href="destination.php?ID=123&Name=John">Go to Destination</a>
 </body>
 </html>

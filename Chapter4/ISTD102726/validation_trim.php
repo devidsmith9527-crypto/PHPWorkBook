@@ -9,8 +9,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // 2. Check for empty values
     if (empty($fullname)) {
         $errors['fullname'] = "សូមបញ្ចូលឈ្មោះពេញរបស់អ្នក!";
-    } elseif (strlen($fullname) < 3) {
+    } elseif (strlen($fullname) < 3)  {
         $errors['fullname'] = "ឈ្មោះត្រូវមានប្រវែងយ៉ាងតិច ៣ តួអក្សរ!";
+    } elseif (strlen($fullname) > 20) {
+        $errors['fullname'] = "ឈ្មោះត្រូវមានប្រវែងមិនលើសពី ២០ តួអក្សរ!";
     }
 }
 ?>

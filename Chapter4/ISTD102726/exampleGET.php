@@ -8,7 +8,7 @@
 <body>
     <div>      
         <h2>Input:</h2>
-        <form action="" method="Get">
+        <form action="exampleGET.php" method="Get">
             <div>
                 <label for="bookTitle">Search Book Title:</label>
                 <input type="text"  name="bookTitle" id="bookTitle" required>

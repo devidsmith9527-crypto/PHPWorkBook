@@ -1,9 +1,9 @@
 <?php
-$gender = $_POST['gender'] ?? 'F';
-$degree = $_POST['degree'] ?? 'ISTD';
-$skills = $_POST['skills'] ?? ["PHP","CSS"]; // Array of checkboxes
-$subjects = $_POST['subjects'] ?? []; // Array of checkboxes
-$frameworks = $_POST['frameworks'] ?? []; // Array of checkboxes
+$gender = $_POST['gender'] ?? 'M';
+$degree = $_POST['degree'] ?? 'IT';
+$skills = $_POST['skills'] ?? ["JS","CSS"]; // Array of checkboxes
+$subjects = $_POST['subjects'] ?? ["Mobile Development","Web API"]; // Array of checkboxes
+$frameworks = $_POST['frameworks'] ?? ["អប់រំ"]; // Array of checkboxes
 ?>
 <form method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
     <!-- Radio -->

@@ -7,9 +7,17 @@
 </head>
 <body>
     <?php
-        if (isset($_GET['keyID']) && isset($_GET['keyName'])) {
-            echo "Key ID: " . $_GET['keyID'] . "<br>";
-            echo "Key Name: " . $_GET['keyName'];
+        /*
+            if (isset($_GET['ID']) && isset($_GET['Name'])) {
+                echo "Key ID: " . $_GET['ID'] . "<br>";
+                echo "Key Name: " . $_GET['Name'];
+            } else {
+                echo "Required parameters not provided.";
+            }
+        */
+        if (isset($_REQUEST['ID']) && isset($_REQUEST['Name'])) {
+            echo "Key ID: " . $_REQUEST['ID'] . "<br>";
+            echo "Key Name: " . $_REQUEST['Name'];
         } else {
             echo "Required parameters not provided.";
         }
