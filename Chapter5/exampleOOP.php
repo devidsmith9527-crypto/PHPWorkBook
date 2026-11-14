@@ -20,11 +20,16 @@
             //$this គឺ Object ពិសេសសម្រាប់ក្នុង Class តែមួយ
         }
 
-        // Create Object - Object Instance (បង្កើត Object​ ឬ Instance $st1)
+        // Create Object - Object Instantitation 
+        // $object = new ClassName();
         $obj = new Student();
+        //Access to Class Members: Property (noun)
+        // $object->propertyName = value;
         $obj->name = "កែវ ណារ៉ា";
         $obj->score = 92.0;
         $obj->school = "សាកលវិទ្យាល័យអង្គរ";
+        //Access to Class Members: Method (verb)
+        // $object->methodName();
         echo $obj->getDetails();
 
         $item = new Student();

@@ -10,12 +10,12 @@
         //Constructor: A special method that is automatically called when an object is created. It is used to initialize the object's properties.
         class circle{
             private float $radius;     
-            private float $PI;       
+            private readonly float $PI;       
 
             //Constructor method
             //construct: Automatically called when an object is created. It is used to initialize the object's properties.
-            public function __construct(float $radius){
-                $this->PI = 3.14159; // Initialize the PI property
+            public function __construct(float $PI, float $radius){
+                $this->PI = $PI; 
                 $this->radius = $radius;                
             }
 
@@ -35,7 +35,8 @@
         }
 
         //Creating an object of the circle class
-        $circle1 = new circle(5.0); //Constructor is automatically called here
+        $circle1 = new circle(radius: 5.0, PI: 3.14159); //Constructor is automatically called here
+        //Property PI = 3.14159, Property radius = 5.0
         $circle1->calculateArea(); //Accessing method by object
         $circle1->displayCircleInfo();//Accessing method by object
     ?>
