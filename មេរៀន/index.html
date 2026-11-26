@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP & MySQL Dashboard | Web Application Development - Angkor University</title>
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;500;600;700&family=Moul&family=Siemreab&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-surface: #ffffff;
+            --bg-subtle: #f8fafc;
+            --text-main: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --border-light: #e2e8f0;
+
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #0078d4;
+            --emerald: #059669;
+            --amber: #d97706;
+            --purple: #7c3aed;
+            --rose: #e11d48;
+
+            --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+            --shadow-lg: 0 20px 35px -10px rgba(79, 70, 229, 0.22);
+
+            --font-muol: 'Khmer OS Muol Light', 'Moul', serif;
+            --font-kh: 'Kantumruy Pro', 'Khmer OS Siemreab', 'Siemreab', sans-serif;
+            --font-en: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        body.dark-mode {
+            --bg-body: #020617;
+            --bg-surface: #0f172a;
+            --bg-subtle: #1e293b;
+            --text-main: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --border-light: #1e293b;
+            --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 20px 35px -10px rgba(79, 70, 229, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-kh);
+            line-height: 1.6;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* Top Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 24px;
+            transition: background-color 0.25s ease;
+        }
+        body.dark-mode .navbar {
+            background: rgba(15, 23, 42, 0.88);
+        }
+
+        .nav-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand img {
+            height: 44px;
+            width: 44px;
+            object-fit: contain;
+        }
+        .brand-text h1 {
+            font-family: var(--font-muol);
+            font-size: 11.5pt;
+            color: var(--primary);
+            font-weight: normal;
+            line-height: 1.3;
+        }
+        body.dark-mode .brand-text h1 { color: #818cf8; }
+        .brand-text span {
+            font-family: var(--font-en);
+            font-size: 8pt;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pill-btn {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-family: var(--font-kh);
+            font-size: 9pt;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .pill-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        /* Main Wrapper */
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 24px 20px 60px 20px;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #3730a3 52%, #0284c7 100%);
+            border-radius: 20px;
+            padding: 32px;
+            color: #ffffff;
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            grid-template-columns: 1.65fr 1fr;
+            gap: 28px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 26px;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -60px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.26) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .course-code-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 4px 14px;
+            border-radius: 999px;
+            font-family: var(--font-en);
+            font-size: 8.5pt;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            margin-bottom: 12px;
+        }
+
+        .hero-left h2 {
+            font-family: var(--font-muol);
+            font-size: 18pt;
+            font-weight: normal;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+        .hero-left .subtitle-en {
+            font-family: var(--font-en);
+            font-size: 11.2pt;
+            font-weight: 600;
+            color: #c7d2fe;
+            margin-bottom: 12px;
+        }
+        .hero-left .desc {
+            font-size: 9.6pt;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            max-width: 740px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            padding: 10px 12px;
+            backdrop-filter: blur(6px);
+        }
+        .stat-box .val {
+            font-family: var(--font-en);
+            font-size: 14pt;
+            font-weight: 800;
+            color: #ffffff;
+            display: block;
+            line-height: 1.2;
+        }
+        .stat-box .lbl {
+            font-size: 8.2pt;
+            color: #cbd5e1;
+        }
+
+        /* Lecturer Card */
+        .lecturer-card {
+            background: rgba(255, 255, 255, 0.96);
+            color: #0f172a;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        body.dark-mode .lecturer-card {
+            background: rgba(15, 23, 42, 0.92);
+            color: #f8fafc;
+            border: 1px solid #334155;
+        }
+        .lecturer-avatar {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+            margin-bottom: 10px;
+        }
+        .lecturer-role {
+            font-size: 8pt;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .lecturer-name {
+            font-family: var(--font-muol);
+            font-size: 11.5pt;
+            color: var(--primary);
+            margin: 2px 0;
+        }
+        body.dark-mode .lecturer-name { color: #a5b4fc; }
+        .lecturer-degree {
+            font-size: 8.5pt;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .lecturer-contacts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-light);
+        }
+        .contact-chip {
+            font-family: var(--font-en);
+            font-size: 8pt;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+        .contact-chip:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        /* Section Titles */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin: 26px 0 14px 0;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .section-title {
+            font-family: var(--font-muol);
+            font-size: 12.5pt;
+            color: var(--primary);
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        body.dark-mode .section-title { color: #818cf8; }
+        .section-subtitle {
+            font-size: 9pt;
+            color: var(--text-muted);
+        }
+
+        /* Core Governance Documents Grid */
+        .core-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .core-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .core-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .core-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16pt;
+            flex-shrink: 0;
+        }
+        .icon-indigo { background: #eef2ff; color: #4f46e5; }
+        .icon-cyan { background: #e0f2fe; color: #0284c7; }
+        body.dark-mode .icon-indigo { background: rgba(79, 70, 229, 0.35); color: #a5b4fc; }
+        body.dark-mode .icon-cyan { background: rgba(2, 132, 199, 0.3); color: #38bdf8; }
+
+        .core-card h3 {
+            font-family: var(--font-muol);
+            font-size: 10.5pt;
+            font-weight: normal;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+        .core-card .en-label {
+            font-family: var(--font-en);
+            font-size: 8pt;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+        .core-card p {
+            font-size: 9.2pt;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .card-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 9px 14px;
+            border-radius: 10px;
+            font-size: 9pt;
+            font-weight: 700;
+            background: var(--bg-subtle);
+            color: var(--primary);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        body.dark-mode .card-action-btn { color: #a5b4fc; }
+        .core-card:hover .card-action-btn {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        /* Filter & Search Bar */
+        .toolbar {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            padding: 14px 18px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+        }
+        .search-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        .search-input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-subtle);
+            color: var(--text-main);
+            font-family: var(--font-kh);
+            font-size: 9.5pt;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 7px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            font-family: var(--font-kh);
+            font-size: 8.8pt;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-tab.active, .filter-tab:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        /* Lessons Grid */
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .lesson-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .lesson-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .lesson-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 8px;
+        }
+        .week-badge {
+            font-family: var(--font-en);
+            font-size: 7.8pt;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #4338ca;
+        }
+        body.dark-mode .week-badge { background: rgba(79, 70, 229, 0.3); color: #a5b4fc; }
+
+        .clo-badge {
+            font-family: var(--font-code);
+            font-size: 7.5pt;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid var(--border-light);
+        }
+        body.dark-mode .clo-badge { background: #1e293b; color: #cbd5e1; }
+
+        .lesson-card h3 {
+            font-family: var(--font-muol);
+            font-size: 10.3pt;
+            font-weight: normal;
+            color: var(--primary);
+            margin-bottom: 3px;
+            line-height: 1.45;
+        }
+        body.dark-mode .lesson-card h3 { color: #a5b4fc; }
+
+        .lesson-en {
+            font-family: var(--font-en);
+            font-size: 8.5pt;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+
+        .lesson-topics {
+            font-size: 8.8pt;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 14px;
+        }
+        .mini-tag {
+            font-family: var(--font-code);
+            font-size: 7.2pt;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 5px;
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+
+        .lesson-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .btn-handout, .btn-slides {
+            padding: 8px 10px;
+            border-radius: 9px;
+            font-size: 8.5pt;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .btn-handout {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-handout:hover { background: var(--primary-hover); }
+
+        .btn-slides {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+        .btn-slides:hover {
+            background: #059669;
+            color: #ffffff;
+            border-color: #059669;
+        }
+        body.dark-mode .btn-slides {
+            background: rgba(5, 150, 105, 0.2);
+            color: #34d399;
+            border-color: rgba(5, 150, 105, 0.4);
+        }
+        body.dark-mode .btn-slides:hover {
+            background: #059669;
+            color: #ffffff;
+        }
+
+        .btn-disabled {
+            background: var(--bg-subtle);
+            color: var(--text-muted);
+            border: 1px dashed var(--border-color);
+            cursor: default;
+            opacity: 0.72;
+            font-size: 8pt;
+        }
+        .btn-disabled:hover {
+            background: var(--bg-subtle);
+            color: var(--text-muted);
+        }
+
+        /* Special Milestone Strip (Week 8 Mid-Term / Week 14 Showcase / Week 15 Final) */
+        .milestone-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 20px;
+        }
+        .milestone-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-left: 5px solid var(--amber);
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        .milestone-card.purple { border-left-color: var(--purple); }
+        .milestone-card.rose { border-left-color: var(--rose); }
+        .milestone-card h4 {
+            font-family: var(--font-muol);
+            font-size: 9.8pt;
+            font-weight: normal;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+        .milestone-card p {
+            font-size: 8.6pt;
+            color: var(--text-muted);
+        }
+
+        /* Assessment & Resources Section */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        .panel h3 {
+            font-family: var(--font-muol);
+            font-size: 10.8pt;
+            font-weight: normal;
+            color: var(--primary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        body.dark-mode .panel h3 { color: #818cf8; }
+
+        .assess-bar {
+            display: flex;
+            height: 14px;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            background: var(--bg-subtle);
+        }
+        .assess-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .assess-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8.6pt;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+        }
+        .assess-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .tool-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            transition: all 0.2s ease;
+        }
+        .tool-link:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .tool-link i {
+            font-size: 14pt;
+            color: var(--primary);
+            width: 24px;
+            text-align: center;
+        }
+        .tool-link .t-name {
+            font-family: var(--font-en);
+            font-size: 9pt;
+            font-weight: 700;
+            display: block;
+        }
+        .tool-link .t-desc {
+            font-size: 7.8pt;
+            color: var(--text-muted);
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--bg-surface);
+            border-radius: 16px;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 24px 16px;
+            margin-top: 32px;
+            border-top: 1px solid var(--border-light);
+            font-size: 8.8pt;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; }
+            .core-grid { grid-template-columns: 1fr; }
+            .lessons-grid { grid-template-columns: repeat(2, 1fr); }
+            .milestone-grid { grid-template-columns: 1fr; }
+            .bottom-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 680px) {
+            .navbar { padding: 10px 14px; }
+            .brand-text h1 { font-size: 10pt; }
+            .hero { padding: 20px; }
+            .hero-left h2 { font-size: 14pt; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .lessons-grid { grid-template-columns: 1fr; }
+            .assess-list, .tools-grid { grid-template-columns: 1fr; }
+            .hide-sm { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- STICKY TOP NAVBAR -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="brand">
+            <img src="Logo.png" alt="Angkor University Logo" onerror="this.style.display='none'">
+            <div class="brand-text">
+                <h1>សាកលវិទ្យាល័យអង្គរ | PHP &amp; MySQL Portal</h1>
+                <span>Faculty of Science &amp; Technology &bull; CS &amp; IT</span>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <a href="CourseSyllabus_Detail.html" target="_blank" class="pill-btn hide-sm">
+                <i class="fa-solid fa-book"></i> Syllabus
+            </a>
+            <a href="PLO.html" target="_blank" class="pill-btn hide-sm">
+                <i class="fa-solid fa-bullseye"></i> PLOs
+            </a>
+            <button id="themeToggle" class="pill-btn" onclick="toggleTheme()" title="ប្តូរពណ៌ផ្ទៃ">
+                <i class="fa-solid fa-moon"></i> <span class="hide-sm">Dark Mode</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-left">
+            <div class="course-code-badge">
+                <i class="fa-brands fa-php"></i> YEAR 3 SEMESTER 1 (2026-2027) &bull; BACHELOR OF CS &amp; IT
+            </div>
+            <h2>ការអភិវឌ្ឍកម្មវិធីវ៉ិបជាមួយ PHP និង MySQL</h2>
+            <div class="subtitle-en">Web Application Development with PHP &amp; MySQL &mdash; Learning Hub &amp; Course Dashboard</div>
+            <p class="desc">
+                មជ្ឈមណ្ឌលប្រមូលផ្តុំឯកសារសិក្សាផ្លូវការសម្រាប់មុខវិជ្ជា <b>PHP &amp; MySQL</b> រួមមាន លទ្ធផលនៃកម្មវិធីអប់រំ (១៦ PLOs), ប្លង់មុខវិជ្ជាលម្អិត (Course Syllabus ១៥ សប្តាហ៍ / ៣០ Sessions), ឯកសារអានជំនួយស្មារតី (Handouts មេរៀនទី ១ ដល់ទី ១០) និងស្លាយបង្ហាញ (Presentation Slides) គ្របដណ្តប់លើ XAMPP, VS Code, GitHub, PHP 8, OOP, MySQL, PDO, ប្រតិបត្តិការ CRUD, និងប្រព័ន្ធ Authentication (Sessions &amp; Bcrypt Hashing)។
+            </p>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <span class="val">10</span>
+                    <span class="lbl">មេរៀនស្នូល (Lessons)</span>
+                </div>
+                <div class="stat-box">
+                    <span class="val">15 Wks</span>
+                    <span class="lbl">៤៥ ម៉ោង (៣ ក្រេឌីត)</span>
+                </div>
+                <div class="stat-box">
+                    <span class="val">20</span>
+                    <span class="lbl">ឯកសារឌីជីថល (Files)</span>
+                </div>
+                <div class="stat-box">
+                    <span class="val">PHP 8</span>
+                    <span class="lbl">+ MySQL / PDO &amp; GitHub</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lecturer-card">
+            <img src="Lim.jpg" alt="Lecturer Soeurng LIM" class="lecturer-avatar" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+            <div class="lecturer-role">សាស្ត្រាចារ្យទទួលបន្ទុកមុខវិជ្ជា</div>
+            <div class="lecturer-name">សាស្ត្រាចារ្យ សឿង លីម</div>
+            <div class="lecturer-degree">Lecturer: Soeurng LIM (M.Sc. in IT)</div>
+            <div class="lecturer-contacts">
+                <a href="tel:061227933" class="contact-chip"><i class="fa-solid fa-phone"></i> 061 22 79 33</a>
+                <a href="mailto:soeurnglim@gmail.com" class="contact-chip"><i class="fa-solid fa-envelope"></i> soeurnglim@gmail.com</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE GOVERNANCE DOCUMENTS -->
+    <div class="section-header">
+        <div>
+            <div class="section-title"><i class="fa-solid fa-landmark"></i> ១. ឯកសារគោល និងកម្មវិធីសិក្សា (Core Course Documents)</div>
+            <div class="section-subtitle">ឯកសារស្តង់ដារកម្មវិធីអប់រំ ១៦ PLOs និងប្លង់មុខវិជ្ជាលម្អិត ២១ ទំព័រ (១៥ សប្តាហ៍)</div>
+        </div>
+    </div>
+
+    <section class="core-grid">
+        <!-- PLO -->
+        <div class="core-card">
+            <div>
+                <div class="core-top">
+                    <div class="icon-box icon-indigo"><i class="fa-solid fa-bullseye"></i></div>
+                    <div>
+                        <h3>លទ្ធផលនៃកម្មវិធីអប់រំ (PLOs)</h3>
+                        <span class="en-label">Program Learning Outcomes &bull; 16 PLOs (CNQF)</span>
+                    </div>
+                </div>
+                <p>បង្ហាញពីលទ្ធផលសិក្សារំពឹងទុកទាំង ១៦ របស់កម្មវិធីបរិញ្ញាបត្រ CS &amp; IT ចែកជា ៥ ផ្នែកធំៗ (Knowledge, Cognitive, Interpersonal, Communication/IT &amp; Psychomotor) ផ្សារភ្ជាប់នឹង Bloom's Taxonomy។</p>
+            </div>
+            <a href="PLO.html" target="_blank" class="card-action-btn">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> បើកមើលឯកសារ PLOs
+            </a>
+        </div>
+
+        <!-- Syllabus Handout -->
+        <div class="core-card">
+            <div>
+                <div class="core-top">
+                    <div class="icon-box icon-cyan"><i class="fa-solid fa-file-lines"></i></div>
+                    <div>
+                        <h3>ប្លង់មុខវិជ្ជាលម្អិត (Course Syllabus)</h3>
+                        <span class="en-label">15-Week Master Plan &bull; 21 Pages (30 Sessions)</span>
+                    </div>
+                </div>
+                <p>ប្លង់បង្រៀនលម្អិត ១៥ សប្តាហ៍ (៤៥ ម៉ោង) គ្របដណ្តប់លើ CLOs ទាំង ៥, លំហាត់ Lab តាមសប្តាហ៍នីមួយៗ, វិធីសាស្ត្រវាយតម្លៃ, គម្រោង Mini-Projects ទាំង ៣ និងគន្ថនិទ្ទេស។</p>
+            </div>
+            <a href="CourseSyllabus_Detail.html" target="_blank" class="card-action-btn">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> បើកមើល Course Syllabus
+            </a>
+        </div>
+    </section>
+
+    <!-- LESSONS SECTION -->
+    <div class="section-header">
+        <div>
+            <div class="section-title"><i class="fa-solid fa-layer-group"></i> ២. មេរៀនស្នូលទាំង ១០ (Core Lessons: Handouts &amp; Slides)</div>
+            <div class="section-subtitle">ឯកសារអានលម្អិត (រួមមានទ្រឹស្តី កូដ PHP 8/SQL លំហាត់ Lab និងចម្លើយ) និងស្លាយបង្ហាញសម្រាប់ថ្នាក់រៀន</div>
+        </div>
+    </div>
+
+    <!-- Search & Filter Toolbar -->
+    <div class="toolbar">
+        <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="ស្វែងរកមេរៀន ឬពាក្យគន្លឹះ (ឧ. XAMPP, OOP, Inheritance, PDO, CRUD, Bcrypt, Session)..." oninput="filterLessons()">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="setFilter('all', this)">ទាំងអស់ (10)</button>
+            <button class="filter-tab" onclick="setFilter('slides', this)">មានស្លាយបង្ហាញ (8)</button>
+            <button class="filter-tab" onclick="setFilter('php-oop', this)">មេរៀន ១-៦: PHP 8 &amp; OOP</button>
+            <button class="filter-tab" onclick="setFilter('db-auth', this)">មេរៀន ៧-១០: MySQL, PDO, CRUD &amp; Auth</button>
+        </div>
+    </div>
+
+    <!-- Lessons Grid -->
+    <section class="lessons-grid" id="lessonsGrid">
+
+        <!-- Lesson 1 -->
+        <article class="lesson-card" data-category="php-oop" data-keywords="lesson 1 introduction tools xampp htdocs vscode github desktop client server apache phpinfo troubleshooting">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ១ (Week 1)</span>
+                    <span class="clo-badge">CLO 1</span>
+                </div>
+                <h3>មេរៀនទី ១ ៖ សេចក្តីផ្តើម និងឧបករណ៍អភិវឌ្ឍន៍</h3>
+                <div class="lesson-en">Introduction &amp; Development Tools</div>
+                <p class="lesson-topics">ស្ថាបត្យកម្ម Client-Server (3-Tier), Client-Side vs Server-Side, Core Web Stack (Apache, PHP 8, MySQL 8), XAMPP (`htdocs`), VS Code, GitHub Desktop និង `phpinfo()`។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">XAMPP</span>
+                    <span class="mini-tag">VS Code</span>
+                    <span class="mini-tag">GitHub</span>
+                    <span class="mini-tag">phpinfo()</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី១.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (14p)</a>
+                <span class="btn-slides btn-disabled" title="ស្លាយមេរៀនទី ១ កំពុងរៀបចំ"><i class="fa-solid fa-clock"></i> កំពុងរៀបចំស្លាយ</span>
+            </div>
+        </article>
+
+        <!-- Lesson 2 -->
+        <article class="lesson-card" data-category="php-oop" data-keywords="lesson 2 php 8 syntax variables scope constants data types operators comparison spaceship null coalescing match loops">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ២ (Week 2)</span>
+                    <span class="clo-badge">CLO 2</span>
+                </div>
+                <h3>មេរៀនទី ២ ៖ មូលដ្ឋានគ្រឹះ PHP ៨ (Syntax &amp; Loops)</h3>
+                <div class="lesson-en">PHP 8 Syntax, Operators &amp; Control Structures</div>
+                <p class="lesson-topics">PHP Tags, `php.ini` Config, Variables &amp; Scope, Constants, Data Types, Operators (`===`, `??`, `<=>`), `match` Expression ក្នុង PHP 8, Loops (`for`, `while`, `foreach`) និង `var_dump()`។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">PHP 8</span>
+                    <span class="mini-tag">Operators</span>
+                    <span class="mini-tag">match()</span>
+                    <span class="mini-tag">Loops</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី២.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (22p)</a>
+                <span class="btn-slides btn-disabled" title="ស្លាយមេរៀនទី ២ កំពុងរៀបចំ"><i class="fa-solid fa-clock"></i> កំពុងរៀបចំស្លាយ</span>
+            </div>
+        </article>
+
+        <!-- Lesson 3 -->
+        <article class="lesson-card" data-category="php-oop slides" data-keywords="lesson 3 arrays indexed associative multidimensional built-in functions void return arrow function include require_once dry modular">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ៣ (Week 3)</span>
+                    <span class="clo-badge">CLO 2</span>
+                </div>
+                <h3>មេរៀនទី ៣ ៖ Arrays, Functions &amp; Modular Code</h3>
+                <div class="lesson-en">Arrays, Custom Functions &amp; DRY Architecture</div>
+                <p class="lesson-topics">Indexed/Associative/Multidimensional Arrays, Built-in Functions, User Defined Functions (Void &amp; Return), Arrow Functions (`fn()`), និង `include` / `require_once`។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">Arrays</span>
+                    <span class="mini-tag">Functions</span>
+                    <span class="mini-tag">Arrow fn()</span>
+                    <span class="mini-tag">require_once</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី៣.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (16p)</a>
+                <a href="មេរៀនទី៣បង្ហាញ.html" target="_blank" class="btn-slides"><i class="fa-solid fa-display"></i> ស្លាយបង្ហាញ (32)</a>
+            </div>
+        </article>
+
+        <!-- Lesson 4 -->
+        <article class="lesson-card" data-category="php-oop slides" data-keywords="lesson 4 form handling web security get post superglobals validation trim filter_var sticky form xss htmlspecialchars prg pattern">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ៤ (Week 4)</span>
+                    <span class="clo-badge">CLO 2</span>
+                </div>
+                <h3>មេរៀនទី ៤ ៖ ការគ្រប់គ្រង Form និង Web Security មូលដ្ឋាន</h3>
+                <div class="lesson-en">Form Handling &amp; Basic Web Security</div>
+                <p class="lesson-topics">HTTP GET vs POST (`$_GET`, `$_POST`, `$_SERVER['REQUEST_METHOD']`), Validation (`trim`, `filter_var`), Sticky Controls, ការការពារ XSS (`htmlspecialchars`) និង PRG Pattern។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">GET / POST</span>
+                    <span class="mini-tag">Sticky Form</span>
+                    <span class="mini-tag">XSS Defense</span>
+                    <span class="mini-tag">PRG</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី៤.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (20p)</a>
+                <a href="មេរៀនទី៤បង្ហាញ.html" target="_blank" class="btn-slides"><i class="fa-solid fa-display"></i> ស្លាយបង្ហាញ (32)</a>
+            </div>
+        </article>
+
+        <!-- Lesson 5 -->
+        <article class="lesson-card" data-category="php-oop slides" data-keywords="lesson 5 oop part 1 procedural vs oop class object instantiation new typed properties methods $this constructor promotion readonly named arguments">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ៥ (Week 5)</span>
+                    <span class="clo-badge">CLO 3</span>
+                </div>
+                <h3>មេរៀនទី ៥ ៖ មូលដ្ឋានគ្រឹះ OOP (ភាគ១) - Class &amp; Object</h3>
+                <div class="lesson-en">OOP Fundamentals Part 1: Class &amp; Object</div>
+                <p class="lesson-topics">Procedural vs OOP, ការបង្កើត Class &amp; Instantiation (`new`), Typed Properties &amp; Methods, `$this` Pseudo-variable, PHP 8 Constructor Promotion និង `readonly`។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">Class &amp; Object</span>
+                    <span class="mini-tag">$this</span>
+                    <span class="mini-tag">Promotion</span>
+                    <span class="mini-tag">readonly</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី៥.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (14p)</a>
+                <a href="មេរៀនទី៥បង្ហាញ.html" target="_blank" class="btn-slides"><i class="fa-solid fa-display"></i> ស្លាយបង្ហាញ (32)</a>
+            </div>
+        </article>
+
+        <!-- Lesson 6 -->
+        <article class="lesson-card" data-category="php-oop slides" data-keywords="lesson 6 oop part 2 encapsulation access modifiers public protected private getter setter validation inheritance extends method overriding parent override">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ៦ (Week 6)</span>
+                    <span class="clo-badge">CLO 3</span>
+                </div>
+                <h3>មេរៀនទី ៦ ៖ មូលដ្ឋានគ្រឹះ OOP (ភាគ២) - Encapsulation &amp; Inheritance</h3>
+                <div class="lesson-en">OOP Fundamentals Part 2: Encapsulation &amp; Inheritance</div>
+                <p class="lesson-topics">Access Modifiers (`public`, `protected`, `private`), Getter &amp; Setter Validation Pipelines, Inheritance (`extends`), Method Overriding, `parent::` និង `#[\Override]`។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">Visibility</span>
+                    <span class="mini-tag">Getters/Setters</span>
+                    <span class="mini-tag">extends</span>
+                    <span class="mini-tag">parent::</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី៦.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (14p)</a>
+                <a href="មេរៀនទី៦បង្ហាញ.html" target="_blank" class="btn-slides"><i class="fa-solid fa-display"></i> ស្លាយបង្ហាញ (32)</a>
+            </div>
+        </article>
+
+        <!-- Lesson 7 -->
+        <article class="lesson-card" data-category="db-auth slides" data-keywords="lesson 7 mysql database design rdbms phpmyadmin data types int varchar text decimal datetime primary key auto increment sql insert select update delete soft delete">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ៧ (Week 7)</span>
+                    <span class="clo-badge">CLO 4</span>
+                </div>
+                <h3>មេរៀនទី ៧ ៖ មូលដ្ឋានគ្រឹះ MySQL &amp; Database Design</h3>
+                <div class="lesson-en">Fundamentals of MySQL &amp; Database Design</div>
+                <p class="lesson-topics">ស្ថាបត្យកម្ម RDBMS, phpMyAdmin GUI, Data Types (`INT`, `VARCHAR`, `DECIMAL`, `DATETIME`), Primary Key &amp; AI, SQL CRUD Queries និងយុទ្ធសាស្ត្រ Soft Delete។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">MySQL</span>
+                    <span class="mini-tag">phpMyAdmin</span>
+                    <span class="mini-tag">DECIMAL</span>
+                    <span class="mini-tag">Soft Delete</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី៧.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (14p)</a>
+                <a href="មេរៀនទី៧បង្ហាញ.html" target="_blank" class="btn-slides"><i class="fa-solid fa-display"></i> ស្លាយបង្ហាញ (32)</a>
+            </div>
+        </article>
+
+        <!-- Lesson 8 -->
+        <article class="lesson-card" data-category="db-auth slides" data-keywords="lesson 8 pdo connection php data objects mysqli dsn attributes errmode exception fetch_assoc try catch pdoexception error_log db.php singleton wrapper">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ៩ (Week 9)</span>
+                    <span class="clo-badge">CLO 4</span>
+                </div>
+                <h3>មេរៀនទី ៨ ៖ ការភ្ជាប់ទិន្នន័យតាមវិធីសាស្ត្រ PDO</h3>
+                <div class="lesson-en">Database Connection &amp; Exception Handling with PDO</div>
+                <p class="lesson-topics">PDO vs MySQLi, ការកំណត់ DSN (`utf8mb4`), Attributes (`ERRMODE_EXCEPTION`, `FETCH_ASSOC`), Exception Handling (`try...catch`), `db.php` និង Singleton Wrapper។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">PDO</span>
+                    <span class="mini-tag">DSN</span>
+                    <span class="mini-tag">try...catch</span>
+                    <span class="mini-tag">Singleton</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី៨.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (14p)</a>
+                <a href="មេរៀនទី៨បង្ហាញ.html" target="_blank" class="btn-slides"><i class="fa-solid fa-display"></i> ស្លាយបង្ហាញ (32)</a>
+            </div>
+        </article>
+
+        <!-- Lesson 9 -->
+        <article class="lesson-card" data-category="db-auth slides" data-keywords="lesson 9 full crud project create read update delete pdo prepared statements sql injection defense xss htmlspecialchars prg pattern url query string confirm search">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ១០-១១ (Weeks 10-11)</span>
+                    <span class="clo-badge">CLO 4</span>
+                </div>
+                <h3>មេរៀនទី ៩ ៖ គម្រោង CRUD ពេញលេញជាមួយ PDO &amp; MySQL</h3>
+                <div class="lesson-en">Complete Web CRUD Project with PHP &amp; MySQL</div>
+                <p class="lesson-topics">ការការពារ SQL Injection ដោយ PDO Prepared Statements, Read &amp; XSS Escaping, Create + PRG Pattern, Update Pre-fill (`$_GET['id']`), Delete + JS `confirm()` និង Search (`LIKE`)។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">Prepared Stmt</span>
+                    <span class="mini-tag">CRUD</span>
+                    <span class="mini-tag">PRG Pattern</span>
+                    <span class="mini-tag">JS Confirm</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី៩.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (28p)</a>
+                <a href="មេរៀនទី៩បង្ហាញ.html" target="_blank" class="btn-slides"><i class="fa-solid fa-display"></i> ស្លាយបង្ហាញ (38)</a>
+            </div>
+        </article>
+
+        <!-- Lesson 10 -->
+        <article class="lesson-card" data-category="db-auth slides" data-keywords="lesson 10 authentication sessions cookies phpsessid route protection auth guard logout session_destroy password hashing bcrypt password_hash password_verify rbac csrf">
+            <div>
+                <div class="lesson-meta">
+                    <span class="week-badge">សប្តាហ៍ទី ១២-១៣ (Weeks 12-13)</span>
+                    <span class="clo-badge">CLO 5</span>
+                </div>
+                <h3>មេរៀនទី ១០ ៖ Authentication, Sessions &amp; Password Hashing</h3>
+                <div class="lesson-en">Web App Security, User State &amp; Bcrypt Authentication</div>
+                <p class="lesson-topics">HTTP Statelessness, Session vs Cookie, Auth Guard Middleware, 4-Step Logout, Bcrypt Hashing (`password_hash`), `password_verify()`, RBAC និង CSRF Protection។</p>
+                <div class="tag-list">
+                    <span class="mini-tag">Sessions</span>
+                    <span class="mini-tag">Auth Guard</span>
+                    <span class="mini-tag">Bcrypt Hash</span>
+                    <span class="mini-tag">RBAC</span>
+                </div>
+            </div>
+            <div class="lesson-actions">
+                <a href="មេរៀនទី១០.html" target="_blank" class="btn-handout"><i class="fa-solid fa-book-open"></i> ឯកសារអាន (28p)</a>
+                <a href="មេរៀនទី១០បង្ហាញ.html" target="_blank" class="btn-slides"><i class="fa-solid fa-display"></i> ស្លាយបង្ហាញ (38)</a>
+            </div>
+        </article>
+
+        <!-- Empty search fallback -->
+        <div id="emptyState" class="empty-state">
+            <i class="fa-solid fa-folder-open" style="font-size: 28pt; margin-bottom: 10px; color: var(--primary);"></i>
+            <p>រកមិនឃើញមេរៀនដែលត្រូវនឹងពាក្យស្វែងរករបស់អ្នកទេ។ សូមសាកល្បងពាក្យគន្លឹះផ្សេង!</p>
+        </div>
+    </section>
+
+    <!-- KEY ACADEMIC MILESTONES -->
+    <section class="milestone-grid">
+        <div class="milestone-card">
+            <h4><i class="fa-solid fa-file-pen" style="color: var(--amber);"></i> សប្តាហ៍ទី ៨ ៖ ប្រឡងពាក់កណ្តាលឆមាស (២០%)</h4>
+            <p>គ្របដណ្តប់មេរៀនទី ១ ដល់ទី ៦ (PHP Fundamentals, Arrays/Functions, Form Validation &amp; OOP Basics) មិនទាន់ប៉ះ Database ឡើយ (៩០ នាទី Coding Test)។</p>
+        </div>
+        <div class="milestone-card purple">
+            <h4><i class="fa-solid fa-people-group" style="color: var(--purple);"></i> សប្តាហ៍ទី ១៤ ៖ បទបង្ហាញ Mini Project (១៥%) &amp; Pre-Laravel</h4>
+            <p>បង្ហាញគម្រោងក្រុម (School, E-Commerce, Task App) លើ GitHub, Code Review និងណែនាំ Composer + ស្ថាបត្យកម្ម MVC សម្រាប់ត្រៀម Laravel Framework។</p>
+        </div>
+        <div class="milestone-card rose">
+            <h4><i class="fa-solid fa-graduation-cap" style="color: var(--rose);"></i> សប្តាហ៍ទី ១៥ ៖ ប្រឡងបញ្ចប់ឆមាស Final Exam (៤០%)</h4>
+            <p>អនុវត្តសរសេរកូដលើកុំព្យូទ័រ (១២០-១៥០ នាទី)៖ បង្កើត MySQL DB, ភ្ជាប់ PDO, មុខងារ CRUD ពេញលេញ និងប្រព័ន្ធ Login Authentication។</p>
+        </div>
+    </section>
+
+    <!-- ASSESSMENT BREAKDOWN & TOOLS -->
+    <section class="bottom-grid">
+        <div class="panel">
+            <h3><i class="fa-solid fa-chart-pie"></i> ៣. ការបែងចែកទម្ងន់ពិន្ទុវាយតម្លៃ (Assessment Scheme - 100%)</h3>
+            <div class="assess-bar" title="Assessment Breakdown">
+                <div style="width: 10%; background: #64748b;" title="វត្តមាន និងការចូលរួម 10%"></div>
+                <div style="width: 5%; background: #0284c7;" title="ពិភាក្សាក្រុមក្នុងថ្នាក់ 5%"></div>
+                <div style="width: 10%; background: #059669;" title="Short Quizzes 10%"></div>
+                <div style="width: 15%; background: #d97706;" title="Group Mini-Project 15%"></div>
+                <div style="width: 20%; background: #7c3aed;" title="Mid-Term Exam 20%"></div>
+                <div style="width: 40%; background: #4f46e5;" title="Final Exam 40%"></div>
+            </div>
+            <div class="assess-list">
+                <div class="assess-item">
+                    <span><span class="assess-dot" style="background:#4f46e5;"></span> Final Exam (CLO 4, 5)</span>
+                    <b>40%</b>
+                </div>
+                <div class="assess-item">
+                    <span><span class="assess-dot" style="background:#7c3aed;"></span> Mid-Term Exam (CLO 2, 3)</span>
+                    <b>20%</b>
+                </div>
+                <div class="assess-item">
+                    <span><span class="assess-dot" style="background:#d97706;"></span> Group Mini-Project (Week 14)</span>
+                    <b>15%</b>
+                </div>
+                <div class="assess-item">
+                    <span><span class="assess-dot" style="background:#059669;"></span> Short Quizzes (3-4 Quizzes)</span>
+                    <b>10%</b>
+                </div>
+                <div class="assess-item">
+                    <span><span class="assess-dot" style="background:#64748b;"></span> Attendance &amp; Class Practice</span>
+                    <b>10%</b>
+                </div>
+                <div class="assess-item">
+                    <span><span class="assess-dot" style="background:#0284c7;"></span> Group Discussion (Logic)</span>
+                    <b>5%</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h3><i class="fa-solid fa-toolbox"></i> ៤. កម្មវិធី និងឯកសារយោងបន្ថែម (Tools &amp; Documentation)</h3>
+            <div class="tools-grid">
+                <a href="https://www.apachefriends.org/download.html" target="_blank" class="tool-link">
+                    <i class="fa-solid fa-server" style="color:#fb7a24;"></i>
+                    <div>
+                        <span class="t-name">XAMPP Stack</span>
+                        <span class="t-desc">Apache, MySQL &amp; phpMyAdmin</span>
+                    </div>
+                </a>
+                <a href="https://code.visualstudio.com/" target="_blank" class="tool-link">
+                    <i class="fa-solid fa-code" style="color:#0078d4;"></i>
+                    <div>
+                        <span class="t-name">Visual Studio Code</span>
+                        <span class="t-desc">IDE + PHP Intelephense</span>
+                    </div>
+                </a>
+                <a href="https://desktop.github.com/" target="_blank" class="tool-link">
+                    <i class="fa-brands fa-github" style="color:#0f172a;"></i>
+                    <div>
+                        <span class="t-name">GitHub Desktop</span>
+                        <span class="t-desc">Version Control System GUI</span>
+                    </div>
+                </a>
+                <a href="https://www.php.net/manual/en/" target="_blank" class="tool-link">
+                    <i class="fa-brands fa-php" style="color:#4f46e5;"></i>
+                    <div>
+                        <span class="t-name">PHP 8 Manual</span>
+                        <span class="t-desc">Official PHP &amp; PDO Docs</span>
+                    </div>
+                </a>
+                <a href="https://phptherightway.com/" target="_blank" class="tool-link">
+                    <i class="fa-solid fa-shield-halved" style="color:#059669;"></i>
+                    <div>
+                        <span class="t-name">PHP: The Right Way</span>
+                        <span class="t-desc">ស្តង់ដារកូដទំនើប និងសុវត្ថិភាព</span>
+                    </div>
+                </a>
+                <a href="https://laracasts.com/" target="_blank" class="tool-link">
+                    <i class="fa-solid fa-video" style="color:#e11d48;"></i>
+                    <div>
+                        <span class="t-name">Laracasts</span>
+                        <span class="t-desc">វីដេអូ PHP &amp; Pre-Laravel MVC</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p><b>សាកលវិទ្យាល័យអង្គរ (Angkor University)</b> &bull; មហាវិទ្យាល័យវិទ្យាសាស្ត្រ និងបច្ចេកវិទ្យា (Faculty of Science &amp; Technology)</p>
+    <p>មុខវិជ្ជា <b>Web Application Development with PHP &amp; MySQL</b> &bull; រៀបចំដោយ <b>សាស្ត្រាចារ្យ សឿង លីម (Soeurng LIM)</b> &bull; ឆ្នាំសិក្សា ២០២៦ - ២០២៧</p>
+</footer>
+
+<script>
+    let currentFilter = 'all';
+
+    function setFilter(category, btnElement) {
+        currentFilter = category;
+        document.querySelectorAll('.filter-tab').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+        filterLessons();
+    }
+
+    function filterLessons() {
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.lesson-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const categories = card.getAttribute('data-category') || '';
+            const keywords = card.getAttribute('data-keywords') || '';
+            const textContent = card.innerText.toLowerCase();
+
+            const matchesCategory = (currentFilter === 'all') || categories.includes(currentFilter);
+            const matchesSearch = !query || keywords.includes(query) || textContent.includes(query);
+
+            if (matchesCategory && matchesSearch) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        const toggleBtn = document.getElementById('themeToggle');
+        toggleBtn.innerHTML = isDark
+            ? '<i class="fa-solid fa-sun"></i> <span class="hide-sm">Light Mode</span>'
+            : '<i class="fa-solid fa-moon"></i> <span class="hide-sm">Dark Mode</span>';
+        localStorage.setItem('php_mysql_theme', isDark ? 'dark' : 'light');
+    }
+
+    // Restore saved theme preference
+    if (localStorage.getItem('php_mysql_theme') === 'dark') {
+        toggleTheme();
+    }
+</script>
+
+</body>
+</html>
